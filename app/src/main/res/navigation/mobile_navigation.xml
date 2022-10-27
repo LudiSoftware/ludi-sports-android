@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by ChazzCoin : December 2019 -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_spot_calendar">
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="io.usys.report.ui.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="io.usys.report.coachUser.locManageActivity.CartFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_spot_calendar"
+        android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+        android:label="@string/title_calendar"
+        tools:layout="@layout/activity_main_empty" />
+
+</navigation>

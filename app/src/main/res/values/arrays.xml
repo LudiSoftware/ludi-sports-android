@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="foodtruck_types">
+        <item>Pick Food Type</item>
+        <item>Mexican</item>
+        <item>Italian</item>
+        <item>Indian</item>
+        <item>Cajun</item>
+        <item>Soul</item>
+        <item>Asian</item>
+        <item>Mediterranean</item>
+        <item>American</item>
+        <item>Caribbean</item>
+        <item>Sandwiches</item>
+        <item>Pizza</item>
+        <item>Vegan</item>
+        <item>Acai Bowl</item>
+        <item>Vegetarian</item>
+    </string-array>
+</resources>

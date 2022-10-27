@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by ChazzCoin : December 2019 -->
+
+<!-- LOCATION MANAGER NAVIGATION -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_spot_calendar"
+        android:icon="@drawable/calendar_dark"
+        android:title="@string/title_calendar" />
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/dashboard_dark"
+        android:title="@string/title_dashboard" />
+    <item
+        android:id="@+id/navigation_locations"
+        android:icon="@drawable/f_spot_one_dark"
+        android:title="@string/title_locations" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/f_profile_dark"
+        android:title="@string/title_profile" />
+</menu>

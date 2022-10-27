@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by ChazzCoin : December 2019 -->
+
+<!-- ADMIN NAVIGATION -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_pending"
+    app:startDestination="@+id/navigation_pending">
+
+    <fragment
+        android:id="@+id/navigation_pending"
+        android:name="io.usys.report.ui.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_pending" />
+
+</navigation>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by ChazzCoin : December 2019 -->
+
+<!-- FOOD TRUCK MANAGER NAVIGATION -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_spot_calendar"
+        android:icon="@drawable/calendar_light"
+        android:title="@string/title_calendar" />
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/dashboard_dark"
+        android:title="@string/title_dashboard" />
+    <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/cart_dark"
+        android:title="@string/title_cart" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/f_profile_light"
+        android:title="@string/title_profile" />
+</menu>

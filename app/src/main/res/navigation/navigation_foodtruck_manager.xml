@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by ChazzCoin : December 2019 -->
+
+<!-- FOOD TRUCK MANAGER NAVIGATION -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_foodtruck_manager"
+    app:startDestination="@+id/navigation_dashboard">
+
+    <fragment
+        android:id="@+id/navigation_spot_calendar"
+        android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+        android:label="@string/title_calendar"
+        tools:layout="@layout/spot_calendar_fragment" />
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="io.usys.report.ui.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="io.usys.report.basicUser.checkout.FoodCartFragment"
+        android:label="@string/title_cart"
+        tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="io.usys.report.ui.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_user_profile" />
+
+</navigation>
