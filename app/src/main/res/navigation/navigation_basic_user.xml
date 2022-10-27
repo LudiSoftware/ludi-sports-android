@@ -22,9 +22,16 @@
         tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/navigation_cart"
-        android:name="io.usys.report.basicUser.checkout.FoodCartFragment"
-        android:label="@string/title_cart"
+        android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+        android:label="@string/title_orgs"
         tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/navigation_org_list"
+        android:name="io.usys.report.ui.OrganizationListFragment"
+        android:label="@string/title_orgs"
+        tools:layout="@layout/fragment_org_list">
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"

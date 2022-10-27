@@ -123,9 +123,9 @@ fun getOrgantionsBySports(sportName: String) {
 private val job = SupervisorJob()
 private val usysrIODispatcher = CoroutineScope(Dispatchers.IO + job)
 
-fun getOrgsAsync() = usysrIODispatcher.async {
-    getOrganizationsSuspended()
-}
+//fun getOrgsAsync() = usysrIODispatcher.async {
+//    getOrganizationsSuspended()
+//}
 
 fun getOrganizationsBlocked(): RealmList<Organization> {
     val orgList: RealmList<Organization> = RealmList()
@@ -151,26 +151,27 @@ fun getOrganizationsBlocked(): RealmList<Organization> {
     return orgList
 }
 
-private suspend fun getOrganizationsSuspended() = withContext(usysrIODispatcher.coroutineContext) {
-    val orgList: RealmList<Organization> = RealmList()
-    firebase { it ->
-        it.child(FireDB.ORGANIZATIONS)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (ds in dataSnapshot.children) {
-                        val org: Organization? = ds.getValue(Organization::class.java)
-                        org?.let {
-                            orgList.add(it)
-                        }
-                    }
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                    log("Failed")
-                }
-            })
-    }
-    return@withContext orgList
-}
+//private suspend fun getOrganizationsSuspended() = withContext(usysrIODispatcher.coroutineContext){
+//    val orgList: RealmList<Organization> = RealmList()
+//    firebase { it ->
+//        it.child(FireDB.ORGANIZATIONS)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    for (ds in dataSnapshot.children) {
+//                        val org: Organization? = ds.getValue(Organization::class.java)
+//                        org?.let {
+//                            orgList.add(it)
+//                        }
+//                    }
+//                    return orgList
+//                }
+//                override fun onCancelled(databaseError: DatabaseError) {
+//                    log("Failed")
+//                }
+//            })
+//    }
+//
+//}
 
 // unverified
 fun <T> T.addUpdateInFirebase(collection: String, id: String): Boolean {

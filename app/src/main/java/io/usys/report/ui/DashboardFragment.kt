@@ -10,7 +10,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -22,7 +24,6 @@ import io.usys.report.coachUser.dashboard.LocDashViewAdapter
 import io.usys.report.utils.*
 import io.realm.RealmList
 import io.usys.report.db.*
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,8 +55,8 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
         //RecyclerView Init Setup
-        rootView.recyclerViewDashboard.layoutManager = GridLayoutManager(requireContext(), 1)
-        rootView.recyclerViewDashboard.addItemDecoration(DividerItemDecoration(context, 0))
+        rootView.recyclerOrgList.layoutManager = GridLayoutManager(requireContext(), 1)
+        rootView.recyclerOrgList.addItemDecoration(DividerItemDecoration(context, 0))
 
         userOrLogout(requireActivity()) {
             user = it
@@ -65,12 +66,15 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         //-> Global On Click Listeners
         rootView.btnLogout.setOnClickListener {
             //FOR TESTING/ADMIN WORK ONLY
-            if (Session.isLogged){
-                createAskUserLogoutDialog(requireActivity()).show()
-            }
+//            if (Session.isLogged){
+//                createAskUserLogoutDialog(requireActivity()).show()
+//            }
+            val bun = bundleOf("sport" to "soccer")
+            toFragment(R.id.navigation_org_list, bun)
         }
 
-        io { getEm2() }
+//        io { getEm2() }
+//        findNavController().navigate(R.id.navigation_org_list)
 //        session {
 //            sportList = it.sports!!
 //            rootView.recyclerViewDashboard.initRealmList(sportList, requireContext(), FireDB.SPORTS)
@@ -85,7 +89,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         if (!orgListResults.isNullOrEmpty()) {
             main {
                 (orgListResults as? RealmList<*>)?.let {
-                    rootView.recyclerViewDashboard.initRealmList(
+                    rootView.recyclerOrgList.initRealmList(
                         it, requireContext(), FireTypes.ORGANIZATIONS)
                 }
             }
@@ -94,15 +98,13 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return orgListResults
     }
 
-    private suspend fun getEm(): RealmList<*> {
-        val orgListResults = getOrgsAsync().await()
-        if (!orgListResults.isNullOrEmpty()) {
-            main {
-                rootView.recyclerViewDashboard.initRealmList(orgListResults, requireContext(), FireTypes.ORGANIZATIONS)
-            }
-        }
-        return orgListResults
-    }
+//    private suspend fun getEm(): RealmList<Organization>? {
+//        var orgListResults: RealmList<Organization>? = null
+//        runBlocking {
+//            orgListResults = getOrgsAsync().await()
+//        }
+//        return orgListResults
+//    }
 
     private fun getOrganizations2() {
         firebase { it ->

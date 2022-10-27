@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="USER INFO"
+            android:text="SPORT PAGE"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -73,39 +73,12 @@
                 android:text="Review"
                 android:visibility="gone" />
 
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="125dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/ft_btn_border"
-                android:drawableLeft="@drawable/ft_dash_icon_30dp"
-                android:text="Logout" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/spinLocations"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ft_border_rounded_dark"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/white"
-                android:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewDashboard"
+        android:id="@+id/recyclerOrgList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorListBackground"

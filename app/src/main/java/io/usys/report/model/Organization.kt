@@ -1,10 +1,7 @@
 package io.usys.report.model
 
 import android.app.Dialog
-import android.content.Context
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.PrimaryKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -13,7 +10,6 @@ import io.usys.report.AuthController
 import io.usys.report.R
 import io.usys.report.coachUser.manage.LocManageFragment
 import io.realm.RealmObject
-import io.usys.report.ui.BaseListAdapter
 import io.usys.report.utils.*
 import kotlinx.android.synthetic.main.dialog_ask_user_logout.*
 import java.io.Serializable

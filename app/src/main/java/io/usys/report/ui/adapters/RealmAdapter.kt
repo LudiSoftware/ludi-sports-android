@@ -12,14 +12,14 @@ import io.usys.report.db.FireDB
 import io.usys.report.db.FireTypes
 
 
-fun RecyclerView.initRealmList(realmList: RealmList<*>, context: Context, type: String) : BaseListAdapter {
-    val adapter = BaseListAdapter(realmList, type)
+fun RecyclerView.initRealmList(realmList: RealmList<*>, context: Context, type: String) : RealmListAdapter {
+    val adapter = RealmListAdapter(realmList, type)
     this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     this.adapter = adapter
     return adapter
 }
 
-open class BaseListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
+open class RealmListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
 
     var realmList: RealmList<*>? = null
     var layout: Int = R.layout.item_list_organization
