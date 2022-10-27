@@ -60,7 +60,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         userOrLogout(requireActivity()) {
             user = it
-//            setup(it)
         }
 
         //-> Global On Click Listeners

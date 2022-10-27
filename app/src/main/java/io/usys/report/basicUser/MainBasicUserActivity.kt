@@ -13,7 +13,7 @@ import io.usys.report.model.Session
 import io.usys.report.model.User
 
 /**
- * Created by ChazzCoin : December 2019.
+ * Created by ChazzCoin : October 2022.
  */
 
 class MainBasicUserActivity : AppCompatActivity() {
