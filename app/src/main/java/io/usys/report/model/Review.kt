@@ -10,6 +10,8 @@ import androidx.room.PrimaryKey
 import io.realm.RealmList
 import io.usys.report.R
 import io.realm.RealmObject
+import io.usys.report.db.FireDB
+import io.usys.report.db.addUpdateDB
 import io.usys.report.utils.*
 import java.util.*
 
@@ -40,7 +42,24 @@ open class Question: RealmObject() {
     }
 }
 
+fun Review.addUpdateInFirebase(): Boolean {
+    return addUpdateDB(FireDB.REVIEWS, this.id.toString(), this)
+}
 
+private fun createReview() {
+    val rev = Review()
+    rev.apply {
+        this.id = newUUID()
+        this.score = 4
+        this.details = "us soccer"
+        this.questions = RealmList(
+            Question().apply { this.question = "Are you satisfied?" },
+            Question().apply { this.question = "Does this coach work well with kids?" },
+            Question().apply { this.question = "Does this coach work well with parents?" },
+            Question().apply { this.question = "Is this coach Chace Zanaty?" })
+    }
+    addUpdateDB(FireDB.REVIEWS, rev.id!!, rev)
+}
 
 fun createReviewDialog(activity: Activity, spot: Spot? = null) : Dialog {
 

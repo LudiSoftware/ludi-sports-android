@@ -12,7 +12,6 @@ import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.realm.RealmList
-import io.realm.RealmObject
 import io.usys.report.db.FireDB
 import io.usys.report.db.FireTypes
 import kotlinx.android.synthetic.main.fragment_org_list.view.*
@@ -21,23 +20,19 @@ import kotlinx.android.synthetic.main.fragment_org_list.view.*
  * Created by ChazzCoin : October 2022.
  */
 
-class OrganizationListFragment : YsrFragment() {
+class CoachListFragment : YsrFragment() {
 
     private var hasBeenLoaded = false
-    private var organizationList: RealmList<Organization> = RealmList() // -> ORIGINAL LIST
+    private var coachList: RealmList<Coach> = RealmList() // -> ORIGINAL LIST
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        rootView = inflater.inflate(R.layout.fragment_org_list, container, false)
+        rootView = inflater.inflate(R.layout.fragment_coaches_list, container, false)
 
         setupOnClickListeners()
 
-        if (!hasBeenLoaded) {
-            getOrganizationsBySport((realmObjectArg as? Sport)?.name)
-            hasBeenLoaded = true
-        } else {
-            rootView.recyclerOrgList.initRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
+        (realmObjectArg as? Organization)?.id?.let {
+            getCoachesByOrg(it)
         }
-
 
         return rootView
     }
@@ -45,24 +40,25 @@ class OrganizationListFragment : YsrFragment() {
     //todo: navigate to org profile and coaching list...
     override fun setupOnClickListeners() {
         itemOnClick = { view, obj ->
-            toFragment(R.id.navigation_coaches_list, bundleRealmObject(obj))
+            val bun = bundleOf("sport" to (obj as? Sport)?.name)
+//            toFragment(R.id.navigation_org_list, bun)
         }
     }
 
-    private fun getOrganizationsBySport(sport:String?) {
+    private fun getCoachesByOrg(orgId:String) {
         firebase { it ->
-            it.child(FireDB.ORGANIZATIONS).orderByChild("sport").equalTo(sport)
+            it.child(FireDB.COACHES).orderByChild("organizationId").equalTo(orgId)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        organizationList.clear()
+                        coachList.clear()
                         for (ds in dataSnapshot.children) {
-                            val org: Organization? = ds.getValue(Organization::class.java)
-                            org?.let {
-                                organizationList.add(it)
+                            val coach: Coach? = ds.getValue(Coach::class.java)
+                            coach ?.let {
+                                coachList.add(it)
                             }
                         }
                         main {
-                            rootView.recyclerOrgList.initRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
+                            rootView.recyclerOrgList.initRealmList(coachList, requireContext(), FireTypes.COACHES, itemOnClick)
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {

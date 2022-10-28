@@ -78,6 +78,12 @@ inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
     Session.user?.let { block(it) } ?: run { activity?.let { Session.restartApplication(it) } }
 }
 
+fun userOrLogout(activity: Activity? = null) {
+    if (Session.user.isNullOrEmpty()) {
+        activity?.let { Session.restartApplication(it) }
+    }
+}
+
 fun sessionAndUser(block: (Session, User) -> Unit) {
     session { itSession ->
         userOrLogout { itUser ->
@@ -85,8 +91,6 @@ fun sessionAndUser(block: (Session, User) -> Unit) {
         }
     }
 }
-
-
 
 inline fun locations(block: (RealmList<Organization>) -> Unit) {
     Session.session?.organizations?.let { block(it) }

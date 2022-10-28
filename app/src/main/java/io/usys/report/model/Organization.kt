@@ -10,6 +10,8 @@ import io.usys.report.AuthController
 import io.usys.report.R
 import io.usys.report.coachUser.manage.LocManageFragment
 import io.realm.RealmObject
+import io.usys.report.db.FireDB
+import io.usys.report.db.addUpdateDB
 import io.usys.report.utils.*
 import kotlinx.android.synthetic.main.dialog_ask_user_logout.*
 import java.io.Serializable
@@ -55,11 +57,23 @@ open class Organization : RealmObject(), Serializable {
         return false
     }
 
+    fun addUpdateOrgToFirebase(): Boolean {
+        return addUpdateDB(FireDB.ORGANIZATIONS, this.id.toString(), this)
+    }
+
 }
 
-//private fun <E> RealmList<E>.add(element: JSONObject?) {
-//    this.add(element as? E)
-//}
+fun createOrg() {
+    val org = Organization()
+    org.apply {
+        this.id = newUUID()
+        this.sport = "soccer"
+        this.city = "birmingham"
+        this.name = "USYSR Club"
+    }
+    addUpdateDB(FireDB.ORGANIZATIONS, org.id.toString(), org)
+}
+
 
 fun Organization.createDeleteLocationDialog(fragment: LocManageFragment) : Dialog {
     val dialog = Dialog(fragment.requireActivity())

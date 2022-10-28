@@ -147,7 +147,7 @@
             android:gravity="center"
             android:inputType="textShortMessage"
             android:singleLine="false"
-            android:text="@string/cashapp_payment_username"
+            android:text="cashapp_payment_username"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -230,12 +230,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutPayButtons"
         tools:showIn="@layout/activity_checkout"
         tools:visibility="invisible">
-
-        <com.stripe.android.view.CardInputWidget
-            android:id="@+id/cardInputWidget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ft_border_rounded_white" />
 
         <Button
             android:id="@+id/payButton"

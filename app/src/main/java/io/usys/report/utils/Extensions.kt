@@ -1,16 +1,12 @@
 package io.usys.report.utils
 
-import android.os.Bundle
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import io.realm.RealmList
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.util.*
 
 /**
- * Created by ChazzCoin : December 2019.
+ * Created by ChazzCoin : October 2022.
  */
 
 inline fun tryCatch(block:() -> Unit) {
@@ -62,13 +58,3 @@ fun log(msg: String) {
     println(msg)
 }
 
-/**
- * Make sure to add any new fragments to Navigation XML!
- */
-fun Fragment.toFragment(fragId: Int, bundle: Bundle = bundleOf()) {
-    this.findNavController().navigate(fragId, bundle)
-}
-
-fun Fragment.getArg(argName: String): String? {
-    return arguments?.getString(argName)
-}

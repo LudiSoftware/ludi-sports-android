@@ -30,9 +30,12 @@ class FireDB {
         const val SYSTEM: String = "system"
         // -> Main Database Structure
         const val USERS: String = "users"
-        const val ORGANIZATIONS: String = "organizations"
-        const val REVIEWS: String = "reviews"
         const val SPORTS: String = "sports"
+        const val ORGANIZATIONS: String = "organizations"
+        const val COACHES: String = "coaches"
+        const val REVIEWS: String = "reviews"
+        const val SERVICES: String = "services"
+
 
         /**
          * organizations - organization(id)
@@ -123,9 +126,7 @@ fun getOrgantionsBySports(sportName: String) {
 private val job = SupervisorJob()
 private val usysrIODispatcher = CoroutineScope(Dispatchers.IO + job)
 
-//fun getOrgsAsync() = usysrIODispatcher.async {
-//    getOrganizationsSuspended()
-//}
+
 
 fun getOrganizationsBlocked(): RealmList<Organization> {
     val orgList: RealmList<Organization> = RealmList()
@@ -150,6 +151,10 @@ fun getOrganizationsBlocked(): RealmList<Organization> {
     }
     return orgList
 }
+
+//fun getOrgsAsync() = usysrIODispatcher.async {
+//    getOrganizationsSuspended()
+//}
 
 //private suspend fun getOrganizationsSuspended() = withContext(usysrIODispatcher.coroutineContext){
 //    val orgList: RealmList<Organization> = RealmList()

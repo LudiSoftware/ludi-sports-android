@@ -34,9 +34,23 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_coaches_list"
+        android:name="io.usys.report.ui.CoachListFragment"
+        android:label="@string/title_coaches"
+        tools:layout="@layout/fragment_coaches_list">
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_profile"
         android:name="io.usys.report.ui.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_user_profile" />
+
+    <fragment
+        android:id="@+id/navigation_base_frag"
+        android:name="io.usys.report.ui.YsrFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_org_list">
+    </fragment>
 
 </navigation>
