@@ -3,9 +3,9 @@
 <!-- Created by ChazzCoin : December 2019 -->
 
 <resources>
-    <color name="colorPrimary">#364b69</color>
-    <color name="colorPrimaryDark">#364b69</color>
-    <color name="colorAccent">#bed2ff</color>
+    <color name="colorPrimary">#004088</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#ed0100</color>
     <color name="colorListBackground">#40BED2FF</color>
 
     <color name="fLightBlue">#bed2ff</color>
