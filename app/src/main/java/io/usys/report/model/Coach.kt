@@ -5,6 +5,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.db.FireDB
 import io.usys.report.db.addUpdateDB
+import io.usys.report.utils.applyAndSave
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -12,6 +13,10 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 open class Coach : RealmObject(), Serializable {
+
+    companion object {
+        const val ORDER_BY_ORGANIZATION = "organizationId"
+    }
 
     @PrimaryKey
     var id: String? = "" //UUID
@@ -40,14 +45,12 @@ open class Coach : RealmObject(), Serializable {
 
 
 fun createCoach() {
-    val coach = Coach()
-    coach.apply {
-        this.id = newUUID()
-        this.name = "Coach Romeo"
-        this.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"
-        this.ownerId = "tnmjTR7r1HPwIaBb2oXrDrwXT842"
+    Coach().applyAndSave() {
+        it.id = newUUID()
+        it.name = "Lucas Romeo"
+        it.sport = "soccer"
+        it.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"
     }
-    addUpdateDB(FireDB.COACHES, coach.id.toString(), coach)
 }
 
 

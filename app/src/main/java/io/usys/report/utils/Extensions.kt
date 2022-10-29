@@ -4,6 +4,7 @@ import io.realm.RealmList
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.util.*
+import kotlin.reflect.KProperty1
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -15,6 +16,26 @@ inline fun tryCatch(block:() -> Unit) {
     } catch (e: Exception) {
         log("Safe Extension Caught Exception: $e")
     }
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T> Any.cast(): T? {
+    tryCatch {
+        return this as? T
+    }
+    return null
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <R> Any.getAttribute(propertyName: String): R? {
+    tryCatch {
+        val property = this::class.members
+            // don't cast here to <Any, R>, it would succeed silently
+            .first { it.name == propertyName } as KProperty1<Any, *>
+        // force a invalid cast exception if incorrect type here
+        return property.get(this) as R
+    }
+    return null
 }
 
 inline fun main(crossinline block: suspend CoroutineScope.() -> Unit) {
@@ -48,6 +69,12 @@ fun Any?.isNullOrEmpty() : Boolean {
         is RealmList<*> -> { if (this.isEmpty()) return true }
     }
     return false
+}
+
+inline fun <T> T?.safe(block: (T) -> Unit) {
+    this?.let {
+        block(this)
+    }
 }
 
 fun newUUID(): String {

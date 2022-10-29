@@ -21,6 +21,10 @@ import java.io.Serializable
  */
 open class Organization : RealmObject(), Serializable {
 
+    companion object {
+        const val ORDER_BY_SPORTS = "sport"
+    }
+
     @PrimaryKey
     var id: String? = "" //UUID
     var name: String? = "" //Name Given by Manager

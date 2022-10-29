@@ -11,6 +11,7 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.db.whenType
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -193,13 +194,11 @@ open class Session : RealmObject() {
 
         //ADD ORGANIZATION, this should be safe
         fun addOrganization(organization: Organization?) {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            val session = session
-            session?.let { itSession ->
-                mRealm.beginTransaction()
-                itSession.organizations?.add(organization)
-                mRealm.copyToRealmOrUpdate(session) //safe?
-                mRealm.commitTransaction()
+            session { itSession ->
+                executeRealm {
+                    itSession.organizations?.add(organization)
+                    it.copyToRealmOrUpdate(itSession) //safe?
+                }
             }
         }
 
@@ -242,4 +241,24 @@ open class Session : RealmObject() {
     }
 }
 
+
+fun <T> T?.addToSession() {
+    this?.let {
+        when (it) {
+            is User -> {
+                Session.updateSession(it)
+            }
+            is Sport -> {
+                Session.addSport(it)
+            }
+            is Organization -> {
+                Session.addOrganization(it)
+            }
+//            is Coach -> {
+//                Session.addC
+//            }
+            else -> { null }
+        }
+    }
+}
 

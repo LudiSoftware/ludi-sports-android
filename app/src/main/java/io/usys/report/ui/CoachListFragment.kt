@@ -13,6 +13,7 @@ import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.realm.RealmList
 import io.usys.report.db.*
+import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 /**
@@ -21,9 +22,7 @@ import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 class CoachListFragment : YsrFragment() {
 
-    private var hasBeenLoaded = false
-    private var coachesList: RealmList<Coach>? = RealmList() // -> ORIGINAL LIST
-    private var callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)? = null
+    private var coachesList: RealmList<Coach>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_coaches_list, container, false)
@@ -31,7 +30,10 @@ class CoachListFragment : YsrFragment() {
         setupOnClickListeners()
 
         (realmObjectArg as? Organization)?.id?.let {
-            getCoachesByOrg(it, callbackFunction)
+            getOrderByEqualTo(FireDB.COACHES, ORDER_BY_ORGANIZATION, it) {
+                coachesList = this?.toRealmList()
+                rootView.recyclerList.loadInRealmList(coachesList, requireContext(), FireDB.COACHES, itemOnClick)
+            }
         }
 
         return rootView
@@ -39,14 +41,8 @@ class CoachListFragment : YsrFragment() {
 
     //todo: navigate to org profile and coaching list...
     override fun setupOnClickListeners() {
-        callbackFunction = { ds ->
-            coachesList = ds?.toRealmList()
-//            rootView.recyclerList.initRealmList(coachesList, requireContext(), "")
-            log(coachesList.toString())
-        }
         itemOnClick = { _, obj ->
-            val bun = bundleOf("sport" to (obj as? Sport)?.name)
-//            toFragment(R.id.navigation_org_list, bun)
+            toFragment(R.id.navigation_profile, obj)
         }
     }
 

@@ -2,11 +2,12 @@ package io.usys.report.utils
 
 import android.app.Activity
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
+import io.realm.RealmModel
+import io.usys.report.db.addUpdateDB
+import io.usys.report.db.forceGetNameOfRealmObject
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -63,18 +64,23 @@ inline fun executeRealm(crossinline block: (Realm) -> Unit) {
     realm().executeTransaction { block(it) }
 }
 
-// Verified
-inline fun firebase(block: (DatabaseReference) -> Unit) {
-    block(FirebaseDatabase.getInstance().reference)
+// in progress
+inline fun <T : RealmModel> T.applyAndSave(block: (T) -> Unit) {
+    this.apply {
+        block(this)
+    }
+    this.cast<T>()?.let { itObj ->
+        this.getRealmId<T>()?.let { itId ->
+            addUpdateDB(itObj.forceGetNameOfRealmObject(), itId, itObj)
+        }
+    }
 }
 
-// in progress
-//inline fun <T> T.applyAndSave(block: T.() -> Unit): T {
-//    this.apply {
-//        block()
-//    }
-//    addUpdateDB(FireDB.REVIEWS, rev.id!!, this)
-//}
+fun <T> RealmModel.getRealmId() : String? {
+    val id = this.getAttribute<T>("id")
+    if (id.isNullOrEmpty()) { return null }
+    return id.toString()
+}
 
 // Untested
 fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {

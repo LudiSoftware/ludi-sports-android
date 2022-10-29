@@ -48,15 +48,11 @@ class ProfileFragment : YsrFragment() {
         COLOR_RED = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_red)
         COLOR_WHITE = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_white)
 
-        Session.session?.let { user = Session.user }
-        if (user?.auth != AuthTypes.BASIC_USER) {
-            rootView.linearLayoutTruckInfo.visibility = View.GONE
+//        setupDisplay()
+
+        rootView.btnProfileReview.setOnClickListener {
+            createReviewDialog(requireActivity()).show()
         }
-
-
-//        setupOnClickHandlers()
-//        setupSpinners()
-        setupDisplay()
 
         return rootView
     }
@@ -64,7 +60,6 @@ class ProfileFragment : YsrFragment() {
     private fun setupDisplay() {
 
         //General User Info
-        rootView.editProfileName.setText(user?.name)
         rootView.editProfileName.setText(user?.name)
         rootView.editProfileEmail.setText(user?.email)
 //        rootView.editPhoneNumber.setText(user?.phone)

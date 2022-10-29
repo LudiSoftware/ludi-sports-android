@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import io.usys.report.R
 import io.usys.report.model.*
-import io.usys.report.utils.firebase
+import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.utils.log
 
 /**
@@ -62,12 +62,56 @@ class FireTypes {
     }
 }
 
+// Verified
+inline fun firebase(block: (DatabaseReference) -> Unit) {
+    block(FirebaseDatabase.getInstance().reference)
+}
 
 fun getFirebaseUser(): FirebaseUser? {
     return FirebaseAuth.getInstance().currentUser
 }
 
-fun Any?.getNameForRealmObject(): String? {
+fun Any.forceGetNameOfRealmObject() : String {
+    when (this) {
+        is User -> {
+            return FireTypes.USERS
+        }
+        is Sport -> {
+            return FireTypes.SPORTS
+        }
+        is Organization -> {
+            return FireTypes.ORGANIZATIONS
+        }
+        is Coach -> {
+            return FireTypes.COACHES
+        }
+        else -> {
+            // Create Base Generic Object
+            return FireTypes.USERS
+        }
+    }
+}
+
+inline fun <T> T?.whenType(block: (T) -> Unit) {
+    this?.let {
+        when (it) {
+            is User -> {
+                block(it)
+            }
+            is Sport -> {
+                block(it)
+            }
+            is Organization -> {
+                block(it)
+            }
+            is Coach -> {
+                block(it)
+            }
+        }
+    }
+}
+
+fun Any?.getNameOfRealmObject(): String? {
     this?.let {
         when (it) {
             is User -> {
@@ -90,23 +134,12 @@ fun Any?.getNameForRealmObject(): String? {
     return null
 }
 
-fun DataSnapshot.loadIntoSession(type: String) {
-    when (type) {
-        FireTypes.ORGANIZATIONS -> {
-            for (ds in this.children) {
-                val org: Organization? = ds.getValue(Organization::class.java)
-                org?.let {
-                    Session.addOrganization(it)
-                }
-            }
-        }
-        FireTypes.SPORTS -> {
-            for (ds in this.children) {
-                val sport: Sport? = ds.getValue(Sport::class.java)
-                sport?.let {
-                    Session.addSport(it)
-                }
-            }
+
+inline fun <reified T> DataSnapshot.loadIntoSession() {
+    for (ds in this.children) {
+        val obj: T? = ds.getValue(T::class.java)
+        obj?.let {
+            obj.addToSession()
         }
     }
 }
@@ -118,7 +151,7 @@ fun loadSportsIntoSession() {
         it.child(FireDB.SPORTS)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataSnapshot.loadIntoSession(FireTypes.SPORTS)
+                    dataSnapshot.loadIntoSession<Sport>()
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
                     log("Failed")
@@ -129,7 +162,7 @@ fun loadSportsIntoSession() {
 
 // unverified
 fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -> Unit)?) {
-    val collection = this.getNameForRealmObject() ?: return
+    val collection = this.getNameOfRealmObject() ?: return
     firebase { database ->
         database.child(collection).child(id)
             .setValue(this)
@@ -146,7 +179,6 @@ private fun <TResult> Task<TResult>.addYsrOnSuccessListener(callbackFunction: ((
         callbackFunction?.invoke(false, "failure")
     }
 }
-
 
 // Verified
 fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
@@ -167,6 +199,11 @@ fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
     return result
 }
 
+fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    getOrderByEqualTo(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
+}
+
+// Verified
 fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String,
                       callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebase {
@@ -175,12 +212,20 @@ fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String,
     }
 }
 
-fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    getOrderByEqualTo(FireDB.COACHES, "organizationId", orgId, callbackFunction)
+// Verified
+@JvmName("getOrderByEqualTo1")
+inline fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
+    firebase {
+        it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
+            .addYsrListenerForSingleValueEvent { ds ->
+                block(ds)
+            }
+    }
 }
 
+// Verified
 fun Query.addYsrListenerForSingleValueEvent(callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    this.addListenerForSingleValueEvent(object : ValueEventListener {
+    return this.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             callbackFunction?.invoke(dataSnapshot)
         }

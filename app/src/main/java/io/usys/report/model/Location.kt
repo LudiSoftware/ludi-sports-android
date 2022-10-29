@@ -85,19 +85,10 @@ open class Spot(id:String? = "", addressOne:String? = "", addressTwo:String? = "
         this.price = if (price.isNullOrBlank() || price.isNullOrEmpty()) {PRICE} else {price}
     }
 
-    fun toMealTime() : String {
-        return when {
-            //11-2
-            this.mealTime?.toLowerCase(Locale.ROOT) == "lunch" -> { LUNCH_TIME }
-            //5-8
-            this.mealTime?.toLowerCase(Locale.ROOT) == "dinner" -> { DINNER_TIME }
-            else -> { this.mealTime ?: "unknown" }
-        }
-    }
 
-    fun toFullDate() : String {
-        return "${toMealTime()}, ${this.date?.toFullDateString() ?: "unknwon"}"
-    }
+//    fun toFullDate() : String {
+//        return "${toMealTime()}, ${this.date?.toFullDateString() ?: "unknwon"}"
+//    }
 
     fun toFullPrice() : String {
         return "$${this.price}"
@@ -159,7 +150,7 @@ fun Spot.createDetailsLocationDialog(activity: Activity) : Dialog {
     //Location Manager/Contact
     dialog.txtLocationManagerDialog.text = this.spotManager
     //Spot Details
-    dialog.txtTimeDateDialog.setText(this.toFullDate()) //TIME AND DATE
+//    dialog.txtTimeDateDialog.setText(this.toFullDate()) //TIME AND DATE
     if (this.assignedTruckName.isNullOrEmpty()) {
         dialog.txtTruckNameDialog.visibility = View.GONE
     } else {
@@ -175,200 +166,10 @@ fun Spot.createDetailsLocationDialog(activity: Activity) : Dialog {
     return dialog
 }
 
-//fun Spot.createDetailsFoodtruckDialog(activity: Activity,
-//                                      calendarFragment: FoodCalendarFragment? = null,
-//                                      cartFragment: FoodCartFragment? = null,
-//                                      isCart: Boolean = false) : Dialog {
-//    val dialog = Dialog(activity, R.style.FT_Dialog)
-//    dialog.setContentView(R.layout.dialog_spot_details)
-//    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-//    //Location Info
-//    dialog.txtLocationNameDialog.setText(this.locationName)
-//    dialog.txtAddressOneDialog.setText(this.addressOne)
-//    if (this.addressTwo.isNullOrEmpty()) {
-//        dialog.txtAddressTwoDialog.visibility = View.GONE
-//    } else {
-//        dialog.txtAddressTwoDialog.setText(this.addressTwo)
-//    }
-//    dialog.txtCityStateZipDialog.setText(this.toCityStateZip())
-//    dialog.txtParkingInfoDialog.setText(this.parkingInfo)
-//    //Location Manager/Contact
-//    dialog.txtLocationManagerDialog.text = this.spotManager
-//    //Spot Details
-//    dialog.txtTimeDateDialog.setText(this.toFullDate()) //TIME AND DATE
-//    if (this.assignedTruckName.isNullOrEmpty()) {
-//        dialog.txtTruckNameDialog.visibility = View.GONE
-//    } else {
-//        dialog.txtTruckNameDialog.setText(this.assignedTruckName)
-//    }
-//    dialog.txtFoodTypeDialog.setText(this.foodType)
-//    dialog.txtEstPeopleDialog.setText(this.estPeople)
-//    dialog.txtCostDialog.setText(this.price)
-//    dialog.btnCloseDialog.setOnClickListener {
-//        dialog.dismiss()
-//    }
-//
-//    if (isCart) dialog.btnGenericDialog.text = "Remove" else dialog.btnGenericDialog.text = "Add"
-//    dialog.btnGenericDialog.setOnClickListener {
-//        //ADD SPOTS TO CART
-//        if (isCart) {
-//            this.createRemoveFromCartDialog(activity, cartFragment!!, dialog).show()
-//        } else {
-//            this.createAddToCartDialog(activity, calendarFragment!!, dialog).show()
-//        }
-//    }
-//    return dialog
-//}
 
-//fun Spot.createAddToCartDialog(activity: Activity, fragment: FoodCalendarFragment, parent: Dialog) : Dialog {
-//    val dialog = Dialog(activity)
-//    dialog.setContentView(R.layout.dialog_ask_user_logout)
-//    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-//    dialog.txtAskUserTitle.text = "Add to Cart?"
-//    dialog.txtAskUserBody.text = "Are you sure you want to add this spot to your cart?"
-//    // On Clicks
-//    val yes = dialog.findViewById(R.id.btnYesAskUser) as Button
-//    val cancel = dialog.findViewById(R.id.btnCancelAskUser) as Button
-//
-//    var assignedTruckUid = "null"
-//    var assignedTruckName = "null"
-//    getFoodtruck()?.let {
-//        assignedTruckUid = it.id ?: "null"
-//        assignedTruckName = it.truckName ?: "null"
-//    }
-//
-//    yes.setOnClickListener {
-//        val spot = this
-//        main {
-//            addSpotToCart(spot, activity)
-//            spot.updatePendingAvailableToFirebase(activity, PENDING, assignedTruckUid, assignedTruckName)
-//            fragment.spotsListAdapter?.notifyDataSetChanged()
-//            dialog.dismiss()
-//            parent.dismiss()
-//        }
-//    }
-//    cancel.setOnClickListener {
-//        dialog.dismiss()
-//    }
-//    return dialog
-//}
 
-//fun Spot.createRemoveFromCartDialog(activity: Activity, fragment: FoodCartFragment, parent: Dialog) : Dialog {
-//    val dialog = Dialog(activity)
-//    dialog.setContentView(R.layout.dialog_ask_user_logout)
-//    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-//    dialog.txtAskUserTitle.text = "Remove from Cart?"
-//    dialog.txtAskUserBody.text = "Are you sure you want to remove this spot from your cart?"
-//    // On Clicks
-//    val yes = dialog.findViewById(R.id.btnYesAskUser) as Button
-//    val cancel = dialog.findViewById(R.id.btnCancelAskUser) as Button
-//    yes.setOnClickListener {
-//        val spot = this
-//        main { removeSpotFromCart(spot, activity) }
-//        spot.updatePendingAvailableToFirebase(activity, AVAILABLE, "", "")
-//        fragment.cartAdapter?.notifyDataSetChanged()
-//        fragment.setupDisplay()
-//        dialog.dismiss()
-//        parent.dismiss()
-//    }
-//    cancel.setOnClickListener {
-//        dialog.dismiss()
-//    }
-//    return dialog
-//}
 
-//update Spot to PENDING
-//fun Spot.updatePendingAvailableToFirebase(mContext:Context, status:String, assignedTruckUid:String, assignedTruckName:String, isCashApp:Boolean=false) {
-//    val spot = this
-//    val newSpot = Spot(spot.id, spot.addressOne, spot.addressTwo,
-//        spot.city, spot.state, spot.zip, spot.date, spot.spotManager)
-//    newSpot.apply {
-//        //
-//        this.status = status
-//        this.assignedTruckUid = assignedTruckUid
-//        this.assignedTruckName = assignedTruckName
-//    }
-//    val id = this.id ?: return
-//    this.date?.toMonthYearForFirebase()?.let { itDate ->
-//        firebase { itBase ->
-//            itBase.child(FireHelper.AREAS)
-//                .child(FireHelper.ALABAMA)
-//                .child(FireHelper.BIRMINGHAM)
-//                .child(FireHelper.SPOTS)
-//                .child(itDate)
-//                .child(id)
-//                .setValue(newSpot)
-//                .addOnSuccessListener {
-//                    //TODO("HANDLE SUCCESS")
-//                    when (status) {
-//                        PENDING -> {
-//                            Session.updateSpotAsPendingForFirebase(id, if (isCashApp) PENDING_CASHAPP else PENDING, assignedTruckUid, assignedTruckName)
-//                        }
-//                        AVAILABLE -> {
-//                            Session.updateSpotAsAvailableForFirebase(id)
-//                        }
-//                    }
-//                    showSuccess(mContext)
-//                }.addOnCompleteListener {
-//                    //TODO("HANDLE COMPLETE")
-//                }.addOnFailureListener {
-//                    //TODO("HANDLE FAILURE")
-//                    showFailedToast(mContext)
-//                }
-//        }
-//    }
-//}
 
-//update Spot to AVAILABLE
-fun Spot.updateAvailableToFirebase(mContext: Context) {
-    val database: DatabaseReference?
-//    this.status = "available"
-    val id = this.id ?: return
-    this.date?.toMonthYearForFirebase()?.let {
-        database = FirebaseDatabase.getInstance().reference
-        database.child(FireHelper.AREAS)
-            .child(FireHelper.ALABAMA)
-            .child(FireHelper.BIRMINGHAM)
-            .child(FireHelper.SPOTS)
-            .child(it)
-            .child(id)
-            .setValue(this)
-            .addOnSuccessListener {
-                //TODO("HANDLE SUCCESS")
-//                Session.updateSpotAsAvailableForFirebase(id)
-                showSuccess(mContext)
-            }.addOnCompleteListener {
-                //TODO("HANDLE COMPLETE")
-            }.addOnFailureListener {
-                //TODO("HANDLE FAILURE")
-                showFailedToast(mContext)
-            }
-    }
-}
 
-//update Spot to BOOKED
-fun Spot.updateBookedToFirebase(mContext: Context) {
-    this.status = Spot.BOOKED
-    val id = this.id ?: return
-    this.date?.toMonthYearForFirebase()?.let { itDate ->
-      firebase { itBase ->
-          itBase.child(FireHelper.AREAS)
-            .child(FireHelper.ALABAMA).child(FireHelper.BIRMINGHAM)
-            .child(FireHelper.SPOTS)
-            .child(itDate)
-            .child(id)
-            .setValue(this)
-            .addOnSuccessListener {
-                //TODO("HANDLE SUCCESS")
-//                Session.updateSpotAsBookedForFirebase(id)
-                showSuccess(mContext)
-            }.addOnCompleteListener {
-                //TODO("HANDLE COMPLETE")
-            }.addOnFailureListener {
-                //TODO("HANDLE FAILURE")
-                showFailedToast(mContext)
-            }
-        }
-    }
-}
+
 

@@ -48,6 +48,10 @@ fun Fragment.toFragment(fragId: Int, bundle: Bundle = bundleOf()) {
     this.findNavController().navigate(fragId, bundle)
 }
 
+fun Fragment.toFragment(fragId: Int, realmObject: RealmObject) {
+    this.findNavController().navigate(fragId, bundleRealmObject(realmObject))
+}
+
 fun Fragment.unbundleRealmObject(): RealmObject? {
     return arguments?.get(ARG) as? RealmObject
 }

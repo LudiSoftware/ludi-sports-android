@@ -21,14 +21,16 @@ class DashboardFragment : YsrFragment() {
 
         setupOnClickListeners()
         session {
-            sportList.clear()
-            sportList = it.sports!!
+            executeRealm { itRealm ->
+                sportList.clear()
+                sportList = it.sports!!
+            }
             rootView.recyclerSportList.loadInRealmList(sportList, requireContext(), FireDB.SPORTS, itemOnClick)
         }
 
-        createCoach()
         return rootView
     }
+
 
     override fun setupOnClickListeners() {
         itemOnClick = { _, obj ->

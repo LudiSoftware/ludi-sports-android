@@ -61,7 +61,7 @@ private fun createReview() {
     addUpdateDB(FireDB.REVIEWS, rev.id!!, rev)
 }
 
-fun createReviewDialog(activity: Activity, spot: Spot? = null) : Dialog {
+fun createReviewDialog(activity: Activity) : Dialog {
 
     val dialog = Dialog(activity)
     dialog.setContentView(R.layout.dialog_review_layout)
@@ -100,17 +100,17 @@ fun createReviewDialog(activity: Activity, spot: Spot? = null) : Dialog {
         val uid = UUID.randomUUID().toString()
         val score = if (goodCheck.isChecked) {10} else {1}
         val details = reviewDetails.text.toString()
-        spot?.apply {
-            this.hasReview = true
-            this.reviewUUID = uid
-            this.reviewScore = score
-            this.reviewDetails = details
-        }?.addUpdateToFirebase(mContext = activity)
-//        Review().apply {
-//            this.id = uid
-//            this.score = score
-//            this.details = details
-//        }.addUpdateToFirebase(mContext = activity, spot = spot)
+//        spot?.apply {
+//            this.hasReview = true
+//            this.reviewUUID = uid
+//            this.reviewScore = score
+//            this.reviewDetails = details
+//        }?.addUpdateToFirebase(mContext = activity)
+////        Review().apply {
+////            this.id = uid
+////            this.score = score
+////            this.details = details
+////        }.addUpdateToFirebase(mContext = activity, spot = spot)
         dialog.dismiss()
     }
     cancel.setOnClickListener {
