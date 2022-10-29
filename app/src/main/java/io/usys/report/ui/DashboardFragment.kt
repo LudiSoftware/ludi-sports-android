@@ -23,7 +23,7 @@ class DashboardFragment : YsrFragment() {
         session {
             sportList.clear()
             sportList = it.sports!!
-            rootView.recyclerSportList.initRealmList(sportList, requireContext(), FireDB.SPORTS, itemOnClick)
+            rootView.recyclerSportList.loadInRealmList(sportList, requireContext(), FireDB.SPORTS, itemOnClick)
         }
 
         createCoach()

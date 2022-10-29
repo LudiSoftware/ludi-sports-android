@@ -8,8 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import io.usys.report.R
-import io.usys.report.db.getSports
-import io.usys.report.model.Session
+import io.usys.report.db.loadSportsIntoSession
 import io.usys.report.model.User
 
 /**
@@ -27,7 +26,7 @@ class MainBasicUserActivity : AppCompatActivity() {
 
         // -> Base Loading of Data for the user.
 //        Session.removeAllSports()
-        getSports()
+        loadSportsIntoSession()
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)

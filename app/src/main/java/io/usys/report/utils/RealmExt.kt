@@ -33,6 +33,7 @@ fun <K, V> HashMap<K, V>?.toRealmList() : RealmList<Any> {
     return listOfT
 }
 
+
 fun HashMap<*,*>.toJsonRealmList(): RealmList<Any> {
     var resultList: RealmList<Any> = RealmList()
     for ((_,v) in this) {
@@ -40,6 +41,17 @@ fun HashMap<*,*>.toJsonRealmList(): RealmList<Any> {
         resultList.add(test)
     }
     return resultList
+}
+
+inline fun <reified T> DataSnapshot.toRealmList(): RealmList<T> {
+    val realmList: RealmList<T> = RealmList()
+    for (ds in this.children) {
+        val org: T? = ds.getValue(T::class.java)
+        org?.let {
+            realmList.add(org)
+        }
+    }
+    return realmList
 }
 
 fun realm() : Realm {

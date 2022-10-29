@@ -13,38 +13,26 @@ import io.usys.report.db.FireDB
 import io.usys.report.db.FireTypes
 
 
-fun RecyclerView.initRealmList(realmList: RealmList<*>, context: Context, type: String, itemOnClick: ((View, RealmObject) -> Unit)?) : RealmListAdapter {
+inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>, context: Context, type: String,
+                                                    noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T> {
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
     this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     this.adapter = adapter
     return adapter
 }
 
+open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
-open class RealmListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
-
-    var itemClickListener: ((View, RealmObject) -> Unit)? = null
-    var realmList: RealmList<*>? = null
+    var itemClickListener: ((View, T) -> Unit)? = null
+    var realmList: RealmList<T>? = null
     var layout: Int = R.layout.item_list_organization
     var type: String = FireDB.ORGANIZATIONS
 
-    constructor(realmList: RealmList<*>?, type: String) : this() {
-        this.realmList = realmList
-        this.type = type
-        this.layout = FireTypes.getLayout(type)
-    }
-
-    constructor(realmList: RealmList<*>?, type: String, itemClickListener: ((View, RealmObject) -> Unit)?) : this() {
+    constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {
         this.realmList = realmList
         this.type = type
         this.itemClickListener = itemClickListener
         this.layout = FireTypes.getLayout(type)
-    }
-
-    constructor(realmList: RealmList<*>?, type: String, layout: Int) : this() {
-        this.realmList = realmList
-        this.type = type
-        this.layout = layout
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouterViewHolder {
@@ -74,7 +62,7 @@ open class RealmListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
  * Invoke the function.
  * So, a callback system.
  */
-fun View.setOnRealmListener(itemClickListener: ((View, RealmObject) -> Unit)?, item: RealmObject) {
+fun <T> View.setOnRealmListener(itemClickListener: ((View, T) -> Unit)?, item: T) {
     this.setOnClickListener {
         itemClickListener?.invoke(this, item)
     }

@@ -1,18 +1,13 @@
 package io.usys.report.db
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import io.realm.RealmList
 import io.usys.report.R
-import io.usys.report.model.Organization
-import io.usys.report.model.Session
-import io.usys.report.model.Sport
-import io.usys.report.model.Spot
+import io.usys.report.model.*
 import io.usys.report.utils.firebase
-import io.usys.report.utils.ioLaunch
 import io.usys.report.utils.log
-import kotlinx.coroutines.*
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -72,7 +67,30 @@ fun getFirebaseUser(): FirebaseUser? {
     return FirebaseAuth.getInstance().currentUser
 }
 
-fun DataSnapshot.loadIntoRealm(type: String) {
+fun Any?.getNameForRealmObject(): String? {
+    this?.let {
+        when (it) {
+            is User -> {
+                return FireTypes.USERS
+            }
+            is Sport -> {
+                return FireTypes.SPORTS
+            }
+            is Organization -> {
+                return FireTypes.ORGANIZATIONS
+            }
+            is Coach -> {
+                return FireTypes.COACHES
+            }
+            else -> {
+                return null
+            }
+        }
+    }
+    return null
+}
+
+fun DataSnapshot.loadIntoSession(type: String) {
     when (type) {
         FireTypes.ORGANIZATIONS -> {
             for (ds in this.children) {
@@ -95,12 +113,12 @@ fun DataSnapshot.loadIntoRealm(type: String) {
 
 
 // Verified.
-fun getSports() {
+fun loadSportsIntoSession() {
     firebase {
         it.child(FireDB.SPORTS)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataSnapshot.loadIntoRealm(FireTypes.SPORTS)
+                    dataSnapshot.loadIntoSession(FireTypes.SPORTS)
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
                     log("Failed")
@@ -108,94 +126,27 @@ fun getSports() {
             })
     }
 }
-
-fun getOrgantionsBySports(sportName: String) {
-    firebase {
-        it.child(FireDB.ORGANIZATIONS).orderByChild("name").equalTo(sportName)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataSnapshot.loadIntoRealm(FireTypes.ORGANIZATIONS)
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                    log("Failed")
-                }
-            })
-    }
-}
-
-private val job = SupervisorJob()
-private val usysrIODispatcher = CoroutineScope(Dispatchers.IO + job)
-
-
-
-fun getOrganizationsBlocked(): RealmList<Organization> {
-    val orgList: RealmList<Organization> = RealmList()
-    runBlocking {
-        firebase { it ->
-            it.child(FireDB.ORGANIZATIONS)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (ds in dataSnapshot.children) {
-                            val org: Organization? = ds.getValue(Organization::class.java)
-                            org?.let {
-                                orgList.add(it)
-                            }
-                        }
-                    }
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        log("Failed")
-                    }
-                })
-        }
-        return@runBlocking orgList
-    }
-    return orgList
-}
-
-//fun getOrgsAsync() = usysrIODispatcher.async {
-//    getOrganizationsSuspended()
-//}
-
-//private suspend fun getOrganizationsSuspended() = withContext(usysrIODispatcher.coroutineContext){
-//    val orgList: RealmList<Organization> = RealmList()
-//    firebase { it ->
-//        it.child(FireDB.ORGANIZATIONS)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    for (ds in dataSnapshot.children) {
-//                        val org: Organization? = ds.getValue(Organization::class.java)
-//                        org?.let {
-//                            orgList.add(it)
-//                        }
-//                    }
-//                    return orgList
-//                }
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    log("Failed")
-//                }
-//            })
-//    }
-//
-//}
 
 // unverified
-fun <T> T.addUpdateInFirebase(collection: String, id: String): Boolean {
-    var result = false
+fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -> Unit)?) {
+    val collection = this.getNameForRealmObject() ?: return
     firebase { database ->
         database.child(collection).child(id)
             .setValue(this)
-            .addOnSuccessListener {
-                //TODO("HANDLE SUCCESS")
-                result = true
-            }.addOnCompleteListener {
-                //TODO("HANDLE COMPLETE")
-            }.addOnFailureListener {
-                //TODO("HANDLE FAILURE")
-                result = false
-            }
+            .addYsrOnSuccessListener(callbackFunction)
     }
-    return result
 }
+
+private fun <TResult> Task<TResult>.addYsrOnSuccessListener(callbackFunction: ((Boolean, String) -> Unit)?) {
+    this.addOnSuccessListener {
+        callbackFunction?.invoke(true, "success")
+    }.addOnCompleteListener {
+        callbackFunction?.invoke(true, "complete")
+    }.addOnFailureListener {
+        callbackFunction?.invoke(false, "failure")
+    }
+}
+
 
 // Verified
 fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
@@ -214,4 +165,27 @@ fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
             }
     }
     return result
+}
+
+fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String,
+                      callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    firebase {
+        it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
+            .addYsrListenerForSingleValueEvent(callbackFunction)
+    }
+}
+
+fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    getOrderByEqualTo(FireDB.COACHES, "organizationId", orgId, callbackFunction)
+}
+
+fun Query.addYsrListenerForSingleValueEvent(callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    this.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            callbackFunction?.invoke(dataSnapshot)
+        }
+        override fun onCancelled(databaseError: DatabaseError) {
+            callbackFunction?.invoke(null)
+        }
+    })
 }

@@ -2,14 +2,9 @@ package io.usys.report.ui
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.db.FireDB
-import io.usys.report.db.FireTypes
-import io.usys.report.db.loadIntoRealm
 import io.usys.report.model.Coach
 import io.usys.report.model.Organization
 import io.usys.report.model.Sport
