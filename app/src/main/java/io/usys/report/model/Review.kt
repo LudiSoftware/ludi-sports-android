@@ -67,50 +67,10 @@ fun createReviewDialog(activity: Activity) : Dialog {
     dialog.setContentView(R.layout.dialog_review_layout)
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-//    if (spot != null) {
-//        dialog.txtSpotNameReview.text = "Spot Location: ${spot?.locationName}"
-//        dialog.txtSpotDateReview.text = "Spot Date: ${spot?.date}"
-//    } else {
-//        dialog.layoutReviewTitleBody.makeGone()
-//    }
-
-    //Extra Settings
-    val goodCheck = dialog.findViewById(R.id.checkLunchProfile) as CheckBox
-    val badCheck = dialog.findViewById(R.id.checkDinnerProfile) as CheckBox
-    goodCheck.setOnCheckedChangeListener { _, isChecked ->
-        if (isChecked) { badCheck.isChecked = false }
-    }
-    badCheck.setOnCheckedChangeListener { _, isChecked ->
-        if (isChecked) { goodCheck.isChecked = false }
-    }
-    // Body Review Details
-    val reviewDetails = dialog.findViewById(R.id.editReviewDetails) as TextView
-    reviewDetails.hint = "Give Feedback"
-
     // On Clicks
-    val submit = dialog.findViewById(R.id.btnSubmitReview) as Button
-    val cancel = dialog.findViewById(R.id.btnCancelReview) as Button
+    val submit = dialog.findViewById(R.id.btnReviewSubmit) as Button
+    val cancel = dialog.findViewById(R.id.btnReviewCancel) as Button
     submit.setOnClickListener {
-        if (!goodCheck.isChecked && !badCheck.isChecked) {
-            //TODO: LET USER KNOW
-            badCheck.setBackgroundColor(Color.RED)
-            goodCheck.setBackgroundColor(Color.RED)
-            return@setOnClickListener
-        }
-        val uid = UUID.randomUUID().toString()
-        val score = if (goodCheck.isChecked) {10} else {1}
-        val details = reviewDetails.text.toString()
-//        spot?.apply {
-//            this.hasReview = true
-//            this.reviewUUID = uid
-//            this.reviewScore = score
-//            this.reviewDetails = details
-//        }?.addUpdateToFirebase(mContext = activity)
-////        Review().apply {
-////            this.id = uid
-////            this.score = score
-////            this.details = details
-////        }.addUpdateToFirebase(mContext = activity, spot = spot)
         dialog.dismiss()
     }
     cancel.setOnClickListener {

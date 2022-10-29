@@ -19,68 +19,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txtSpotReviewTitle"
+            android:id="@+id/txtReviewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Please Provide Feedback"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/layoutReviewTitleBody"
+        <io.usys.report.ui.ysrviews.YsrQuestionLayout
+            android:id="@+id/ysrLinearLayoutOne"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/txtSpotNameReview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Name of spot"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/txtSpotDateReview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Date of Spot"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkLunchProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="You did great!"
-                android:textColor="@color/white" />
-
-            <CheckBox
-                android:id="@+id/checkDinnerProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="I'm not satisfied."
-                android:textColor="@color/white" />
-        </LinearLayout>
+        </io.usys.report.ui.ysrviews.YsrQuestionLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout3"
@@ -95,21 +48,15 @@
                 android:id="@+id/txtReviewDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Do you have any additional feedback?"
-                android:textColor="@color/white" />
+                android:text="Question One?"
+                android:textColor="@color/black" />
 
-            <EditText
-                android:id="@+id/editReviewDetails"
+            <Spinner
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/ft_border_square"
-                android:ems="10"
-                android:gravity="top"
-                android:hint="Additional comments or feedback!"
-                android:inputType="textLongMessage|textMultiLine|textCapSentences"
-                android:maxLines="5"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp" />
+                android:layout_height="40dp"
+                android:background="@drawable/ft_border_rounded_dark" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -122,7 +69,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnSubmitReview"
+                android:id="@+id/btnReviewSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -130,7 +77,7 @@
                 android:text="Submit" />
 
             <Button
-                android:id="@+id/btnCancelReview"
+                android:id="@+id/btnReviewCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

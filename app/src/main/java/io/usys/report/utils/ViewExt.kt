@@ -41,23 +41,32 @@ import androidx.recyclerview.widget.RecyclerView
 //    adapter.addListOfTickers(listOfTickers)
 //    return adapter
 //}
-fun View.getTextView(res: Int) : TextView {
+
+fun <T> View.bind(res: Int) : T {
     return this.findViewById(res)
 }
 
-fun View.getRecyclerView(res: Int) : RecyclerView {
+fun View.bindTextView(res: Int) : TextView {
     return this.findViewById(res)
 }
 
-fun View.getImageButton(res: Int) : ImageButton {
+fun View.bindRecyclerView(res: Int) : RecyclerView {
     return this.findViewById(res)
 }
 
-fun View.getButton(res: Int) : Button {
+fun View.bindImageButton(res: Int) : ImageButton {
     return this.findViewById(res)
 }
 
-fun View.getLinearLayout(res: Int) : LinearLayout {
+fun View.bindSpinner(res: Int) : Spinner {
+    return this.findViewById(res)
+}
+
+fun View.bindButton(res: Int) : Button {
+    return this.findViewById(res)
+}
+
+fun View.bindLinearLayout(res: Int) : LinearLayout {
     return this.findViewById(res)
 }
 
