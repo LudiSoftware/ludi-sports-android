@@ -252,7 +252,7 @@ class SpotCalendarFragmentLocation : Fragment(), AdapterView.OnItemSelectedListe
 
     fun setupSpinners() {
         //Spinner Setup
-        locations {
+        sessionOrganizationList {
             organizationList = it
             prepareListOfLocations()
             mSpinAdapter = getSimpleSpinnerAdapter(requireContext(), locationNameList)

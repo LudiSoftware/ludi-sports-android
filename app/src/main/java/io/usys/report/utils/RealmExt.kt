@@ -100,6 +100,7 @@ fun userOrLogout(activity: Activity? = null) {
     if (Session.user.isNullOrEmpty()) {
         activity?.let { Session.restartApplication(it) }
     }
+    //todo: get firebase user, if valid, set and continue
 }
 
 fun sessionAndUser(block: (Session, User) -> Unit) {
@@ -110,7 +111,7 @@ fun sessionAndUser(block: (Session, User) -> Unit) {
     }
 }
 
-inline fun locations(block: (RealmList<Organization>) -> Unit) {
+inline fun sessionOrganizationList(block: (RealmList<Organization>) -> Unit) {
     Session.session?.organizations?.let { block(it) }
 }
 

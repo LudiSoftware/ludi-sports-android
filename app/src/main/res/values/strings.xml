@@ -1,6 +1,11 @@
 <!-- Created by ChazzCoin : December 2019 -->
 
 <resources>
+    <string name="test_questionA">How is their communication?</string>
+    <string name="test_choiceA">Communication is Excellent!</string>
+    <string name="test_choiceB">Communication is Good.</string>
+    <string name="test_choiceC">Communication is Okay.</string>
+    <string name="test_choiceD">Communication is Poor.</string>
 
     <string name="app_name">USYSR</string>
     <string name="title_home">Home</string>

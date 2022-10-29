@@ -18,7 +18,9 @@ class YsrQuestionLayout(context: Context?) : LinearLayout(context), AdapterView.
     var choiceList: ArrayList<String> = ArrayList()
 
     init {
+        choiceList.add("What do you like about this coach?")
         choicesSpinner = Spinner(this.context)
+        choicesSpinner?.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         choicesAdapter = ArrayAdapter(this.context, android.R.layout.simple_list_item_1, choiceList)
         choicesSpinner?.onItemSelectedListener = this
         choicesSpinner?.adapter = choicesAdapter

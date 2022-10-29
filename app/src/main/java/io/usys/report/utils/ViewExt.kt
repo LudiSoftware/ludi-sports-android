@@ -20,29 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by ChazzCoin : December 2019.
  */
 
-/** -> TRIED AND TRUE! <- */
-//fun RecyclerView.init<T>(listOfArticles: MutableList<T>, fragmentActivity: FragmentActivity) {
-//    val adapter = ListAdapter()
-//    this.layoutManager = LinearLayoutManager(MainGlewMeTvActivity.context, LinearLayoutManager.VERTICAL, false)
-//    return this.adapter
-//}
 
-//fun RecyclerView.initEvents(listOfEvents: MutableList<Event>) : EventListAdapter {
-//    val eventAdapter = EventListAdapter(listOfEvents = listOfEvents)
-//    this.layoutManager = LinearLayoutManager(MainGlewMeTvActivity.context, LinearLayoutManager.HORIZONTAL, false)
-//    this.adapter = eventAdapter
-//    return eventAdapter
-//}
-//
-//fun RecyclerView.initTickers(listOfTickers: MutableList<Ticker>) : TickerAdapter {
-//    val adapter = TickerAdapter()
-//    this.layoutManager = LinearLayoutManager(MainGlewMeTvActivity.context, LinearLayoutManager.HORIZONTAL, false)
-//    this.adapter = adapter
-//    adapter.addListOfTickers(listOfTickers)
-//    return adapter
-//}
-
-fun <T> View.bind(res: Int) : T {
+fun <T: View> View.bind(res: Int) : T {
     return this.findViewById(res)
 }
 
