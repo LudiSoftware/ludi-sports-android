@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.DashboardFragment"
+        android:name="io.usys.report.ui.fragments.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
@@ -20,7 +20,7 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_spot_calendar"
-        android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+        android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
         android:label="@string/title_calendar"
         tools:layout="@layout/activity_main_empty" />
 

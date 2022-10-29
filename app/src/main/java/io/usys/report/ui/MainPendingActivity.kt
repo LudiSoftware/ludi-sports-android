@@ -1,16 +1,19 @@
-package io.usys.report
+package io.usys.report.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import io.usys.report.R
+import io.usys.report.model.Session
 import io.usys.report.model.User
+import kotlinx.android.synthetic.main.activity_main_pending.*
 
 /**
  * Created by ChazzCoin : December 2019.
  */
 
-class MainAdminActivity : AppCompatActivity() {
+class MainPendingActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private val user : User? = null
@@ -18,7 +21,7 @@ class MainAdminActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main_admin)
+        setContentView(R.layout.activity_main_pending)
 
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 //        val navController = findNavController(R.id.nav_host_fragment)
@@ -31,12 +34,26 @@ class MainAdminActivity : AppCompatActivity() {
 //            )
 //        )
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val user = Session.user
+        //FoodTruck Manager
+        txtWelcome.text = "Welcome, ${user?.name}"
+        pendingName.text = user?.name
+        pendingEmail.text = user?.email
+        btnPendingLogout.setOnClickListener {
+            if (Session.isLogged){
+                Session.logOut()
+                Session.restartApplication(this)
+            }
+        }
 
+        btnPendingReload.setOnClickListener{
+            startActivity(Intent(this@MainPendingActivity, AuthControllerActivity::class.java))
+        }
+
+//        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 
     }
-
 
 }

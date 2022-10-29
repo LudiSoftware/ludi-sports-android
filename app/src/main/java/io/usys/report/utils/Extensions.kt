@@ -1,5 +1,7 @@
 package io.usys.report.utils
 
+import android.app.Activity
+import android.content.Intent
 import io.realm.RealmList
 import kotlinx.coroutines.*
 import java.lang.Exception
@@ -75,6 +77,10 @@ inline fun <T> T?.safe(block: (T) -> Unit) {
     this?.let {
         block(this)
     }
+}
+
+inline fun <reified TO> Activity.launchActivity() {
+    startActivity(Intent(this, TO::class.java))
 }
 
 fun newUUID(): String {

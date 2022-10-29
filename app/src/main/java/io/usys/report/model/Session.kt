@@ -4,14 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import io.usys.report.AuthController
+import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.executeRealm
 import io.usys.report.utils.session
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.db.whenType
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -149,7 +148,7 @@ open class Session : RealmObject() {
         fun restartApplication(context: Activity) {
             logOut()
             ActivityCompat.finishAffinity(context)
-            context.startActivity(Intent(context, AuthController::class.java))
+            context.startActivity(Intent(context, AuthControllerActivity::class.java))
         }
 
         /** -> OBJECT MODEL HELPERS <- **/

@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.ui.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.model.Sport
 import io.usys.report.model.User
-import io.usys.report.ui.YsrFragment.Companion.ARG
+import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
 import io.usys.report.utils.userOrLogout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

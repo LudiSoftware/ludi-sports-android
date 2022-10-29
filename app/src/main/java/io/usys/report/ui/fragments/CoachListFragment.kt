@@ -1,19 +1,16 @@
-package io.usys.report.ui
+package io.usys.report.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.realm.RealmList
 import io.usys.report.db.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
+import io.usys.report.ui.loadInRealmList
 import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 /**

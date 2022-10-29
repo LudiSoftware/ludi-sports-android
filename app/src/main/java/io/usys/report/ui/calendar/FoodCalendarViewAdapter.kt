@@ -1,4 +1,4 @@
-package io.usys.report.basicUser.calendar
+package io.usys.report.ui.calendar
 
 import android.app.Activity
 import android.view.View

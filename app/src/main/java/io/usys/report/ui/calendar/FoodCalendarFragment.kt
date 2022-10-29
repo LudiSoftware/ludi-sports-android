@@ -1,4 +1,4 @@
-package io.usys.report.basicUser.calendar
+package io.usys.report.ui.calendar
 
 import android.graphics.Color
 import android.os.Bundle

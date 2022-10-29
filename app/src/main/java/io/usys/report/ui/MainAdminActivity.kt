@@ -1,18 +1,17 @@
-package io.usys.report
+package io.usys.report.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import io.usys.report.model.Session
+import androidx.navigation.Navigation
+import io.usys.report.R
 import io.usys.report.model.User
-import kotlinx.android.synthetic.main.activity_main_pending.*
 
 /**
  * Created by ChazzCoin : December 2019.
  */
 
-class MainPendingActivity : AppCompatActivity() {
+class MainAdminActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private val user : User? = null
@@ -20,7 +19,7 @@ class MainPendingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main_pending)
+        setContentView(R.layout.activity_main_admin)
 
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 //        val navController = findNavController(R.id.nav_host_fragment)
@@ -33,26 +32,12 @@ class MainPendingActivity : AppCompatActivity() {
 //            )
 //        )
 
-        val user = Session.user
-        //FoodTruck Manager
-        txtWelcome.text = "Welcome, ${user?.name}"
-        pendingName.text = user?.name
-        pendingEmail.text = user?.email
-        btnPendingLogout.setOnClickListener {
-            if (Session.isLogged){
-                Session.logOut()
-                Session.restartApplication(this)
-            }
-        }
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
-        btnPendingReload.setOnClickListener{
-            startActivity(Intent(this@MainPendingActivity, AuthController::class.java))
-        }
-
-//        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 
     }
+
 
 }

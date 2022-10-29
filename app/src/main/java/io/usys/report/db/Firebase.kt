@@ -7,7 +7,10 @@ import com.google.firebase.database.*
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
+import io.usys.report.ui.AuthControllerActivity
+import io.usys.report.utils.FireHelper
 import io.usys.report.utils.log
+import io.usys.report.utils.showFailedToast
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -61,6 +64,8 @@ class FireTypes {
         }
     }
 }
+
+/** UTILS **/
 
 // Verified
 inline fun firebase(block: (DatabaseReference) -> Unit) {
@@ -160,6 +165,7 @@ fun loadSportsIntoSession() {
     }
 }
 
+/** ADD/UPDATE **/
 // unverified
 fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -> Unit)?) {
     val collection = this.getNameOfRealmObject() ?: return
@@ -199,6 +205,26 @@ fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
     return result
 }
 
+/** GET **/
+
+inline fun getUserUpdatesFromFirebase(id: String, crossinline block: (User?) -> Unit): User? {
+    var userUpdates: User? = null
+        firebase {
+        it.child(FireHelper.USERS).child(id).addYsrListenerForSingleValueEvent {
+            userUpdates = it?.getValue(User::class.java)
+            userUpdates?.let { itUser ->
+                if (itUser.id == id){
+                    AuthControllerActivity.USER_AUTH = itUser.auth
+                    AuthControllerActivity.USER_ID = itUser.id.toString()
+                    Session.updateUser(itUser)
+                }
+            }
+            block(userUpdates)
+        }
+    }
+    return userUpdates
+}
+
 fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     getOrderByEqualTo(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
 }
@@ -231,6 +257,18 @@ fun Query.addYsrListenerForSingleValueEvent(callbackFunction: ((dataSnapshot: Da
         }
         override fun onCancelled(databaseError: DatabaseError) {
             callbackFunction?.invoke(null)
+        }
+    })
+}
+
+@JvmName("addYsrListenerForSingleValueEvent1")
+fun Query.addYsrListenerForSingleValueEvent(block: (DataSnapshot?) -> Unit) {
+    return this.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            block(dataSnapshot)
+        }
+        override fun onCancelled(databaseError: DatabaseError) {
+            block(null)
         }
     })
 }

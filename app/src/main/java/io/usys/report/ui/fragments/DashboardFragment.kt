@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.usys.report.db.*
+import io.usys.report.ui.loadInRealmList
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
 /**
@@ -41,7 +42,7 @@ class DashboardFragment : YsrFragment() {
         rootView.btnLogout.setOnClickListener {
             //FOR TESTING/ADMIN WORK ONLY
             if (Session.isLogged){
-                createAskUserLogoutDialog(requireActivity()).show()
+                popAskUserLogoutDialog(requireActivity()).show()
             }
         }
     }

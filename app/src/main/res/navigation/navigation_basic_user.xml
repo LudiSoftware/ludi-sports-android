@@ -12,37 +12,37 @@
 
     <fragment
         android:id="@+id/navigation_spot_calendar"
-        android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+        android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
         android:label="@string/title_calendar"
         tools:layout="@layout/spot_calendar_fragment" />
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.DashboardFragment"
+        android:name="io.usys.report.ui.fragments.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/navigation_cart"
-        android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+        android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
         android:label="@string/title_orgs"
         tools:layout="@layout/fragment_cart" />
 
     <fragment
         android:id="@+id/navigation_org_list"
-        android:name="io.usys.report.ui.OrganizationListFragment"
+        android:name="io.usys.report.ui.fragments.OrganizationListFragment"
         android:label="@string/title_orgs"
         tools:layout="@layout/fragment_org_list">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_coaches_list"
-        android:name="io.usys.report.ui.CoachListFragment"
+        android:name="io.usys.report.ui.fragments.CoachListFragment"
         android:label="@string/title_coaches"
         tools:layout="@layout/fragment_coaches_list">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="io.usys.report.ui.ProfileFragment"
+        android:name="io.usys.report.ui.fragments.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_user_profile" />
 

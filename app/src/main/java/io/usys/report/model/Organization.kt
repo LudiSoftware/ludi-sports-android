@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import io.realm.RealmList
-import io.usys.report.AuthController
+import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.coachUser.manage.LocManageFragment
 import io.realm.RealmObject
@@ -105,7 +105,7 @@ fun Organization.removeFromFirebase(fragment: LocManageFragment? = null) {
     val database: DatabaseReference?
     database = FirebaseDatabase.getInstance().reference
     database.child(FireHelper.PROFILES).child(FireHelper.LOCATIONS)
-        .child(AuthController.USER_ID).child(this.id.toString())
+        .child(AuthControllerActivity.USER_ID).child(this.id.toString())
         .removeValue()
         .addOnSuccessListener {
             //TODO("HANDLE SUCCESS")

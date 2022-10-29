@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.ui.fragments
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -6,20 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import io.usys.report.AuthController
+import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.model.*
-import io.usys.report.utils.getSpinnerForFoodTruckType
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.fragment_user_profile.view.*
 import kotlinx.android.synthetic.main.fragment_user_profile_2.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 
 /**
  * Created by ChazzCoin : 2020.
@@ -47,8 +40,6 @@ class ProfileFragment : YsrFragment() {
 
         COLOR_RED = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_red)
         COLOR_WHITE = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_white)
-
-//        setupDisplay()
 
         rootView.btnProfileReview.setOnClickListener {
             createReviewDialog(requireActivity()).show()
@@ -103,8 +94,8 @@ class ProfileFragment : YsrFragment() {
 
                     //-> BOTH
                     val newUser = User().apply {
-                        this.id = AuthController.USER_ID
-                        this.auth = AuthController.USER_AUTH
+                        this.id = AuthControllerActivity.USER_ID
+                        this.auth = AuthControllerActivity.USER_AUTH
                         this.name = rootView.editProfileName.text.toString()
                         this.email = rootView.editEmail.text.toString()
                         this.phone = rootView.editPhoneNumber.text.toString()

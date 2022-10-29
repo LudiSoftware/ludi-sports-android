@@ -1,4 +1,4 @@
-package io.usys.report.basicUser
+package io.usys.report.ui
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView

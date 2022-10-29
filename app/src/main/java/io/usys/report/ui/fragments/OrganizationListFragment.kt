@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import io.realm.RealmList
 import io.usys.report.db.FireTypes
 import io.usys.report.db.getOrderByEqualTo
 import io.usys.report.model.Organization.Companion.ORDER_BY_SPORTS
+import io.usys.report.ui.loadInRealmList
 import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 /**

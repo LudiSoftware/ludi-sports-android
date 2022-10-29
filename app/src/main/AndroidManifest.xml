@@ -11,9 +11,9 @@
         android:theme="@style/AppTheme">
         android:name="android.support.multidex.MultiDexApplication">
         <activity android:name="io.usys.report.admin.AdminActivity"></activity>
-        <activity android:name="io.usys.report.ui.ProfileFragment" />
+        <activity android:name="io.usys.report.ui.fragments.ProfileFragment" />
         <activity
-            android:name="io.usys.report.AuthController"
+            android:name="io.usys.report.ui.AuthControllerActivity"
             android:label="@string/app_name"
             android:exported="true">
             <intent-filter>
@@ -26,19 +26,19 @@
             android:name="io.usys.report.ui.login.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name="io.usys.report.MainAdminActivity"
+            android:name="io.usys.report.ui.MainAdminActivity"
             android:label="Main Admin Activity" />
         <activity
-            android:name="io.usys.report.MainPendingActivity"
+            android:name="io.usys.report.ui.MainPendingActivity"
             android:label="Main Pending Activity" />
         <activity
             android:name="io.usys.report.coachUser.MainLocationManagerActivity"
             android:label="Main Location Manager Activity" />
         <activity
-            android:name="io.usys.report.basicUser.MainBasicUserActivity"
+            android:name="io.usys.report.ui.MainBasicUserActivity"
             android:label="Main Food Truck Activity" />
         <activity
-            android:name="io.usys.report.basicUser.calendar.FoodCalendarFragment"
+            android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
             android:label="@string/title_activity_calendar_view" />
         <activity
             android:name="io.usys.report.basicUser.checkout.CheckoutActivity"

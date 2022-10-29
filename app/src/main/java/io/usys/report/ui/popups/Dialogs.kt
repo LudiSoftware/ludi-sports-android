@@ -44,7 +44,7 @@ fun createFieldErrorDialog(activity: Activity) : Dialog {
     return dialog
 }
 
-fun createAskUserLogoutDialog(activity: Activity) : Dialog {
+fun popAskUserLogoutDialog(activity: Activity) : Dialog {
     val dialog = Dialog(activity)
     dialog.setContentView(R.layout.dialog_ask_user_logout)
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)

@@ -9,7 +9,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import io.usys.report.AuthController
+import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.model.AuthTypes
 import io.usys.report.model.Session
@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
 //                TODO("HANDLE SUCCESS")
                 Session.updateUser(mUser)
                 Session.updateSession(mUser)
-                startActivity(Intent(this@LoginActivity, AuthController::class.java))
+                startActivity(Intent(this@LoginActivity, AuthControllerActivity::class.java))
             }.addOnCompleteListener {
 //                TODO("HANDLE COMPLETE")
             }.addOnFailureListener {

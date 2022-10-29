@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/navigation_pending"
-        android:name="io.usys.report.ui.DashboardFragment"
+        android:name="io.usys.report.ui.fragments.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_pending" />
 

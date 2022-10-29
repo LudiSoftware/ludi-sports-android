@@ -3,7 +3,7 @@ package io.usys.report.model
 import android.content.Context
 import androidx.room.PrimaryKey
 import com.google.firebase.database.*
-import io.usys.report.AuthController
+import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -87,32 +87,32 @@ fun getUser(): User? {
     return user
 }
 
-fun getProfileUpdatesFirebase(mContext: Context, uid:String) {
-    val database = FirebaseDatabase.getInstance().reference
-    database.child(FireHelper.PROFILES).child(FireHelper.USERS).child(uid)
-        .addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val temp: User? = dataSnapshot.getValue(User::class.java)
-                temp?.let {
-                    if (it.id == uid){
-                        AuthController.USER_AUTH = it.auth.toString()
-                        AuthController.USER_ID = it.id!!
-//                        it.getFoodtrucksFromFirebase(mContext)
-                        Session.updateUser(it)
-                    }
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                showFailedToast(mContext)
-            }
-        })
-}
+//fun getProfileUpdatesFirebase(mContext: Context, uid:String) {
+//    val database = FirebaseDatabase.getInstance().reference
+//    database.child(FireHelper.PROFILES).child(FireHelper.USERS).child(uid)
+//        .addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                val temp: User? = dataSnapshot.getValue(User::class.java)
+//                temp?.let {
+//                    if (it.id == uid){
+//                        AuthControllerActivity.USER_AUTH = it.auth.toString()
+//                        AuthControllerActivity.USER_ID = it.id!!
+////                        it.getFoodtrucksFromFirebase(mContext)
+//                        Session.updateUser(it)
+//                    }
+//                }
+//            }
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                showFailedToast(mContext)
+//            }
+//        })
+//}
 
 fun User.addUpdateToFirebase(mContext: Context) {
     val database = FirebaseDatabase.getInstance().reference
     database.child(FireHelper.PROFILES)
         .child(FireHelper.USERS)
-        .child(AuthController.USER_ID)
+        .child(AuthControllerActivity.USER_ID)
         .setValue(this)
         .addOnSuccessListener {
             //success
