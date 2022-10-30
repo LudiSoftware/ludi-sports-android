@@ -22,6 +22,7 @@ open class Review : RealmObject() {
     @PrimaryKey
     var id: String? = null
     var ownerId: String? = null
+    var sportId: String? = null
     var score: Int = 999 // score 1 or 10
     var type: String? = null
     var details: String? = null //

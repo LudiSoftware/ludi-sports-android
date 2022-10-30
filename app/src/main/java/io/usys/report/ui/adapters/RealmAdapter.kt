@@ -29,7 +29,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
     var itemClickListener: ((View, T) -> Unit)? = null
     var realmList: RealmList<T>? = null
-    var layout: Int = R.layout.item_list_organization
+    var layout: Int = R.layout.card_organization
     var type: String = FireDB.ORGANIZATIONS
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {

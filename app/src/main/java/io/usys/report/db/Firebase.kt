@@ -4,13 +4,15 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import io.realm.RealmList
+import io.realm.RealmModel
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.FireHelper
 import io.usys.report.utils.log
-import io.usys.report.utils.showFailedToast
+import io.usys.report.utils.toRealmList
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -54,12 +56,12 @@ class FireTypes {
 
         fun getLayout(type: String): Int {
             when (type) {
-                ORGANIZATIONS -> return R.layout.item_list_organization
-                SPORTS -> return R.layout.item_list_sports_two
-                REVIEWS -> return R.layout.item_list_sports_two
-                USERS -> return R.layout.item_list_sports_two
-                COACHES -> return R.layout.item_list_sports_two
-                else -> return R.layout.item_list_sports_two
+                ORGANIZATIONS -> return R.layout.card_organization
+                SPORTS -> return R.layout.card_sport
+                REVIEWS -> return R.layout.card_sport
+                USERS -> return R.layout.card_sport
+                COACHES -> return R.layout.card_sport
+                else -> return R.layout.card_sport
             }
         }
     }
@@ -151,6 +153,14 @@ inline fun <reified T> DataSnapshot.loadIntoSession() {
 
 
 // Verified.
+inline fun <reified T> getBaseObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
+    firebase {
+        it.child(dbName).addYsrParsedListenerForSingleValueEvent<T> { realmList ->
+                block(realmList)
+            }
+    }
+}
+
 fun loadSportsIntoSession() {
     firebase {
         it.child(FireDB.SPORTS)
@@ -266,6 +276,17 @@ fun Query.addYsrListenerForSingleValueEvent(block: (DataSnapshot?) -> Unit) {
     return this.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             block(dataSnapshot)
+        }
+        override fun onCancelled(databaseError: DatabaseError) {
+            block(null)
+        }
+    })
+}
+
+inline fun <reified T> Query.addYsrParsedListenerForSingleValueEvent(crossinline block: (RealmList<T>?) -> Unit) {
+    return this.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            block(dataSnapshot.toRealmList())
         }
         override fun onCancelled(databaseError: DatabaseError) {
             block(null)

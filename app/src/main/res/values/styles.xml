@@ -7,7 +7,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">#364b69</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:text">@color/colorPrimary</item>
+    </style>
+
+    <style name="ysrBottomNavigationTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorListBackground</item>
+        <item name="android:textColorSecondary">@color/example_4_grey_past</item>
+        <item name="android:background">@color/transparent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -25,6 +33,8 @@
         <item name="android:textColorSecondary">@color/example_4_grey_past</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
+
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

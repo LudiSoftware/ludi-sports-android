@@ -3,16 +3,22 @@
 <!-- Created by ChazzCoin : October 2022 -->
 
 <resources>
-    <color name="colorPrimary">#004088</color>
-    <color name="colorPrimaryDark">#ffffff</color>
-    <color name="colorAccent">#ed0100</color>
+    <color name="ysrBlue">#004088</color>
+    <color name="ysrRed">#ed0100</color>
+
+    <color name="colorPrimary">@color/ysrBlue</color>
+    <color name="colorPrimaryDark">@color/white</color>
+    <color name="colorAccent">@color/ysrRed</color>
     <color name="colorListBackground">#40BED2FF</color>
+    <color name="colorTextPrimary">@color/colorPrimary</color>
+    <color name="colorTextAccent">@color/black</color>
+    <color name="colorWindowBackground">@color/white</color>
 
     <color name="fLightBlue">#bed2ff</color>
-    <color name="fDarkBlue">#364b69</color>
+    <color name="fDarkBlue">#004088</color>
     <color name="fOrangeOne">#f9b48b</color>
-
-    <color name="white">#fff</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="white">#ffffff</color>
     <color name="black">#000</color>
     <color name="example_1_bg">#3A284C</color>
     <color name="example_1_bg_light">#433254</color>

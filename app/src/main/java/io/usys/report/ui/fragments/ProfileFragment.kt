@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.model.*
+import io.usys.report.utils.popAskUserLogoutDialog
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.fragment_user_profile.view.*
 import kotlinx.android.synthetic.main.fragment_user_profile_2.view.*
@@ -44,6 +45,14 @@ class ProfileFragment : YsrFragment() {
         rootView.btnProfileReview.setOnClickListener {
             createReviewDialog(requireActivity()).show()
         }
+
+//        //-> Global On Click Listeners
+//        rootView.btnLogout.setOnClickListener {
+//            //FOR TESTING/ADMIN WORK ONLY
+//            if (Session.isLogged){
+//                popAskUserLogoutDialog(requireActivity()).show()
+//            }
+//        }
 
         return rootView
     }

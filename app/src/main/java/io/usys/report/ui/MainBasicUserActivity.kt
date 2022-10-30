@@ -22,7 +22,7 @@ class MainBasicUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main_foodtruck)
+        setContentView(R.layout.activity_main)
 
         // -> Base Loading of Data for the user.
 //        Session.removeAllSports()

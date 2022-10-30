@@ -436,7 +436,7 @@ class SpotCalendarAdapterLocation(var activity: Activity) : //val onClick: (Spot
     var spots = mutableListOf<Spot>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpotsViewHolderLocation {
-        return SpotsViewHolderLocation(parent.inflate(R.layout.item_list_sports_two), activity)
+        return SpotsViewHolderLocation(parent.inflate(R.layout.card_sport), activity)
     }
 
     override fun onBindViewHolder(viewHolder: SpotsViewHolderLocation, position: Int) {

@@ -137,7 +137,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:background="@color/colorListBackground"
-                    tools:listitem="@layout/item_list_organization" />
+                    tools:listitem="@layout/card_organization" />
 
             </LinearLayout>
 

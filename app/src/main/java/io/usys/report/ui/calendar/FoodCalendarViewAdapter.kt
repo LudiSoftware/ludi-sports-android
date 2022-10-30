@@ -16,7 +16,7 @@ class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendar
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerFoodCalendarViewHolder {
         return InnerFoodCalendarViewHolder(
-            parent.inflate(R.layout.item_list_sports_two),
+            parent.inflate(R.layout.card_sport),
             activity,
             fragment
         )

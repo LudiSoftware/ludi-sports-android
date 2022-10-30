@@ -87,13 +87,9 @@ fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {
     return this.getValue(clazz)
 }
 
-
-inline fun session(block: (Session) -> Unit) {
-    Session.session?.let { block(it) }
-}
-
 inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
     Session.user?.let { block(it) } ?: run { activity?.let { Session.restartApplication(it) } }
+    //todo: get firebase user, if valid, set and continue
 }
 
 fun userOrLogout(activity: Activity? = null) {
@@ -109,6 +105,10 @@ fun sessionAndUser(block: (Session, User) -> Unit) {
             block(itSession, itUser)
         }
     }
+}
+
+inline fun session(block: (Session) -> Unit) {
+    Session.session?.let { block(it) }
 }
 
 inline fun sessionOrganizationList(block: (RealmList<Organization>) -> Unit) {

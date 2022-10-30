@@ -26,18 +26,18 @@ class SportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * detailsLinearLayout
      * addressLinearLayout
      */
-    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
+//    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
     var txtItemSpotName = itemView.bindTextView(R.id.txtItemSpotName)
-    var txtItemDate = itemView.bindTextView(R.id.txtItemDate)
-    var txtItemEstPeople = itemView.bindTextView(R.id.txtItemEstPeople)
-    var txtItemCost = itemView.bindTextView(R.id.txtItemCost)
+//    var txtItemDate = itemView.bindTextView(R.id.txtItemDate)
+//    var txtItemEstPeople = itemView.bindTextView(R.id.txtItemEstPeople)
+//    var txtItemCost = itemView.bindTextView(R.id.txtItemCost)
 
     fun bind(sport: Sport?) {
         sport?.let {
             txtItemSpotName.text = it.name
-            txtItemDate.text = it.id
-            txtItemEstPeople.text = "1"
-            txtItemCost.text = "1"
+//            txtItemDate.text = it.id
+//            txtItemEstPeople.text = "1"
+//            txtItemCost.text = "1"
         }
     }
 }
@@ -47,14 +47,14 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * detailsLinearLayout
      * addressLinearLayout
      */
-    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
+//    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
     var txtOrgName = itemView.bindTextView(R.id.itemLocationName)
     var txtAddressOne = itemView.bindTextView(R.id.txtAddressOne)
     var txtAddressTwo = itemView.bindTextView(R.id.txtAddressTwo)
     var txtCityStateZip = itemView.bindTextView(R.id.txtCityStateZip)
     var txtPeople = itemView.bindTextView(R.id.txtPeople)
-    var btnAddEditLocationManage = itemView.bindImageButton(R.id.btnAddEditLocationManage)
-    var btnMinusLocationManage = itemView.bindImageButton(R.id.btnMinusLocationManage)
+//    var btnAddEditLocationManage = itemView.bindImageButton(R.id.btnAddEditLocationManage)
+//    var btnMinusLocationManage = itemView.bindImageButton(R.id.btnMinusLocationManage)
 
     fun bind(org: Organization?) {
         txtOrgName.text = org?.name
@@ -70,18 +70,18 @@ class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * detailsLinearLayout
      * addressLinearLayout
      */
-    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
+//    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
     var txtItemSpotName = itemView.bindTextView(R.id.txtItemSpotName)
-    var txtItemDate = itemView.bindTextView(R.id.txtItemDate)
-    var txtItemEstPeople = itemView.bindTextView(R.id.txtItemEstPeople)
-    var txtItemCost = itemView.bindTextView(R.id.txtItemCost)
+//    var txtItemDate = itemView.bindTextView(R.id.txtItemDate)
+//    var txtItemEstPeople = itemView.bindTextView(R.id.txtItemEstPeople)
+//    var txtItemCost = itemView.bindTextView(R.id.txtItemCost)
 
     fun bind(coach: Coach?) {
         coach?.let {
             txtItemSpotName.text = it.name
-            txtItemDate.text = it.id
-            txtItemEstPeople.text = "1"
-            txtItemCost.text = "1"
+//            txtItemDate.text = it.id
+//            txtItemEstPeople.text = "1"
+//            txtItemCost.text = "1"
         }
     }
 }
