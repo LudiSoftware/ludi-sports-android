@@ -3,11 +3,11 @@ package io.usys.report.ui
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.BuildConfig
 import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import io.usys.report.BuildConfig
 import io.usys.report.R
 import io.usys.report.db.getUserUpdatesFromFirebase
 import io.usys.report.model.*

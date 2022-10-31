@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.model.Spot
 import io.usys.report.utils.inflate
-import kotlinx.android.extensions.LayoutContainer
 
 class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendarFragment) : RecyclerView.Adapter<FoodCalendarViewAdapter.InnerFoodCalendarViewHolder>() {
 
@@ -47,11 +46,11 @@ class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendar
     }
 
     inner class InnerFoodCalendarViewHolder(
-        override val containerView: View,
+        val containerView: View,
         val activity: Activity,
         val foodCalendarFragment: FoodCalendarFragment
     ) :
-        RecyclerView.ViewHolder(containerView), LayoutContainer {
+        RecyclerView.ViewHolder(containerView) {
 
         fun bind(spot: Spot) {
 //            containerView.txtItemSpotName.text = spot.locationName

@@ -1,6 +1,7 @@
 package io.usys.report.utils
 
 import android.R
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.text.Editable
@@ -20,6 +21,9 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by ChazzCoin : December 2019.
  */
 
+fun Activity.changeStatusBarColor() {
+    this.window.statusBarColor = this.getColorCompat(R.color.black)
+}
 
 fun <T: View> View.bind(res: Int) : T {
     return this.findViewById(res)

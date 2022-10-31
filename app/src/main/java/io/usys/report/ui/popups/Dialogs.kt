@@ -2,14 +2,9 @@ package io.usys.report.utils
 
 import android.app.Activity
 import android.app.Dialog
-import android.graphics.Color
-import android.view.View
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import io.usys.report.R
 import io.usys.report.model.*
-import kotlinx.android.synthetic.main.dialog_ask_user_logout.*
-import kotlinx.android.synthetic.main.dialog_field_error.*
 
 
 /**
@@ -17,20 +12,20 @@ import kotlinx.android.synthetic.main.dialog_field_error.*
  */
 
 
-fun createErrorDialog(activity: Activity, message:String? = "Something has gone wrong") : Dialog {
-    val dialog = Dialog(activity)
-    dialog.setContentView(R.layout.dialog_field_error)
-    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    dialog.txtFieldErrorTitle.text = "Uh Oh!"
-    dialog.txtFieldErrorBody.text = message
-    // On Clicks
-    val okay = dialog.findViewById(R.id.btnOkayFieldError) as Button
-    okay.setOnClickListener {
-        activity.onBackPressed()
-        dialog.dismiss()
-    }
-    return dialog
-}
+//fun createErrorDialog(activity: Activity, message:String? = "Something has gone wrong") : Dialog {
+//    val dialog = Dialog(activity)
+//    dialog.setContentView(R.layout.dialog_field_error)
+//    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+//    dialog.txtFieldErrorTitle.text = "Uh Oh!"
+//    dialog.txtFieldErrorBody.text = message
+//    // On Clicks
+//    val okay = dialog.findViewById(R.id.btnOkayFieldError) as Button
+//    okay.setOnClickListener {
+//        activity.onBackPressed()
+//        dialog.dismiss()
+//    }
+//    return dialog
+//}
 
 fun createFieldErrorDialog(activity: Activity) : Dialog {
     val dialog = Dialog(activity)
@@ -62,23 +57,23 @@ fun popAskUserLogoutDialog(activity: Activity) : Dialog {
     return dialog
 }
 
-fun createAskUserGenericDialog(activity: Activity, title: String, body: String) : Dialog {
-    val dialog = Dialog(activity)
-    dialog.setContentView(R.layout.dialog_ask_user_logout)
-    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    dialog.txtAskUserTitle.text = title
-    dialog.txtAskUserBody.text = body
-    // On Clicks
-    val yes = dialog.findViewById(R.id.btnYesAskUser) as Button
-    val cancel = dialog.findViewById(R.id.btnCancelAskUser) as Button
-    yes.setOnClickListener {
-        Session.restartApplication(activity)
-    }
-    cancel.setOnClickListener {
-        dialog.dismiss()
-    }
-    return dialog
-}
+//fun createAskUserGenericDialog(activity: Activity, title: String, body: String) : Dialog {
+//    val dialog = Dialog(activity)
+//    dialog.setContentView(R.layout.dialog_ask_user_logout)
+//    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+//    dialog.txtAskUserTitle.text = title
+//    dialog.txtAskUserBody.text = body
+//    // On Clicks
+//    val yes = dialog.findViewById(R.id.btnYesAskUser) as Button
+//    val cancel = dialog.findViewById(R.id.btnCancelAskUser) as Button
+//    yes.setOnClickListener {
+//        Session.restartApplication(activity)
+//    }
+//    cancel.setOnClickListener {
+//        dialog.dismiss()
+//    }
+//    return dialog
+//}
 
 //fun createProfileDialog(activity: Activity, user: User) : Dialog {
 //

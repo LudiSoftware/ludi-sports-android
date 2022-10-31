@@ -1,16 +1,11 @@
 package io.usys.report.model
 
-import android.app.Activity
-import android.app.Dialog
 import android.content.Context
-import android.view.View
 import androidx.room.PrimaryKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import io.usys.report.R
 import io.usys.report.utils.*
 import io.realm.RealmObject
-import kotlinx.android.synthetic.main.dialog_spot_details.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -133,38 +128,6 @@ fun Spot.addUpdateToFirebase(mContext: Context) {
     }
 }
 
-fun Spot.createDetailsLocationDialog(activity: Activity) : Dialog {
-    val dialog = Dialog(activity, R.style.FT_Dialog)
-    dialog.setContentView(R.layout.dialog_spot_details)
-    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    //Location Info
-    dialog.txtLocationNameDialog.setText(this.locationName)
-    dialog.txtAddressOneDialog.setText(this.addressOne)
-    if (this.addressTwo.isNullOrEmpty()) {
-        dialog.txtAddressTwoDialog.visibility = View.GONE
-    } else {
-        dialog.txtAddressTwoDialog.setText(this.addressTwo)
-    }
-    dialog.txtCityStateZipDialog.setText(this.toCityStateZip())
-    dialog.txtParkingInfoDialog.setText(this.parkingInfo)
-    //Location Manager/Contact
-    dialog.txtLocationManagerDialog.text = this.spotManager
-    //Spot Details
-//    dialog.txtTimeDateDialog.setText(this.toFullDate()) //TIME AND DATE
-    if (this.assignedTruckName.isNullOrEmpty()) {
-        dialog.txtTruckNameDialog.visibility = View.GONE
-    } else {
-        dialog.txtTruckNameDialog.setText(this.assignedTruckName)
-    }
-    dialog.txtFoodTypeDialog.setText(this.foodType)
-    dialog.txtEstPeopleDialog.setText(this.estPeople)
-    dialog.txtCostDialog.setText(this.price)
-    dialog.btnCloseDialog.setOnClickListener {
-        dialog.dismiss()
-    }
-    dialog.btnGenericDialog.visibility = View.INVISIBLE
-    return dialog
-}
 
 
 

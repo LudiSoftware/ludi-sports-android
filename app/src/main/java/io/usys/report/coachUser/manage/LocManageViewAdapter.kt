@@ -9,7 +9,6 @@ import io.usys.report.model.Organization
 import io.usys.report.model.Session
 import io.usys.report.utils.inflate
 import io.realm.RealmList
-import kotlinx.android.extensions.LayoutContainer
 
 
 class LocManageViewAdapter(mContext: Context, val locManageFragment: LocManageFragment)
@@ -51,10 +50,10 @@ class LocManageViewAdapter(mContext: Context, val locManageFragment: LocManageFr
         }
     }
 
-    inner class InnerLocationViewHolder(override val containerView: View,
+    inner class InnerLocationViewHolder(val containerView: View,
                                         val locManageFragment: LocManageFragment
     ) :
-        RecyclerView.ViewHolder(containerView), LayoutContainer  {
+        RecyclerView.ViewHolder(containerView)  {
 
         fun bind(organization: Organization) {
 //            containerView.itemLocationName.text = organization.name

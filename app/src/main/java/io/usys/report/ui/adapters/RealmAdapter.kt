@@ -14,8 +14,6 @@ import io.usys.report.db.FireTypes
 import io.usys.report.utils.isNullOrEmpty
 
 
-
-
 inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?, context: Context, type: String,
                                                     noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null

@@ -9,7 +9,6 @@ import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.inflate
 import io.realm.RealmList
-import kotlinx.android.extensions.LayoutContainer
 
 class LocDashViewAdapter(mContext: Context, var activity: Activity, var locationId: String)
     : RecyclerView.Adapter<LocDashViewAdapter.InnerDashViewHolder>() {
@@ -48,8 +47,8 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
         }
     }
 
-    inner class InnerDashViewHolder(override val containerView: View, val activity: Activity) :
-        RecyclerView.ViewHolder(containerView), LayoutContainer {
+    inner class InnerDashViewHolder(val containerView: View, val activity: Activity) :
+        RecyclerView.ViewHolder(containerView) {
 
         fun bind(spot: Spot) {
 //            containerView.txtItemSpotName.text = spot.locationName
@@ -57,9 +56,6 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
 //            containerView.txtItemEstPeople.text = spot.estPeople
 //            containerView.txtItemCost.text = spot.toFullPrice()
 
-            containerView.setOnClickListener {
-                spot.createDetailsLocationDialog(activity = activity).show()
-            }
         }
     }
 
