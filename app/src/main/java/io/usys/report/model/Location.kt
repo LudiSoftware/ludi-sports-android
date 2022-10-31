@@ -1,11 +1,11 @@
 package io.usys.report.model
 
 import android.content.Context
-import androidx.room.PrimaryKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import io.usys.report.utils.*
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,8 +1,8 @@
 package io.usys.report.model
 
-import androidx.room.PrimaryKey
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 
 /**

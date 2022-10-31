@@ -2,11 +2,11 @@ package io.usys.report.model
 
 import android.content.Context
 import android.widget.Toast
-import androidx.room.PrimaryKey
 import io.usys.report.utils.executeRealm
 import io.usys.report.utils.realm
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
 /**
  * Created by ChazzCoin : December 2019.

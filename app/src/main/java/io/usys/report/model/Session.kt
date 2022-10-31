@@ -11,6 +11,7 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.utils.newUUID
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -79,9 +80,9 @@ open class Session : RealmObject() {
         fun createObjects() {
             createUser()
             executeRealm { itRealm ->
-                itRealm.createObject(Sport::class.java)
-                itRealm.createObject(Organization::class.java)
-                itRealm.createObject(Review::class.java)
+                itRealm.createObject(Sport::class.java, newUUID())
+                itRealm.createObject(Organization::class.java, newUUID())
+                itRealm.createObject(Review::class.java, newUUID())
             }
 
         }
@@ -91,7 +92,7 @@ open class Session : RealmObject() {
             val realm = Realm.getDefaultInstance()
             if (realm.where(User::class.java) == null){
                 realm.executeTransaction { itRealm ->
-                    itRealm.createObject(User::class.java)
+                    itRealm.createObject(User::class.java, newUUID())
                 }
             }
         }
@@ -109,7 +110,6 @@ open class Session : RealmObject() {
         fun updateUser(newNser: User){
             val curUser = user
             executeRealm { itRealm ->
-                curUser?.id = newNser.id
                 curUser?.auth = newNser.auth
                 curUser?.name = newNser.name
                 curUser?.email = newNser.email

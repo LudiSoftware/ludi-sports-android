@@ -2,14 +2,11 @@ package io.usys.report.model
 
 import android.app.Activity
 import android.app.Dialog
-import android.graphics.Color
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.TextView
-import androidx.room.PrimaryKey
 import io.realm.RealmList
 import io.usys.report.R
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import io.usys.report.db.FireDB
 import io.usys.report.db.addUpdateDB
 import io.usys.report.utils.*

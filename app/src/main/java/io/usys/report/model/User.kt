@@ -1,12 +1,12 @@
 package io.usys.report.model
 
 import android.content.Context
-import androidx.room.PrimaryKey
 import com.google.firebase.database.*
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
 import io.usys.report.utils.*

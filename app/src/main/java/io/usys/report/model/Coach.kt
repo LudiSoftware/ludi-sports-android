@@ -1,10 +1,8 @@
 package io.usys.report.model
 
-import androidx.room.PrimaryKey
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.usys.report.db.FireDB
-import io.usys.report.db.addUpdateDB
+import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.applyAndSave
 import io.usys.report.utils.newUUID
 import java.io.Serializable
