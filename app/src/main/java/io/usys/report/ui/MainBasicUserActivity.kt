@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import io.usys.report.R
 import io.usys.report.db.loadSportsIntoSession
 import io.usys.report.model.User
+import io.usys.report.utils.changeStatusBarColor
 
 /**
  * Created by ChazzCoin : October 2022.
