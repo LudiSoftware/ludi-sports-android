@@ -3,11 +3,11 @@ package io.usys.report.ui
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.BuildConfig
 import com.google.firebase.FirebaseApp
 import com.jakewharton.threetenabp.AndroidThreeTen
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.usys.report.BuildConfig
 import io.usys.report.R
 import io.usys.report.db.getUserUpdatesFromFirebase
 import io.usys.report.model.*
@@ -28,16 +28,13 @@ class AuthControllerActivity : AppCompatActivity()  {
         var USER_AUTH = ""
     }
 
-    var mUser : User? = null
-    lateinit var id : String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
         //Initialize
         initializeDependencies()
         //Setup
-        doSetup()
+        verifyUserLogin()
     }
 
     private fun initializeDependencies() {
@@ -48,27 +45,24 @@ class AuthControllerActivity : AppCompatActivity()  {
         //Init Realm DB
         Realm.init(this)
         val realmConfiguration = RealmConfiguration.Builder()
-            .name(BuildConfig.APPLICATION_ID + ".realm")
+            .name(BuildConfig.APPLICATION_ID + ".realm2")
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
     }
 
-    private fun doSetup() {
-        val u = Session.user?.id
-        if (Session.session != null && Session.user != null && !u.isNullOrEmpty()){
-            mUser = Session.user
-            mUser?.let { itUser ->
-                id = itUser.id.toString()
-                USER_ID = itUser.id.toString()
+    private fun verifyUserLogin() {
+        val u = Session.getCurrentUser()
+        if (!u.isNullOrEmpty()) {
+            u?.let { itUser ->
                 USER_AUTH = itUser.auth
-                getUserUpdatesFromFirebase(id) {
-                    navigateUser(it)
+                itUser.id?.let { itId ->
+                    getUserUpdatesFromFirebase(itId) {
+                        navigateUser(it)
+                    }
                 }
-
             }
         } else {
-            //Create User Object (checks if null)
             Session.createObjects()
             launchActivity<LoginActivity>()
         }
@@ -76,7 +70,7 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     override fun onRestart() {
         super.onRestart()
-        doSetup()
+        verifyUserLogin()
     }
 
     private fun navigateUser(user: User?){

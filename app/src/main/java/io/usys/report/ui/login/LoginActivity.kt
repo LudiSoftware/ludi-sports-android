@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.model.AuthTypes
 import io.usys.report.model.Session
 import io.usys.report.model.User
 import io.usys.report.utils.FireHelper
@@ -45,27 +44,6 @@ class LoginActivity : AppCompatActivity() {
                 .setAvailableProviders(providers)
                 .build(),
             RC_SIGN_IN)
-    }
-    //Ask for auth first -> if null add waiting
-    private fun getUserAuthFromFirebase(currentUser: User) {
-        database = FirebaseDatabase.getInstance().reference
-        database.child(FireHelper.USERS).child(currentUser.id.toString())
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val user: User? = dataSnapshot.getValue(User::class.java)
-//                    mUser = User(currentUser.uid,currentUser.displayName,currentUser.email)
-                    user?.let { itUser ->
-                        saveProfileToFirebase()
-                    }?: kotlin.run {
-                        //No User Move On
-                        mUser.auth = AuthTypes.BASIC_USER
-                        saveProfileToFirebase()
-                    }
-                }
-                override fun onCancelled(p0: DatabaseError) {
-//                    TODO("not implemented")
-                }
-            })
     }
 
 //    private fun googleTesting() {
@@ -101,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, "Error Signing In", Toast.LENGTH_SHORT).show()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {

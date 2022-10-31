@@ -6,7 +6,6 @@ import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
 import io.usys.report.utils.*
@@ -31,7 +30,7 @@ open class AuthTypes {
 
 open class User : RealmObject() {
 
-    @PrimaryKey
+//    @PrimaryKey
     var id: String? = null // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
     var creationDate: String? = null
     var name: String? = "" //Name Given by Manager

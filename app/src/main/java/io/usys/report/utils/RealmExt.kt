@@ -35,14 +35,14 @@ fun <K, V> HashMap<K, V>?.toRealmList() : RealmList<Any> {
 }
 
 
-fun HashMap<*,*>.toJsonRealmList(): RealmList<Any> {
-    var resultList: RealmList<Any> = RealmList()
-    for ((_,v) in this) {
-        val test = (v as? HashMap<*,*>)?.toJSON()
-        resultList.add(test)
-    }
-    return resultList
-}
+//fun HashMap<*,*>.toJsonRealmList(): RealmList<Any> {
+//    var resultList: RealmList<Any> = RealmList()
+//    for ((_,v) in this) {
+//        val test = (v as? HashMap<*,*>)?.toJSON()
+//        resultList.add(test)
+//    }
+//    return resultList
+//}
 
 inline fun <reified T> DataSnapshot.toRealmList(): RealmList<T> {
     val realmList: RealmList<T> = RealmList()
@@ -88,7 +88,14 @@ fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {
 }
 
 inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
-    Session.user?.let { block(it) } ?: run { activity?.let { Session.restartApplication(it) } }
+    val user = Session.getCurrentUser()
+    user?.let {
+        block(it)
+    } ?: run {
+        activity?.let {
+            Session.restartApplication(it)
+        }
+    }
     //todo: get firebase user, if valid, set and continue
 }
 

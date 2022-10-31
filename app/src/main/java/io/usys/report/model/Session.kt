@@ -32,6 +32,7 @@ open class Session : RealmObject() {
 
         /** -> Controller Methods <- >  */
         private const val aisession = 1
+        var user: User? = null
         var USER_UID = ""
 
         //Class Variables
@@ -53,16 +54,16 @@ open class Session : RealmObject() {
             private set
 
         //GET CURRENT USER
-        var user: User? = null
-            get() {
-                try {
-                    if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-                    field = mRealm.where(User::class.java).findFirst()
-                    if (field == null) { field = User() }
-                } catch (e: Exception) { e.printStackTrace() }
-                return field
-            }
-            private set
+//        var user: User? = null
+//            get() {
+//                try {
+//                    if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
+//                    field = mRealm.where(User::class.java).findFirst()
+//                    if (field == null) { field = User() }
+//                } catch (e: Exception) { e.printStackTrace() }
+//                return field
+//            }
+//            private set
 
         //CORE ->
         fun updateSession(user: User?): Session? {
@@ -75,6 +76,17 @@ open class Session : RealmObject() {
             }
             return session
         }
+
+        fun getCurrentUser() : User? {
+            var usr: User? = null
+            try {
+                if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
+                usr = mRealm.where(User::class.java).findFirst()
+                if (usr == null) { usr = User() }
+            } catch (e: Exception) { e.printStackTrace() }
+            return usr
+        }
+
 
         //CORE ->
         fun createObjects() {
@@ -108,13 +120,8 @@ open class Session : RealmObject() {
         }
 
         fun updateUser(newNser: User){
-            val curUser = user
             executeRealm { itRealm ->
-                curUser?.auth = newNser.auth
-                curUser?.name = newNser.name
-                curUser?.email = newNser.email
-                curUser?.phone = newNser.phone
-                itRealm.insertOrUpdate(curUser)
+                itRealm.insertOrUpdate(newNser)
             }
         }
 

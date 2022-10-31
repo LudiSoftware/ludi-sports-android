@@ -1,6 +1,5 @@
 package io.usys.report.utils
 
-import com.google.gson.Gson
 import io.realm.RealmObject
 import org.json.JSONArray
 import org.json.JSONObject
@@ -20,21 +19,21 @@ fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
     }
 }
 
-fun RealmObject.toJSON(): JSONObject? {
-    tryCatch {
-        val jsonString = Gson().toJson(this)
-        return JSONObject(jsonString)
-    }
-    return null
-}
+//fun RealmObject.toJSON(): JSONObject? {
+//    tryCatch {
+//        val jsonString = Gson().toJson(this)
+//        return JSONObject(jsonString)
+//    }
+//    return null
+//}
 
-fun HashMap<*,*>.toJSON(): JSONObject? {
-    tryCatch {
-        val jsonString = Gson().toJson(this)
-        return JSONObject(jsonString)
-    }
-    return null
-}
+//fun HashMap<*,*>.toJSON(): JSONObject? {
+//    tryCatch {
+//        val jsonString = Gson().toJson(this)
+//        return JSONObject(jsonString)
+//    }
+//    return null
+//}
 
 fun JSONObject.getDeepKey(key: String): Any? {
     if (this.has(key)) return this.get(key)
