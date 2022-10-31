@@ -8,10 +8,10 @@ import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.realm.RealmList
+import io.usys.report.databinding.FragmentOrgListBinding
 import io.usys.report.db.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.loadInRealmList
-import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -19,17 +19,22 @@ import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 class CoachListFragment : YsrFragment() {
 
+    private var _binding: FragmentOrgListBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     private var coachesList: RealmList<Coach>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        rootView = inflater.inflate(R.layout.fragment_coaches_list, container, false)
+        _binding = FragmentOrgListBinding.inflate(inflater, container, false)
+        rootView = binding.root
 
         setupOnClickListeners()
 
         (realmObjectArg as? Organization)?.id?.let {
             getOrderByEqualTo(FireDB.COACHES, ORDER_BY_ORGANIZATION, it) {
                 coachesList = this?.toRealmList()
-                rootView.recyclerList.loadInRealmList(coachesList, requireContext(), FireDB.COACHES, itemOnClick)
+                _binding?.recyclerList?.loadInRealmList(coachesList, requireContext(), FireDB.COACHES, itemOnClick)
             }
         }
 

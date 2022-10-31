@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewbinding.ViewBinding
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
@@ -27,7 +26,7 @@ class DashboardFragment : YsrFragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
-        return rootView
+        return binding.root
     }
 
     override fun onStart() {

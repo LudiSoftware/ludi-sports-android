@@ -8,11 +8,11 @@ import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.realm.RealmList
+import io.usys.report.databinding.FragmentOrgListBinding
 import io.usys.report.db.FireTypes
 import io.usys.report.db.getOrderByEqualTo
 import io.usys.report.model.Organization.Companion.ORDER_BY_SPORTS
 import io.usys.report.ui.loadInRealmList
-import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -20,22 +20,27 @@ import kotlinx.android.synthetic.main.fragment_org_list.view.*
 
 class OrganizationListFragment : YsrFragment() {
 
+    private var _binding: FragmentOrgListBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     private var hasBeenLoaded = false
     private var organizationList: RealmList<Organization>? = RealmList() // -> ORIGINAL LIST
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        rootView = inflater.inflate(R.layout.fragment_org_list, container, false)
+        _binding = FragmentOrgListBinding.inflate(inflater, container, false)
+        rootView = binding.root
 
         setupOnClickListeners()
 
         if (!hasBeenLoaded) {
             getOrderByEqualTo(FireTypes.ORGANIZATIONS, ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
                 organizationList = this?.toRealmList()
-                rootView.recyclerList.loadInRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
+                _binding?.recyclerList?.loadInRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
             }
             hasBeenLoaded = true
         } else {
-            rootView.recyclerList.loadInRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
+            _binding?.recyclerList?.loadInRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
         }
         return rootView
     }

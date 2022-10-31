@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
+import io.usys.report.databinding.FragmentUserProfileBinding
 
 /**
  * Created by ChazzCoin : 2020.
@@ -25,12 +26,17 @@ class ProfileFragment : YsrFragment() {
         TODO("Not yet implemented")
     }
 
+    private var _binding: FragmentUserProfileBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     private var COLOR_RED: Drawable? = null
     private var COLOR_WHITE: Drawable? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        rootView = inflater.inflate(R.layout.fragment_user_profile, container, false)
+        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        rootView = binding.root
 
         COLOR_RED = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_red)
         COLOR_WHITE = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_white)
@@ -53,8 +59,8 @@ class ProfileFragment : YsrFragment() {
     private fun setupDisplay() {
 
         //General User Info
-//        rootView.editProfileName.setText(user?.name)
-//        rootView.editProfileEmail.setText(user?.email)
+        _binding?.txtProfileName?.setText(user?.name)
+        _binding?.editLayoutProfileEmail?.setText(user?.email)
 //        rootView.editPhoneNumber.setText(user?.phone)
     }
 
