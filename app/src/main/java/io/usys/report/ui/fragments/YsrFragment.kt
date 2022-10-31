@@ -26,6 +26,8 @@ abstract class YsrFragment : Fragment() {
         val ARG = "realmObj"
     }
 
+//    abstract var _binding: Any
+//    val binding get() = _binding
     lateinit var rootView : View
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
     var user: User? = null

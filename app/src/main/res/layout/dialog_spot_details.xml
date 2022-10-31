@@ -16,12 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/black" />
-
         <LinearLayout
             android:id="@+id/layoutLocation"
             android:layout_width="match_parent"
