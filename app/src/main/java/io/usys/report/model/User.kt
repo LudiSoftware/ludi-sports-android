@@ -1,6 +1,8 @@
 package io.usys.report.model
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
@@ -31,7 +33,7 @@ open class AuthTypes {
 open class User : RealmObject() {
 
 //    @PrimaryKey
-    var id: String? = null // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
+    var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
     var creationDate: String? = null
     var name: String? = "" //Name Given by Manager
     var auth: String = AuthTypes.BASIC_USER // "basic"
@@ -58,6 +60,21 @@ open class User : RealmObject() {
         return false
     }
 
+
+
+}
+
+fun parseFromFirebaseUser(fireUser: FirebaseUser?) : User {
+    if (fireUser.isNullOrEmpty()) return User()
+    val uid = fireUser?.uid
+    val email = fireUser?.email
+    val name = fireUser?.displayName
+    val user = User().apply {
+        this.id = uid ?: "unknown"
+        this.email = email
+        this.name = name
+    }
+    return user
 }
 
 fun updateUser(newUser: User) {

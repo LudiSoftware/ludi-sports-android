@@ -13,7 +13,9 @@ import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.model.Session
 import io.usys.report.model.User
+import io.usys.report.model.parseFromFirebaseUser
 import io.usys.report.utils.FireHelper
+import io.usys.report.utils.isNullOrEmpty
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -60,19 +62,23 @@ class LoginActivity : AppCompatActivity() {
 //    }
 
     //SAVE PROFILE
-    fun saveProfileToFirebase() {
-        database.child(FireHelper.USERS).child(mUser.id.toString()).setValue(mUser)
-            .addOnSuccessListener {
+    fun saveProfileToFirebase(user:User?) {
+        if (user.isNullOrEmpty()) return
+        user?.let {
+            database.child(FireHelper.USERS).child(it.id).setValue(mUser)
+                .addOnSuccessListener {
 //                TODO("HANDLE SUCCESS")
-                Session.updateUser(mUser)
-                Session.updateSession(mUser)
-                startActivity(Intent(this@LoginActivity, AuthControllerActivity::class.java))
-            }.addOnCompleteListener {
+                    Session.updateUser(mUser)
+                    Session.updateSession(mUser)
+                    startActivity(Intent(this@LoginActivity, AuthControllerActivity::class.java))
+                }.addOnCompleteListener {
 //                TODO("HANDLE COMPLETE")
-            }.addOnFailureListener {
+                }.addOnFailureListener {
 //                TODO("HANDLE FAILURE")
 //                showLoginFailed()
-            }
+                }
+        }
+
     }
 
     private fun showLoginFailed() {
@@ -89,15 +95,8 @@ class LoginActivity : AppCompatActivity() {
                 //TODO: SETUP USER MODEL
                 response?.let {
                     val fireUser = FirebaseAuth.getInstance().currentUser
-                    val uid = fireUser?.uid ?: "unknown"
-                    val email = fireUser?.email
-                    val name = fireUser?.displayName
-                    val user = User()
-                    user.id = uid
-                    user.email = email
-                    user.name = name
-                    mUser = user
-                    saveProfileToFirebase()
+                    mUser = parseFromFirebaseUser(fireUser = fireUser)
+                    saveProfileToFirebase(mUser)
                 }
 
             } else {

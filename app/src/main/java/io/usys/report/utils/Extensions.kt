@@ -2,7 +2,12 @@ package io.usys.report.utils
 
 import android.app.Activity
 import android.content.Intent
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import io.realm.RealmList
+import io.usys.report.model.Session
+import io.usys.report.model.User
+import io.usys.report.model.parseFromFirebaseUser
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.util.*
@@ -61,6 +66,14 @@ inline fun io(crossinline block: suspend CoroutineScope.() -> Unit) {
     CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
         block(this)
     }
+}
+
+fun getMasterUser(): User? {
+    val realmUser = Session.getCurrentUser()
+    val realmUserId = realmUser?.id
+    if (!realmUserId.isNullOrEmpty()) return realmUser
+    val fireUser = FirebaseAuth.getInstance().currentUser
+    return parseFromFirebaseUser(fireUser)
 }
 
 fun Any?.isNullOrEmpty() : Boolean {

@@ -12,6 +12,7 @@ import io.usys.report.R
 import io.usys.report.db.getUserUpdatesFromFirebase
 import io.usys.report.model.*
 import io.usys.report.ui.login.LoginActivity
+import io.usys.report.utils.getMasterUser
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
 
@@ -45,21 +46,18 @@ class AuthControllerActivity : AppCompatActivity()  {
         //Init Realm DB
         Realm.init(this)
         val realmConfiguration = RealmConfiguration.Builder()
-            .name(BuildConfig.APPLICATION_ID + ".realm2")
+            .name(BuildConfig.APPLICATION_ID + ".realm")
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
     }
 
     private fun verifyUserLogin() {
-        val u = Session.getCurrentUser()
-        if (!u.isNullOrEmpty()) {
-            u?.let { itUser ->
-                USER_AUTH = itUser.auth
-                itUser.id?.let { itId ->
-                    getUserUpdatesFromFirebase(itId) {
-                        navigateUser(it)
-                    }
+        val u = getMasterUser()
+        if (!u.isNullOrEmpty() && !u?.id.isNullOrEmpty()) {
+            u?.id?.let { itId ->
+                getUserUpdatesFromFirebase(itId) {
+                    navigateUser(it)
                 }
             }
         } else {

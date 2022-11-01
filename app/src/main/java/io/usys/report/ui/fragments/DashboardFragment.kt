@@ -1,9 +1,12 @@
 package io.usys.report.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
@@ -23,6 +26,25 @@ class DashboardFragment : YsrFragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        // Registers a photo picker activity launcher in single-select mode.
+        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            // Callback is invoked after the user selects a media item or closes the
+            // photo picker.
+            if (uri != null) {
+                log("PhotoPicker")
+                val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context?.contentResolver?.takePersistableUriPermission(uri, flag)
+            } else {
+                log("PhotoPicker")
+            }
+        }
+
+        // Launch the photo picker and allow the user to choose only images.
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        val mimeType = "image/gif"
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.SingleMimeType(mimeType)))
+
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
