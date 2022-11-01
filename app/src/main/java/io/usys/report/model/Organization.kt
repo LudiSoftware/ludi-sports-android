@@ -1,5 +1,6 @@
 package io.usys.report.model
 
+import android.location.Location
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -26,6 +27,9 @@ open class Organization : RealmObject(), Serializable {
     var state: String? = "" // AL
     var zip: String? = "" // 35223
     var sport: String? = "unassigned"
+    var leagues: RealmList<String>? = null
+    var regions: RealmList<String>? = null
+    var locations: RealmList<String>? = null
     var type: String? = "unassigned"
     var subType: String? = "unassigned"
     var details: String? = ""

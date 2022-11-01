@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
+import io.usys.report.model.Service
 import io.usys.report.model.Spot
 import io.usys.report.utils.inflate
 
@@ -28,7 +29,7 @@ class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendar
         arrayOfSpots.let {
             val spot = it[position]
             if (spot.date == currentDate) {
-                if (spot.status == Spot.PENDING || spot.status == Spot.BOOKED) {
+                if (spot.status == Service.PENDING || spot.status == Service.BOOKED) {
                     viewHolder.containerView.visibility = View.GONE
                     viewHolder.containerView.layoutParams = RecyclerView.LayoutParams(0, 0)
                     return

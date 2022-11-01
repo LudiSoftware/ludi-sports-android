@@ -12,34 +12,8 @@ import java.util.*
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class Spot(id:String? = "", addressOne:String? = "", addressTwo:String? = "",
-                city:String? = "", state:String? = "", zip:String? = "",
-                 date:String? = "", spotManager:String? = "") : RealmObject() {
+open class Spot : RealmObject() {
 
-    companion object {
-        const val LUNCH_TIME : String = "11AM-2PM"
-        const val DINNER_TIME : String = "5PM-8PM"
-
-        const val PRICE : String = "5.00"
-
-        const val AVAILABLE : String = "available"
-        const val PENDING : String = "pending"
-        const val PENDING_CASHAPP : String = "pending_cashapp"
-        const val BOOKED : String = "booked"
-
-        const val ENTREE : String = "Entree"
-        const val DESSERT : String = "Dessert"
-
-        fun parseMealTime(time:String) : String {
-            return when {
-                //11-2
-                time.toLowerCase(Locale.ROOT) == "lunch" -> { LUNCH_TIME }
-                //5-8
-                time.toLowerCase(Locale.ROOT) == "dinner" -> { DINNER_TIME }
-                else -> { time }
-            }
-        }
-    }
 
     @PrimaryKey
     var id: String? = ""
@@ -55,7 +29,7 @@ open class Spot(id:String? = "", addressOne:String? = "", addressTwo:String? = "
     var mealTime: String? = "" //Breakfast, Lunch or Dinner?
     var parkingInfo: String? = "" // "Park on the third spot to the right"
     var estPeople: String? = "" //Amount of expected people
-    var status : String? = AVAILABLE //Has it been bought?
+    var status : String? = "" //Has it been bought?
     var price: String? = "" //Assigned Price to Spot
     var spotManager: String? = "" //Creators Display Name
     var assignedTruckUid : String? = "" //FoodTruck who buys Spot
@@ -68,34 +42,8 @@ open class Spot(id:String? = "", addressOne:String? = "", addressTwo:String? = "
     var reviewScore: Int = 9999
     var reviewDetails: String = ""
 
-    init {
-        this.id = id
-        this.addressOne = addressOne
-        this.addressTwo = addressTwo
-        this.city = city
-        this.state = state
-        this.zip = zip
-        this.date = date
-        this.spotManager = spotManager
-        this.price = if (price.isNullOrBlank() || price.isNullOrEmpty()) {PRICE} else {price}
-    }
 
 
-//    fun toFullDate() : String {
-//        return "${toMealTime()}, ${this.date?.toFullDateString() ?: "unknwon"}"
-//    }
-
-    fun toFullPrice() : String {
-        return "$${this.price}"
-    }
-
-    fun toCityStateZip() : String {
-        return "${this.city}, ${this.state} ${this.zip}"
-    }
-
-    fun toFullEstPeople() : String {
-        return "Est: ${this.estPeople}"
-    }
 }
 
 fun Spot.isOld(): Boolean {

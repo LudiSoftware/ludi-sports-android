@@ -33,7 +33,11 @@ open class Coach : RealmObject(), Serializable {
     var subType: String? = "unassigned"
     var details: String? = ""
     var estPeople: String? = ""
+
+    var hasReview: Boolean = false
     var reviews: RealmList<String>? = RealmList()
+    var reviewOverallScore: Int = 9999
+    var reviewDetails: String = ""
 
     fun getCityStateZip(): String {
         return "$city, $state $zip"
