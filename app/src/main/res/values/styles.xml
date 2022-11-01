@@ -2,25 +2,24 @@
 
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="YSR" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorWindowBackground</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:text">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/ysrFadedWhite</item>
+        <item name="colorPrimaryDark">@color/ysrRed</item>
+        <item name="colorAccent">@color/ysrRed</item>
+        <item name="android:windowBackground">@color/ysrFadedWhite</item>
+        <item name="android:textColor">@color/ysrBlue</item>
+<!--        <item name="android:text">@color/ysrBlue</item>-->
     </style>
 
     <style name="ysrBottomNavigationTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorListBackground</item>
-        <item name="android:textColorSecondary">@color/example_4_grey_past</item>
+        <item name="colorPrimary">@color/ysrFadedWhite</item>
+        <item name="android:textColorSecondary">@color/ysrFadedWhite</item>
         <item name="android:background">@color/transparent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="YSR.ActionBar" parent="Theme.AppCompat.Light">
+        <item name="android:background">@color/ysrBlue</item>
     </style>
 
     <style name="FT_Dialog" parent="android:Theme.Holo.Dialog">
@@ -29,13 +28,13 @@
     </style>
 
     <style name="FT_BottomNavigationTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="android:textColorSecondary">@color/example_4_grey_past</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/ysrFadedWhite</item>
+        <item name="android:textColorSecondary">@color/ysrFadedWhite</item>
+        <item name="android:background">@color/ysrFadedWhite</item>
     </style>
 
-
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="YSR.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">@color/ysrFadedWhite</item>
+    </style>
+    <style name="YSR.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

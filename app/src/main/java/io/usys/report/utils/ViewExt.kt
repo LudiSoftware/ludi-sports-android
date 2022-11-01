@@ -24,6 +24,8 @@ import com.bumptech.glide.Glide
  * Created by ChazzCoin : December 2019.
  */
 
+
+
 fun Fragment.loadUriIntoImgView(uri: Uri, imageView: ImageView ) {
     Glide.with(this).load(uri).into(imageView)
 }

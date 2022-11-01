@@ -3,6 +3,7 @@ package io.usys.report.ui
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,15 +19,14 @@ import io.usys.report.utils.changeStatusBarColor
 
 class MainBasicUserActivity : AppCompatActivity() {
 
-    private val user : User? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.ysrBlue)
 
         setContentView(R.layout.activity_main)
 
         // -> Base Loading of Data for the user.
-//        Session.removeAllSports()
         loadSportsIntoSession()
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -49,3 +49,4 @@ class MainBasicUserActivity : AppCompatActivity() {
 
 
 }
+

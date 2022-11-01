@@ -11,7 +11,7 @@
 
     <string name="app_name">USYSR</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">YSR Home</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_locations">Locations</string>
     <string name="title_coaches">Coaches</string>

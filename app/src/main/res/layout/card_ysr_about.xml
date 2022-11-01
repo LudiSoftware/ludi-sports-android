@@ -12,10 +12,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ysr_bg_two">
+        android:background="@color/ysrFadedRed">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/txtCardInfoSubText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -28,11 +28,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardInfoTitle"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/txtCardInfoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="38dp"
@@ -42,11 +42,11 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/imgCardInfoLogo"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imgCardInfoLogo"
             android:layout_width="56dp"
             android:layout_height="51dp"
             android:layout_marginStart="4dp"
