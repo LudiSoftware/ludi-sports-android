@@ -37,7 +37,7 @@ open class Organization : RealmObject(), Serializable {
     var managerName: String? = "unassigned"
     var staff: RealmList<String>? = null
     var estPeople: String? = ""
-
+    var dateCreated: String? = "" // timestamp
     var reviews: RealmList<String>? = null
 
     fun getCityStateZip(): String {

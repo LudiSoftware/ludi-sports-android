@@ -10,7 +10,7 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class Coach : RealmObject(), Serializable {
+open class League : RealmObject() {
 
     companion object {
         const val ORDER_BY_ORGANIZATION = "organizationId"
@@ -18,27 +18,28 @@ open class Coach : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String? = "" //UUID
-    var name: String? = "" //Name Given by Manager
+    //Basic Info
+    var name: String? = ""
+    var details: String? = ""
     var dateCreated: String? = "" // timestamp
+    //References
     var ownerId: String? = "unassigned"
     var ownerName: String? = "unassigned"
     var organizationId: String? = ""
     var organizationIds: RealmList<String>? = RealmList()
+    //Address
     var addressOne: String? = "" // 2323 20th Ave South
     var addressTwo: String? = "" // 2323 20th Ave South
     var city: String? = "" // Birmingham
     var state: String? = "" // AL
     var zip: String? = "" // 35223
+    //Sport
     var sport: String? = "unassigned"
     var type: String? = "unassigned"
     var subType: String? = "unassigned"
-    var details: String? = ""
-    var estPeople: String? = ""
-
+    //Review
     var hasReview: Boolean = false
     var reviews: RealmList<String>? = RealmList()
-    var reviewOverallScore: Int = 9999
-    var reviewDetails: String = ""
 
     fun getCityStateZip(): String {
         return "$city, $state $zip"
@@ -47,7 +48,7 @@ open class Coach : RealmObject(), Serializable {
 }
 
 
-fun createCoach() {
+fun createLocation() {
     Coach().applyAndSave() {
         it.id = newUUID()
         it.name = "Lucas Romeo"

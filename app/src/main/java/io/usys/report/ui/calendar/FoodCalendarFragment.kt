@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.*
 import io.usys.report.R
-import io.usys.report.model.Spot
+import io.usys.report.model.Location
 import io.usys.report.utils.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth
@@ -22,7 +22,7 @@ class FoodCalendarFragment : Fragment() {
     private val titleSameYearFormatter = DateTimeFormatter.ofPattern("MMMM")
     private val titleFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
     private val selectionFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
-    private val spots = mutableMapOf<LocalDate, List<Spot>>()
+    private val spots = mutableMapOf<LocalDate, List<Location>>()
 
     var spotsListAdapter : FoodCalendarViewAdapter? = null
 

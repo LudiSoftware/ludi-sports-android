@@ -16,8 +16,8 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
     var organizationList : RealmList<Organization>? = Session.session?.organizations
     var arrayOfOrganizations : ArrayList<Organization> = ArrayList()
 
-    var spotsList : RealmList<Spot>? = RealmList<Spot>()
-    var arrayOfSpots : ArrayList<Spot> = ArrayList()
+    var spotsList : RealmList<Location>? = RealmList<Location>()
+    var arrayOfSpots : ArrayList<Location> = ArrayList()
 
     var context = mContext
 
@@ -28,7 +28,7 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
     override fun onBindViewHolder(viewHolder: InnerDashViewHolder, position: Int) {
         arrayOfSpots.let {
             it[position].let { it1 ->
-                if (it1.locationUUID == locationId) {
+                if (it1.id == locationId) {
                     viewHolder.containerView.visibility = View.VISIBLE
                     viewHolder.containerView.layoutParams = RecyclerView
                         .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -50,7 +50,7 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
     inner class InnerDashViewHolder(val containerView: View, val activity: Activity) :
         RecyclerView.ViewHolder(containerView) {
 
-        fun bind(spot: Spot) {
+        fun bind(spot: Location) {
 //            containerView.txtItemSpotName.text = spot.locationName
 //            containerView.txtItemDate.text = spot.toFullDate()
 //            containerView.txtItemEstPeople.text = spot.estPeople

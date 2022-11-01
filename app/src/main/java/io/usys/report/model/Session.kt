@@ -236,7 +236,7 @@ open class Session : RealmObject() {
 
         /** -> SPOTS <- **/
 
-        fun createNewSpot(spot: Spot){
+        fun createNewSpot(spot: Location){
             mRealm?.let {
                 it.beginTransaction()
                 it.insert(spot)

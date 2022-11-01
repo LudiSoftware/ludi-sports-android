@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.database.*
 import io.usys.report.R
 import io.usys.report.model.Organization
-import io.usys.report.model.Spot
+import io.usys.report.model.Location
 import io.realm.RealmList
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
@@ -61,8 +61,8 @@ class SpotCalendarFragmentLocation : Fragment()  {
     private val titleSameYearFormatter = DateTimeFormatter.ofPattern("MMMM")
     private val titleFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
     private val selectionFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
-    private val spots = mutableMapOf<LocalDate, List<Spot>>()
-    private var masterSpotList = mutableListOf<Spot>()
+    private val spots = mutableMapOf<LocalDate, List<Location>>()
+    private var masterSpotList = mutableListOf<Location>()
 
     private lateinit var mRootView: View
 

@@ -1,12 +1,10 @@
 package io.usys.report.model
 
 import android.content.Context
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
@@ -32,9 +30,8 @@ open class AuthTypes {
 
 open class User : RealmObject() {
 
-//    @PrimaryKey
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
-    var creationDate: String? = null
+    var dateCreated: String? = null
     var name: String? = "" //Name Given by Manager
     var auth: String = AuthTypes.BASIC_USER // "basic"
     var type: String? = ""
@@ -43,11 +40,9 @@ open class User : RealmObject() {
     var organization: String? = ""
     var visibility: String = "closed"
 
-    var reviews: RealmList<String>? = null
-
     init {
-        if (creationDate.isNullOrBlank()) {
-            creationDate = DateUtils().getCurrentDayTime()
+        if (dateCreated.isNullOrBlank()) {
+            dateCreated = DateUtils().getCurrentDayTime()
         }
     }
 

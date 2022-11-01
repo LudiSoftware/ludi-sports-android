@@ -13,7 +13,7 @@ import io.usys.report.utils.*
 import java.util.*
 
 /**
- * Created by ChazzCoin : Feb 2021.
+ * Created by ChazzCoin : October 2022.
  */
 open class Review : RealmObject() {
     @PrimaryKey
@@ -23,6 +23,7 @@ open class Review : RealmObject() {
     var score: Int = 999 // score 1 or 10
     var type: String? = null
     var details: String? = null //
+    var dateCreated: String? = "" // timestamp
     var questions: RealmList<Question>? = null
 }
 
@@ -32,12 +33,6 @@ open class Question: RealmObject() {
     var question: String? = null
     var choices: RealmList<String>? = null
     var answer: String? = null
-
-    init {
-        if (this.id.isNullOrBlank()) {
-            this.id = newUUID()
-        }
-    }
 }
 
 fun Review.addUpdateInFirebase(): Boolean {
