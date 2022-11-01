@@ -1,19 +1,23 @@
 package io.usys.report.ui.fragments
 
-import android.content.Intent
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
-import io.usys.report.model.*
-import io.usys.report.utils.*
 import io.usys.report.db.*
+import io.usys.report.model.*
 import io.usys.report.ui.loadInRealmList
+import io.usys.report.utils.*
+import java.io.*
+
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -25,25 +29,33 @@ class DashboardFragment : YsrFragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        // Registers a photo picker activity launcher in single-select mode.
-        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            // Callback is invoked after the user selects a media item or closes the
-            // photo picker.
-            if (uri != null) {
-                log("PhotoPicker")
-                val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                context?.contentResolver?.takePersistableUriPermission(uri, flag)
-            } else {
-                log("PhotoPicker")
-            }
+        ysrRequestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)) { mapOfResults ->
+            log(mapOfResults.toString())
         }
 
-        // Launch the photo picker and allow the user to choose only images.
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        val mimeType = "image/gif"
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.SingleMimeType(mimeType)))
+//        pickImageFromGallery {
+//            log(it)
+//            val f: File? = it?.let { it1 -> getFileFromUri(requireContext(), it1) }
+//            val storageRef = storage.reference
+//            getMasterUser()?.id?.let {
+//                val path = "${FireTypes.USERS}/${it}/profile/profile_image.jpg"
+//                val mountainImagesRef = storageRef.child(path)
+//                val stream = FileInputStream(f)
+//                val uploadTask = mountainImagesRef.putStream(stream)
+//                uploadTask.addOnFailureListener {
+//                    // Handle unsuccessful uploads
+//                    log("Failed!")
+//                }.addOnSuccessListener { taskSnapshot ->
+//                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+//                    // ...
+//                    log("Success!!")
+//                }
+//            }
+//
+//        }
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
@@ -88,3 +100,4 @@ class DashboardFragment : YsrFragment() {
     }
 
 }
+

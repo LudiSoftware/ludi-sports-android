@@ -4,6 +4,7 @@ import android.R
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
@@ -15,11 +16,17 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 /**
  * Created by ChazzCoin : December 2019.
  */
+
+fun Fragment.loadUriIntoImgView(uri: Uri, imageView: ImageView ) {
+    Glide.with(this).load(uri).into(imageView)
+}
 
 fun Activity.changeStatusBarColor() {
     this.window.statusBarColor = this.getColorCompat(R.color.black)

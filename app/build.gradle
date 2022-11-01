@@ -76,10 +76,14 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:22.0.0')
 //    implementation 'com.google.firebase:firebase-auth-ktx'
 
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
+
     implementation 'joda-time:joda-time:2.10.9'
     implementation 'com.github.kizitonwose:CalendarView:0.2.9'
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.1'
     implementation 'com.afollestad.material-dialogs:core:3.1.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
 
 //    testImplementation 'junit:junit:4.12'
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.1'

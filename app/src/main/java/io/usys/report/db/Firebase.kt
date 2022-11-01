@@ -1,11 +1,15 @@
 package io.usys.report.db
 
+import android.net.Uri
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import io.realm.RealmList
-import io.realm.RealmModel
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
@@ -48,11 +52,16 @@ class FireDB {
 
 class FireTypes {
     companion object {
+        const val ADMIN: String = "admin"
         const val USERS: String = "users"
         const val ORGANIZATIONS: String = "organizations"
         const val REVIEWS: String = "reviews"
         const val SPORTS: String = "sports"
         const val COACHES: String = "coaches"
+
+        var USER_PROFILE_IMAGE_PATH_BY_ID : (String) -> String = {"$USERS/$it/profile/profile_image.jpg"}
+        var ORG_PROFILE_IMAGE_PATH_BY_ID : (String) -> String = {"$ORGANIZATIONS/$it/profile/profile_image.jpg"}
+//        var ADMIN_IMAGE_PATH_BY_ID : (String) -> String = {"$ADMIN/$it/profile/profile_image.jpg"}
 
         fun getLayout(type: String): Int {
             when (type) {
@@ -68,6 +77,21 @@ class FireTypes {
 }
 
 /** UTILS **/
+
+fun getStorageReference(): StorageReference {
+    return Firebase.storage.reference
+}
+
+
+fun getStorageRefByPath(path:String): StorageReference {
+    return Firebase.storage.reference.child(path)
+}
+
+inline fun StorageReference.getDownloadUrlAsync(crossinline block:(Uri) -> Unit) {
+    this.downloadUrl.addOnCompleteListener { itUri ->
+        block(itUri.result)
+    }
+}
 
 // Verified
 inline fun firebase(block: (DatabaseReference) -> Unit) {

@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
 //    }
 
     //SAVE PROFILE
-    fun saveProfileToFirebase(user:User?) {
+    private fun saveProfileToFirebase(user:User?) {
         if (user.isNullOrEmpty()) return
         user?.let {
             database.child(FireHelper.USERS).child(it.id).setValue(mUser)

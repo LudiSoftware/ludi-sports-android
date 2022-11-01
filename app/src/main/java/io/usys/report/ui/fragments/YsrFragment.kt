@@ -5,6 +5,9 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.model.Sport
@@ -29,6 +32,7 @@ abstract class YsrFragment : Fragment() {
 //    abstract var _binding: Any
 //    val binding get() = _binding
     lateinit var rootView : View
+    lateinit var storage: FirebaseStorage
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
     var user: User? = null
     val main = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -41,6 +45,7 @@ abstract class YsrFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userOrLogout(requireActivity()) { user = it }
+        storage = Firebase.storage
         realmObjectArg = unbundleRealmObject()
     }
 

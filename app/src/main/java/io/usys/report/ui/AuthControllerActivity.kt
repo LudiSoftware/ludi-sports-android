@@ -15,6 +15,7 @@ import io.usys.report.ui.login.LoginActivity
 import io.usys.report.utils.getMasterUser
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
+import io.usys.report.utils.safeUser
 
 
 /**
@@ -53,17 +54,14 @@ class AuthControllerActivity : AppCompatActivity()  {
     }
 
     private fun verifyUserLogin() {
-        val u = getMasterUser()
-        if (!u.isNullOrEmpty() && !u?.id.isNullOrEmpty()) {
-            u?.id?.let { itId ->
-                getUserUpdatesFromFirebase(itId) {
-                    navigateUser(it)
-                }
+        safeUser {
+            getUserUpdatesFromFirebase(it.id) {
+                navigateUser(it)
             }
-        } else {
-            Session.createObjects()
-            launchActivity<LoginActivity>()
+            return
         }
+        Session.createObjects()
+        launchActivity<LoginActivity>()
     }
 
     override fun onRestart() {

@@ -99,6 +99,12 @@ inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
     //todo: get firebase user, if valid, set and continue
 }
 
+inline fun safeUserId(crossinline block: (String) -> Unit) {
+    getMasterUser()?.id?.let { itId ->
+        block(itId)
+    }
+}
+
 fun userOrLogout(activity: Activity? = null) {
     if (Session.user.isNullOrEmpty()) {
         activity?.let { Session.restartApplication(it) }
