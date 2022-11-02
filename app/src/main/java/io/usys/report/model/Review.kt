@@ -8,9 +8,8 @@ import io.usys.report.R
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.db.FireDB
-import io.usys.report.db.addUpdateDB
+import io.usys.report.db.addUpdateDBAsync
 import io.usys.report.utils.*
-import java.util.*
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -36,7 +35,7 @@ open class Question: RealmObject() {
 }
 
 fun Review.addUpdateInFirebase(): Boolean {
-    return addUpdateDB(FireDB.REVIEWS, this.id.toString(), this)
+    return addUpdateDBAsync(FireDB.REVIEWS, this.id.toString(), this)
 }
 
 private fun createReview() {
@@ -51,7 +50,7 @@ private fun createReview() {
             Question().apply { this.question = "Does this coach work well with parents?" },
             Question().apply { this.question = "Is this coach Chace Zanaty?" })
     }
-    addUpdateDB(FireDB.REVIEWS, rev.id!!, rev)
+    addUpdateDBAsync(FireDB.REVIEWS, rev.id!!, rev)
 }
 
 fun createReviewDialog(activity: Activity) : Dialog {

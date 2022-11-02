@@ -6,7 +6,7 @@ import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmModel
-import io.usys.report.db.addUpdateDB
+import io.usys.report.db.addUpdateDBAsync
 import io.usys.report.db.forceGetNameOfRealmObject
 
 /**
@@ -71,7 +71,7 @@ inline fun <T : RealmModel> T.applyAndSave(block: (T) -> Unit) {
     }
     this.cast<T>()?.let { itObj ->
         this.getRealmId<T>()?.let { itId ->
-            addUpdateDB(itObj.forceGetNameOfRealmObject(), itId, itObj)
+            addUpdateDBAsync(itObj.forceGetNameOfRealmObject(), itId, itObj)
         }
     }
 }
@@ -93,7 +93,7 @@ inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
         block(it)
     } ?: run {
         activity?.let {
-            Session.restartApplication(it)
+            Session.logoutAndRestartApplication(it)
         }
     }
     //todo: get firebase user, if valid, set and continue
@@ -107,7 +107,7 @@ inline fun safeUserId(crossinline block: (String) -> Unit) {
 
 fun userOrLogout(activity: Activity? = null) {
     if (Session.user.isNullOrEmpty()) {
-        activity?.let { Session.restartApplication(it) }
+        activity?.let { Session.logoutAndRestartApplication(it) }
     }
     //todo: get firebase user, if valid, set and continue
 }

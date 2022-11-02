@@ -1,7 +1,6 @@
 package io.usys.report.model
 
 import android.app.Activity
-import android.content.Intent
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import io.usys.report.ui.AuthControllerActivity
@@ -11,6 +10,8 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.db.masterFirebaseLogoutAsync
+import io.usys.report.utils.launchActivity
 import io.usys.report.utils.newUUID
 
 /**
@@ -140,22 +141,24 @@ open class Session : RealmObject() {
             }
 
         //CORE -> LOG CURRENT USER OUT
-        fun logOut() {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            mRealm.executeTransaction {
-                mRealm.where(Session::class.java).findAll().deleteAllFromRealm()
-                mRealm.where(User::class.java).findAll().deleteAllFromRealm()
-                mRealm.where(Organization::class.java).findAll().deleteAllFromRealm()
-                mRealm.where(Sport::class.java).findAll().deleteAllFromRealm()
-                mRealm.where(Review::class.java).findAll().deleteAllFromRealm()
+        private fun deleteAllRealmObjects() {
+            executeRealm {
+                it.where(Session::class.java).findAll().deleteAllFromRealm()
+                it.where(User::class.java).findAll().deleteAllFromRealm()
+                it.where(Organization::class.java).findAll().deleteAllFromRealm()
+                it.where(Sport::class.java).findAll().deleteAllFromRealm()
+                it.where(Review::class.java).findAll().deleteAllFromRealm()
+                it.deleteAll()
             }
         }
 
         //CORE -> SYSTEM RESTART THE APP
-        fun restartApplication(context: Activity) {
-            logOut()
+        fun logoutAndRestartApplication(context: Activity) {
+            deleteAllRealmObjects()
             ActivityCompat.finishAffinity(context)
-            context.startActivity(Intent(context, AuthControllerActivity::class.java))
+            masterFirebaseLogoutAsync(context).addOnCompleteListener {
+                context.launchActivity<AuthControllerActivity>()
+            }
         }
 
         /** -> OBJECT MODEL HELPERS <- **/

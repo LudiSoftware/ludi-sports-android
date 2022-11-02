@@ -21,7 +21,6 @@
         android:drawableLeft="@drawable/ft_truck_icon_30dp"
         android:gravity="center"
         android:text="SOCCER"
-        android:textColor="@color/colorPrimary"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

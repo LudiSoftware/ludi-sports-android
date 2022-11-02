@@ -1,6 +1,7 @@
 package io.usys.report.model
 
 import android.content.Context
+import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import io.usys.report.ui.AuthControllerActivity
@@ -39,6 +40,8 @@ open class User : RealmObject() {
     var phone: String? = ""
     var organization: String? = ""
     var visibility: String = "closed"
+    var photoUrl: String? = null
+    var emailVerified: Boolean? = false
 
     init {
         if (dateCreated.isNullOrBlank()) {
@@ -64,10 +67,14 @@ fun parseFromFirebaseUser(fireUser: FirebaseUser?) : User {
     val uid = fireUser?.uid
     val email = fireUser?.email
     val name = fireUser?.displayName
+    val photoUrl = fireUser?.photoUrl
+    val emailVerified = fireUser?.isEmailVerified
     val user = User().apply {
         this.id = uid ?: "unknown"
         this.email = email
         this.name = name
+        this.photoUrl = photoUrl.toString()
+        this.emailVerified = emailVerified
     }
     return user
 }

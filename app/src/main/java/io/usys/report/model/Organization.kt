@@ -1,11 +1,10 @@
 package io.usys.report.model
 
-import android.location.Location
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.db.FireDB
-import io.usys.report.db.addUpdateDB
+import io.usys.report.db.addUpdateDBAsync
 import io.usys.report.utils.*
 import java.io.Serializable
 
@@ -58,7 +57,7 @@ open class Organization : RealmObject(), Serializable {
     }
 
     fun addUpdateOrgToFirebase(): Boolean {
-        return addUpdateDB(FireDB.ORGANIZATIONS, this.id.toString(), this)
+        return addUpdateDBAsync(FireDB.ORGANIZATIONS, this.id.toString(), this)
     }
 
 }
@@ -71,5 +70,5 @@ fun createOrg() {
         this.city = "birmingham"
         this.name = "USYSR Club"
     }
-    addUpdateDB(FireDB.ORGANIZATIONS, org.id.toString(), org)
+    addUpdateDBAsync(FireDB.ORGANIZATIONS, org.id.toString(), org)
 }

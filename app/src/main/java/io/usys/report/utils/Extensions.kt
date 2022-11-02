@@ -1,6 +1,5 @@
 package io.usys.report.utils
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Context
@@ -12,9 +11,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import io.realm.RealmList
-import io.usys.report.db.getUserUpdatesFromFirebase
 import io.usys.report.model.Session
 import io.usys.report.model.User
 import io.usys.report.model.parseFromFirebaseUser
@@ -24,7 +21,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.Exception
-import java.net.URI
 import java.util.*
 import kotlin.reflect.KProperty1
 

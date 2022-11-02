@@ -3,7 +3,7 @@ package io.usys.report.model
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.db.FireDB
-import io.usys.report.db.addUpdateDB
+import io.usys.report.db.addUpdateDBAsync
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -21,7 +21,7 @@ open class Sport : RealmObject(), Serializable {
 }
 
 fun Sport.addUpdateInFirebase(): Boolean {
-    return addUpdateDB(FireDB.SPORTS, this.id.toString(), this)
+    return addUpdateDBAsync(FireDB.SPORTS, this.id.toString(), this)
 }
 
 private fun createSport() {
@@ -30,5 +30,5 @@ private fun createSport() {
         this.id = newUUID()
         this.name = "soccer"
     }
-    addUpdateDB(FireDB.SPORTS, sport.id.toString(), sport)
+    addUpdateDBAsync(FireDB.SPORTS, sport.id.toString(), sport)
 }

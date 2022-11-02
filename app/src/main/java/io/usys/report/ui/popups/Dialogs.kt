@@ -49,7 +49,7 @@ fun popAskUserLogoutDialog(activity: Activity) : Dialog {
     val yes = dialog.findViewById(R.id.btnYesAskUser) as Button
     val cancel = dialog.findViewById(R.id.btnCancelAskUser) as Button
     yes.setOnClickListener {
-        Session.restartApplication(activity)
+        Session.logoutAndRestartApplication(activity)
     }
     cancel.setOnClickListener {
         dialog.dismiss()

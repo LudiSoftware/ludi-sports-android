@@ -32,7 +32,7 @@ class CoachListFragment : YsrFragment() {
         setupOnClickListeners()
 
         (realmObjectArg as? Organization)?.id?.let {
-            getOrderByEqualTo(FireDB.COACHES, ORDER_BY_ORGANIZATION, it) {
+            getOrderByEqualToAsync(FireDB.COACHES, ORDER_BY_ORGANIZATION, it) {
                 coachesList = this?.toRealmList()
                 _binding?.recyclerList?.loadInRealmList(coachesList, requireContext(), FireDB.COACHES, itemOnClick)
             }

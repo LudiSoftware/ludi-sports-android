@@ -8,8 +8,9 @@
         <item name="colorPrimaryDark">@color/ysrRed</item>
         <item name="colorAccent">@color/ysrRed</item>
         <item name="android:windowBackground">@color/ysrFadedWhite</item>
-        <item name="android:textColor">@color/ysrBlue</item>
-<!--        <item name="android:text">@color/ysrBlue</item>-->
+        <item name="android:textColor">@color/fDarkBlue</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ysrBottomNavigationTheme" parent="Theme.AppCompat.Light">

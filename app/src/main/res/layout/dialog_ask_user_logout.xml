@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00FFFFFF">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -12,7 +11,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/ft_border_rounded_dark"
+        android:background="@drawable/ft_border_rounded_creme"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +24,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Logout"
-            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -37,7 +35,6 @@
             android:inputType="textShortMessage|textLongMessage|textMultiLine|text"
             android:maxLines="3"
             android:text="Are you sure you want to logout?"
-            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <LinearLayout

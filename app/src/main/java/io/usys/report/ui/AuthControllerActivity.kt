@@ -9,10 +9,9 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
-import io.usys.report.db.getUserUpdatesFromFirebase
+import io.usys.report.db.getUserUpdatesFromFirebaseAsync
 import io.usys.report.model.*
 import io.usys.report.ui.login.LoginActivity
-import io.usys.report.utils.getMasterUser
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.safeUser
@@ -55,7 +54,7 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     private fun verifyUserLogin() {
         safeUser {
-            getUserUpdatesFromFirebase(it.id) {
+            getUserUpdatesFromFirebaseAsync(it.id) {
                 navigateUser(it)
             }
             return
@@ -70,13 +69,13 @@ class AuthControllerActivity : AppCompatActivity()  {
     }
 
     private fun navigateUser(user: User?){
-        if (user.isNullOrEmpty()) launchActivity<MainBasicUserActivity>()
+        if (user.isNullOrEmpty()) launchActivity<MasterUserActivity>()
         when (user?.auth) {
             AuthTypes.BASIC_USER -> {
-                launchActivity<MainBasicUserActivity>()
+                launchActivity<MasterUserActivity>()
             }
             AuthTypes.COACH_USER -> {
-                launchActivity<MainBasicUserActivity>()
+                launchActivity<MasterUserActivity>()
             }
             else -> {
                 Toast.makeText(this, "Pending User Approval", Toast.LENGTH_LONG).show()

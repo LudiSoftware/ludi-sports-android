@@ -10,7 +10,7 @@ import io.usys.report.utils.*
 import io.realm.RealmList
 import io.usys.report.databinding.FragmentOrgListBinding
 import io.usys.report.db.FireTypes
-import io.usys.report.db.getOrderByEqualTo
+import io.usys.report.db.getOrderByEqualToAsync
 import io.usys.report.model.Organization.Companion.ORDER_BY_SPORTS
 import io.usys.report.ui.loadInRealmList
 
@@ -33,8 +33,9 @@ class OrganizationListFragment : YsrFragment() {
 
         setupOnClickListeners()
 
+        // Load Organizations by Sport
         if (!hasBeenLoaded) {
-            getOrderByEqualTo(FireTypes.ORGANIZATIONS, ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
+            getOrderByEqualToAsync(FireTypes.ORGANIZATIONS, ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
                 organizationList = this?.toRealmList()
                 _binding?.recyclerList?.loadInRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
             }

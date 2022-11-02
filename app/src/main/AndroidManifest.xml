@@ -41,7 +41,7 @@
             android:name="io.usys.report.coachUser.MainLocationManagerActivity"
             android:label="Main Location Manager Activity" />
         <activity
-            android:name="io.usys.report.ui.MainBasicUserActivity"
+            android:name="io.usys.report.ui.MasterUserActivity"
             android:label="Main Food Truck Activity" />
         <activity
             android:name="io.usys.report.ui.calendar.FoodCalendarFragment"

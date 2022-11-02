@@ -38,8 +38,8 @@ fun <T: View> View.bind(res: Int) : T {
     return this.findViewById(res)
 }
 
-fun View.bindTextView(res: Int) : TextView {
-    return this.findViewById(res)
+fun View?.bindTextView(res: Int) : TextView? {
+    return this?.findViewById(res)
 }
 
 fun View.bindRecyclerView(res: Int) : RecyclerView {

@@ -1,7 +1,8 @@
 package io.usys.report.db
 
+import android.content.Context
 import android.net.Uri
-import com.bumptech.glide.Glide
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -15,8 +16,10 @@ import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.FireHelper
+import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 import io.usys.report.utils.toRealmList
+import java.lang.Exception
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -175,6 +178,10 @@ inline fun <reified T> DataSnapshot.loadIntoSession() {
     }
 }
 
+fun masterFirebaseLogoutAsync(context: Context): Task<Void> {
+    return AuthUI.getInstance().signOut(context)
+}
+
 
 // Verified.
 inline fun <reified T> getBaseObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
@@ -185,7 +192,7 @@ inline fun <reified T> getBaseObjects(dbName:String, crossinline block: RealmLis
     }
 }
 
-fun loadSportsIntoSession() {
+fun loadSportsIntoSessionAsync() {
     firebase {
         it.child(FireDB.SPORTS)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -206,11 +213,11 @@ fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -
     firebase { database ->
         database.child(collection).child(id)
             .setValue(this)
-            .addYsrOnSuccessListener(callbackFunction)
+            .addYsrOnSuccessCallback(callbackFunction)
     }
 }
 
-private fun <TResult> Task<TResult>.addYsrOnSuccessListener(callbackFunction: ((Boolean, String) -> Unit)?) {
+private fun <TResult> Task<TResult>.addYsrOnSuccessCallback(callbackFunction: ((Boolean, String) -> Unit)?) {
     this.addOnSuccessListener {
         callbackFunction?.invoke(true, "success")
     }.addOnCompleteListener {
@@ -221,7 +228,7 @@ private fun <TResult> Task<TResult>.addYsrOnSuccessListener(callbackFunction: ((
 }
 
 // Verified
-fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
+fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
     var result = false
     firebase { database ->
         database.child(collection).child(id)
@@ -241,7 +248,7 @@ fun addUpdateDB(collection: String, id: String, obj: Any): Boolean {
 
 /** GET **/
 
-inline fun getUserUpdatesFromFirebase(id: String, crossinline block: (User?) -> Unit): User? {
+inline fun getUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
     var userUpdates: User? = null
         firebase {
         it.child(FireHelper.USERS).child(id).addYsrListenerForSingleValueEvent {
@@ -260,12 +267,12 @@ inline fun getUserUpdatesFromFirebase(id: String, crossinline block: (User?) -> 
 }
 
 fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    getOrderByEqualTo(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
+    getOrderByEqualToCallback(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
 }
 
 // Verified
-fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String,
-                      callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+fun getOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: String,
+                              callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
             .addYsrListenerForSingleValueEvent(callbackFunction)
@@ -273,14 +280,38 @@ fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String,
 }
 
 // Verified
-@JvmName("getOrderByEqualTo1")
-inline fun getOrderByEqualTo(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
+inline fun getOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
     firebase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
             .addYsrListenerForSingleValueEvent { ds ->
                 block(ds)
             }
     }
+}
+
+inline fun saveProfileToFirebaseAsync(user:User?, crossinline block: (Any) -> Unit) {
+    if (user.isNullOrEmpty()) return
+    if (user?.id.isNullOrEmpty()) return
+    firebase {
+        it.child(FireHelper.USERS).child(user?.id ?: "unknown").setValue(user)
+            .addYsrCompleteListener { ds ->
+                block(ds)
+            }
+    }
+}
+
+fun <TResult> Task<TResult>.addYsrCompleteListener(block: (TResult) -> Unit): Task<TResult> {
+    this.addOnCompleteListener {
+        block(it.result)
+    }
+    return this
+}
+
+fun <TResult> Task<TResult>.addYsrFailureListener(block: (Exception) -> Unit): Task<TResult> {
+    this.addOnFailureListener {
+        block(it)
+    }
+    return this
 }
 
 // Verified
