@@ -25,9 +25,7 @@ import io.usys.report.utils.*
 class DashboardFragment : YsrFragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fairRequestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)) { mapOfResults ->
@@ -47,36 +45,11 @@ class DashboardFragment : YsrFragment() {
 //                itUri.uploadToFirebaseStorage(requireContext(), USER_PROFILE_IMAGE_PATH_BY_ID(itId))
 //            }
 //        }
-//        setupMenu()
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
         return binding.root
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.general_top_menu, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
-
-//    fun setupMenu() {
-//        requireActivity().addMenuProvider(object : MenuProvider {
-//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                menuInflater.inflate(R.menu.general_top_menu, menu)
-//            }
-//
-//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//                when (menuItem.itemId) {
-//                    R.id.menu_logout -> popAskUserPickImageGallery { launchPickImageIntent() }.show()
-//                    else -> {}
-//                }
-//                return true
-//            }
-//
-//        })
-//    }
-
-
 
     override fun onStart() {
         super.onStart()
@@ -109,9 +82,9 @@ class DashboardFragment : YsrFragment() {
 
     override fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
-//            PopFragment().show(childFragmentManager, PopFragment.TAG)
+            PopFragment().show(childFragmentManager, PopFragment.TAG)
 //            findNavController().navigate(R.id.action_pop)
-            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
+//            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
         }
 
     }

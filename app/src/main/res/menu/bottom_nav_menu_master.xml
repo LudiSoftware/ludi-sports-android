@@ -14,10 +14,6 @@
         android:icon="@drawable/dashboard_dark"
         android:title="@string/title_dashboard" />
     <item
-        android:id="@+id/navigation_cart"
-        android:icon="@drawable/cart_dark"
-        android:title="@string/title_orgs" />
-    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/f_profile_light"
         android:title="@string/title_profile" />

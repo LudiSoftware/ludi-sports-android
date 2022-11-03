@@ -13,6 +13,12 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <!-- define your dialog theme -->
+    <style name="DialogTheme" parent="YSR">
+        <item name="android:buttonStyle">@style/YSR</item>
+<!--        <item name="android:textColorHint">@color/green</item>-->
+    </style>
+
     <style name="ysrBottomNavigationTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/ysrFadedWhite</item>
         <item name="android:textColorSecondary">@color/ysrFadedWhite</item>
