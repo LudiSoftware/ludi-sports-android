@@ -1,28 +1,16 @@
-package io.usys.report.db
+package io.usys.report.firebase
 
-import android.content.Context
-import android.net.Uri
-import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.AuthControllerActivity
-import io.usys.report.utils.FireHelper
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
-import io.usys.report.utils.toRealmList
-import java.lang.Exception
 
 /**
- * Created by ChazzCoin : December 2019.
+ * Created by ChazzCoin : October 2022.
  */
 
 class FireDB {
@@ -80,30 +68,6 @@ class FireTypes {
 }
 
 /** UTILS **/
-
-fun getStorageReference(): StorageReference {
-    return Firebase.storage.reference
-}
-
-
-fun getStorageRefByPath(path:String): StorageReference {
-    return Firebase.storage.reference.child(path)
-}
-
-inline fun StorageReference.getDownloadUrlAsync(crossinline block:(Uri) -> Unit) {
-    this.downloadUrl.addOnCompleteListener { itUri ->
-        block(itUri.result)
-    }
-}
-
-// Verified
-inline fun firebase(block: (DatabaseReference) -> Unit) {
-    block(FirebaseDatabase.getInstance().reference)
-}
-
-fun getFirebaseUser(): FirebaseUser? {
-    return FirebaseAuth.getInstance().currentUser
-}
 
 fun Any.forceGetNameOfRealmObject() : String {
     when (this) {
@@ -168,7 +132,6 @@ fun Any?.getNameOfRealmObject(): String? {
     return null
 }
 
-
 inline fun <reified T> DataSnapshot.loadIntoSession() {
     for (ds in this.children) {
         val obj: T? = ds.getValue(T::class.java)
@@ -178,22 +141,17 @@ inline fun <reified T> DataSnapshot.loadIntoSession() {
     }
 }
 
-fun masterFirebaseLogoutAsync(context: Context): Task<Void> {
-    return AuthUI.getInstance().signOut(context)
-}
-
-
 // Verified.
 inline fun <reified T> getBaseObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
-    firebase {
-        it.child(dbName).addYsrParsedListenerForSingleValueEvent<T> { realmList ->
+    firebaseDatabase {
+        it.child(dbName).fairAddParsedListenerForSingleValueEvent<T> { realmList ->
                 block(realmList)
             }
     }
 }
 
 fun loadSportsIntoSessionAsync() {
-    firebase {
+    firebaseDatabase {
         it.child(FireDB.SPORTS)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -210,27 +168,18 @@ fun loadSportsIntoSessionAsync() {
 // unverified
 fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -> Unit)?) {
     val collection = this.getNameOfRealmObject() ?: return
-    firebase { database ->
+    firebaseDatabase { database ->
         database.child(collection).child(id)
             .setValue(this)
-            .addYsrOnSuccessCallback(callbackFunction)
+            .fairAddOnSuccessCallback(callbackFunction)
     }
 }
 
-private fun <TResult> Task<TResult>.addYsrOnSuccessCallback(callbackFunction: ((Boolean, String) -> Unit)?) {
-    this.addOnSuccessListener {
-        callbackFunction?.invoke(true, "success")
-    }.addOnCompleteListener {
-        callbackFunction?.invoke(true, "complete")
-    }.addOnFailureListener {
-        callbackFunction?.invoke(false, "failure")
-    }
-}
 
 // Verified
 fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
     var result = false
-    firebase { database ->
+    firebaseDatabase { database ->
         database.child(collection).child(id)
             .setValue(obj)
             .addOnSuccessListener {
@@ -250,8 +199,8 @@ fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
 
 inline fun getUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
     var userUpdates: User? = null
-        firebase {
-        it.child(FireHelper.USERS).child(id).addYsrListenerForSingleValueEvent {
+        firebaseDatabase {
+        it.child(FireTypes.USERS).child(id).fairAddListenerForSingleValueEvent {
             userUpdates = it?.getValue(User::class.java)
             userUpdates?.let { itUser ->
                 if (itUser.id == id){
@@ -273,17 +222,17 @@ fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot
 // Verified
 fun getOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: String,
                               callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    firebase {
+    firebaseDatabase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
-            .addYsrListenerForSingleValueEvent(callbackFunction)
+            .fairAddListenerForSingleValueEvent(callbackFunction)
     }
 }
 
 // Verified
 inline fun getOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
-    firebase {
+    firebaseDatabase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
-            .addYsrListenerForSingleValueEvent { ds ->
+            .fairAddListenerForSingleValueEvent { ds ->
                 block(ds)
             }
     }
@@ -292,59 +241,14 @@ inline fun getOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: Strin
 inline fun saveProfileToFirebaseAsync(user:User?, crossinline block: (Any) -> Unit) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return
-    firebase {
-        it.child(FireHelper.USERS).child(user?.id ?: "unknown").setValue(user)
-            .addYsrCompleteListener { ds ->
+    firebaseDatabase {
+        it.child(FireTypes.USERS).child(user?.id ?: "unknown").setValue(user)
+            .fairAddOnCompleteListener { ds ->
                 block(ds)
             }
     }
 }
 
-fun <TResult> Task<TResult>.addYsrCompleteListener(block: (TResult) -> Unit): Task<TResult> {
-    this.addOnCompleteListener {
-        block(it.result)
-    }
-    return this
-}
 
-fun <TResult> Task<TResult>.addYsrFailureListener(block: (Exception) -> Unit): Task<TResult> {
-    this.addOnFailureListener {
-        block(it)
-    }
-    return this
-}
 
-// Verified
-fun Query.addYsrListenerForSingleValueEvent(callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    return this.addListenerForSingleValueEvent(object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            callbackFunction?.invoke(dataSnapshot)
-        }
-        override fun onCancelled(databaseError: DatabaseError) {
-            callbackFunction?.invoke(null)
-        }
-    })
-}
 
-@JvmName("addYsrListenerForSingleValueEvent1")
-fun Query.addYsrListenerForSingleValueEvent(block: (DataSnapshot?) -> Unit) {
-    return this.addListenerForSingleValueEvent(object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            block(dataSnapshot)
-        }
-        override fun onCancelled(databaseError: DatabaseError) {
-            block(null)
-        }
-    })
-}
-
-inline fun <reified T> Query.addYsrParsedListenerForSingleValueEvent(crossinline block: (RealmList<T>?) -> Unit) {
-    return this.addListenerForSingleValueEvent(object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            block(dataSnapshot.toRealmList())
-        }
-        override fun onCancelled(databaseError: DatabaseError) {
-            block(null)
-        }
-    })
-}

@@ -1,25 +1,12 @@
 package io.usys.report.utils
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
 import io.realm.RealmList
-import io.usys.report.model.Session
-import io.usys.report.model.User
-import io.usys.report.model.parseFromFirebaseUser
 import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
 import java.lang.Exception
 import java.util.*
 import kotlin.reflect.KProperty1
@@ -27,6 +14,7 @@ import kotlin.reflect.KProperty1
 /**
  * Created by ChazzCoin : October 2022.
  */
+
 
 inline fun tryCatch(block:() -> Unit) {
     try {
@@ -79,69 +67,25 @@ inline fun io(crossinline block: suspend CoroutineScope.() -> Unit) {
     }
 }
 
-inline fun Fragment.pickImageFromGallery(crossinline block: (Uri?) -> Unit) {
-        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-//            val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
-//            context?.contentResolver?.takePersistableUriPermission(uri, flag)
-            block(uri)
-        }
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.SingleMimeType("image/gif")))
-}
-
-inline fun Fragment.ysrRequestPermission(permission:String=WRITE_EXTERNAL_STORAGE, crossinline block: (Boolean) -> Unit) {
-    // Registers a photo picker activity launcher in single-select mode.
-    val perms = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        block(isGranted)
-    }
-    perms.launch(permission)
-}
-
-inline fun Fragment.ysrRequestPermissions(permissions:Array<String>, crossinline block: (Map<String,Boolean>) -> Unit) {
-    // Registers a photo picker activity launcher in single-select mode.
-    val perms = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        block(it)
-    }
-    perms.launch(permissions)
-}
-
-
-
-fun getMasterUser(): User? {
-    val realmUser = Session.getCurrentUser()
-    val realmUserId = realmUser?.id
-    if (!realmUserId.isNullOrEmpty()) return realmUser
-    val fireUser = FirebaseAuth.getInstance().currentUser
-    return parseFromFirebaseUser(fireUser)
-}
-
-inline fun safeUser(block: (User) -> Unit) {
-    val user = getMasterUser()
-    user?.let {
-        if (it.id.isNullOrEmpty()) return@let
-        block(it)
-    }
-
-}
-
 fun Any?.isNullOrEmpty() : Boolean {
     if (this == null) return true
     when (this) {
         is String -> { if (this.isEmpty() || this.isBlank()) return true }
-        is Collection<*> -> { if (this.isEmpty()) return true }
-        is RealmList<*> -> { if (this.isEmpty()) return true }
+        is Collection<*> -> { if (this.isEmpty() || this.size <= 0) return true }
+        is RealmList<*> -> { if (this.isEmpty() || this.size <= 0) return true }
     }
     return false
 }
 
-inline fun <T> T?.safe(block: (T) -> Unit) {
+inline fun <T> T?.fairSafe(block: (T) -> Unit) {
     this?.let {
         block(this)
     }
 }
 
-inline fun <reified TO> Activity.launchActivity() {
-    startActivity(Intent(this, TO::class.java))
+fun String.toUri() : Uri? {
+    val uriString = Uri.parse(this)
+    return if (uriString.isNullOrEmpty()) null else uriString
 }
 
 fun newUUID(): String {
@@ -152,6 +96,16 @@ fun log(msg: Any?) {
     println(msg.toString())
 }
 
+fun Uri?.toFile(context: Context): File? {
+    if (this.isNullOrEmpty()) return null
+    return this?.let { getFileFromUri(context, it) }
+}
+
+fun Uri?.toFileInputStream(context: Context): FileInputStream? {
+    if (this.isNullOrEmpty()) return null
+    val file = this?.let { getFileFromUri(context, it) }
+    return FileInputStream(file)
+}
 
 @Throws(IOException::class)
 fun getFileFromUri(context: Context, uri: Uri): File? {
@@ -159,10 +113,7 @@ fun getFileFromUri(context: Context, uri: Uri): File? {
     try {
         context.contentResolver.openInputStream(uri).use { ins ->
             if (ins != null) {
-                createFileFromStream(
-                    ins,
-                    destinationFilename
-                )
+                createFileFromStream(ins, destinationFilename)
             }
         }
     } catch (ex: Exception) {

@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.*
 import io.realm.RealmList
+import io.realm.RealmObject
 import io.usys.report.databinding.FragmentOrgListBinding
-import io.usys.report.db.FireTypes
-import io.usys.report.db.getOrderByEqualToAsync
+import io.usys.report.firebase.FireTypes
+import io.usys.report.firebase.getOrderByEqualToAsync
 import io.usys.report.model.Organization.Companion.ORDER_BY_SPORTS
 import io.usys.report.ui.loadInRealmList
 
@@ -18,10 +22,9 @@ import io.usys.report.ui.loadInRealmList
  * Created by ChazzCoin : October 2022.
  */
 
-class OrganizationListFragment : YsrFragment() {
+class OrganizationListFragment : YsrMiddleFragment() {
 
     private var _binding: FragmentOrgListBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     private var hasBeenLoaded = false
@@ -30,9 +33,12 @@ class OrganizationListFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentOrgListBinding.inflate(inflater, container, false)
         rootView = binding.root
-
         setupOnClickListeners()
+        setupDisplay()
+        return rootView
+    }
 
+    private fun setupDisplay() {
         // Load Organizations by Sport
         if (!hasBeenLoaded) {
             getOrderByEqualToAsync(FireTypes.ORGANIZATIONS, ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
@@ -43,7 +49,6 @@ class OrganizationListFragment : YsrFragment() {
         } else {
             _binding?.recyclerList?.loadInRealmList(organizationList, requireContext(), FireTypes.ORGANIZATIONS, itemOnClick)
         }
-        return rootView
     }
 
     override fun setupOnClickListeners() {

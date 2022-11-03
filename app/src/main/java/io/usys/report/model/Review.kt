@@ -7,8 +7,8 @@ import io.realm.RealmList
 import io.usys.report.R
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.db.FireDB
-import io.usys.report.db.addUpdateDBAsync
+import io.usys.report.firebase.FireDB
+import io.usys.report.firebase.addUpdateDBAsync
 import io.usys.report.utils.*
 
 /**

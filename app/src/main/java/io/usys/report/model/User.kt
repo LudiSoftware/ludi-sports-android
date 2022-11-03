@@ -1,11 +1,8 @@
 package io.usys.report.model
 
-import android.content.Context
-import android.net.Uri
+import android.app.Activity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
-import io.usys.report.ui.AuthControllerActivity
-import io.realm.Realm
 import io.realm.RealmObject
 import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
@@ -58,17 +55,15 @@ open class User : RealmObject() {
         return false
     }
 
-
-
 }
 
-fun parseFromFirebaseUser(fireUser: FirebaseUser?) : User {
-    if (fireUser.isNullOrEmpty()) return User()
-    val uid = fireUser?.uid
-    val email = fireUser?.email
-    val name = fireUser?.displayName
-    val photoUrl = fireUser?.photoUrl
-    val emailVerified = fireUser?.isEmailVerified
+fun FirebaseUser?.toYsrUser() : User {
+    if (this.isNullOrEmpty()) return User()
+    val uid = this?.uid
+    val email = this?.email
+    val name = this?.displayName
+    val photoUrl = this?.photoUrl
+    val emailVerified = this?.isEmailVerified
     val user = User().apply {
         this.id = uid ?: "unknown"
         this.email = email
@@ -79,66 +74,47 @@ fun parseFromFirebaseUser(fireUser: FirebaseUser?) : User {
     return user
 }
 
-fun updateUser(newUser: User) {
-    val realm = Realm.getDefaultInstance()
-    realm.executeTransaction { r : Realm ->
-        // Get a turtle to update.
-        val user = r.where(User::class.java).findFirst()
-        // Update properties on the instance.
-        // This change is saved to the realm.
-        user.apply {
-            this?.auth = newUser.auth
-            this?.name = newUser.name
-            this?.email = newUser.email
-            this?.phone = newUser.phone
-        }
+fun getMasterUser(): User? {
+    val realmUser = Session.getCurrentUser()
+    val realmUserId = realmUser?.id
+    if (!realmUserId.isNullOrEmpty()) return realmUser
+    val fireUser = FirebaseAuth.getInstance().currentUser
+    return fireUser.toYsrUser()
+}
+
+inline fun safeUser(block: (User) -> Unit) {
+    val user = getMasterUser()
+    user?.let {
+        if (it.id.isNullOrEmpty()) return@let
+        block(it)
     }
 }
 
-//GET CURRENT CART
-fun getUser(): User? {
-    val realm = Realm.getDefaultInstance()
-    var user : User? = User()
-    realm?.let {
-        user = it.where(User::class.java).findFirst()
+inline fun safeUserId(crossinline block: (String) -> Unit) {
+    getMasterUser()?.id?.let { itId ->
+        block(itId)
     }
-    return user
 }
 
-//fun getProfileUpdatesFirebase(mContext: Context, uid:String) {
-//    val database = FirebaseDatabase.getInstance().reference
-//    database.child(FireHelper.PROFILES).child(FireHelper.USERS).child(uid)
-//        .addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                val temp: User? = dataSnapshot.getValue(User::class.java)
-//                temp?.let {
-//                    if (it.id == uid){
-//                        AuthControllerActivity.USER_AUTH = it.auth.toString()
-//                        AuthControllerActivity.USER_ID = it.id!!
-////                        it.getFoodtrucksFromFirebase(mContext)
-//                        Session.updateUser(it)
-//                    }
-//                }
-//            }
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                showFailedToast(mContext)
-//            }
-//        })
-//}
+fun getUserId(): String? {
+    return getMasterUser()?.id
+}
 
-fun User.addUpdateToFirebase(mContext: Context) {
-    val database = FirebaseDatabase.getInstance().reference
-    database.child(FireHelper.PROFILES)
-        .child(FireHelper.USERS)
-        .child(AuthControllerActivity.USER_ID)
-        .setValue(this)
-        .addOnSuccessListener {
-            //success
-            Session.updateUser(this)
-            showSuccess(mContext, "Successfully updated User Info.")
-        }.addOnFailureListener {
-            //failure
-            showFailedToast(mContext, "Failed to update User Info.")
+inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
+    val user = Session.getCurrentUser()
+    user?.let {
+        block(it)
+    } ?: run {
+        activity?.let {
+            Session.logoutAndRestartApplication(it)
         }
+    }
+    //todo: get firebase user, if valid, set and continue
 }
 
+fun userOrLogout(activity: Activity? = null) {
+    if (Session.user.isNullOrEmpty()) {
+        activity?.let { Session.logoutAndRestartApplication(it) }
+    }
+    //todo: get firebase user, if valid, set and continue
+}

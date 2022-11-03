@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.db.FireDB
-import io.usys.report.db.FireTypes
+import io.usys.report.firebase.FireDB
+import io.usys.report.firebase.FireTypes
 import io.usys.report.utils.isNullOrEmpty
 
 

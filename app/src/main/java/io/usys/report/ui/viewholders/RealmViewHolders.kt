@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.db.FireDB
+import io.usys.report.firebase.FireDB
 import io.usys.report.model.Coach
 import io.usys.report.model.Organization
 import io.usys.report.model.Sport

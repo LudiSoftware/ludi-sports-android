@@ -8,17 +8,17 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
 import io.usys.report.databinding.FragmentUserProfileBinding
-import io.usys.report.db.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
-import io.usys.report.db.getDownloadUrlAsync
-import io.usys.report.db.getStorageRefByPath
+import io.usys.report.firebase.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
+import io.usys.report.firebase.getDownloadUrlAsync
+import io.usys.report.firebase.fireStorageRefByPath
+import io.usys.report.model.safeUserId
 import io.usys.report.utils.loadUriIntoImgView
-import io.usys.report.utils.safeUserId
 
 /**
  * Created by ChazzCoin : 2020.
  */
 
-class ProfileFragment : YsrFragment() {
+class ProfileFragment : YsrMiddleFragment() {
 
     val _SAVE = 0
     val _DISPLAY = 1
@@ -59,13 +59,12 @@ class ProfileFragment : YsrFragment() {
 //        }
         safeUserId { itId ->
             val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
-            getStorageRefByPath(path).getDownloadUrlAsync {
+            fireStorageRefByPath(path).getDownloadUrlAsync {
                 _binding?.imgProfileUser?.let { itImgView ->
                     this.loadUriIntoImgView(it, itImgView)
                 }
             }
         }
-
 
         return rootView
     }

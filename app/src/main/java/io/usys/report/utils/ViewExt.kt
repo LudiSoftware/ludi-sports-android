@@ -2,6 +2,7 @@ package io.usys.report.utils
 
 import android.R
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 /**
- * Created by ChazzCoin : December 2019.
+ * Created by ChazzCoin : October 2022.
  */
 
 
@@ -34,6 +35,10 @@ fun Activity.changeStatusBarColor() {
     this.window.statusBarColor = this.getColorCompat(R.color.black)
 }
 
+fun <T: View> Dialog.bind(res: Int) : T {
+    return this.findViewById(res)
+}
+
 fun <T: View> View.bind(res: Int) : T {
     return this.findViewById(res)
 }
@@ -42,24 +47,24 @@ fun View?.bindTextView(res: Int) : TextView? {
     return this?.findViewById(res)
 }
 
-fun View.bindRecyclerView(res: Int) : RecyclerView {
-    return this.findViewById(res)
+fun View?.bindRecyclerView(res: Int) : RecyclerView? {
+    return this?.findViewById(res)
 }
 
-fun View.bindImageButton(res: Int) : ImageButton {
-    return this.findViewById(res)
+fun View?.bindImageButton(res: Int) : ImageButton? {
+    return this?.findViewById(res)
 }
 
-fun View.bindSpinner(res: Int) : Spinner {
-    return this.findViewById(res)
+fun View?.bindSpinner(res: Int) : Spinner? {
+    return this?.findViewById(res)
 }
 
-fun View.bindButton(res: Int) : Button {
-    return this.findViewById(res)
+fun View?.bindButton(res: Int) : Button? {
+    return this?.findViewById(res)
 }
 
-fun View.bindLinearLayout(res: Int) : LinearLayout {
-    return this.findViewById(res)
+fun View?.bindLinearLayout(res: Int) : LinearLayout? {
+    return this?.findViewById(res)
 }
 
 fun View.makeVisible() {

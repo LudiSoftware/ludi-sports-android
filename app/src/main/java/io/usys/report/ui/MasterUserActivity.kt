@@ -11,8 +11,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
-import io.usys.report.db.loadSportsIntoSessionAsync
+import io.usys.report.firebase.loadSportsIntoSessionAsync
 import io.usys.report.utils.popAskUserLogoutDialog
+import io.usys.report.utils.popAskUserPickImageGallery
 
 
 /**
@@ -47,18 +48,6 @@ class MasterUserActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.general_top_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_logout -> popAskUserLogoutDialog(this).show()
-            else -> {}
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
 }
 

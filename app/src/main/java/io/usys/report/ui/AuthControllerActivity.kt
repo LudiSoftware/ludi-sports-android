@@ -9,12 +9,11 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
-import io.usys.report.db.getUserUpdatesFromFirebaseAsync
+import io.usys.report.firebase.getUserUpdatesFromFirebaseAsync
 import io.usys.report.model.*
-import io.usys.report.ui.login.LoginActivity
+import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
-import io.usys.report.utils.safeUser
 
 
 /**
@@ -60,7 +59,7 @@ class AuthControllerActivity : AppCompatActivity()  {
             return
         }
         Session.createObjects()
-        launchActivity<LoginActivity>()
+        launchActivity<ProviderLoginActivity>()
     }
 
     override fun onRestart() {

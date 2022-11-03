@@ -3,8 +3,8 @@ package io.usys.report.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.db.FireDB
-import io.usys.report.db.addUpdateDBAsync
+import io.usys.report.firebase.FireDB
+import io.usys.report.firebase.addUpdateDBAsync
 import io.usys.report.utils.*
 import java.io.Serializable
 

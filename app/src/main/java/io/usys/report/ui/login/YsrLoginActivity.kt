@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.databinding.ActivityLoginBinding
-import io.usys.report.db.saveProfileToFirebaseAsync
+import io.usys.report.firebase.saveProfileToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
-import io.usys.report.model.parseFromFirebaseUser
+import io.usys.report.model.toYsrUser
 import io.usys.report.utils.*
 
 /**
@@ -41,7 +41,7 @@ class YsrLoginActivity : AppCompatActivity() {
 
     private fun handleFireUser() {
         val fireUser = auth.currentUser
-        val user = parseFromFirebaseUser(fireUser)
+        val user = fireUser.toYsrUser()
         saveProfileToFirebase(user)
     }
 

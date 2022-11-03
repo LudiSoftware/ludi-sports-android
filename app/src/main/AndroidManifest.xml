@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.usys.report.ui.login.LoginActivity"
+            android:name="io.usys.report.ui.login.ProviderLoginActivity"
             android:label="@string/title_activity_login" />
         <activity
             android:name="io.usys.report.ui.MainAdminActivity"

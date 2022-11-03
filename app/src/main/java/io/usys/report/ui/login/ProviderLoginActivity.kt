@@ -3,27 +3,27 @@ package io.usys.report.ui.login
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.db.saveProfileToFirebaseAsync
+import io.usys.report.firebase.saveProfileToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
-import io.usys.report.model.parseFromFirebaseUser
+import io.usys.report.model.toYsrUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
+import io.usys.report.utils.fairRegisterActivityResult
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class LoginActivity : AppCompatActivity() {
+class ProviderLoginActivity : AppCompatActivity() {
 
     // Choose authentication providers
-    val providers = arrayListOf(
+    private val providers = arrayListOf(
         AuthUI.IdpConfig.EmailBuilder().build(),
         AuthUI.IdpConfig.GoogleBuilder().build())
 
@@ -31,9 +31,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
 
-        val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res ->
-            this.onSignInResult(res)
-        }
 
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
@@ -41,7 +38,9 @@ class LoginActivity : AppCompatActivity() {
             .setLogo(R.drawable.usysr_logo) // Set logo drawable
             .setTheme(R.style.YSR) // Set theme
             .build()
-        signInLauncher.launch(signInIntent)
+        fairRegisterActivityResult<FirebaseAuthUIAuthenticationResult>(signInIntent) { res ->
+            this.onSignInResult(res)
+        }
 
     }
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleFireUser(firebaseUser: FirebaseUser?) {
-        val user = parseFromFirebaseUser(firebaseUser)
+        val user = firebaseUser.toYsrUser()
         saveProfileToFirebaseUI(user)
     }
 
@@ -74,20 +73,6 @@ class LoginActivity : AppCompatActivity() {
             launchActivity<AuthControllerActivity>()
         }
     }
-
-//    private fun googleTesting() {
-//        val signInRequest = BeginSignInRequest.builder()
-//            .setGoogleIdTokenRequestOptions(
-//                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-//                    .setSupported(true)
-//                    // Your server's client ID, not your Android client ID.
-//                    .setServerClientId(getString(R.string.your_web_client_id))
-//                    // Only show accounts previously used to sign in.
-//                    .setFilterByAuthorizedAccounts(true)
-//                    .build())
-//            .build()
-//    }
-
 
 }
 

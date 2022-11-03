@@ -1,8 +1,13 @@
 package io.usys.report.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
-import android.view.View
+import android.view.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
@@ -10,10 +15,15 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.usys.report.R
+import io.usys.report.firebase.FireTypes
+import io.usys.report.firebase.uploadToFirebaseStorage
 import io.usys.report.model.Sport
 import io.usys.report.model.User
+import io.usys.report.model.getUserId
+import io.usys.report.model.userOrLogout
 import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
-import io.usys.report.utils.userOrLogout
+import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,11 +39,11 @@ abstract class YsrFragment : Fragment() {
         val ARG = "realmObj"
     }
 
-//    abstract var _binding: Any
-//    val binding get() = _binding
     lateinit var rootView : View
     lateinit var storage: FirebaseStorage
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
+    var pickImageIntent: ActivityResultLauncher<PickVisualMediaRequest>? = null
+
     var user: User? = null
     val main = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -44,9 +54,44 @@ abstract class YsrFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //TODO: Turn this into a PopUp Dialog -> Add to profile page menu option
+        pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
+            log(itUri)
+            itUri.uploadToFirebaseStorage(requireContext(), FireTypes.USER_PROFILE_IMAGE_PATH_BY_ID(
+                getUserId() ?: return@fairGetPickImageFromGalleryIntent))
+        }
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        setupMenu()
         userOrLogout(requireActivity()) { user = it }
         storage = Firebase.storage
         realmObjectArg = unbundleRealmObject()
+    }
+
+    fun setupMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.general_top_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_logout -> popAskUserPickImageGallery {
+                        launchPickImageIntent()
+                    }.show()
+                    else -> {}
+                }
+                return true
+            }
+
+        })
+    }
+
+    fun launchPickImageIntent(){
+        pickImageIntent?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
 }

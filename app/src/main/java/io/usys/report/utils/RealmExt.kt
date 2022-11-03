@@ -1,13 +1,12 @@
 package io.usys.report.utils
 
-import android.app.Activity
 import com.google.firebase.database.DataSnapshot
 import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmModel
-import io.usys.report.db.addUpdateDBAsync
-import io.usys.report.db.forceGetNameOfRealmObject
+import io.usys.report.firebase.addUpdateDBAsync
+import io.usys.report.firebase.forceGetNameOfRealmObject
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -87,30 +86,7 @@ fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {
     return this.getValue(clazz)
 }
 
-inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
-    val user = Session.getCurrentUser()
-    user?.let {
-        block(it)
-    } ?: run {
-        activity?.let {
-            Session.logoutAndRestartApplication(it)
-        }
-    }
-    //todo: get firebase user, if valid, set and continue
-}
 
-inline fun safeUserId(crossinline block: (String) -> Unit) {
-    getMasterUser()?.id?.let { itId ->
-        block(itId)
-    }
-}
-
-fun userOrLogout(activity: Activity? = null) {
-    if (Session.user.isNullOrEmpty()) {
-        activity?.let { Session.logoutAndRestartApplication(it) }
-    }
-    //todo: get firebase user, if valid, set and continue
-}
 
 fun sessionAndUser(block: (Session, User) -> Unit) {
     session { itSession ->
