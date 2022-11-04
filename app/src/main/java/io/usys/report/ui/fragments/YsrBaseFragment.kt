@@ -65,18 +65,19 @@ abstract class YsrFragment : Fragment() {
             itUri.uploadToFirebaseStorage(requireContext(), FireTypes.USER_PROFILE_IMAGE_PATH_BY_ID(
                 getUserId() ?: return@fairGetPickImageFromGalleryIntent))
         }
+        setupMenu()
 
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setupMenu()
         userOrLogout(requireActivity()) { user = it }
         storage = Firebase.storage
         realmObjectArg = unbundleRealmObject()
     }
 
-    fun setupMenu() {
+
+    private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.general_top_menu, menu)

@@ -23,6 +23,11 @@ class MasterUserActivity : AppCompatActivity() {
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.ysrFadedWhite)
         setContentView(R.layout.activity_main)
+        val actionBar = supportActionBar
+        actionBar?.setLogo(R.drawable.ysr_2)
+        actionBar?.setDisplayUseLogoEnabled(true)
+        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(false)
 
         // -> Base Loading of Data for the user.
         loadSportsIntoSessionAsync()

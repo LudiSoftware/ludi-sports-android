@@ -34,9 +34,9 @@
         <item name="enforceTextAppearance">false</item>
     </style>
 
-    <style name="YSR.ActionBar">
-        <item name="android:background">@color/ysrBlue</item>
-    </style>
+<!--    <style name="YSR.ActionBar">-->
+<!--        <item name="android:background">@color/ysrBlue</item>-->
+<!--    </style>-->
 
     <style name="FT_Dialog" parent="Theme.AppCompat.Light">
         <item name="android:windowMinWidthMajor">75%</item>

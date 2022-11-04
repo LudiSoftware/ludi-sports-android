@@ -5,6 +5,15 @@
 <menu
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:id="@+id/icon_id"-->
+<!--        android:icon="@drawable/ysr_2"-->
+<!--        android:title="@string/app_name"-->
+<!--        android:visible="true"-->
+<!--        app:showAsAction="ifRoom|withText">-->
+
+<!--    </item>-->
+
     <item
         android:id="@+id/menu_logout"
         android:icon="@drawable/f_profile_dark"
