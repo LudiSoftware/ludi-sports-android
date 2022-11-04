@@ -23,7 +23,7 @@
     <color name="colorWindowBackground">@color/white</color>
 
     <color name="fLightBlue">#bed2ff</color>
-    <color name="fDarkBlue">#004088</color>
+<!--    <color name="ysrDarkBlue">#004088</color>-->
     <color name="fOrangeOne">#f9b48b</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#ffffff</color>
@@ -62,4 +62,22 @@
     <color name="example_6_black">#BF000000</color>
     <color name="example_7_white">#D9FFFFFF</color>
     <color name="example_7_yellow">#FFEB3B</color>
+
+<!--    -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+
+    <color name="_bg___3_organizations_color">#fafaf8</color>
+    <color name="rectangle_33_color">#ffffff</color>
+    <color name="u_s__soccer_color">#004088</color>
+    <color name="www_ussoccer_com_color">#3a3a3c</color>
+    <color name="service_color">#8a8a8f</color>
+    <color name="___label_color">#a1a1a5</color>
+    <color name="bound_color">#004088</color>
+    <color name="bound_ek1_color">#8a8a8f</color>
+    <color name="background_ek2_color">#f8f8f8</color>
+    <color name="capacity_color">#000000</color>
+    <color name="time_color">#000000</color>
 </resources>

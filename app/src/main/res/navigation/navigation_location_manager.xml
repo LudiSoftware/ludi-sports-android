@@ -8,10 +8,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_location_manager"
-    app:startDestination="@+id/navigation_spot_calendar">
+    app:startDestination="@+id/navigation_management">
 
     <fragment
-        android:id="@+id/navigation_spot_calendar"
+        android:id="@+id/navigation_management"
         android:name="io.usys.report.coachUser.SpotCalendarFragmentLocation"
         android:label="@string/title_calendar"
         tools:layout="@layout/spot_calendar_fragment" />

@@ -1,8 +1,6 @@
 package io.usys.report.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -12,8 +10,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
 import io.usys.report.firebase.loadSportsIntoSessionAsync
-import io.usys.report.utils.popAskUserLogoutDialog
-import io.usys.report.utils.popAskUserPickImageGallery
 
 
 /**
@@ -25,7 +21,7 @@ class MasterUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.ysrBlue)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.ysrFadedWhite)
         setContentView(R.layout.activity_main)
 
         // -> Base Loading of Data for the user.
@@ -38,7 +34,7 @@ class MasterUserActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(
-                R.id.navigation_spot_calendar,
+                R.id.navigation_management,
                 R.id.navigation_dashboard,
                 R.id.navigation_profile
             )

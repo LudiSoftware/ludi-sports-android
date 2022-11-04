@@ -1,5 +1,6 @@
 package io.usys.report.ui.fragments
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -54,7 +55,11 @@ abstract class YsrFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: Turn this into a PopUp Dialog -> Add to profile page menu option
+        //Request Permissions...
+        fairRequestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) { mapOfResults ->
+            log(mapOfResults.toString())
+        }
+        //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
             itUri.uploadToFirebaseStorage(requireContext(), FireTypes.USER_PROFILE_IMAGE_PATH_BY_ID(

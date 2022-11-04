@@ -27,7 +27,7 @@ class SportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * addressLinearLayout
      */
 //    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
-    var txtItemSpotName = itemView.bindTextView(R.id.txtItemSpotName)
+    var txtItemSpotName = itemView.bindTextView(R.id.cardSportTxtSportName)
 //    var txtItemDate = itemView.bindTextView(R.id.txtItemDate)
 //    var txtItemEstPeople = itemView.bindTextView(R.id.txtItemEstPeople)
 //    var txtItemCost = itemView.bindTextView(R.id.txtItemCost)
@@ -71,7 +71,7 @@ class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * addressLinearLayout
      */
 //    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
-    var txtItemSpotName = itemView.bindTextView(R.id.txtItemSpotName)
+    var txtItemSpotName = itemView.bindTextView(R.id.cardSportTxtSportName)
 //    var txtItemDate = itemView.bindTextView(R.id.txtItemDate)
 //    var txtItemEstPeople = itemView.bindTextView(R.id.txtItemEstPeople)
 //    var txtItemCost = itemView.bindTextView(R.id.txtItemCost)

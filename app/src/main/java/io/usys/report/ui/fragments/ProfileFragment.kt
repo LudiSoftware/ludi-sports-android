@@ -72,7 +72,7 @@ class ProfileFragment : YsrMiddleFragment() {
     private fun setupDisplay() {
         //General User Info
         _binding?.txtProfileName?.setText(user?.name)
-        _binding?.editLayoutProfileEmail?.setText(user?.email)
+//        _binding?.editLayoutProfileEmail?.setText(user?.email)
 //        rootView.editPhoneNumber.setText(user?.phone)
     }
 

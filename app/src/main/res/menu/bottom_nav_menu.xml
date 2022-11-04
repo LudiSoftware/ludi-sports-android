@@ -4,7 +4,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_spot_calendar"
+        android:id="@+id/navigation_management"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_calendar" />
     <item

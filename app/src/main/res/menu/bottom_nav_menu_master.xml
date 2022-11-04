@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Created by ChazzCoin : December 2019 -->
+<!-- Created by ChazzCoin : October 2022 -->
 
-<!-- FOOD TRUCK MANAGER NAVIGATION -->
+<!-- MASTER USER NAVIGATION -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_spot_calendar"
-        android:icon="@drawable/calendar_light"
-        android:title="@string/title_calendar" />
+        android:id="@+id/navigation_management"
+        android:icon="@drawable/t_dash_dark"
+        android:title="@string/title_management" />
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/dashboard_dark"

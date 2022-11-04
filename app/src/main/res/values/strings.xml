@@ -17,6 +17,7 @@
     <string name="title_coaches">Coaches</string>
     <string name="title_orgs">Organizations</string>
     <string name="title_profile">Profile</string>
+    <string name="title_management">Management</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
@@ -71,4 +72,38 @@
     <string name="cashapp_directions">Please copy the CashApp Username and send the TOTAL amount. Once you have sent the payment, please press "PAID!".</string>
 
     <string name="two_spots_for_purchase">Will create two spots for purchase*</string>
+
+        <!--    -->
+    <string name="ek_img_content">ExportKit Image</string>
+    <string name="u_s__soccer_string">U.S. Soccer</string>
+    <string name="www_ussoccer_com_string">www.ussoccer.com</string>
+    <string name="__1__312__808_1300_string">+1 (312) 808-1300</string>
+    <string name="communications_ussoccer_org_string">communications@ussoccer.org</string>
+    <string name="u_s__soccer_federation_1801_s__prairie_ave__chicago__il_60616_string">U.S. Soccer Federation 1801 S. PrairieAve. Chicago, IL 60616</string>
+    <string name="__coaching___training___talent_identification_string"> Coaching | Training | Talent Identification</string>
+    <string name="american_youth_soccer_organization_string">American YouthSoccer Organization</string>
+    <string name="_19700_s__vermont_ave___suite_103_torrance__ca_90502_string">19700 S. Vermont Ave., Suite 103Torrance, CA 90502</string>
+    <string name="www_ayso_org_string">www.ayso.org</string>
+    <string name="_800_872_2976_string">800-872-2976</string>
+    <string name="email_aysor_org_string">email@aysor.org</string>
+    <string name="__coaching___training___talent_identification_ek1_string"> Coaching | Training | Talent Identification</string>
+    <string name="mlb_string">MLB</string>
+    <string name="mlb_advanced_media__l_p__1271_avenue_of_the_americas_new_york__ny_10020_usa_string">MLB Advanced Media, L.P. 1271 Avenueof the Americas New York, NY 10020USA</string>
+    <string name="www_mlb_com__string">www.mlb.com/</string>
+    <string name="_866_800_1275_string">866-800-1275</string>
+    <string name="email_mlb_com_string">email@mlb.com</string>
+    <string name="__coaching___training___talent_identification_ek2_string"> Coaching | Training | Talent Identification</string>
+    <string name="abc_sports_string">ABC Sports</string>
+    <string name="mlb_advanced_media__l_p__1271_avenue_of_the_americas_new_york__ny_10020_usa_ek1_string">MLB Advanced Media, L.P. 1271 Avenueof the Americas New York, NY 10020USA</string>
+    <string name="www_mlb_com__ek1_string">www.mlb.com/</string>
+    <string name="_866_800_1275_ek1_string">866-800-1275</string>
+    <string name="email_mlb_com_ek1_string">email@mlb.com</string>
+    <string name="__coaching___training___talent_identification_ek3_string"> Coaching | Training | Talent Identification</string>
+    <string name="service_string">Service</string>
+    <string name="___label_string">Home</string>
+    <string name="___label_ek1_string">organizations</string>
+    <string name="___label_ek2_string">Profile</string>
+    <string name="review_string">Review</string>
+    <string name="time_string">9:41</string>
+    <string name="title_string">Organizations</string>
 </resources>

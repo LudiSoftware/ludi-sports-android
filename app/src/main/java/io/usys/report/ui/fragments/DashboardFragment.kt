@@ -28,23 +28,6 @@ class DashboardFragment : YsrFragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fairRequestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)) { mapOfResults ->
-            log(mapOfResults.toString())
-        }
-
-//        //TODO: Turn this into a PopUp Dialog -> Add to profile page menu option
-//        pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
-//            log(itUri)
-//            itUri.uploadToFirebaseStorage(requireContext(), USER_PROFILE_IMAGE_PATH_BY_ID(
-//                getUserId() ?: return@fairGetPickImageFromGalleryIntent
-//            ))
-//        }
-//        fairPickImageFromGalleryTest { itUri ->
-//            log(itUri)
-//            safeUserId { itId ->
-//                itUri.uploadToFirebaseStorage(requireContext(), USER_PROFILE_IMAGE_PATH_BY_ID(itId))
-//            }
-//        }
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
@@ -82,9 +65,9 @@ class DashboardFragment : YsrFragment() {
 
     override fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
-            PopFragment().show(childFragmentManager, PopFragment.TAG)
+//            PopFragment().show(childFragmentManager, PopFragment.TAG)
 //            findNavController().navigate(R.id.action_pop)
-//            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
+            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
         }
 
     }

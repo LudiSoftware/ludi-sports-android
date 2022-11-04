@@ -23,16 +23,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfileUser"
             android:layout_width="139dp"
             android:layout_height="132dp"
             android:layout_marginTop="36dp"
+            android:src="@drawable/ysr_bg_two"
             app:layout_constraintEnd_toEndOf="@+id/imgProfileBanner"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="@+id/imgProfileBanner"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ft_profile_icon_30dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtProfileName"
@@ -54,50 +54,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProfileName" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutLinearProfileCoach"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ft_border_rounded_dark"
-            android:paddingBottom="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.526"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnProfileReview">
-
-            <TextView
-                android:id="@+id/txtLayoutProfileEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
-                android:text="Email:"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/editLayoutProfileEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
-                android:background="@null"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:text="chacezanaty@gmail.com"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/txtLayoutProfileEmail"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.719" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -124,18 +80,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProfileOrganization" />
 
-        <Button
-            android:id="@+id/btnProfileReview"
-            android:layout_width="126dp"
-            android:layout_height="54dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ft_btn_border"
-            android:text="Review This Coach"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.943"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+<!--        <Button-->
+<!--            android:id="@+id/btnProfileReview"-->
+<!--            android:layout_width="126dp"-->
+<!--            android:layout_height="54dp"-->
+<!--            android:background="@drawable/ft_btn_border"-->
+<!--            android:text="Review This Coach"-->
+<!--            android:textColor="@color/colorPrimaryDark"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.543"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            tools:layout_editor_absoluteY="661dp" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -8,36 +8,39 @@
         <item name="colorPrimaryDark">@color/ysrRed</item>
         <item name="colorAccent">@color/ysrRed</item>
         <item name="android:windowBackground">@color/ysrFadedWhite</item>
-        <item name="android:textColor">@color/fDarkBlue</item>
+        <item name="android:textColor">@color/ysrDarkBlue</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <!-- define your dialog theme -->
-    <style name="DialogTheme" parent="YSR">
+    <!-- Global PopUp/Dialog/UIAlertView Theme -->
+    <style name="YSR.DialogTheme" parent="Theme.AppCompat.Light">
         <item name="android:buttonStyle">@style/YSR</item>
-<!--        <item name="android:textColorHint">@color/green</item>-->
     </style>
 
-    <style name="ysrBottomNavigationTheme" parent="Theme.AppCompat.Light">
+    <!-- Global Button Theme -->
+    <style name="YSR.Button">
+        <item name="android:textColor">@color/ysrFadedWhite</item>
+        <item name="colorButtonNormal">@color/ysrDarkBlue</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <!-- Global Bottom Tab Bar Theme -->
+    <style name="YSR.BottomNavigationTheme">
         <item name="colorPrimary">@color/ysrFadedWhite</item>
         <item name="android:textColorSecondary">@color/ysrFadedWhite</item>
         <item name="android:background">@color/transparent</item>
+        <item name="enforceTextAppearance">false</item>
     </style>
 
-    <style name="YSR.ActionBar" parent="Theme.AppCompat.Light">
+    <style name="YSR.ActionBar">
         <item name="android:background">@color/ysrBlue</item>
     </style>
 
-    <style name="FT_Dialog" parent="android:Theme.Holo.Dialog">
+    <style name="FT_Dialog" parent="Theme.AppCompat.Light">
         <item name="android:windowMinWidthMajor">75%</item>
         <item name="android:windowMinWidthMinor">75%</item>
-    </style>
-
-    <style name="FT_BottomNavigationTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/ysrFadedWhite</item>
-        <item name="android:textColorSecondary">@color/ysrFadedWhite</item>
-        <item name="android:background">@color/ysrFadedWhite</item>
     </style>
 
     <style name="YSR.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

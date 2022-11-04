@@ -11,7 +11,7 @@
     app:startDestination="@+id/navigation_dashboard">
 
     <fragment
-        android:id="@+id/navigation_spot_calendar"
+        android:id="@+id/navigation_management"
         android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
         android:label="@string/title_calendar"
         tools:layout="@layout/spot_calendar_fragment" />
