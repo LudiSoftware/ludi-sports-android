@@ -60,7 +60,7 @@ class ProfileFragment : YsrMiddleFragment() {
         safeUserId { itId ->
             val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
             fireStorageRefByPath(path).getDownloadUrlAsync {
-                _binding?.imgProfileUser?.let { itImgView ->
+                _binding?.includeUserProfileHeader?.imgProfileUser?.let { itImgView ->
                     this.loadUriIntoImgView(it, itImgView)
                 }
             }
@@ -71,7 +71,7 @@ class ProfileFragment : YsrMiddleFragment() {
 
     private fun setupDisplay() {
         //General User Info
-        _binding?.txtProfileName?.setText(user?.name)
+        _binding?.includeUserProfileHeader?.txtProfileName?.text = user?.name
 //        _binding?.editLayoutProfileEmail?.setText(user?.email)
 //        rootView.editPhoneNumber.setText(user?.phone)
     }

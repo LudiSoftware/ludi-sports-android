@@ -33,6 +33,14 @@ fun <T> Any.cast(): T? {
 }
 
 @Suppress("UNCHECKED_CAST")
+fun getClassName(className: Any): String? {
+    tryCatch {
+        return className::class.simpleName
+    }
+    return null
+}
+
+@Suppress("UNCHECKED_CAST")
 fun <R> Any.getAttribute(propertyName: String): R? {
     tryCatch {
         val property = this::class.members

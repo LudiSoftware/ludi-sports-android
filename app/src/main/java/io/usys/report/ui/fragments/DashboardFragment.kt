@@ -15,6 +15,7 @@ import io.usys.report.firebase.*
 import io.usys.report.firebase.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
 import io.usys.report.model.*
 import io.usys.report.ui.loadInRealmList
+import io.usys.report.ui.setupSportList
 import io.usys.report.utils.*
 
 
@@ -45,22 +46,7 @@ class DashboardFragment : YsrFragment() {
     }
 
     private fun setupSportsList() {
-
-        session { itSession ->
-            if (!itSession.sports.isNullOrEmpty()) {
-                _binding?.recyclerSportList?.loadInRealmList(itSession.sports, requireContext(), FireDB.SPORTS, itemOnClick)
-            } else {
-                getBaseObjects<Sport>(FireTypes.SPORTS) {
-                    executeRealm {
-                        sportList.clear()
-                        sportList = this ?: RealmList()
-                        sportList.addToSession()
-                    }
-                    _binding?.recyclerSportList?.loadInRealmList(sportList, requireContext(), FireDB.SPORTS, itemOnClick)
-                }
-            }
-        }
-
+        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClick)
     }
 
     override fun setupOnClickListeners() {

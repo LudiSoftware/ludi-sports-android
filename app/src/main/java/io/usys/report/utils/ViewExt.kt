@@ -31,6 +31,12 @@ fun Fragment.loadUriIntoImgView(uri: Uri, imageView: ImageView ) {
     Glide.with(this).load(uri).into(imageView)
 }
 
+fun Fragment.loadUriIntoImgView(stringUri: String, imageView: ImageView ) {
+    val uri = stringUri.toUri()
+    Glide.with(this).load(uri).into(imageView)
+}
+
+
 fun Activity.changeStatusBarColor() {
     this.window.statusBarColor = this.getColorCompat(R.color.black)
 }

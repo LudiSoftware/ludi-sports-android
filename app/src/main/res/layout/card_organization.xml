@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootCardView"
+    android:id="@+id/cardOrgRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -10,64 +10,82 @@
     app:cardBackgroundColor="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/itemLinearLayout"
+        android:id="@+id/cardOrgMainLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+        android:layout_height="125dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="10dp">
 
         <TextView
-            android:id="@+id/txtCardOrgName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Railroad Park"
-            android:textAlignment="center"
+            android:id="@+id/cardOrgTxtName"
+            android:layout_width="290dp"
+            android:layout_height="36dp"
+            android:paddingStart="15dp"
+            android:text="U.S. Soccer"
+            android:textAlignment="viewStart"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtAddressOne"
+            android:id="@+id/cardOrgTxtLeague"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="16dp"
-            android:text="2323 20th ave south"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
+            android:layout_marginStart="21dp"
+            android:text="Alabama State League"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txtCardOrgSport"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.186"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgIconLocation"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtWebsite"
+            app:layout_constraintVertical_bias="0.542" />
 
         <TextView
-            android:id="@+id/txtCityStateZip"
+            android:id="@+id/cardOrgTxtWebsite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="92dp"
+            android:text="www.ussoccer.com"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName" />
+
+        <ImageView
+            android:id="@+id/cardOrgImgOrg"
+            android:layout_width="84dp"
+            android:layout_height="94dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="55dp"
-            android:layout_marginBottom="20dp"
-            android:text="Birmingham, AL 35216"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/txtAddressOne"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCardOrgName"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/txtCardOrgSport"
-            android:layout_width="75dp"
-            android:layout_height="18dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="right"
-            android:text="Soccer"
-            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/download" />
+
+        <ImageView
+            android:id="@+id/cardOrgIconSport"
+            android:layout_width="15dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardOrgIconLocation"
+            app:layout_constraintEnd_toStartOf="@+id/cardOrgTxtWebsite"
+            app:layout_constraintHorizontal_bias="0.24"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/soccer_ball_icon" />
+
+        <ImageView
+            android:id="@+id/cardOrgIconLocation"
+            android:layout_width="15dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:srcCompat="@drawable/red_mail_two" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

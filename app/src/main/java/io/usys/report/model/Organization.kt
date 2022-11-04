@@ -20,40 +20,30 @@ open class Organization : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = "" //UUID
     var name: String? = "" //Name Given by Manager
+    var dateCreated: String? = "" // timestamp
     var addressOne: String? = "" // 2323 20th Ave South
     var addressTwo: String? = "" // 2323 20th Ave South
     var city: String? = "" // Birmingham
     var state: String? = "" // AL
     var zip: String? = "" // 35223
     var sport: String? = "unassigned"
-    var leagues: RealmList<String>? = null
-    var regions: RealmList<String>? = null
-    var locations: RealmList<String>? = null
     var type: String? = "unassigned"
     var subType: String? = "unassigned"
     var details: String? = ""
+    var websiteUrl: String? = ""
+    var imgOrgIconUri: String? = ""
     var managerId: String? = "unassigned"
     var managerName: String? = "unassigned"
-    var staff: RealmList<String>? = null
-    var estPeople: String? = ""
-    var dateCreated: String? = "" // timestamp
-    var reviews: RealmList<String>? = null
+    var estMemberCount: String? = ""
+    var estStaffCount: String? = ""
+    var staffIds: RealmList<String>? = null
+    var reviewIds: RealmList<String>? = null
+    var leagueIds: RealmList<String>? = null
+    var regionIds: RealmList<String>? = null
+    var locationIds: RealmList<String>? = null
 
     fun getCityStateZip(): String {
         return "$city, $state $zip"
-    }
-
-
-    fun matches(org: Organization) : Boolean {
-        if (this.id == org.id &&
-            this.name == org.name &&
-            this.addressOne == org.addressOne &&
-            this.addressTwo == org.addressTwo &&
-            this.city == org.city &&
-            this.state == org.state &&
-            this.zip == org.zip &&
-            this.estPeople == org.estPeople) return true
-        return false
     }
 
     fun addUpdateOrgToFirebase(): Boolean {

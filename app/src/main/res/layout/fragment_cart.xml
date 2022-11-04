@@ -13,7 +13,7 @@
         android:id="@+id/linearLayoutCartList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/border_shadow"
+        android:background="@drawable/border_shadow_white"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutCartInfo"
         app:layout_constraintEnd_toEndOf="parent"

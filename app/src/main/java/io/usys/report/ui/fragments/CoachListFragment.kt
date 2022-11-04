@@ -14,6 +14,7 @@ import io.usys.report.databinding.FragmentOrgListBinding
 import io.usys.report.firebase.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.loadInRealmList
+import io.usys.report.ui.setupCoachList
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -27,7 +28,7 @@ class CoachListFragment : Fragment() {
 
     private var itemOnClick: ((View, RealmObject) -> Unit)? = null
     private var realmObjectArg: RealmObject? = null
-    private var coachesList: RealmList<Coach>? = RealmList()
+//    private var coachesList: RealmList<Coach>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentOrgListBinding.inflate(inflater, container, false)
@@ -35,15 +36,13 @@ class CoachListFragment : Fragment() {
 
         realmObjectArg = unbundleRealmObject()
         setupOnClickListeners()
-
-        (realmObjectArg as? Organization)?.id?.let {
-            getOrderByEqualToAsync(FireDB.COACHES, ORDER_BY_ORGANIZATION, it) {
-                coachesList = this?.toRealmList()
-                _binding?.recyclerList?.loadInRealmList(coachesList, requireContext(), FireDB.COACHES, itemOnClick)
-            }
-        }
+        setupDisplay()
 
         return rootView
+    }
+
+    private fun setupDisplay() {
+        _binding?.recyclerList?.setupCoachList(requireContext(), realmObjectArg, itemOnClick)
     }
 
     private fun setupOnClickListeners() {

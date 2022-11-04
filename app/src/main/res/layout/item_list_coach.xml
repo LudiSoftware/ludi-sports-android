@@ -7,15 +7,15 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/itemLinearLayout"
+        android:id="@+id/cardOrgMainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/border_shadow"
+        android:background="@drawable/border_shadow_white"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtCardOrgName"
+            android:id="@+id/cardOrgTxtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -41,7 +41,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtAddressOne"
+                    android:id="@+id/cardOrgTxtLeague"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -57,7 +57,7 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/txtCityStateZip"
+                    android:id="@+id/cardOrgTxtWebsite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Birmingham, AL 35216"
