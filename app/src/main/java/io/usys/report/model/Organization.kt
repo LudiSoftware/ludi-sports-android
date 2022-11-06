@@ -18,7 +18,7 @@ open class Organization : RealmObject(), Serializable {
     }
 
     @PrimaryKey
-    var id: String? = "" //UUID
+    var id: String = newUUID() //UUID
     var name: String? = "" //Name Given by Manager
     var dateCreated: String? = "" // timestamp
     var addressOne: String? = "" // 2323 20th Ave South
@@ -55,7 +55,6 @@ open class Organization : RealmObject(), Serializable {
 fun createOrg() {
     val org = Organization()
     org.apply {
-        this.id = newUUID()
         this.sport = "soccer"
         this.city = "birmingham"
         this.name = "USYSR Club"

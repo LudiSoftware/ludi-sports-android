@@ -21,7 +21,7 @@ class MasterUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.ysrFadedWhite)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.ysrWindowBackground)
         setContentView(R.layout.activity_main)
         val actionBar = supportActionBar
         actionBar?.setLogo(R.drawable.ysr_2)

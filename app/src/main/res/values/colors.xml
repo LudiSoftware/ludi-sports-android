@@ -4,20 +4,22 @@
 
 <resources>
 
+    <color name="ysrWindowBackground">#F6F6F5</color>
+
     <color name="ysrBlue">#769FCA</color>
     <color name="ysrRed">#FF6C65</color>
 
     <color name="ysrFadedBlue">#A2D1E6</color>
     <color name="ysrFadedRed">#FFA5A0</color>
-    <color name="ysrFadedWhite">#FFFAF4</color>
+    <color name="ysrFadedWhite">#F6F6F5</color>
 
     <color name="ysrDarkBlue">#004088</color>
     <color name="ysrDarkRed">#ed0100</color>
 
     <color name="colorPrimary">@color/ysrBlue</color>
-    <color name="colorPrimaryDark">@color/ysrFadedWhite</color>
+    <color name="colorPrimaryDark">@color/ysrBlue</color>
     <color name="colorAccent">@color/ysrBlue</color>
-    <color name="colorListBackground">@color/ysrFadedWhite</color>
+    <color name="colorListBackground">@color/ysrWindowBackground</color>
     <color name="colorTextPrimary">@color/ysrFadedRed</color>
     <color name="colorTextAccent">@color/black</color>
     <color name="colorWindowBackground">@color/white</color>

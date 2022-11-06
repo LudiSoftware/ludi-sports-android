@@ -58,7 +58,7 @@ class FireTypes {
             when (type) {
                 ORGANIZATIONS -> return R.layout.card_organization
                 SPORTS -> return R.layout.card_sport
-                REVIEWS -> return R.layout.card_sport
+                REVIEWS -> return R.layout.card_review
                 USERS -> return R.layout.card_sport
                 COACHES -> return R.layout.card_sport
                 else -> return R.layout.card_sport
@@ -195,6 +195,26 @@ fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
     return result
 }
 
+fun Review.addUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
+    var result = false
+    firebaseDatabase { database ->
+        database.child(FireTypes.REVIEWS).child(this.recieverId!!).child(this.id)
+            .setValue(this).fairAddOnCompleteListener { itReturn ->
+                block?.let { block(itReturn) }
+            }
+            .addOnSuccessListener {
+                //TODO("HANDLE SUCCESS")
+                result = true
+            }.addOnCompleteListener {
+                //TODO("HANDLE COMPLETE")
+            }.addOnFailureListener {
+                //TODO("HANDLE FAILURE")
+                result = false
+            }
+    }
+    return result
+}
+
 /** GET **/
 
 inline fun getUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
@@ -217,6 +237,14 @@ inline fun getUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?
 
 fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     getOrderByEqualToCallback(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
+}
+
+// Verified
+fun getReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    firebaseDatabase {
+        it.child(FireTypes.REVIEWS).child(receiverId)
+            .fairAddListenerForSingleValueEvent(callbackFunction)
+    }
 }
 
 // Verified

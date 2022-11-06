@@ -36,7 +36,7 @@ class OrganizationListFragment : YsrMiddleFragment() {
 
     override fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
-            toFragment(R.id.navigation_coaches_list, bundleRealmObject(obj))
+            toFragment(R.id.navigation_org_profile, bundleRealmObject(obj))
         }
     }
 

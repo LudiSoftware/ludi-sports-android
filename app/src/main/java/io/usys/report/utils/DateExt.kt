@@ -56,6 +56,18 @@ fun daysOfWeekFromLocale(): Array<DayOfWeek> {
     return daysOfWeek
 }
 
+fun getTimeStamp(): String {
+    val current: Locale = Locale.US
+    return try {
+        val formatter = SimpleDateFormat(DateUtils.TIMESTAMP, current)
+        formatter.timeZone = TimeZone.getDefault()
+        formatter.format(Calendar.getInstance().time)
+    } catch (e: Exception) {
+        SimpleDateFormat(DateUtils.TIMESTAMP, current)
+            .format(Calendar.getInstance().time)
+    }
+}
+
 /**
  * 1. isDateOld()
  * 2. isDateWithinTwoWeeks()
@@ -65,6 +77,8 @@ class DateUtils {
 
     companion object {
         var TIMEZONE_UTC = "CST"
+
+        var TIMESTAMP = "dd-MM-yyyy hh:mm"
 
         var format_FT = "yyyy-MM-d"
         var format_FULLDAY = "EEEE"
@@ -108,6 +122,7 @@ class DateUtils {
                 .format(Calendar.getInstance().time)
         }
     }
+
     fun getCurrentDay(): String? {
         val current: Locale = Locale.US
         return try {

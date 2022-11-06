@@ -29,7 +29,9 @@ open class AuthTypes {
 open class User : RealmObject() {
 
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
-    var dateCreated: String? = null
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var username: String? = null
     var name: String? = "" //Name Given by Manager
     var auth: String = AuthTypes.BASIC_USER // "basic"
     var type: String? = ""
@@ -39,12 +41,6 @@ open class User : RealmObject() {
     var visibility: String = "closed"
     var photoUrl: String? = null
     var emailVerified: Boolean? = false
-
-    init {
-        if (dateCreated.isNullOrBlank()) {
-            dateCreated = DateUtils().getCurrentDayTime()
-        }
-    }
 
     fun isCoachUser() : Boolean {
         if (this.auth == COACH_USER) return true

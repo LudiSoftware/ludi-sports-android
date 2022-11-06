@@ -3,19 +3,13 @@ package io.usys.report.ui
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.firebase.FireDB
-import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.getBaseObjects
-import io.usys.report.firebase.getOrderByEqualToAsync
-import io.usys.report.model.Coach
-import io.usys.report.model.Organization
-import io.usys.report.model.Sport
-import io.usys.report.model.addToSession
+import io.usys.report.firebase.*
+import io.usys.report.model.*
 import io.usys.report.utils.*
 
 /**
@@ -28,6 +22,7 @@ class RouterViewHolder(itemView: View, var type:String) : RecyclerView.ViewHolde
             FireDB.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
             FireDB.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireDB.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
+            FireDB.REVIEWS -> return ReviewViewHolder(itemView).bind(obj as? Review)
         }
     }
 }
@@ -106,6 +101,32 @@ class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(coach: Coach?) {
         coach?.let {
             txtItemSpotName?.text = it.name
+        }
+    }
+}
+
+/**
+ * REVIEW LIST VIEW CONTROLS
+ */
+
+fun RecyclerView?.setupReviewList(context: Context, receiverId:String, itemOnClick: ((View, RealmObject) -> Unit)?) {
+    // Load Reviews by Receiver.id
+    val rv = this
+    val callBack : ((DataSnapshot?) -> Unit) = { ds ->
+        val reviewList = ds?.toRealmList<Review>()
+        rv?.loadInRealmList(reviewList, context, FireTypes.REVIEWS, itemOnClick)
+    }
+    getReviewsByReceiverIdToCallback(receiverId, callBack)
+}
+
+class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var cardReviewTxtDateCreated = itemView.bindTextView(R.id.cardReviewTxtDateCreated)
+    private var cardReviewTxtComment = itemView.bindTextView(R.id.cardReviewTxtComment)
+
+    fun bind(review: Review?) {
+        review?.let {
+            cardReviewTxtDateCreated?.text = it.dateCreated
+            cardReviewTxtComment?.text = it.comment
         }
     }
 }

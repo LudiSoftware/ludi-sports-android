@@ -7,9 +7,9 @@
         <item name="colorPrimary">@color/ysrFadedWhite</item>
         <item name="colorPrimaryDark">@color/ysrRed</item>
         <item name="colorAccent">@color/ysrRed</item>
-        <item name="android:windowBackground">@color/ysrFadedWhite</item>
+        <item name="android:windowBackground">@color/ysrWindowBackground</item>
         <item name="android:textColor">@color/ysrDarkBlue</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:statusBarColor">@color/ysrWindowBackground</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

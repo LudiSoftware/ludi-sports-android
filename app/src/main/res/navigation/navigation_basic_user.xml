@@ -52,6 +52,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_org_profile"
+        android:name="io.usys.report.ui.fragments.OrganizationProfileFragment"
+        android:label="@string/title_org"
+        tools:layout="@layout/fragment_org_profile" />
+
+    <fragment
         android:id="@+id/navigation_profile"
         android:name="io.usys.report.ui.fragments.ProfileFragment"
         android:label="@string/title_profile"
