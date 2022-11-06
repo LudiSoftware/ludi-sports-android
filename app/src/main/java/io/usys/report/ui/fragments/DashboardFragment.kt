@@ -1,23 +1,10 @@
 package io.usys.report.ui.fragments
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.os.Bundle
 import android.view.*
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.MenuProvider
-import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
-import io.usys.report.firebase.*
-import io.usys.report.firebase.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
-import io.usys.report.model.*
-import io.usys.report.ui.loadInRealmList
 import io.usys.report.ui.setupSportList
-import io.usys.report.utils.*
-
 
 /**
  * Created by ChazzCoin : October 2022.

@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reviewMainLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#00FFFFFF">
 
         <TextView
@@ -56,23 +56,49 @@
             android:layout_width="341dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="20dp"
             android:background="@color/white"
             android:ems="10"
+            android:gravity="top"
             android:hint="Leave a comment"
             android:inputType="textLongMessage|textMultiLine|textPersonName"
+            android:maxLength="150"
             android:maxLines="6"
-            android:minHeight="48dp"
+            android:minHeight="96dp"
             android:padding="5dp"
             android:singleLine="false"
             app:layout_constraintBottom_toTopOf="@+id/reviewBtnSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewRatingBar" />
+
+        <RatingBar
+            android:id="@+id/reviewRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewTxtTitle" />
+
+        <TextView
+            android:id="@+id/reviewTxtRatingBarSuggestion"
+            android:layout_width="88dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:text="Please rate on a scale between  1 and 5."
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/reviewEditComment"
+            app:layout_constraintEnd_toStartOf="@+id/reviewRatingBar"
+            app:layout_constraintHorizontal_bias="0.428"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reviewTxtTitle"
-            app:layout_constraintVertical_bias="0.931" />
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
