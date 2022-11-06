@@ -2,7 +2,10 @@ package io.usys.report.ui
 
 import android.content.Context
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import io.realm.RealmList
@@ -73,11 +76,19 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtWebsite = itemView.bindTextView(R.id.cardOrgTxtWebsite)
     var txtLeague = itemView.bindTextView(R.id.cardOrgTxtLeague)
     var imgOrganization: ImageView = itemView.bind(R.id.cardOrgImgOrg)
+    var includeReviewCard: FrameLayout = itemView.findViewById(R.id.includeReviewCard)
+
+    var cardRatingBar: RatingBar = includeReviewCard.bind(R.id.cardRatingBar)
+    var cardRatingBarScore: TextView = includeReviewCard.bind(R.id.cardRatingTxtScore)
+    var cardRatingBarCount: TextView = includeReviewCard.bind(R.id.cardRatingTxtCount)
 
     fun bind(org: Organization?) {
         txtOrgName?.text = org?.name
-        txtWebsite?.text = org?.websiteUrl
+        txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
         txtLeague?.text = org?.leagueIds?.first() ?: "Alabama State League"
+        cardRatingBar.rating = org?.ratingScore?.toFloat() ?: 0.0F
+        cardRatingBarScore.text = org?.ratingScore
+        cardRatingBarCount.text = org?.ratingCount
     }
 }
 

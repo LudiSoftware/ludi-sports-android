@@ -17,16 +17,24 @@
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="10dp">
 
+        <include
+            android:id="@+id/includeReviewCard"
+            layout="@layout/card_rating_count_bar"
+            android:layout_width="175dp"
+            android:layout_height="41dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardOrgTxtName"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgTxtName"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/cardOrgTxtName"
-            android:layout_width="290dp"
-            android:layout_height="36dp"
+            android:layout_width="162dp"
+            android:layout_height="39dp"
             android:paddingStart="15dp"
             android:text="U.S. Soccer"
             android:textAlignment="viewStart"
             android:textSize="25sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
             app:layout_constraintTop_toTopOf="parent" />
 
