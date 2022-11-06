@@ -29,6 +29,8 @@ open class Organization : RealmObject(), Serializable {
     var sport: String? = "unassigned"
     var type: String? = "unassigned"
     var subType: String? = "unassigned"
+    var ratingScore: String = "0.0"
+    var ratingCount: String = "0"
     var details: String? = ""
     var websiteUrl: String? = ""
     var imgOrgIconUri: String? = ""

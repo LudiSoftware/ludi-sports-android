@@ -11,6 +11,7 @@ import io.usys.report.R
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.*
+import io.usys.report.model.Review.Companion.RATING_COUNT
 import io.usys.report.model.Review.Companion.RATING_SCORE
 import io.usys.report.utils.*
 
@@ -20,7 +21,8 @@ import io.usys.report.utils.*
 open class Review : RealmObject() {
 
     companion object {
-        const val RATING_SCORE = "score"
+        const val RATING_SCORE = "ratingScore"
+        const val RATING_COUNT = "ratingCount"
     }
 
     @PrimaryKey
@@ -37,9 +39,9 @@ open class Review : RealmObject() {
 }
 
 // Verified
-inline fun getOrgRatingAsync(objId: String, crossinline block: DataSnapshot?.() -> Unit) {
+inline fun getOrgRatingAsync(objId: String, isScore:Boolean=false, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
-        it.child(FireTypes.ORGANIZATIONS).child(objId).child(RATING_SCORE)
+        it.child(FireTypes.ORGANIZATIONS).child(objId).child(if (isScore) RATING_SCORE else RATING_COUNT)
             .fairAddListenerForSingleValueEvent { ds ->
                 block(ds)
             }
@@ -50,6 +52,11 @@ inline fun getOrgRatingAsync(objId: String, crossinline block: DataSnapshot?.() 
 fun updateOrgRatingScore(orgId:String, newRatingScore:String) {
     //busa = "54d9d63d-52bb-4503-95ca-8bda462e0f9a"
     updateSingleValueDBAsync(FireTypes.ORGANIZATIONS, orgId, RATING_SCORE, newRatingScore)
+}
+
+fun updateOrgRatingCount(orgId:String, newRatingCount:String) {
+    //busa = "54d9d63d-52bb-4503-95ca-8bda462e0f9a"
+    updateSingleValueDBAsync(FireTypes.ORGANIZATIONS, orgId, RATING_COUNT, newRatingCount)
 }
 
 open class Question: RealmObject() {
@@ -79,10 +86,14 @@ private fun createReview() {
     addUpdateDBAsync(FireDB.REVIEWS, rev.id, rev)
 }
 
-fun createReviewDialog(activity: Activity, receiverId: String) : Dialog {
+fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
 
     val TYPE = FireTypes.ORGANIZATIONS
     val SPORT = "soccer"
+
+    val receiverId = org.id
+    val currentRatingScore = org.ratingScore
+    val currentRatingCount = org.ratingCount
 
     val dialog = Dialog(activity)
     dialog.setContentView(R.layout.dialog_review_layout)
@@ -95,28 +106,29 @@ fun createReviewDialog(activity: Activity, receiverId: String) : Dialog {
     val cancel = dialog.findViewById(R.id.reviewBtnCancel) as Button
 
     // Inner Function for updating overall score and returning it to add Review Obj.
-    fun getAndUpdateNewRatingScore() {
-        var overallAvgScore = "0.0"
-        val ratingScore: Float = reviewRatingBar.rating
-        getOrgRatingAsync(receiverId) {
-            val result = this?.getValue(String::class.java)
-            overallAvgScore = calculateAverageRatingScore(result, ratingScore)
-            updateOrgRatingScore(receiverId, overallAvgScore)
-            safeUserId { itUserId ->
-                Review().apply {
-                    this.creatorId = itUserId
-                    this.receiverId = receiverId
-                    this.comment = commentEditTxt.text.toString()
-                    this.score = overallAvgScore
-                    this.sportName = SPORT
-                    this.type = TYPE
-                }.addUpdateReviewDBAsync()
-            }
+    fun addUpdateNewRating() {
+        val newRatingScore: Float = reviewRatingBar.rating
+        // New Score
+        val newOverallAvgScore = calculateAverageRatingScore(currentRatingScore, newRatingScore)
+        updateOrgRatingScore(receiverId, newOverallAvgScore)
+        // New Count
+        val newOverallCount = (currentRatingCount.toInt() + 1).toString()
+        updateOrgRatingCount(receiverId, newOverallCount)
+        // New Review
+        safeUserId { itUserId ->
+            Review().apply {
+                this.creatorId = itUserId
+                this.receiverId = receiverId
+                this.comment = commentEditTxt.text.toString()
+                this.score = newOverallAvgScore
+                this.sportName = SPORT
+                this.type = TYPE
+            }.addUpdateReviewDBAsync()
         }
     }
 
     submit.setOnClickListener {
-        getAndUpdateNewRatingScore()
+        addUpdateNewRating()
         dialog.dismiss()
     }
     cancel.setOnClickListener {
