@@ -88,7 +88,7 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         txtLeague?.text = org?.leagueIds?.first() ?: "Alabama State League"
         cardRatingBar.rating = org?.ratingScore?.toFloat() ?: 0.0F
         cardRatingBarScore.text = org?.ratingScore
-        cardRatingBarCount.text = org?.ratingCount
+        cardRatingBarCount.text = "${org?.ratingCount} Reviews"
     }
 }
 

@@ -5,15 +5,16 @@
     android:id="@+id/cardOrgRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardOrgMainLayout"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="15dp"
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="10dp">
 
@@ -22,44 +23,48 @@
             layout="@layout/card_rating_count_bar"
             android:layout_width="175dp"
             android:layout_height="41dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardOrgTxtName"
-            app:layout_constraintStart_toEndOf="@+id/cardOrgTxtName"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName" />
 
         <TextView
             android:id="@+id/cardOrgTxtName"
-            android:layout_width="162dp"
+            android:layout_width="301dp"
             android:layout_height="39dp"
+            android:layout_marginTop="8dp"
             android:paddingStart="15dp"
             android:text="U.S. Soccer"
             android:textAlignment="viewStart"
             android:textSize="25sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/includeReviewCard"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/cardOrgTxtLeague"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
+            android:layout_marginStart="8dp"
             android:text="Alabama State League"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/cardOrgIconLocation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.186"
+            app:layout_constraintHorizontal_bias="0.017"
             app:layout_constraintStart_toEndOf="@+id/cardOrgIconLocation"
-            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtWebsite"
-            app:layout_constraintVertical_bias="0.542" />
+            app:layout_constraintTop_toTopOf="@+id/cardOrgIconLocation"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/cardOrgTxtWebsite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="92dp"
+            android:layout_marginEnd="132dp"
             android:text="www.ussoccer.com"
+            app:layout_constraintBottom_toBottomOf="@+id/cardOrgIconSport"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName" />
+            app:layout_constraintTop_toTopOf="@+id/cardOrgIconSport" />
 
         <ImageView
             android:id="@+id/cardOrgImgOrg"
@@ -69,6 +74,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.367"
             app:srcCompat="@drawable/download" />
 
         <ImageView
@@ -76,23 +82,22 @@
             android:layout_width="15dp"
             android:layout_height="16dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardOrgIconLocation"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toStartOf="@+id/cardOrgTxtWebsite"
-            app:layout_constraintHorizontal_bias="0.24"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
-            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/includeReviewCard"
             app:srcCompat="@drawable/soccer_ball_icon" />
 
         <ImageView
             android:id="@+id/cardOrgIconLocation"
             android:layout_width="15dp"
             android:layout_height="19dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/cardOrgIconSport"
             app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgIconSport"
             app:srcCompat="@drawable/red_mail_two" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

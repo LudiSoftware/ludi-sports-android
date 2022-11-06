@@ -57,7 +57,7 @@
             android:text="3.5"
             app:layout_constraintBottom_toBottomOf="@+id/cardRatingBar"
             app:layout_constraintEnd_toEndOf="@+id/cardRatingBar"
-            app:layout_constraintHorizontal_bias="0.092"
-            app:layout_constraintStart_toEndOf="@+id/cardRatingTxtCount" />
+            app:layout_constraintHorizontal_bias="0.621"
+            app:layout_constraintStart_toStartOf="@+id/cardRatingBar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
