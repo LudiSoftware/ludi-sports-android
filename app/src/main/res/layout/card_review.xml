@@ -5,8 +5,7 @@
     android:id="@+id/cardYsrExpander"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@drawable/ft_border_rounded_creme"
+    android:background="@color/white"
     android:orientation="vertical"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp">
@@ -15,14 +14,18 @@
         android:id="@+id/masterCLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topExpandLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:background="#00FFFFFF"
             android:orientation="vertical"
+            android:paddingBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -41,27 +44,73 @@
 
             <TextView
                 android:id="@+id/cardReviewTxtDateCreated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="322dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="28dp"
                 android:text="July 31st 2022, 10:30PM"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardReviewTxtUsername" />
 
             <TextView
                 android:id="@+id/cardReviewTxtComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_width="323dp"
+                android:layout_height="23dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="28dp"
                 android:text="This is a comment!"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardReviewTxtDateCreated"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/cardReviewTxtUsername"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center|left"
+                android:text="Chace Zanaty"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardReviewTxtDateCreated" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/path_4229" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="17dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cardReviewTxtComment"
+                app:srcCompat="@drawable/red_mail_ek1" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView5"
+                app:layout_constraintEnd_toStartOf="@+id/cardReviewTxtDateCreated"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/red_mail_two_ek2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
