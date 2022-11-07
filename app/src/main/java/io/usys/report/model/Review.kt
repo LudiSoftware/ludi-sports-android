@@ -96,7 +96,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
     val currentRatingCount = org.ratingCount
 
     val dialog = Dialog(activity)
-    dialog.setContentView(R.layout.dialog_review_layout)
+    dialog.setContentView(R.layout.dialog_review_org_layout)
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     val commentEditTxt = dialog.bind<EditText>(R.id.reviewEditComment)
     val reviewRatingBar = dialog.bind<RatingBar>(R.id.reviewRatingBar)
@@ -109,18 +109,18 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
     fun addUpdateNewRating() {
         val newRatingScore: Float = reviewRatingBar.rating
         // New Score
-        val newOverallAvgScore = calculateAverageRatingScore(currentRatingScore, newRatingScore)
-        updateOrgRatingScore(receiverId, newOverallAvgScore)
+        val newOverallAvgScore = calculateAverageRatingScore(currentRatingScore, newRatingScore).toFloat().roundTo(1)
+        updateOrgRatingScore(receiverId, newOverallAvgScore.toString())
         // New Count
-        val newOverallCount = (currentRatingCount.toInt() + 1).toString()
-        updateOrgRatingCount(receiverId, newOverallCount)
+        val newOverallCount = (currentRatingCount.toInt() + 1)
+        updateOrgRatingCount(receiverId, newOverallCount.toString())
         // New Review
         safeUserId { itUserId ->
             Review().apply {
                 this.creatorId = itUserId
                 this.receiverId = receiverId
                 this.comment = commentEditTxt.text.toString()
-                this.score = newOverallAvgScore
+                this.score = newOverallAvgScore.toString()
                 this.sportName = SPORT
                 this.type = TYPE
             }.addUpdateReviewDBAsync()

@@ -85,6 +85,10 @@ fun Any?.isNullOrEmpty() : Boolean {
     return false
 }
 
+fun Float.roundTo(n : Int) : Float {
+    return "%.${n}f".format(this).toFloat()
+}
+
 inline fun <T> T?.fairSafe(block: (T) -> Unit) {
     this?.let {
         block(this)
