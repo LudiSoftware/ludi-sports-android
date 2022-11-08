@@ -48,6 +48,7 @@ class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
     val cardQuestionRadioD = itemView.bind<RadioButton>(R.id.cardQuestionRadioD)
 
     var currentQuestion: String = ""
+    var currentQuestionId: String = ""
     var currentChoice: String? = null
 
     fun getScore() : String {

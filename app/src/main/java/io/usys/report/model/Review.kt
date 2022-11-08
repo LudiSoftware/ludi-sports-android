@@ -98,6 +98,7 @@ open class Question: RealmObject() {
     var choiceB: String = ""
     var choiceC: String = ""
     var choiceD: String = ""
+    var finalScore: String = ""
     var answer: String? = null
 }
 

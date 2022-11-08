@@ -35,6 +35,9 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
     private var reviewQuestions: RealmList<Question>? = null
     var currentOrganization: Organization? = null
 
+    var overallScore = ""
+
+
     override fun onViewAdded(child: View?) {
         bindChildren()
         setupRadioListeners()
@@ -57,6 +60,12 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
 
     private fun updater() {
         updateCallback = { question, score ->
+
+            for (q in reviewQuestions!!) {
+                if (q.question == question) {
+                    q.finalScore = score
+                }
+            }
             log(question)
             log(score)
         }
@@ -82,6 +91,7 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
                    this.receiverId = ""
                    this.sportName = "soccer"
                    this.type = FireTypes.COACHES
+                   this.questions = reviewQuestions
                }
            }
 
