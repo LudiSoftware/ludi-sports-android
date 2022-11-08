@@ -15,7 +15,6 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.getReviewTemplateAsync
 import io.usys.report.firebase.getReviewTemplateQuestionsAsync
 import io.usys.report.model.*
-import io.usys.report.ui.loadInRealmList
 import io.usys.report.ui.loadInRealmListCallback
 import io.usys.report.utils.*
 
@@ -33,9 +32,11 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
 
     private var reviewTemplate: ReviewTemplate? = null
     private var reviewQuestions: RealmList<Question>? = null
-    var currentOrganization: Organization? = null
+    var currentCoach: Coach? = null
 
-    var overallScore = ""
+    var reviewScore = ""
+    var reviewCount = ""
+    var reviewAnswerCount = ""
 
 
     override fun onViewAdded(child: View?) {
@@ -79,21 +80,53 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
         btnCancel = this.rootView.bind(R.id.reviewBtnCancel)
     }
 
+    fun generateRatingScoreCount() {
+        var tempScore = 0
+        var tempCount = 0
+        var tempAnswerCount = 0
+
+        for (q in reviewQuestions!!) {
+            if (q.finalScore != "0") {
+                tempScore += q.finalScore.toInt()
+                tempAnswerCount += 1
+            }
+            tempCount += 1
+        }
+
+        reviewScore = tempScore.toString()
+        reviewCount = tempCount.toString()
+        reviewAnswerCount = tempAnswerCount.toString()
+    }
+
    private fun setupRadioListeners() {
 
        btnSubmit?.setOnClickListener {
-
+            generateRatingScoreCount()
            //TODO: GRAB ALL QUESTIONS
            //- BUILD REVIEW OBJECT..
-           safeUserId {
-               Review().apply {
-                   this.creatorId = it
-                   this.receiverId = ""
-                   this.sportName = "soccer"
-                   this.type = FireTypes.COACHES
-                   this.questions = reviewQuestions
+           safeUserId { itUserId ->
+               currentCoach?.let { itCoach ->
+                   Review().apply {
+                       this.creatorId = itUserId
+                       this.receiverId = itCoach.id
+                       this.sportName = "soccer"
+                       this.type = FireTypes.COACHES
+                       this.questions = reviewQuestions
+                   }.addUpdateInFirebase()
+                   updateCoachRatingScore(itCoach.id, reviewScore)
+                   updateCoachReviewCount(itCoach.id, reviewCount)
+                   updateCoachReviewAnswerCount(itCoach.id, reviewAnswerCount)
                }
+
+
+
+               //update coaches review count and score
+
+
+               //save review
+
            }
+
 
 
            log("btnSubmit")

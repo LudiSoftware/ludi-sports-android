@@ -12,6 +12,7 @@ import io.usys.report.R
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.*
+import io.usys.report.model.Review.Companion.ANSWER_COUNT
 import io.usys.report.model.Review.Companion.RATING_COUNT
 import io.usys.report.model.Review.Companion.RATING_SCORE
 import io.usys.report.utils.*
@@ -24,6 +25,7 @@ open class Review : RealmObject() {
     companion object {
         const val RATING_SCORE = "ratingScore"
         const val RATING_COUNT = "ratingCount"
+        const val ANSWER_COUNT = "reviewAnswerCount"
     }
 
     @PrimaryKey
@@ -65,7 +67,7 @@ fun getQuestionScore(letter:String?) : String {
         Question.B -> "4"
         Question.C -> "3"
         Question.D -> "2"
-        else -> "5"
+        else -> "0"
     }
 }
 
@@ -123,7 +125,17 @@ inline fun getOrgRatingAsync(objId: String, isScore:Boolean=false, crossinline b
             }
     }
 }
+fun updateCoachRatingScore(coachId:String, newRatingScore:String) {
+    updateSingleValueDBAsync(FireTypes.COACHES, coachId, RATING_SCORE, newRatingScore)
+}
 
+fun updateCoachReviewCount(coachId:String, newRatingScore:String) {
+    updateSingleValueDBAsync(FireTypes.COACHES, coachId, RATING_COUNT, newRatingScore)
+}
+
+fun updateCoachReviewAnswerCount(coachId:String, newRatingScore:String) {
+    updateSingleValueDBAsync(FireTypes.COACHES, coachId, ANSWER_COUNT, newRatingScore)
+}
 
 fun updateOrgRatingScore(orgId:String, newRatingScore:String) {
     //busa = "54d9d63d-52bb-4503-95ca-8bda462e0f9a"

@@ -51,7 +51,7 @@ class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
     var currentQuestionId: String = ""
     var currentChoice: String? = null
 
-    fun getScore() : String {
+    private fun getScore() : String {
         return getQuestionScore(currentChoice)
     }
 

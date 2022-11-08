@@ -4,6 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.applyAndSave
+import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -17,9 +18,9 @@ open class Coach : RealmObject(), Serializable {
     }
 
     @PrimaryKey
-    var id: String? = "" //UUID
+    var id: String = newUUID() //UUID
+    var dateCreated: String = getTimeStamp() // timestamp
     var name: String? = "" //Name Given by Manager
-    var dateCreated: String? = "" // timestamp
     var ownerId: String? = "unassigned"
     var ownerName: String? = "unassigned"
     var organizationId: String? = ""
@@ -37,7 +38,9 @@ open class Coach : RealmObject(), Serializable {
 
     var hasReview: Boolean = false
     var reviews: RealmList<String>? = RealmList()
-    var reviewOverallScore: Int = 9999
+    var ratingScore: String = ""
+    var ratingCount: String = ""
+    var reviewAnswerCount: String = ""
     var reviewDetails: String = ""
 
     fun getCityStateZip(): String {
