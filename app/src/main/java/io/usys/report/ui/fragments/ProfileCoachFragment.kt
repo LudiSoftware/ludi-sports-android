@@ -59,6 +59,9 @@ class ProfileCoachFragment : YsrMiddleFragment() {
 //                popAskUserLogoutDialog(requireActivity()).show()
 //            }
 //        }
+        _binding?.userProfileCoachBtnReview?.setOnClickListener {
+            launchCoachReviewFragment()
+        }
         setupDisplay()
         setupProfileImage()
         return rootView
@@ -69,35 +72,23 @@ class ProfileCoachFragment : YsrMiddleFragment() {
         currentCoach?.let {
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.name
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.ratingScore.toFloat()
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = it.ratingCount
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.ratingCount} Reviews"
         }
     }
 
     private fun setupProfileImage() {
-
-        safeUser { itUser ->
-            itUser.photoUrl?.let { itUrl ->
-                itUrl.toUri()?.let { itUri ->
-                    _binding?.includeUserProfileCoachHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-                        this.loadUriIntoImgView(itUri, itImgView)
-                    }
+        currentCoach?.let { itCoach ->
+            if (!itCoach.imgUrl.isNullOrEmpty()) {
+                _binding?.includeUserProfileCoachHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
+                    this.loadUriIntoImgView(itCoach.imgUrl, itImgView)
                 }
             }
         }
 
-//        safeUserId { itId ->
-//            val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
-//            fireStorageRefByPath(path).getDownloadUrlAsync {
-//                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-//                    this.loadUriIntoImgView(it, itImgView)
-//                    fireUpdateUserProfileSingleValue(itId, "imUrl", it.toString())
-//                }
-//            }
-//        }
     }
 
     private fun launchCoachReviewFragment() {
-        ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
+        currentCoach?.let { ReviewDialogFragment(it).show(childFragmentManager, ReviewDialogFragment.TAG) }
     }
 
 

@@ -77,30 +77,30 @@ class ProfileFragment : YsrMiddleFragment() {
 
     private fun setupProfileImage() {
 
-//        safeUser { itUser ->
-//            itUser.photoUrl?.let { itUrl ->
-//                itUrl.toUri()?.let { itUri ->
-//                    _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-//                        this.loadUriIntoImgView(itUri, itImgView)
-//                    }
-//                }
-//            }
-//        }
-
-        safeUserId { itId ->
-            val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
-            fireStorageRefByPath(path).getDownloadUrlAsync {
-                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-                    this.loadUriIntoImgView(it, itImgView)
-                    coreUpdateProfileImageUri(it)
+        safeUser { itUser ->
+            itUser.photoUrl?.let { itUrl ->
+                itUrl.toUri()?.let { itUri ->
+                    _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
+                        this.loadUriIntoImgView(itUri, itImgView)
+                    }
                 }
             }
         }
+
+//        safeUserId { itId ->
+//            val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
+//            fireStorageRefByPath(path).getDownloadUrlAsync {
+//                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
+//                    this.loadUriIntoImgView(it, itImgView)
+//                    coreUpdateProfileImageUri(it)
+//                }
+//            }
+//        }
     }
 
-    private fun launchCoachReviewFragment() {
-        ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
-    }
+//    private fun launchCoachReviewFragment() {
+//        ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
+//    }
 
 
 

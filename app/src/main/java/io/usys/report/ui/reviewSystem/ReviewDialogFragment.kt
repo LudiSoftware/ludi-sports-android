@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import io.usys.report.R
+import io.usys.report.model.Coach
 import io.usys.report.utils.bind
 import io.usys.report.utils.log
 
@@ -18,7 +19,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : November 2022.
  */
 
-class ReviewDialogFragment() : DialogFragment() {
+class ReviewDialogFragment(var currentCoach: Coach) : DialogFragment() {
 
     companion object {
         const val TAG = "PopFragmentDialog"
@@ -29,7 +30,7 @@ class ReviewDialogFragment() : DialogFragment() {
 //    private var layoutResource: Int = R.layout.fragment_pop
     var message: String = "YSR"
     var positiveButton: String = "Okay"
-    var submitButton: Button? = null
+    var submitCallback: (() -> Unit)? = null
     var positiveButtonCallbackFunction: ((Any, Any) -> Unit)? = null
     var cancelButton: Button? = null
 
@@ -40,9 +41,11 @@ class ReviewDialogFragment() : DialogFragment() {
 
         rootview = this.layoutInflater.inflate(R.layout.dialog_review_coach_layout, null)
         ysrCoachReviewObj = rootview?.findViewById(R.id.reviewCoachRootCard)
-        submitButton = rootview?.bind(R.id.reviewBtnSubmit)
+        ysrCoachReviewObj?.currentCoach = currentCoach
+//        submitButton = rootview?.bind(R.id.reviewBtnSubmit)
         cancelButton = rootview?.bind(R.id.reviewBtnCancel)
-
+        setOnClickListeners()
+        ysrCoachReviewObj?.finishCallback = submitCallback
         dialogFragment?.setView(rootview)
             ?.setMessage(message)
             ?.fairSetPositiveButton(positiveButton, positiveButtonCallbackFunction)
@@ -50,8 +53,7 @@ class ReviewDialogFragment() : DialogFragment() {
     }
 
     private fun setOnClickListeners() {
-        submitButton?.setOnClickListener {
-            // Create Review Object.
+        submitCallback = {
             this.dismiss()
         }
         cancelButton?.setOnClickListener {

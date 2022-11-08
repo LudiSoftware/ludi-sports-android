@@ -27,6 +27,7 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
     private var recyclerView: RecyclerView? = null
     private var btnCancel: Button? = null
     private var btnSubmit: Button? = null
+    var finishCallback: (() -> Unit)? = null
 
     private var reviewTemplate: ReviewTemplate? = null
     private var reviewQuestions: RealmList<Question>? = null
@@ -96,16 +97,21 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
             tempCount += 1
         }
 
-        reviewScore = tempScore.toString()
-        reviewCount = tempCount.toString()
-        reviewAnswerCount = tempAnswerCount.toString()
+
+        currentCoach?.let {
+            reviewCount = (tempCount + it.ratingCount.toInt()).toString()
+            reviewAnswerCount = (tempAnswerCount + it.reviewAnswerCount.toInt()).toString()
+            val tempRating = tempScore / tempAnswerCount
+            reviewScore = calculateAverageRatingScore(it.ratingScore, tempRating.toFloat())
+        }
+
     }
 
    private fun setupRadioListeners() {
        log("btnSubmit")
        //TODO: not complete yet!
        btnSubmit?.setOnClickListener {
-            generateRatingScoreCount()
+           generateRatingScoreCount()
            safeUserId { itUserId ->
                currentCoach?.let { itCoach ->
                    Review().apply {
@@ -114,17 +120,15 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
                        this.sportName = "soccer"
                        this.type = FireTypes.COACHES
                        this.questions = reviewQuestions
+                       this.score = reviewScore
                    }.addUpdateInFirebase()
                    updateCoachRatingScore(itCoach.id, reviewScore)
                    updateCoachReviewCount(itCoach.id, reviewCount)
                    updateCoachReviewAnswerCount(itCoach.id, reviewAnswerCount)
                }
            }
-
+           finishCallback?.invoke()
        }
-//       btnCancel?.setOnClickListener {
-//           log("btnCancel")
-//       }
 
        itemOnClick = { _,_ ->
            log("item on click")
