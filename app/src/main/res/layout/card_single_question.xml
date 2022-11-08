@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.usys.report.ui.ysrviews.YsrQuestionCard
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,8 +8,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     app:cardBackgroundColor="@color/ysrWindowBackground"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,10 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:contentDescription="TODO"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ysr_2"
-            android:contentDescription="TODO" />
+            app:srcCompat="@drawable/ysr_2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</io.usys.report.ui.ysrviews.YsrQuestionCard>
+</androidx.cardview.widget.CardView>

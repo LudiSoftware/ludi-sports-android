@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.navigation.fragment.findNavController
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.databinding.FragmentOrgProfileBinding
+import io.usys.report.ui.reviewSystem.ReviewDialogFragment
 import io.usys.report.ui.setupReviewList
 import io.usys.report.utils.cast
 import io.usys.report.utils.log
@@ -54,7 +56,11 @@ class OrganizationProfileFragment : YsrMiddleFragment() {
 
         _binding?.orgProfileImgBtnLeaveReview?.setOnClickListener {
             log("Leave A Review Button!")
-            organization?.let { it1 -> createOrgReviewDialog(requireActivity(), it1).show() }
+            ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
+//            createOrgReviewDialog2(requireActivity()).show()
+//            organization?.let { it1 ->
+//                createOrgReviewDialog(requireActivity(), it1).show()
+//            }
         }
 
         itemOnClick = { _, obj ->

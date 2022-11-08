@@ -2,10 +2,9 @@ package io.usys.report.ui
 
 import android.content.Context
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import io.realm.RealmList
@@ -13,12 +12,15 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.*
 import io.usys.report.model.*
+import io.usys.report.ui.reviewSystem.ReviewQuestionsViewHolder
+import io.usys.report.ui.reviewSystem.YsrQuestionCard
 import io.usys.report.utils.*
 
 /**
  * This Class will 'route' the RecyclerView to the correct ViewHolder based on its 'type'.
  */
-class RouterViewHolder(itemView: View, var type:String) : RecyclerView.ViewHolder(itemView) {
+class RouterViewHolder(itemView: View, var type:String, var updateCallback:((String, String) -> Unit)?=null) : RecyclerView.ViewHolder(itemView) {
+
 
     fun bind(obj: RealmObject) {
         when (type) {
@@ -26,6 +28,7 @@ class RouterViewHolder(itemView: View, var type:String) : RecyclerView.ViewHolde
             FireDB.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireDB.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
             FireDB.REVIEWS -> return ReviewViewHolder(itemView).bind(obj as? Review)
+            FireDB.REVIEW_TEMPLATES -> return ReviewQuestionsViewHolder(itemView, updateCallback).bind(obj as? Question)
         }
     }
 }

@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
 import io.usys.report.databinding.FragmentUserProfileBinding
+import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
 import io.usys.report.firebase.getDownloadUrlAsync
 import io.usys.report.firebase.fireStorageRefByPath
+import io.usys.report.firebase.getReviewTemplateAsync
+import io.usys.report.model.ReviewTemplate
 import io.usys.report.model.safeUserId
 import io.usys.report.utils.loadUriIntoImgView
+import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : 2020.
@@ -34,6 +38,8 @@ class ProfileFragment : YsrMiddleFragment() {
     private var _binding: FragmentUserProfileBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+
+    private var reviewTemplate: ReviewTemplate? = null
 
     private var COLOR_RED: Drawable? = null
     private var COLOR_WHITE: Drawable? = null
@@ -57,6 +63,12 @@ class ProfileFragment : YsrMiddleFragment() {
 //                popAskUserLogoutDialog(requireActivity()).show()
 //            }
 //        }
+
+        getReviewTemplateAsync(FireTypes.COACHES) {
+            reviewTemplate = this?.getValue(ReviewTemplate::class.java)
+            log("reviewTemplate successfully pulled.")
+        }
+
         safeUserId { itId ->
             val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
             fireStorageRefByPath(path).getDownloadUrlAsync {

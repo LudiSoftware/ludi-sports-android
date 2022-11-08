@@ -29,6 +29,7 @@ class FireDB {
         const val ORGANIZATIONS: String = "organizations"
         const val COACHES: String = "coaches"
         const val REVIEWS: String = "reviews"
+        const val REVIEW_TEMPLATES: String = "review_templates"
         const val SERVICES: String = "services"
 
 
@@ -47,6 +48,7 @@ class FireTypes {
         const val USERS: String = "users"
         const val ORGANIZATIONS: String = "organizations"
         const val REVIEWS: String = "reviews"
+        const val REVIEW_TEMPLATES: String = "review_templates"
         const val SPORTS: String = "sports"
         const val COACHES: String = "coaches"
 
@@ -61,6 +63,7 @@ class FireTypes {
                 REVIEWS -> return R.layout.card_review
                 USERS -> return R.layout.card_sport
                 COACHES -> return R.layout.card_sport
+                REVIEW_TEMPLATES -> return R.layout.card_single_question
                 else -> return R.layout.card_sport
             }
         }

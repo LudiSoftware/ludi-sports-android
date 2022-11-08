@@ -7,6 +7,7 @@ import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
+import io.usys.report.utils.toRealmList
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -50,6 +51,28 @@ fun getOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: String,
     }
 }
 
+
+/** Review Template */
+
+inline fun getReviewTemplateAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
+    firebaseDatabase {
+        it.child(FireTypes.REVIEW_TEMPLATES).child(templateType)
+            .fairAddListenerForSingleValueEvent { ds ->
+                block(ds)
+            }
+    }
+}
+
+inline fun getReviewTemplateQuestionsAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
+    firebaseDatabase {
+        it.child(FireTypes.REVIEW_TEMPLATES).child(templateType).child("master").child("questions")
+            .fairAddListenerForSingleValueEvent { ds ->
+                block(ds)
+            }
+    }
+}
+
+
 fun loadSportsIntoSessionAsync() {
     firebaseDatabase {
         it.child(FireDB.SPORTS)
@@ -75,6 +98,24 @@ fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -
     }
 }
 
+// Verified
+fun addUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
+    var result = false
+    firebaseDatabase { database ->
+        database.child(FireTypes.REVIEW_TEMPLATES).child(obj.type).child(obj.id)
+            .setValue(obj)
+            .addOnSuccessListener {
+                //TODO("HANDLE SUCCESS")
+                result = true
+            }.addOnCompleteListener {
+                //TODO("HANDLE COMPLETE")
+            }.addOnFailureListener {
+                //TODO("HANDLE FAILURE")
+                result = false
+            }
+    }
+    return result
+}
 
 // Verified
 fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {

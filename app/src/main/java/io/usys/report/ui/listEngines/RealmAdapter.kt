@@ -13,6 +13,14 @@ import io.usys.report.firebase.FireDB
 import io.usys.report.firebase.FireTypes
 import io.usys.report.utils.isNullOrEmpty
 
+inline fun <reified T> RecyclerView.loadInRealmListCallback(realmList: RealmList<T>?, context: Context, type: String,
+                                                    noinline updateCallback: ((String, String) -> Unit)?) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, null, updateCallback)
+    this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    this.adapter = adapter
+    return adapter
+}
 
 inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?, context: Context, type: String,
                                                     noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
@@ -26,6 +34,7 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?, co
 open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
     var itemClickListener: ((View, T) -> Unit)? = null
+    var updateCallback: ((String, String) -> Unit)? = null
     var realmList: RealmList<T>? = null
     var layout: Int = R.layout.card_organization
     var type: String = FireDB.ORGANIZATIONS
@@ -37,9 +46,17 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.layout = FireTypes.getLayout(type)
     }
 
+    constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, updateCallback: ((String, String) -> Unit)?) : this() {
+        this.realmList = realmList
+        this.type = type
+        this.itemClickListener = itemClickListener
+        this.updateCallback = updateCallback
+        this.layout = FireTypes.getLayout(type)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouterViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        return RouterViewHolder(itemView, type)
+        return RouterViewHolder(itemView, type, updateCallback)
     }
 
     override fun getItemCount(): Int {
@@ -69,7 +86,6 @@ fun <T> View.setOnRealmListener(itemClickListener: ((View, T) -> Unit)?, item: T
         itemClickListener?.invoke(this, item)
     }
 }
-
 
 
 

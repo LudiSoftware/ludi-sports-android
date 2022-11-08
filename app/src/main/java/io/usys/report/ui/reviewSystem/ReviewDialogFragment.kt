@@ -1,36 +1,62 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.reviewSystem
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import io.usys.report.R
+import io.usys.report.utils.bind
 import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : November 2022.
  */
 
-class PopFragment(layoutResource:Int=R.layout.fragment_pop) : DialogFragment() {
+class ReviewDialogFragment() : DialogFragment() {
 
     companion object {
         const val TAG = "PopFragmentDialog"
     }
 
+    private var rootview: View? = null
     private var dialogFragment: AlertDialog.Builder? = null
-    private var layoutResource: Int = R.layout.fragment_pop
+//    private var layoutResource: Int = R.layout.fragment_pop
     var message: String = "YSR"
     var positiveButton: String = "Okay"
+    var submitButton: Button? = null
     var positiveButtonCallbackFunction: ((Any, Any) -> Unit)? = null
+    var cancelButton: Button? = null
+
+    private var ysrCoachReviewObj: YsrCoachReview? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialogFragment =  AlertDialog.Builder(requireContext())
+        dialogFragment = AlertDialog.Builder(requireContext())
 
-        dialogFragment?.setView(R.layout.fragment_pop)
+        rootview = this.layoutInflater.inflate(R.layout.dialog_review_coach_layout, null)
+        ysrCoachReviewObj = rootview?.findViewById(R.id.reviewCoachRootCard)
+        submitButton = rootview?.bind(R.id.reviewBtnSubmit)
+        cancelButton = rootview?.bind(R.id.reviewBtnCancel)
+
+        dialogFragment?.setView(rootview)
             ?.setMessage(message)
             ?.fairSetPositiveButton(positiveButton, positiveButtonCallbackFunction)
-
         return dialogFragment!!.create()
+    }
+
+    private fun setOnClickListeners() {
+        submitButton?.setOnClickListener {
+            // Create Review Object.
+            this.dismiss()
+        }
+        cancelButton?.setOnClickListener {
+            this.dismiss()
+        }
     }
 
 }
