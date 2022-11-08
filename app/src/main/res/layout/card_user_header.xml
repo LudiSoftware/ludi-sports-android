@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardUserProfileHeader"
@@ -17,7 +18,7 @@
         tools:layout_editor_absoluteY="16dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfileUser"
+            android:id="@+id/cardUserHeaderImgProfileUser"
             android:layout_width="139dp"
             android:layout_height="132dp"
             android:src="@drawable/ysr_bg_two"
@@ -26,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtProfileName"
+            android:id="@+id/cardUserHeaderTxtProfileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
@@ -35,10 +36,10 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgProfileUser" />
+            app:layout_constraintTop_toBottomOf="@+id/cardUserHeaderImgProfileUser" />
 
         <TextView
-            android:id="@+id/txtProfileReviewCount"
+            android:id="@+id/cardUserHeaderTxtProfileReviewCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -50,7 +51,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/cardUserHeaderRatingBar"
             style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="42dp"

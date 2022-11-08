@@ -4,7 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.FireDB
-import io.usys.report.firebase.addUpdateDBAsync
+import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.utils.*
 import java.io.Serializable
 
@@ -49,7 +49,7 @@ open class Organization : RealmObject(), Serializable {
     }
 
     fun addUpdateOrgToFirebase(): Boolean {
-        return addUpdateDBAsync(FireDB.ORGANIZATIONS, this.id.toString(), this)
+        return fireAddUpdateDBAsync(FireDB.ORGANIZATIONS, this.id.toString(), this)
     }
 
 }
@@ -61,5 +61,5 @@ fun createOrg() {
         this.city = "birmingham"
         this.name = "USYSR Club"
     }
-    addUpdateDBAsync(FireDB.ORGANIZATIONS, org.id.toString(), org)
+    fireAddUpdateDBAsync(FireDB.ORGANIZATIONS, org.id.toString(), org)
 }

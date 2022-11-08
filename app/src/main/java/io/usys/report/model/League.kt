@@ -3,9 +3,8 @@ package io.usys.report.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.utils.applyAndSave
+import io.usys.report.utils.applyAndFireSave
 import io.usys.report.utils.newUUID
-import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -49,7 +48,7 @@ open class League : RealmObject() {
 
 
 fun createLocation() {
-    Coach().applyAndSave() {
+    Coach().applyAndFireSave() {
         it.id = newUUID()
         it.name = "Lucas Romeo"
         it.sport = "soccer"

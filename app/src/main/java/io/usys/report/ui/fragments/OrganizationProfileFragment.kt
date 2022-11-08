@@ -56,11 +56,11 @@ class OrganizationProfileFragment : YsrMiddleFragment() {
 
         _binding?.orgProfileImgBtnLeaveReview?.setOnClickListener {
             log("Leave A Review Button!")
-            ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
+//            ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
 //            createOrgReviewDialog2(requireActivity()).show()
-//            organization?.let { it1 ->
-//                createOrgReviewDialog(requireActivity(), it1).show()
-//            }
+            organization?.let { it1 ->
+                createOrgReviewDialog(requireActivity(), it1).show()
+            }
         }
 
         itemOnClick = { _, obj ->

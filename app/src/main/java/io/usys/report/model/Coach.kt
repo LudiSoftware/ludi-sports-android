@@ -3,7 +3,7 @@ package io.usys.report.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.utils.applyAndSave
+import io.usys.report.utils.applyAndFireSave
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -20,21 +20,22 @@ open class Coach : RealmObject(), Serializable {
     @PrimaryKey
     var id: String = newUUID() //UUID
     var dateCreated: String = getTimeStamp() // timestamp
-    var name: String? = "" //Name Given by Manager
-    var ownerId: String? = "unassigned"
-    var ownerName: String? = "unassigned"
-    var organizationId: String? = ""
+    var name: String = "" //Name Given by Manager
+    var imgUrl: String = ""
+    var ownerId: String = "unassigned"
+    var ownerName: String = "unassigned"
+    var organizationId: String = ""
     var organizationIds: RealmList<String>? = RealmList()
-    var addressOne: String? = "" // 2323 20th Ave South
-    var addressTwo: String? = "" // 2323 20th Ave South
-    var city: String? = "" // Birmingham
-    var state: String? = "" // AL
-    var zip: String? = "" // 35223
-    var sport: String? = "unassigned"
-    var type: String? = "unassigned"
-    var subType: String? = "unassigned"
-    var details: String? = ""
-    var estPeople: String? = ""
+    var addressOne: String = "" // 2323 20th Ave South
+    var addressTwo: String = "" // 2323 20th Ave South
+    var city: String = "" // Birmingham
+    var state: String = "" // AL
+    var zip: String = "" // 35223
+    var sport: String = "unassigned"
+    var type: String = "unassigned"
+    var subType: String = "unassigned"
+    var details: String = ""
+    var teams: RealmList<String>? = null
 
     var hasReview: Boolean = false
     var reviews: RealmList<String>? = RealmList()
@@ -51,8 +52,7 @@ open class Coach : RealmObject(), Serializable {
 
 
 fun createCoach() {
-    Coach().applyAndSave() {
-        it.id = newUUID()
+    Coach().applyAndFireSave() {
         it.name = "Lucas Romeo"
         it.sport = "soccer"
         it.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"

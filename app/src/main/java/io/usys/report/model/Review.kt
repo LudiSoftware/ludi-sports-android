@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
 import com.google.firebase.database.DataSnapshot
-import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
 import io.realm.RealmObject
@@ -83,7 +82,7 @@ fun createReviewTemplate() {
             createBaseQuestion("Does this coach work well with parents?"),
             createBaseQuestion("Is this coach Chace Zanaty?"))
     }
-    addUpdateCoachReviewDBAsync(revTemplate)
+    fireAddUpdateCoachReviewDBAsync(revTemplate)
 }
 
 open class Question: RealmObject() {
@@ -100,7 +99,7 @@ open class Question: RealmObject() {
     var choiceB: String = ""
     var choiceC: String = ""
     var choiceD: String = ""
-    var finalScore: String = ""
+    var finalScore: String = "0"
     var answer: String? = null
 }
 
@@ -126,31 +125,31 @@ inline fun getOrgRatingAsync(objId: String, isScore:Boolean=false, crossinline b
     }
 }
 fun updateCoachRatingScore(coachId:String, newRatingScore:String) {
-    updateSingleValueDBAsync(FireTypes.COACHES, coachId, RATING_SCORE, newRatingScore)
+    fireUpdateSingleValueDBAsync(FireTypes.COACHES, coachId, RATING_SCORE, newRatingScore)
 }
 
 fun updateCoachReviewCount(coachId:String, newRatingScore:String) {
-    updateSingleValueDBAsync(FireTypes.COACHES, coachId, RATING_COUNT, newRatingScore)
+    fireUpdateSingleValueDBAsync(FireTypes.COACHES, coachId, RATING_COUNT, newRatingScore)
 }
 
 fun updateCoachReviewAnswerCount(coachId:String, newRatingScore:String) {
-    updateSingleValueDBAsync(FireTypes.COACHES, coachId, ANSWER_COUNT, newRatingScore)
+    fireUpdateSingleValueDBAsync(FireTypes.COACHES, coachId, ANSWER_COUNT, newRatingScore)
 }
 
 fun updateOrgRatingScore(orgId:String, newRatingScore:String) {
     //busa = "54d9d63d-52bb-4503-95ca-8bda462e0f9a"
-    updateSingleValueDBAsync(FireTypes.ORGANIZATIONS, orgId, RATING_SCORE, newRatingScore)
+    fireUpdateSingleValueDBAsync(FireTypes.ORGANIZATIONS, orgId, RATING_SCORE, newRatingScore)
 }
 
 fun updateOrgRatingCount(orgId:String, newRatingCount:String) {
     //busa = "54d9d63d-52bb-4503-95ca-8bda462e0f9a"
-    updateSingleValueDBAsync(FireTypes.ORGANIZATIONS, orgId, RATING_COUNT, newRatingCount)
+    fireUpdateSingleValueDBAsync(FireTypes.ORGANIZATIONS, orgId, RATING_COUNT, newRatingCount)
 }
 
 
 
 fun Review.addUpdateInFirebase(): Boolean {
-    return addUpdateDBAsync(FireDB.REVIEWS, this.id, this)
+    return fireAddUpdateDBAsync(FireDB.REVIEWS, this.id, this)
 }
 
 fun createOrgReviewDialog2(activity: Activity) : Dialog {
@@ -214,7 +213,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
                 this.score = newOverallAvgScore.toString()
                 this.sportName = SPORT
                 this.type = TYPE
-            }.addUpdateReviewDBAsync()
+            }.fireAddUpdateReviewDBAsync()
         }
     }
 

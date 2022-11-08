@@ -7,14 +7,13 @@ import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
-import io.usys.report.utils.toRealmList
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
 /** Get List of ALL Base Objects */
-inline fun <reified T> getBaseObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
+inline fun <reified T> fireGetBaseYsrObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
     firebaseDatabase {
         it.child(dbName).fairAddParsedListenerForSingleValueEvent<T> { realmList ->
             block(realmList)
@@ -23,7 +22,7 @@ inline fun <reified T> getBaseObjects(dbName:String, crossinline block: RealmLis
 }
 
 /** Get One Single Value by Single Attribute */
-inline fun getSingleValueAsync(collection:String, objId: String, singleAttribute: String, crossinline block: DataSnapshot?.() -> Unit) {
+inline fun fireGetSingleValueAsync(collection:String, objId: String, singleAttribute: String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(collection).child(objId).child(singleAttribute)
             .fairAddListenerForSingleValueEvent { ds ->
@@ -31,9 +30,18 @@ inline fun getSingleValueAsync(collection:String, objId: String, singleAttribute
             }
     }
 }
+inline fun fireGetSyncUserProfile(userId:String, crossinline block: (User?) -> Unit) {
+    firebaseDatabase {
+        it.child(FireTypes.USERS).child(userId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                val userObject = ds?.getValue(User::class.java)
+                block(userObject)
+            }
+    }
+}
 
 /** Get List by Single Attribute AsyncBlock */
-inline fun getOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
+inline fun fireGetOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
             .fairAddListenerForSingleValueEvent { ds ->
@@ -43,8 +51,8 @@ inline fun getOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: Strin
 }
 
 /** Get List by Single Attribute with Callback */
-fun getOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: String,
-                              callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+fun fireGetOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: String,
+                                  callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebaseDatabase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
             .fairAddListenerForSingleValueEvent(callbackFunction)
@@ -54,7 +62,7 @@ fun getOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: String,
 
 /** Review Template */
 
-inline fun getReviewTemplateAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
+inline fun fireGetReviewTemplateAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(FireTypes.REVIEW_TEMPLATES).child(templateType)
             .fairAddListenerForSingleValueEvent { ds ->
@@ -63,7 +71,7 @@ inline fun getReviewTemplateAsync(templateType:String, crossinline block: DataSn
     }
 }
 
-inline fun getReviewTemplateQuestionsAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
+inline fun fireGetReviewTemplateQuestionsAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(FireTypes.REVIEW_TEMPLATES).child(templateType).child("master").child("questions")
             .fairAddListenerForSingleValueEvent { ds ->
@@ -73,7 +81,7 @@ inline fun getReviewTemplateQuestionsAsync(templateType:String, crossinline bloc
 }
 
 
-fun loadSportsIntoSessionAsync() {
+fun fireGetAndLoadSportsIntoSessionAsync() {
     firebaseDatabase {
         it.child(FireDB.SPORTS)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -89,7 +97,7 @@ fun loadSportsIntoSessionAsync() {
 
 /** ADD/UPDATE **/
 // unverified
-fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -> Unit)?) {
+fun <T> T.fireAddUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -> Unit)?) {
     val collection = this.getNameOfRealmObject() ?: return
     firebaseDatabase { database ->
         database.child(collection).child(id)
@@ -99,7 +107,7 @@ fun <T> T.addUpdateInFirebase(id: String, callbackFunction: ((Boolean, String) -
 }
 
 // Verified
-fun addUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
+fun fireAddUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
     var result = false
     firebaseDatabase { database ->
         database.child(FireTypes.REVIEW_TEMPLATES).child(obj.type).child(obj.id)
@@ -118,7 +126,7 @@ fun addUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
 }
 
 // Verified
-fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
+fun fireAddUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
     var result = false
     firebaseDatabase { database ->
         database.child(collection).child(id)
@@ -137,7 +145,7 @@ fun addUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
 }
 
 // Verified
-fun updateSingleValueDBAsync(collection: String, id: String, single_attribute: String, single_value: String): Boolean {
+fun fireUpdateSingleValueDBAsync(collection: String, id: String, single_attribute: String, single_value: String): Boolean {
     var result = false
     firebaseDatabase { database ->
         database.child(collection)
@@ -157,7 +165,7 @@ fun updateSingleValueDBAsync(collection: String, id: String, single_attribute: S
     return result
 }
 
-fun Review.addUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
+fun Review.fireAddUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
     var result = false
     firebaseDatabase { database ->
         database.child(FireTypes.REVIEWS).child(this.receiverId!!).child(this.id)
@@ -179,11 +187,12 @@ fun Review.addUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
 
 /** GET **/
 
-inline fun getUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
+inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
     var userUpdates: User? = null
         firebaseDatabase {
         it.child(FireTypes.USERS).child(id).fairAddListenerForSingleValueEvent {
             userUpdates = it?.getValue(User::class.java)
+            ysrUpdateUser()
             userUpdates?.let { itUser ->
                 if (itUser.id == id){
                     AuthControllerActivity.USER_AUTH = itUser.auth
@@ -197,12 +206,12 @@ inline fun getUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?
     return userUpdates
 }
 
-fun getCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    getOrderByEqualToCallback(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
+fun fireGetCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    fireGetOrderByEqualToCallback(FireDB.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
 }
 
 // Verified
-fun getReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+fun fireGetReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebaseDatabase {
         it.child(FireTypes.REVIEWS).child(receiverId)
             .fairAddListenerForSingleValueEvent(callbackFunction)
@@ -210,7 +219,7 @@ fun getReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((data
 }
 
 
-inline fun saveProfileToFirebaseAsync(user:User?, crossinline block: (Any) -> Unit) {
+inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any) -> Unit) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return
     firebaseDatabase {

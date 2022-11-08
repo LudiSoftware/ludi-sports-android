@@ -7,14 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
-import io.usys.report.databinding.FragmentUserProfileBinding
-import io.usys.report.firebase.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
-import io.usys.report.firebase.coreUpdateProfileImageUri
-import io.usys.report.firebase.getDownloadUrlAsync
-import io.usys.report.firebase.fireStorageRefByPath
+import io.usys.report.databinding.FragmentUserProfileCoachBinding
 import io.usys.report.model.Coach
 import io.usys.report.model.safeUser
-import io.usys.report.model.safeUserId
 import io.usys.report.ui.reviewSystem.ReviewDialogFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.loadUriIntoImgView
@@ -24,7 +19,7 @@ import io.usys.report.utils.toUri
  * Created by ChazzCoin : 2020.
  */
 
-class ProfileFragment : YsrMiddleFragment() {
+class ProfileCoachFragment : YsrMiddleFragment() {
 
     val _SAVE = 0
     val _DISPLAY = 1
@@ -37,7 +32,7 @@ class ProfileFragment : YsrMiddleFragment() {
         TODO("Not yet implemented")
     }
 
-    private var _binding: FragmentUserProfileBinding? = null
+    private var _binding: FragmentUserProfileCoachBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
@@ -49,7 +44,7 @@ class ProfileFragment : YsrMiddleFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentUserProfileCoachBinding.inflate(inflater, container, false)
         rootView = binding.root
 
         COLOR_RED = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_red)
@@ -64,38 +59,41 @@ class ProfileFragment : YsrMiddleFragment() {
 //                popAskUserLogoutDialog(requireActivity()).show()
 //            }
 //        }
+        setupDisplay()
         setupProfileImage()
         return rootView
     }
 
     private fun setupDisplay() {
         //General User Info
-        _binding?.includeUserProfileHeader?.cardUserHeaderTxtProfileName?.text = user?.name
-//        _binding?.editLayoutProfileEmail?.setText(user?.email)
-//        rootView.editPhoneNumber.setText(user?.phone)
+        currentCoach?.let {
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.name
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.ratingScore.toFloat()
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = it.ratingCount
+        }
     }
 
     private fun setupProfileImage() {
 
-//        safeUser { itUser ->
-//            itUser.photoUrl?.let { itUrl ->
-//                itUrl.toUri()?.let { itUri ->
-//                    _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-//                        this.loadUriIntoImgView(itUri, itImgView)
-//                    }
-//                }
-//            }
-//        }
-
-        safeUserId { itId ->
-            val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
-            fireStorageRefByPath(path).getDownloadUrlAsync {
-                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-                    this.loadUriIntoImgView(it, itImgView)
-                    coreUpdateProfileImageUri(it)
+        safeUser { itUser ->
+            itUser.photoUrl?.let { itUrl ->
+                itUrl.toUri()?.let { itUri ->
+                    _binding?.includeUserProfileCoachHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
+                        this.loadUriIntoImgView(itUri, itImgView)
+                    }
                 }
             }
         }
+
+//        safeUserId { itId ->
+//            val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)
+//            fireStorageRefByPath(path).getDownloadUrlAsync {
+//                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
+//                    this.loadUriIntoImgView(it, itImgView)
+//                    fireUpdateUserProfileSingleValue(itId, "imUrl", it.toString())
+//                }
+//            }
+//        }
     }
 
     private fun launchCoachReviewFragment() {

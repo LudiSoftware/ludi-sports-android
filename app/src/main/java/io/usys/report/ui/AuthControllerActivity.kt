@@ -9,7 +9,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
-import io.usys.report.firebase.getUserUpdatesFromFirebaseAsync
+import io.usys.report.firebase.fireGetUserUpdatesFromFirebaseAsync
 import io.usys.report.model.*
 import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.utils.isNullOrEmpty
@@ -33,6 +33,10 @@ class AuthControllerActivity : AppCompatActivity()  {
         setContentView(R.layout.splash_screen)
         //Initialize
         initializeDependencies()
+    }
+
+    override fun onStart() {
+        super.onStart()
         //Setup
         verifyUserLogin()
     }
@@ -53,7 +57,7 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     private fun verifyUserLogin() {
         safeUser {
-            getUserUpdatesFromFirebaseAsync(it.id) {
+            fireGetUserUpdatesFromFirebaseAsync(it.id) {
                 navigateUser(it)
             }
             return

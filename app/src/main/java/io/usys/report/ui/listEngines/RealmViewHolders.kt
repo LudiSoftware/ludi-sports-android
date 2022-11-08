@@ -3,8 +3,6 @@ package io.usys.report.ui
 import android.content.Context
 import android.view.View
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import io.realm.RealmList
@@ -13,7 +11,6 @@ import io.usys.report.R
 import io.usys.report.firebase.*
 import io.usys.report.model.*
 import io.usys.report.ui.reviewSystem.ReviewQuestionsViewHolder
-import io.usys.report.ui.reviewSystem.YsrQuestionCard
 import io.usys.report.utils.*
 
 /**
@@ -40,7 +37,7 @@ fun RecyclerView?.setupSportList(context: Context, onClick: ((View, RealmObject)
     // Load Organizations by Sport
     val rv = this
     var sportList: RealmList<Sport>? = RealmList()
-    getBaseObjects<Sport>(FireTypes.SPORTS) {
+    fireGetBaseYsrObjects<Sport>(FireTypes.SPORTS) {
         executeRealm {
             sportList = this ?: RealmList()
             sportList.addToSession()
@@ -66,7 +63,7 @@ fun RecyclerView?.setupOrganizationList(context: Context, realmObjectArg: RealmO
     // Load Organizations by Sport.name
     val rv = this
     var organizationList: RealmList<Organization>?
-    getOrderByEqualToAsync(FireTypes.ORGANIZATIONS, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
+    fireGetOrderByEqualToAsync(FireTypes.ORGANIZATIONS, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
         organizationList = this?.toRealmList()
         rv?.loadInRealmList(organizationList, context, FireTypes.ORGANIZATIONS, onClick)
     }
@@ -103,7 +100,7 @@ fun RecyclerView?.setupCoachList(context: Context, realmObjectArg: RealmObject?,
     // Load Coaches by Organization.id
     val rv = this
     var coachesList: RealmList<Coach>?
-    getOrderByEqualToAsync(FireTypes.COACHES, Coach.ORDER_BY_ORGANIZATION, realmObjectArg?.cast<Organization>()?.id ?: return) {
+    fireGetOrderByEqualToAsync(FireTypes.COACHES, Coach.ORDER_BY_ORGANIZATION, realmObjectArg?.cast<Organization>()?.id ?: return) {
         coachesList = this?.toRealmList()
         rv?.loadInRealmList(coachesList, context, FireTypes.COACHES, onClick)
     }
@@ -130,7 +127,7 @@ fun RecyclerView?.setupReviewList(context: Context, receiverId:String, itemOnCli
         val reviewList = ds?.toRealmList<Review>()
         rv?.loadInRealmList(reviewList, context, FireTypes.REVIEWS, itemOnClick)
     }
-    getReviewsByReceiverIdToCallback(receiverId, callBack)
+    fireGetReviewsByReceiverIdToCallback(receiverId, callBack)
 }
 
 class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

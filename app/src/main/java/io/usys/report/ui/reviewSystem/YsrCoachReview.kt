@@ -12,14 +12,12 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireDB
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.getReviewTemplateAsync
-import io.usys.report.firebase.getReviewTemplateQuestionsAsync
+import io.usys.report.firebase.fireGetReviewTemplateQuestionsAsync
 import io.usys.report.model.*
 import io.usys.report.ui.loadInRealmListCallback
 import io.usys.report.utils.*
 
 class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, attrs) {
-//    constructor(context: Context, attrs: AttributeSet) : this(context)
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : this(context, attrs)
 
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
@@ -38,18 +36,17 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
     var reviewCount = ""
     var reviewAnswerCount = ""
 
-
     override fun onViewAdded(child: View?) {
         bindChildren()
         setupRadioListeners()
 
         //TODO: LOAD THIS AT THE BEGINNING, SAVE IT IN REALM FOR GLOBAL USE!
         // Review Template
-        getReviewTemplateAsync(FireTypes.COACHES) {
-            log("reviewTemplate successfully pulled.")
-            reviewTemplate = this?.getValue(ReviewTemplate::class.java)
-        }
-        getReviewTemplateQuestionsAsync(FireTypes.COACHES) {
+//        getReviewTemplateAsync(FireTypes.COACHES) {
+//            log("reviewTemplate successfully pulled.")
+//            reviewTemplate = this?.getValue(ReviewTemplate::class.java)
+//        }
+        fireGetReviewTemplateQuestionsAsync(FireTypes.COACHES) {
             log("reviewTemplate successfully pulled.")
             reviewQuestions = this?.toRealmList()
             recyclerView?.loadInRealmListCallback(reviewQuestions, context, FireDB.REVIEW_TEMPLATES, updateCallback)
@@ -62,11 +59,14 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
     private fun updater() {
         updateCallback = { question, score ->
 
-            for (q in reviewQuestions!!) {
-                if (q.question == question) {
-                    q.finalScore = score
+            reviewQuestions?.let {
+                for (q in it) {
+                    if (q.question == question) {
+                        q.finalScore = score
+                    }
                 }
             }
+
             log(question)
             log(score)
         }
@@ -80,15 +80,18 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
         btnCancel = this.rootView.bind(R.id.reviewBtnCancel)
     }
 
-    fun generateRatingScoreCount() {
+    private fun generateRatingScoreCount() {
         var tempScore = 0
         var tempCount = 0
         var tempAnswerCount = 0
 
-        for (q in reviewQuestions!!) {
-            if (q.finalScore != "0") {
-                tempScore += q.finalScore.toInt()
-                tempAnswerCount += 1
+        reviewQuestions?.let {
+            for (q in it) {
+                if (q.finalScore != "0") {
+                    tempScore += q.finalScore.toInt()
+                    tempAnswerCount += 1
+                }
+
             }
             tempCount += 1
         }
@@ -99,11 +102,10 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
     }
 
    private fun setupRadioListeners() {
-
+       log("btnSubmit")
+       //TODO: not complete yet!
        btnSubmit?.setOnClickListener {
             generateRatingScoreCount()
-           //TODO: GRAB ALL QUESTIONS
-           //- BUILD REVIEW OBJECT..
            safeUserId { itUserId ->
                currentCoach?.let { itCoach ->
                    Review().apply {
@@ -117,19 +119,8 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
                    updateCoachReviewCount(itCoach.id, reviewCount)
                    updateCoachReviewAnswerCount(itCoach.id, reviewAnswerCount)
                }
-
-
-
-               //update coaches review count and score
-
-
-               //save review
-
            }
 
-
-
-           log("btnSubmit")
        }
 //       btnCancel?.setOnClickListener {
 //           log("btnCancel")

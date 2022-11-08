@@ -122,6 +122,7 @@ open class Session : RealmObject() {
 
         fun updateUser(newNser: User){
             executeRealm { itRealm ->
+                user = newNser
                 itRealm.insertOrUpdate(newNser)
             }
         }

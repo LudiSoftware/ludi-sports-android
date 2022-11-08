@@ -4,6 +4,9 @@ import android.app.Activity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.realm.RealmObject
+import io.usys.report.firebase.FireTypes
+import io.usys.report.firebase.coreFirebaseUser
+import io.usys.report.firebase.fireUpdateSingleValueDBAsync
 import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
 import io.usys.report.utils.*
@@ -70,6 +73,27 @@ fun FirebaseUser?.toYsrUser() : User {
     return user
 }
 
+fun ysrUpdateUser() {
+    val fireUser = coreFirebaseUser()
+    if (fireUser.isNullOrEmpty()) return
+    val uid = fireUser?.uid
+    val email = fireUser?.email
+    val name = fireUser?.displayName
+    val photoUrl = fireUser?.photoUrl
+    val emailVerified = fireUser?.isEmailVerified
+    Session.getCurrentUser()?.let { itUser ->
+        executeRealm {
+            itUser.id = uid ?: "unknown"
+            itUser.email = email
+            itUser.name = name
+            itUser.photoUrl = photoUrl.toString()
+            itUser.emailVerified = emailVerified
+            it.insertOrUpdate(itUser)
+        }
+    }
+
+}
+
 fun getMasterUser(): User? {
     val realmUser = Session.getCurrentUser()
     val realmUserId = realmUser?.id
@@ -113,4 +137,13 @@ fun userOrLogout(activity: Activity? = null) {
         activity?.let { Session.logoutAndRestartApplication(it) }
     }
     //todo: get firebase user, if valid, set and continue
+}
+
+
+fun User.fireUpdateUserProfileSingleValue(singleAttribute:String, singleValue:String) {
+    fireUpdateSingleValueDBAsync(FireTypes.USERS, this.id, singleAttribute, singleValue)
+}
+
+fun fireUpdateUserProfileSingleValue(userId:String, singleAttribute:String, singleValue:String) {
+    fireUpdateSingleValueDBAsync(FireTypes.USERS, userId, singleAttribute, singleValue)
 }

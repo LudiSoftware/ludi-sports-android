@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.databinding.ActivityLoginBinding
-import io.usys.report.firebase.saveProfileToFirebaseAsync
+import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
 import io.usys.report.model.toYsrUser
@@ -48,7 +48,7 @@ class YsrLoginActivity : AppCompatActivity() {
 
     //SAVE PROFILE
     private fun saveProfileToFirebase(user:User?) {
-        saveProfileToFirebaseAsync(user) {
+        fireSaveUserToFirebaseAsync(user) {
             log("Profile Updated! $it")
             if (user != null) {
                 Session.updateUser(user)

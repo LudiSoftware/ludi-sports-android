@@ -1,11 +1,14 @@
 package io.usys.report.utils
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.ktx.Firebase
 import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmModel
-import io.usys.report.firebase.addUpdateDBAsync
+import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.forceGetNameOfRealmObject
 
 /**
@@ -64,13 +67,13 @@ inline fun executeRealm(crossinline block: (Realm) -> Unit) {
 }
 
 // in progress
-inline fun <T : RealmModel> T.applyAndSave(block: (T) -> Unit) {
+inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {
     this.apply {
         block(this)
     }
     this.cast<T>()?.let { itObj ->
         this.getRealmId<T>()?.let { itId ->
-            addUpdateDBAsync(itObj.forceGetNameOfRealmObject(), itId, itObj)
+            fireAddUpdateDBAsync(itObj.forceGetNameOfRealmObject(), itId, itObj)
         }
     }
 }
@@ -85,8 +88,6 @@ fun <T> RealmModel.getRealmId() : String? {
 fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {
     return this.getValue(clazz)
 }
-
-
 
 fun sessionAndUser(block: (Session, User) -> Unit) {
     session { itSession ->

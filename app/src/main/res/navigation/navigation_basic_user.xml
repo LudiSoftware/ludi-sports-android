@@ -64,10 +64,16 @@
         tools:layout="@layout/fragment_user_profile" />
 
     <fragment
+        android:id="@+id/navigation_profile_coach"
+        android:name="io.usys.report.ui.fragments.ProfileCoachFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_user_profile" />
+
+    <fragment
         android:id="@+id/navigation_pop_frag"
-        android:name="io.usys.report.ui.fragments.PopFragment"
+        android:name="io.usys.report.ui.reviewSystem.ReviewDialogFragment"
         android:label="PopUp"
-        tools:layout="@layout/fragment_pop">
+        tools:layout="@layout/dialog_review_coach_layout">
     </fragment>
 
     <fragment

@@ -6,19 +6,15 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DataSnapshot
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.getReviewsByReceiverIdToCallback
 import io.usys.report.model.Question
-import io.usys.report.model.Review
 import io.usys.report.model.getQuestionScore
 import io.usys.report.ui.loadInRealmList
 import io.usys.report.utils.bind
 import io.usys.report.utils.log
-import io.usys.report.utils.toRealmList
 
 /**
  * REVIEW TEMPLATE COACH LIST VIEW CONTROLS

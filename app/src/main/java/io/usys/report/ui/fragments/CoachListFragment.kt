@@ -47,7 +47,7 @@ class CoachListFragment : Fragment() {
 
     private fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
-            toFragment(R.id.navigation_profile, obj)
+            toFragment(R.id.navigation_profile_coach, obj)
         }
     }
 

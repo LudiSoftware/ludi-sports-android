@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.firebase.saveProfileToFirebaseAsync
+import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
 import io.usys.report.model.toYsrUser
@@ -64,7 +64,7 @@ class ProviderLoginActivity : AppCompatActivity() {
 
     //SAVE PROFILE
     private fun saveProfileToFirebaseUI(user:User?) {
-        saveProfileToFirebaseAsync(user) {
+        fireSaveUserToFirebaseAsync(user) {
             log("Profile Updated! $it")
             if (user != null) {
                 Session.updateUser(user)

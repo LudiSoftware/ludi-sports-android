@@ -1,5 +1,7 @@
 package io.usys.report.firebase
 
+import android.net.Uri
+import com.google.firebase.auth.*
 import com.google.firebase.database.*
 import io.realm.RealmList
 import io.usys.report.R
@@ -71,6 +73,42 @@ class FireTypes {
 }
 
 /** UTILS **/
+
+fun coreFirebaseUser(): FirebaseUser? {
+    return FirebaseAuth.getInstance().currentUser
+}
+
+fun coreUpdateProfileImageUri(imgUri: Uri) {
+    val userChangeRequest = UserProfileChangeRequest.Builder().apply {
+        photoUri = imgUri
+    }.build()
+    coreFirebaseUser()?.updateProfile(userChangeRequest)?.addOnCompleteListener {
+        if (it.isSuccessful) {
+            log("Photo has been successfully updated in User Profile.")
+        }
+    }
+}
+
+fun coreSendUserVerificationEmail() {
+    coreFirebaseUser()?.sendEmailVerification()?.addOnCompleteListener {
+        if (it.isSuccessful) {
+            log("Successfully sent email verification!")
+        }
+    }
+}
+
+fun coreChangeUserPassword(newPassword:String) {
+
+}
+
+fun coreSendResetUserPasswordEmail(newPassword:String) {
+
+}
+
+//fun coreAuthenticateUser(email:String, password:String) {
+//    val credential = EmailAuthProvider.getCredential(email, "password1234")
+//    GoogleAuthProvider.getCredential(email, password)
+//}
 
 fun Any.forceGetNameOfRealmObject() : String {
     when (this) {

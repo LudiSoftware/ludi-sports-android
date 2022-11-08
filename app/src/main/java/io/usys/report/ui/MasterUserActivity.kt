@@ -9,7 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
-import io.usys.report.firebase.loadSportsIntoSessionAsync
+import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
 
 
 /**
@@ -30,7 +30,7 @@ class MasterUserActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(false)
 
         // -> Base Loading of Data for the user.
-        loadSportsIntoSessionAsync()
+        fireGetAndLoadSportsIntoSessionAsync()
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
