@@ -18,6 +18,8 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
+
+
 class FireTypes {
     companion object {
         // DATE FORMATS
@@ -34,19 +36,33 @@ class FireTypes {
         const val SPORTS: String = "sports"
         const val COACHES: String = "coaches"
         const val SERVICES: String = "services"
-        // FIRESTORE ROUTES
-        var USER_PROFILE_IMAGE_PATH_BY_ID : (String) -> String = {"$USERS/$it/profile/profile_image.jpg"}
-        var ORG_PROFILE_IMAGE_PATH_BY_ID : (String) -> String = {"$ORGANIZATIONS/$it/profile/profile_image.jpg"}
-//        var ADMIN_IMAGE_PATH_BY_ID : (String) -> String = {"$ADMIN/$it/profile/profile_image.jpg"}
+    }
+}
 
+class FirePaths {
+    companion object {
+        // FIRESTORE FILE NAMES
+        const val PROFILE_FILE_NAME = "profile_image.jpg"
+        const val ICON_FILE_NAME = "icon.jpg"
+        // FIRESTORE ROUTES
+        const val PROFILE = "profile"
+        // Profile Images
+        var PROFILE_IMAGE_PATH_BY_ID : (String, String) -> String = { FireType,id -> "$FireType/$id/$PROFILE/$PROFILE_FILE_NAME"}
+        // Icon Images
+        var ICON_IMAGE_PATH_BY_ID : (String, String) -> String = { FireType,id -> "$FireType/$id/$PROFILE/$ICON_FILE_NAME"}
+    }
+}
+
+class FireLayouts {
+    companion object {
         fun getLayout(type: String): Int {
             return when (type) {
-                ORGANIZATIONS -> R.layout.card_organization
-                SPORTS -> R.layout.card_sport
-                REVIEWS -> R.layout.card_review
-                USERS -> R.layout.card_sport
-                COACHES -> R.layout.card_sport
-                REVIEW_TEMPLATES -> R.layout.card_single_question
+                FireTypes.ORGANIZATIONS -> R.layout.card_organization
+                FireTypes.SPORTS -> R.layout.card_sport
+                FireTypes.REVIEWS -> R.layout.card_review
+                FireTypes.USERS -> R.layout.card_sport
+                FireTypes.COACHES -> R.layout.card_sport
+                FireTypes.REVIEW_TEMPLATES -> R.layout.card_single_question
                 else -> R.layout.card_sport
             }
         }

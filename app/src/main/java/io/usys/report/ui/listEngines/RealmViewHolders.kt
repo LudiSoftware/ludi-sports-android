@@ -18,7 +18,13 @@ import io.usys.report.utils.*
  */
 class RouterViewHolder(itemView: View, var type:String, var updateCallback:((String, String) -> Unit)?=null) : RecyclerView.ViewHolder(itemView) {
 
-
+    /**     Router / RecyclerView Checklist.
+     * 1. Realm Model of FireType
+     * 2. Card Layout for ListItem
+     * 3. ViewModel
+     * 4. Add FireType to Router bind()
+     * - Create Convenience Ext Method if Wanted.
+     */
     fun bind(obj: RealmObject) {
         when (type) {
             FireTypes.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)

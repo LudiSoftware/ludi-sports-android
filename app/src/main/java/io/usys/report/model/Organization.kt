@@ -34,6 +34,7 @@ open class Organization : RealmObject(), Serializable {
     var ratingScore: String = "0.0"
     var ratingCount: String = "0"
     var details: String = ""
+    var officeHours: String = ""
     var websiteUrl: String = ""
     var imgOrgIconUri: String = ""
     var managerId: String = UNASSIGNED
@@ -52,7 +53,7 @@ open class Organization : RealmObject(), Serializable {
     }
 
     fun addUpdateOrgToFirebase(): Boolean {
-        return fireAddUpdateDBAsync(FireTypes.ORGANIZATIONS, this.id.toString(), this)
+        return fireAddUpdateDBAsync(FireTypes.ORGANIZATIONS, this.id, this)
     }
 
 }

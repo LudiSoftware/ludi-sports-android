@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
+import io.usys.report.firebase.FireLayouts
 import io.usys.report.firebase.FireTypes
 import io.usys.report.utils.isNullOrEmpty
 
@@ -42,7 +43,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.realmList = realmList
         this.type = type
         this.itemClickListener = itemClickListener
-        this.layout = FireTypes.getLayout(type)
+        this.layout = FireLayouts.getLayout(type)
     }
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, updateCallback: ((String, String) -> Unit)?) : this() {
@@ -50,7 +51,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.type = type
         this.itemClickListener = itemClickListener
         this.updateCallback = updateCallback
-        this.layout = FireTypes.getLayout(type)
+        this.layout = FireLayouts.getLayout(type)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouterViewHolder {

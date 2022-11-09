@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
+import io.usys.report.model.createService
 import io.usys.report.ui.setupSportList
 
 
@@ -24,6 +25,7 @@ class DashboardFragment : YsrFragment() {
         setupOnClickListeners()
 
 //        createCoach()
+//        createService()
 
         return binding.root
     }
