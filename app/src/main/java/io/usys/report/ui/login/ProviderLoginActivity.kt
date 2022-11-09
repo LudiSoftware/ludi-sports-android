@@ -11,7 +11,7 @@ import io.usys.report.R
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
-import io.usys.report.model.toYsrUser
+import io.usys.report.model.toYsrRealmUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
 import io.usys.report.utils.fairRegisterActivityResult
@@ -58,7 +58,7 @@ class ProviderLoginActivity : AppCompatActivity() {
     }
 
     private fun handleFireUser(firebaseUser: FirebaseUser?) {
-        val user = firebaseUser.toYsrUser()
+        val user = firebaseUser.toYsrRealmUser()
         saveProfileToFirebaseUI(user)
     }
 

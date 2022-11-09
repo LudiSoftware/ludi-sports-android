@@ -9,10 +9,11 @@ import io.usys.report.firebase.coreFirebaseUser
 import io.usys.report.firebase.fireUpdateSingleValueDBAsync
 import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
+import io.usys.report.model.AuthTypes.Companion.UNASSIGNED
 import io.usys.report.utils.*
 
 /**
- * Created by ChazzCoin : December 2019.
+ * Created by ChazzCoin : October 2022.
  */
 
 open class AuthTypes {
@@ -26,24 +27,26 @@ open class AuthTypes {
         var PARENT_USER = "parent"
         var BASIC_USER = "basic" // Default
         var WAITING = "waiting"
+
+        var UNASSIGNED = "unassigned"
     }
 }
 
 open class User : RealmObject() {
 
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
-    var dateCreated: String? = getTimeStamp()
-    var dateUpdated: String? = getTimeStamp()
-    var username: String? = null
-    var name: String? = "" //Name Given by Manager
-    var auth: String = AuthTypes.BASIC_USER // "basic"
-    var type: String? = ""
-    var email: String? = ""
-    var phone: String? = ""
-    var organization: String? = ""
+    var dateCreated: String = getTimeStamp()
+    var dateUpdated: String = getTimeStamp()
+    var username: String = UNASSIGNED
+    var name: String = "" //Name Given by Manager
+    var auth: String = BASIC_USER // "basic"
+    var type: String = ""
+    var email: String = ""
+    var phone: String = ""
+    var organization: String = ""
     var visibility: String = "closed"
-    var photoUrl: String? = null
-    var emailVerified: Boolean? = false
+    var photoUrl: String = ""
+    var emailVerified: Boolean = false
 
     fun isCoachUser() : Boolean {
         if (this.auth == COACH_USER) return true
@@ -56,7 +59,7 @@ open class User : RealmObject() {
 
 }
 
-fun FirebaseUser?.toYsrUser() : User {
+fun FirebaseUser?.toYsrRealmUser() : User {
     if (this.isNullOrEmpty()) return User()
     val uid = this?.uid
     val email = this?.email
@@ -65,15 +68,15 @@ fun FirebaseUser?.toYsrUser() : User {
     val emailVerified = this?.isEmailVerified
     val user = User().apply {
         this.id = uid ?: "unknown"
-        this.email = email
-        this.name = name
+        this.email = email ?: UNASSIGNED
+        this.name = name ?: UNASSIGNED
         this.photoUrl = photoUrl.toString()
-        this.emailVerified = emailVerified
+        this.emailVerified = emailVerified ?: false
     }
     return user
 }
 
-fun ysrUpdateUser() {
+fun ysrUpdateRealmUser() {
     val fireUser = coreFirebaseUser()
     if (fireUser.isNullOrEmpty()) return
     val uid = fireUser?.uid
@@ -84,10 +87,10 @@ fun ysrUpdateUser() {
     Session.getCurrentUser()?.let { itUser ->
         executeRealm {
             itUser.id = uid ?: "unknown"
-            itUser.email = email
-            itUser.name = name
+            itUser.email = email ?: UNASSIGNED
+            itUser.name = name ?: UNASSIGNED
             itUser.photoUrl = photoUrl.toString()
-            itUser.emailVerified = emailVerified
+            itUser.emailVerified = emailVerified ?: false
             it.insertOrUpdate(itUser)
         }
     }
@@ -99,7 +102,7 @@ fun getMasterUser(): User? {
     val realmUserId = realmUser?.id
     if (!realmUserId.isNullOrEmpty()) return realmUser
     val fireUser = FirebaseAuth.getInstance().currentUser
-    return fireUser.toYsrUser()
+    return fireUser.toYsrRealmUser()
 }
 
 inline fun safeUser(block: (User) -> Unit) {
@@ -131,14 +134,6 @@ inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
     }
     //todo: get firebase user, if valid, set and continue
 }
-
-fun userOrLogout(activity: Activity? = null) {
-    if (Session.user.isNullOrEmpty()) {
-        activity?.let { Session.logoutAndRestartApplication(it) }
-    }
-    //todo: get firebase user, if valid, set and continue
-}
-
 
 fun User.fireUpdateUserProfileSingleValue(singleAttribute:String, singleValue:String) {
     fireUpdateSingleValueDBAsync(FireTypes.USERS, this.id, singleAttribute, singleValue)

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.firebase.FireDB
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetReviewTemplateQuestionsAsync
 import io.usys.report.model.*
@@ -19,6 +18,13 @@ import io.usys.report.utils.*
 
 class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, attrs) {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : this(context, attrs)
+
+    companion object {
+        const val A = "a"
+        const val B = "b"
+        const val C = "c"
+        const val D = "d"
+    }
 
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
     var updateCallback: ((String, String) -> Unit)? = null
@@ -50,7 +56,7 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
         fireGetReviewTemplateQuestionsAsync(FireTypes.COACHES) {
             log("reviewTemplate successfully pulled.")
             reviewQuestions = this?.toRealmList()
-            recyclerView?.loadInRealmListCallback(reviewQuestions, context, FireDB.REVIEW_TEMPLATES, updateCallback)
+            recyclerView?.loadInRealmListCallback(reviewQuestions, context, FireTypes.REVIEW_TEMPLATES, updateCallback)
         }
 
         updater()
@@ -121,7 +127,7 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
                        this.type = FireTypes.COACHES
                        this.questions = reviewQuestions
                        this.score = reviewScore
-                   }.addUpdateInFirebase()
+                   }.fireAddUpdateToDB()
                    updateCoachRatingScore(itCoach.id, reviewScore)
                    updateCoachReviewCount(itCoach.id, reviewCount)
                    updateCoachReviewAnswerCount(itCoach.id, reviewAnswerCount)

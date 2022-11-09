@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.firebase.FireDB
 import io.usys.report.firebase.FireTypes
 import io.usys.report.utils.isNullOrEmpty
 
@@ -37,7 +36,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
     var updateCallback: ((String, String) -> Unit)? = null
     var realmList: RealmList<T>? = null
     var layout: Int = R.layout.card_organization
-    var type: String = FireDB.ORGANIZATIONS
+    var type: String = FireTypes.ORGANIZATIONS
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {
         this.realmList = realmList

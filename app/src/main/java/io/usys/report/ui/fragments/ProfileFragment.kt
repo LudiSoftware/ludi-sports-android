@@ -8,14 +8,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
 import io.usys.report.databinding.FragmentUserProfileBinding
-import io.usys.report.firebase.FireTypes.Companion.USER_PROFILE_IMAGE_PATH_BY_ID
-import io.usys.report.firebase.coreUpdateProfileImageUri
-import io.usys.report.firebase.getDownloadUrlAsync
-import io.usys.report.firebase.fireStorageRefByPath
 import io.usys.report.model.Coach
 import io.usys.report.model.safeUser
-import io.usys.report.model.safeUserId
-import io.usys.report.ui.reviewSystem.ReviewDialogFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.loadUriIntoImgView
 import io.usys.report.utils.toUri

@@ -21,11 +21,11 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
 
     fun bind(obj: RealmObject) {
         when (type) {
-            FireDB.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
-            FireDB.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
-            FireDB.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
-            FireDB.REVIEWS -> return ReviewViewHolder(itemView).bind(obj as? Review)
-            FireDB.REVIEW_TEMPLATES -> return ReviewQuestionsViewHolder(itemView, updateCallback).bind(obj as? Question)
+            FireTypes.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
+            FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
+            FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
+            FireTypes.REVIEWS -> return ReviewViewHolder(itemView).bind(obj as? Review)
+            FireTypes.REVIEW_TEMPLATES -> return ReviewQuestionsViewHolder(itemView, updateCallback).bind(obj as? Question)
         }
     }
 }

@@ -4,6 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.applyAndFireSave
+import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 
 /**
@@ -16,11 +17,11 @@ open class League : RealmObject() {
     }
 
     @PrimaryKey
-    var id: String? = "" //UUID
+    var id: String = newUUID()
+    var dateCreated: String = getTimeStamp()
     //Basic Info
     var name: String? = ""
     var details: String? = ""
-    var dateCreated: String? = "" // timestamp
     //References
     var ownerId: String? = "unassigned"
     var ownerName: String? = "unassigned"
@@ -33,6 +34,7 @@ open class League : RealmObject() {
     var state: String? = "" // AL
     var zip: String? = "" // 35223
     //Sport
+    var imgUrl: String = ""
     var sport: String? = "unassigned"
     var type: String? = "unassigned"
     var subType: String? = "unassigned"

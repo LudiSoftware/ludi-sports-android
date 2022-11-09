@@ -18,8 +18,8 @@ open class Coach : RealmObject(), Serializable {
     }
 
     @PrimaryKey
-    var id: String = newUUID() //UUID
-    var dateCreated: String = getTimeStamp() // timestamp
+    var id: String = newUUID()
+    var dateCreated: String = getTimeStamp()
     var name: String = "" //Name Given by Manager
     var imgUrl: String = ""
     var ownerId: String = "unassigned"

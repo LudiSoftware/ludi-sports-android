@@ -1,6 +1,6 @@
 package io.usys.report.utils
 
-import io.usys.report.firebase.FireDB
+import io.usys.report.firebase.FireTypes
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -13,7 +13,7 @@ import java.util.*
 
 /* Date Utils */
 //-VERIFIED-\\
-fun convertStringToDate(date:String, pattern: String? = "yyyy-MM-d"): org.threeten.bp.LocalDate {
+fun dateConvertFromString(date:String, pattern: String? = "yyyy-MM-d"): org.threeten.bp.LocalDate {
     return org.threeten.bp.LocalDate.parse(date, org.threeten.bp.format.DateTimeFormatter.ofPattern(pattern))
 }
 //-VERIFIED-\\
@@ -27,13 +27,13 @@ fun org.threeten.bp.LocalDate.toMonthYearForFirebase() : String? {
 
 //-VERIFIED-\\
 fun getMonthYearForFirebase(): String {
-    return SimpleDateFormat(FireDB.SPOT_MONTH_DB, Locale.US).format(Date())
+    return SimpleDateFormat(FireTypes.SPOT_MONTH_DB, Locale.US).format(Date())
 }
 
 //-VERIFIED-\\
 fun String.toMonthYearForFirebase(): String? {
     val toDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(this) ?: return null
-    return SimpleDateFormat(FireDB.SPOT_MONTH_DB, Locale.US).format(toDate) ?: return null
+    return SimpleDateFormat(FireTypes.SPOT_MONTH_DB, Locale.US).format(toDate) ?: return null
 }
 
 //-VERIFIED-\\

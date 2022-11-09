@@ -4,10 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import io.usys.report.R
-import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.uploadToFirebaseStorage
 import io.usys.report.model.*
 
 

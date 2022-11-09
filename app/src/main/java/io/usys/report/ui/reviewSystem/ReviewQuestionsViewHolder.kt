@@ -13,6 +13,10 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.model.Question
 import io.usys.report.model.getQuestionScore
 import io.usys.report.ui.loadInRealmList
+import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.A
+import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.B
+import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.C
+import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.D
 import io.usys.report.utils.bind
 import io.usys.report.utils.log
 
@@ -26,7 +30,6 @@ fun RecyclerView?.setupReviewQuestionsList(context: Context, questionList: Realm
     // Load Reviews by Receiver.id
     val rv = this
     rv?.loadInRealmList(questionList, context, FireTypes.REVIEW_TEMPLATES, itemOnClick)
-
 }
 
 class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -66,23 +69,23 @@ class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
             cardQuestionRadioD.text = it.choiceD
 
             cardQuestionRadioA.setOnClickListener {
-                toggleRadioOn(YsrQuestionCard.A)
-                currentChoice = YsrQuestionCard.A
+                toggleRadioOn(A)
+                currentChoice = A
                 updater()
             }
             cardQuestionRadioB.setOnClickListener {
-                toggleRadioOn(YsrQuestionCard.B)
-                currentChoice = YsrQuestionCard.B
+                toggleRadioOn(B)
+                currentChoice = B
                 updater()
             }
             cardQuestionRadioC.setOnClickListener {
-                toggleRadioOn(YsrQuestionCard.C)
-                currentChoice = YsrQuestionCard.C
+                toggleRadioOn(C)
+                currentChoice = C
                 updater()
             }
             cardQuestionRadioD.setOnClickListener {
-                toggleRadioOn(YsrQuestionCard.D)
-                currentChoice = YsrQuestionCard.D
+                toggleRadioOn(D)
+                currentChoice = D
                 updater()
             }
         }
@@ -91,25 +94,25 @@ class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
     private fun toggleRadioOn(letter:String) {
         when (letter) {
-            YsrQuestionCard.A -> {
+            A -> {
                 cardQuestionRadioA.isChecked = true
                 cardQuestionRadioB.isChecked = false
                 cardQuestionRadioC.isChecked = false
                 cardQuestionRadioD.isChecked = false
             }
-            YsrQuestionCard.B -> {
+            B -> {
                 cardQuestionRadioA.isChecked = false
                 cardQuestionRadioB.isChecked = true
                 cardQuestionRadioC.isChecked = false
                 cardQuestionRadioD.isChecked = false
             }
-            YsrQuestionCard.C -> {
+            C -> {
                 cardQuestionRadioA.isChecked = false
                 cardQuestionRadioB.isChecked = false
                 cardQuestionRadioC.isChecked = true
                 cardQuestionRadioD.isChecked = false
             }
-            YsrQuestionCard.D -> {
+            D -> {
                 cardQuestionRadioA.isChecked = false
                 cardQuestionRadioB.isChecked = false
                 cardQuestionRadioC.isChecked = false

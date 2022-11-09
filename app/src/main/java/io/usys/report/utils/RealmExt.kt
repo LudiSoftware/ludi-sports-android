@@ -1,15 +1,12 @@
 package io.usys.report.utils
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.ktx.Firebase
 import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmModel
 import io.usys.report.firebase.fireAddUpdateDBAsync
-import io.usys.report.firebase.forceGetNameOfRealmObject
+import io.usys.report.firebase.fireForceGetNameOfRealmObject
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -65,15 +62,26 @@ fun realm() : Realm {
 inline fun executeRealm(crossinline block: (Realm) -> Unit) {
     realm().executeTransaction { block(it) }
 }
+//// in progress
+//inline fun <T : RealmModel> T.applyAndRealmSave(block: (T) -> Unit) {
+//    this.apply {
+//        block(this)
+//    }
+//    this.cast<T>()?.let { itObj ->
+//        this.getRealmId<T>()?.let { itId ->
+//            fireAddUpdateDBAsync(itObj.fireForceGetNameOfRealmObject(), itId, itObj)
+//        }
+//    }
+//}
 
-// in progress
+// Verified
 inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {
     this.apply {
         block(this)
     }
     this.cast<T>()?.let { itObj ->
         this.getRealmId<T>()?.let { itId ->
-            fireAddUpdateDBAsync(itObj.forceGetNameOfRealmObject(), itId, itObj)
+            fireAddUpdateDBAsync(itObj.fireForceGetNameOfRealmObject(), itId, itObj)
         }
     }
 }

@@ -18,7 +18,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.uploadToFirebaseStorage
+import io.usys.report.firebase.fireUploadToStorage
 import io.usys.report.model.Sport
 import io.usys.report.model.User
 import io.usys.report.model.getUserId
@@ -62,7 +62,7 @@ abstract class YsrFragment : Fragment() {
         //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
-            itUri.uploadToFirebaseStorage(requireContext(), FireTypes.USER_PROFILE_IMAGE_PATH_BY_ID(
+            itUri.fireUploadToStorage(requireContext(), FireTypes.USER_PROFILE_IMAGE_PATH_BY_ID(
                 getUserId() ?: return@fairGetPickImageFromGalleryIntent))
         }
         setupMenu()

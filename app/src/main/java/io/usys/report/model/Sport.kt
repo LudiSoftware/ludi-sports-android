@@ -2,8 +2,9 @@ package io.usys.report.model
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.firebase.FireDB
+import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateDBAsync
+import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -13,22 +14,23 @@ import java.io.Serializable
 open class Sport : RealmObject(), Serializable {
 
     @PrimaryKey
-    var id: String? = "" //UUID
-    var name: String? = "" //Name Given by Manager
-    var type: String? = ""
-    var subType: String? = ""
+    var id: String = newUUID()
+    var dateCreated: String = getTimeStamp()
+    var name: String = ""
+    var imgUrl: String = ""
+    var type: String = ""
+    var subType: String = ""
 
 }
 
-fun Sport.addUpdateInFirebase(): Boolean {
-    return fireAddUpdateDBAsync(FireDB.SPORTS, this.id.toString(), this)
+fun Sport.fireAddUpdateToDB(): Boolean {
+    return fireAddUpdateDBAsync(FireTypes.SPORTS, this.id, this)
 }
 
 private fun createSport() {
     val sport = Sport()
     sport.apply {
-        this.id = newUUID()
         this.name = "soccer"
     }
-    fireAddUpdateDBAsync(FireDB.SPORTS, sport.id.toString(), sport)
+    fireAddUpdateDBAsync(FireTypes.SPORTS, sport.id, sport)
 }

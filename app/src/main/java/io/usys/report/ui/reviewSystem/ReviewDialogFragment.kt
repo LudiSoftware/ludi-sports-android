@@ -27,7 +27,6 @@ class ReviewDialogFragment(var currentCoach: Coach) : DialogFragment() {
 
     private var rootview: View? = null
     private var dialogFragment: AlertDialog.Builder? = null
-//    private var layoutResource: Int = R.layout.fragment_pop
     var message: String = "YSR"
     var positiveButton: String = "Okay"
     var submitCallback: (() -> Unit)? = null
@@ -42,7 +41,6 @@ class ReviewDialogFragment(var currentCoach: Coach) : DialogFragment() {
         rootview = this.layoutInflater.inflate(R.layout.dialog_review_coach_layout, null)
         ysrCoachReviewObj = rootview?.findViewById(R.id.reviewCoachRootCard)
         ysrCoachReviewObj?.currentCoach = currentCoach
-//        submitButton = rootview?.bind(R.id.reviewBtnSubmit)
         cancelButton = rootview?.bind(R.id.reviewBtnCancel)
         setOnClickListeners()
         ysrCoachReviewObj?.finishCallback = submitCallback

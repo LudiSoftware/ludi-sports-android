@@ -94,6 +94,7 @@ open class Question: RealmObject() {
     }
     @PrimaryKey
     var id: String = newUUID()
+    var dateCreated: String = getTimeStamp()
     var question: String = ""
     var choiceA: String = ""
     var choiceB: String = ""
@@ -148,8 +149,8 @@ fun updateOrgRatingCount(orgId:String, newRatingCount:String) {
 
 
 
-fun Review.addUpdateInFirebase(): Boolean {
-    return fireAddUpdateDBAsync(FireDB.REVIEWS, this.id, this)
+fun Review.fireAddUpdateToDB(): Boolean {
+    return fireAddUpdateDBAsync(FireTypes.REVIEWS, this.id, this)
 }
 
 fun createOrgReviewDialog2(activity: Activity) : Dialog {
