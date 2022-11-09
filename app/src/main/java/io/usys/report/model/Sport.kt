@@ -20,6 +20,7 @@ open class Sport : RealmObject(), Serializable {
     var imgUrl: String = ""
     var type: String = ""
     var subType: String = ""
+    var isVisible: Boolean = true
 
 }
 
@@ -27,10 +28,11 @@ fun Sport.fireAddUpdateToDB(): Boolean {
     return fireAddUpdateDBAsync(FireTypes.SPORTS, this.id, this)
 }
 
-private fun createSport() {
+fun createSport() {
     val sport = Sport()
     sport.apply {
-        this.name = "soccer"
+        this.name = "baseball"
+        this.imgUrl = ""
     }
     fireAddUpdateDBAsync(FireTypes.SPORTS, sport.id, sport)
 }

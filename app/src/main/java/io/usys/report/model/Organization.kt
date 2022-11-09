@@ -19,6 +19,7 @@ open class Organization : RealmObject(), Serializable {
         const val ORDER_BY_SPORTS = "sport"
     }
 
+
     @PrimaryKey
     var id: String = newUUID()
     var dateCreated: String = getTimeStamp()

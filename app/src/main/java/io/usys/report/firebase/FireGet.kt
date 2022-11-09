@@ -79,7 +79,9 @@ inline fun fireGetReviewTemplateQuestionsAsync(templateType:String, crossinline 
     }
 }
 
-
+/**
+ * SPORTS
+ */
 fun fireGetAndLoadSportsIntoSessionAsync() {
     firebaseDatabase {
         it.child(FireTypes.SPORTS)
@@ -93,6 +95,10 @@ fun fireGetAndLoadSportsIntoSessionAsync() {
             })
     }
 }
+
+/**
+ * USER
+ */
 
 inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
     var userUpdates: User? = null
@@ -116,6 +122,22 @@ inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (U
 fun fireGetCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     fireGetOrderByEqualToCallback(FireTypes.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
 }
+
+/**
+ * SERVICES
+ */
+inline fun fireGetAllServicesAsync(crossinline block: DataSnapshot?.() -> Unit) {
+    firebaseDatabase {
+        it.child(FireTypes.SERVICES)
+            .fairAddListenerForSingleValueEvent { ds ->
+                block(ds)
+            }
+    }
+}
+
+/**
+ * REVIEWS
+ */
 
 // Verified
 fun fireGetReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {

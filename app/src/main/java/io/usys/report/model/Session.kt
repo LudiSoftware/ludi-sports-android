@@ -24,6 +24,7 @@ open class Session : RealmObject() {
 
     //DO NOT MAKE STATIC
     var sports: RealmList<Sport>? = RealmList()
+    var services: RealmList<Service>? = RealmList()
     var organizations: RealmList<Organization>? = RealmList()
 
     /** -> EVERYTHING IS STATIC BELOW THIS POINT <- **/
@@ -96,6 +97,7 @@ open class Session : RealmObject() {
                 itRealm.createObject(Sport::class.java, newUUID())
                 itRealm.createObject(Organization::class.java, newUUID())
                 itRealm.createObject(Review::class.java, newUUID())
+                itRealm.createObject(Service::class.java, newUUID())
             }
 
         }
@@ -149,6 +151,7 @@ open class Session : RealmObject() {
                 it.where(Organization::class.java).findAll().deleteAllFromRealm()
                 it.where(Sport::class.java).findAll().deleteAllFromRealm()
                 it.where(Review::class.java).findAll().deleteAllFromRealm()
+                it.where(Service::class.java).findAll().deleteAllFromRealm()
                 it.deleteAll()
             }
         }
@@ -212,6 +215,15 @@ open class Session : RealmObject() {
             }
         }
 
+        fun addService(service: Service?) {
+            session { itSession ->
+                executeRealm {
+                    itSession.services?.add(service)
+                    it.copyToRealmOrUpdate(itSession) //safe?
+                }
+            }
+        }
+
         //REMOVE ORGANIZATION
         fun removeOrganization(organization: Organization?) {
             if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
@@ -264,9 +276,9 @@ fun <T> T?.addToSession() {
             is Organization -> {
                 Session.addOrganization(it)
             }
-//            is Coach -> {
-//                Session.addC
-//            }
+            is Service -> {
+                Session.addService(it)
+            }
             else -> { null }
         }
     }

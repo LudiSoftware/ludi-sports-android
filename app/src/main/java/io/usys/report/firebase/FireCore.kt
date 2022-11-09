@@ -6,12 +6,8 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
-import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.model.*
-import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
-import io.usys.report.ui.AuthControllerActivity
-import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 
 /**
@@ -53,21 +49,21 @@ class FirePaths {
     }
 }
 
-class FireLayouts {
-    companion object {
-        fun getLayout(type: String): Int {
-            return when (type) {
-                FireTypes.ORGANIZATIONS -> R.layout.card_organization
-                FireTypes.SPORTS -> R.layout.card_sport
-                FireTypes.REVIEWS -> R.layout.card_review
-                FireTypes.USERS -> R.layout.card_sport
-                FireTypes.COACHES -> R.layout.card_sport
-                FireTypes.REVIEW_TEMPLATES -> R.layout.card_single_question
-                else -> R.layout.card_sport
-            }
-        }
-    }
-}
+//class FireLayouts {
+//    companion object {
+//        fun getLayout(type: String): Int {
+//            return when (type) {
+//                FireTypes.ORGANIZATIONS -> R.layout.card_organization
+//                FireTypes.SPORTS -> R.layout.card_sport
+//                FireTypes.REVIEWS -> R.layout.card_review_comment
+//                FireTypes.USERS -> R.layout.card_sport
+//                FireTypes.COACHES -> R.layout.card_sport
+//                FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question
+//                else -> R.layout.card_sport
+//            }
+//        }
+//    }
+//}
 
 /** UTILS **/
 

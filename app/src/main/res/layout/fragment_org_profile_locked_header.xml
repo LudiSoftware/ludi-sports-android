@@ -59,7 +59,7 @@
                 android:background="#00FFFAF4"
                 app:layout_constraintTop_toBottomOf="@+id/includeItemTitleList"
                 tools:layout_editor_absoluteX="0dp"
-                tools:listitem="@layout/card_review" />
+                tools:listitem="@layout/card_review_comment" />
 
             <include
                 android:id="@+id/includeGenericButtonCard"

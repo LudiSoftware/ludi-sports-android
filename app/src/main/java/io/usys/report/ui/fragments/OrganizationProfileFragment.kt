@@ -44,7 +44,7 @@ class OrganizationProfileFragment : YsrMiddleFragment() {
         _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Staff / Coaches"
         //
         val imageDraw = AppCompatResources.getDrawable(requireContext(), R.drawable.path_4229)
-        _binding?.includeGenericButtonCard?.cardGenericButtonImgIcon?.setImageDrawable(imageDraw)
+//        _binding?.includeGenericButtonCard?.cardGenericButtonImgIcon?.setImageDrawable(imageDraw)
         _binding?.includeGenericButtonCard?.cardGenericButtonMainLayout?.setOnClickListener {
             organization?.let {
                 toFragment(R.id.navigation_coaches_list, bundleRealmObject(it))

@@ -20,7 +20,7 @@
 
         <include
             android:id="@+id/includeReviewCard"
-            layout="@layout/card_rating_count_bar"
+            layout="@layout/card_rating_bar"
             android:layout_width="175dp"
             android:layout_height="41dp"
             app:layout_constraintBottom_toTopOf="@+id/cardOrgTxtWebsite"

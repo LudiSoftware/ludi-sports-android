@@ -46,7 +46,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reviewTxtTitle"
                 tools:itemCount="4"
-                tools:listitem="@layout/card_single_question" />
+                tools:listitem="@layout/card_review_question" />
 
             <Button
                 android:id="@+id/reviewBtnSubmit"

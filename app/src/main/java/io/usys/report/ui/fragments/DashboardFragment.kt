@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
 import io.usys.report.model.createService
+import io.usys.report.model.createSport
+import io.usys.report.ui.setupServiceList
 import io.usys.report.ui.setupSportList
 
 
@@ -19,6 +22,8 @@ class DashboardFragment : YsrFragment() {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
+    var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
@@ -26,7 +31,7 @@ class DashboardFragment : YsrFragment() {
 
 //        createCoach()
 //        createService()
-
+//        createSport()
         return binding.root
     }
 
@@ -41,11 +46,18 @@ class DashboardFragment : YsrFragment() {
     }
 
     private fun setupSportsList() {
+        _binding?.dashboardRecyclerServiceList?.setupServiceList(requireContext(), itemOnClickServiceList)
         _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClick)
     }
 
     override fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
+//            PopFragment().show(childFragmentManager, PopFragment.TAG)
+//            findNavController().navigate(R.id.action_pop)
+            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
+        }
+
+        itemOnClickServiceList = { _, obj ->
 //            PopFragment().show(childFragmentManager, PopFragment.TAG)
 //            findNavController().navigate(R.id.action_pop)
             toFragment(R.id.navigation_org_list, bundleRealmObject(obj))

@@ -23,6 +23,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
      * 2. Card Layout for ListItem
      * 3. ViewModel
      * 4. Add FireType to Router bind()
+     * 5. Add Card Layout to getLayout() method.
      * - Create Convenience Ext Method if Wanted.
      */
     fun bind(obj: RealmObject) {
@@ -30,10 +31,27 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
             FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
+            FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)
             FireTypes.REVIEWS -> return ReviewViewHolder(itemView).bind(obj as? Review)
             FireTypes.REVIEW_TEMPLATES -> return ReviewQuestionsViewHolder(itemView, updateCallback).bind(obj as? Question)
         }
     }
+
+    companion object {
+        fun getLayout(type: String): Int {
+            return when (type) {
+                FireTypes.ORGANIZATIONS -> R.layout.card_organization
+                FireTypes.SPORTS -> R.layout.card_sport
+                FireTypes.REVIEWS -> R.layout.card_review_comment
+                FireTypes.USERS -> R.layout.card_sport
+                FireTypes.COACHES -> R.layout.card_sport
+                FireTypes.SERVICES -> R.layout.card_service
+                FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question
+                else -> R.layout.card_sport
+            }
+        }
+    }
+
 }
 /**
  * SPORT LIST VIEW CONTROLS
@@ -144,6 +162,41 @@ class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         review?.let {
             cardReviewTxtDateCreated?.text = it.dateCreated
             cardReviewTxtComment?.text = it.comment
+        }
+    }
+}
+
+
+/**
+ * SERVICES LIST VIEW CONTROLS
+ */
+
+fun RecyclerView?.setupServiceList(context: Context, onClick: ((View, RealmObject) -> Unit)?) {
+    // Load Organizations by Sport
+    val rv = this
+    var serviceList: RealmList<Service>? = RealmList()
+    fireGetBaseYsrObjects<Service>(FireTypes.SERVICES) {
+        executeRealm {
+            serviceList = this ?: RealmList()
+            serviceList.addToSession()
+        }
+        rv?.loadInRealmList(serviceList, context, FireTypes.SERVICES, onClick)
+    }
+}
+
+class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var cardServiceImgBackground = itemView.bind<ImageView>(R.id.cardServiceImgBackground)
+    private var cardServiceTxtTitle = itemView.bindTextView(R.id.cardServiceTxtTitle)
+    private var cardServiceTxtCoachName = itemView.bindTextView(R.id.cardServiceTxtCoachName)
+    private var cardServiceTxtTime = itemView.bindTextView(R.id.cardServiceTxtTime)
+    private var cardServiceTxtLocation = itemView.bindTextView(R.id.cardServiceTxtLocation)
+
+    fun bind(service: Service?) {
+        service?.let {
+            cardServiceTxtTitle?.text = it.name
+            cardServiceTxtCoachName?.text = it.ownerName
+            cardServiceTxtTime?.text = it.timeOfService
+            cardServiceTxtLocation?.text = it.addressOne
         }
     }
 }

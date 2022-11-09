@@ -49,7 +49,7 @@
             app:srcCompat="@drawable/button_arrow_right_small" />
 
         <ImageView
-            android:id="@+id/cardGenericButtonImgIcon"
+            android:id="@+id/cardServiceImgBackground"
             android:layout_width="43dp"
             android:layout_height="39dp"
             app:layout_constraintBottom_toBottomOf="parent"
