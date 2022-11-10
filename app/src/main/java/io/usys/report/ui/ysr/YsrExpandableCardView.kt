@@ -1,4 +1,4 @@
-package io.usys.report.ui.ysrviews
+package io.usys.report.ui.ysr
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import io.usys.report.R
 import io.usys.report.utils.*
 
-class YsrExpandableCard(context: Context) : CardView(context) {
+class YsrExpandableCardView(context: Context) : CardView(context) {
 
     constructor(context: Context, attrs: AttributeSet) : this(context)
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : this(context)

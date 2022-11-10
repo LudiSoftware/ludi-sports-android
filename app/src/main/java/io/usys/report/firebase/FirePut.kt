@@ -98,7 +98,7 @@ fun Review.fireAddUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
     return result
 }
 
-inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any) -> Unit) {
+inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any?) -> Unit) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return
     firebaseDatabase {

@@ -1,17 +1,15 @@
-package io.usys.report.ui.reviewSystem
+package io.usys.report.ui.ysr.review.coach
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import io.usys.report.R
 import io.usys.report.model.Coach
+import io.usys.report.ui.onClickReturnAnyAny
+import io.usys.report.ui.onClickReturnEmpty
 import io.usys.report.utils.bind
 import io.usys.report.utils.log
 
@@ -29,11 +27,11 @@ class ReviewDialogFragment(var currentCoach: Coach) : DialogFragment() {
     private var dialogFragment: AlertDialog.Builder? = null
     var message: String = "YSR"
     var positiveButton: String = "Okay"
-    var submitCallback: (() -> Unit)? = null
-    var positiveButtonCallbackFunction: ((Any, Any) -> Unit)? = null
+    private var submitCallback: (() -> Unit)? = onClickReturnEmpty()
+    var positiveButtonCallbackFunction: ((Any, Any) -> Unit)? = onClickReturnAnyAny()
     var cancelButton: Button? = null
 
-    private var ysrCoachReviewObj: YsrCoachReview? = null
+    private var ysrCoachReviewObj: YsrCoachReviewView? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialogFragment = AlertDialog.Builder(requireContext())

@@ -1,4 +1,4 @@
-package io.usys.report.ui.reviewSystem
+package io.usys.report.ui.ysr.review.coach
 
 import android.content.Context
 import android.util.AttributeSet
@@ -13,10 +13,14 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetReviewTemplateQuestionsAsync
 import io.usys.report.model.*
-import io.usys.report.ui.loadInRealmListCallback
+import io.usys.report.ui.onClickReturnEmpty
+import io.usys.report.ui.onClickReturnStringString
+import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.ui.ysr.loadInRealmListCallback
+import io.usys.report.ui.ysr.review.engine.*
 import io.usys.report.utils.*
 
-class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, attrs) {
+class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(context, attrs) {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : this(context, attrs)
 
     companion object {
@@ -26,14 +30,14 @@ class YsrCoachReview(context: Context, attrs: AttributeSet) : CardView(context, 
         const val D = "d"
     }
 
-    var itemOnClick: ((View, RealmObject) -> Unit)? = null
-    var updateCallback: ((String, String) -> Unit)? = null
+    var itemOnClick: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
+    var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
+    var finishCallback: (() -> Unit)? = onClickReturnEmpty()
     private var mainLayout: ConstraintLayout? = null
     private var title: TextView? = null
     private var recyclerView: RecyclerView? = null
     private var btnCancel: Button? = null
     private var btnSubmit: Button? = null
-    var finishCallback: (() -> Unit)? = null
 
     private var reviewTemplate: ReviewTemplate? = null
     private var reviewQuestions: RealmList<Question>? = null

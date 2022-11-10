@@ -32,6 +32,10 @@ fun <T> Any.cast(): T? {
     return null
 }
 
+inline fun <reified T> T.getObjectType(): String {
+    return T::class.java.simpleName
+}
+
 @Suppress("UNCHECKED_CAST")
 fun getClassName(className: Any): String? {
     tryCatch {

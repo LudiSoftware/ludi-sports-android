@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.fragments.DashboardFragment"
+        android:name="io.usys.report.ui.ysr.HomeDashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment

@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr
 
 import android.os.Bundle
 import android.view.*

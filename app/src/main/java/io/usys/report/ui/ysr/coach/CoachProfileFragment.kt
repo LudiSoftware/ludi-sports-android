@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr.coach
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -9,18 +9,17 @@ import androidx.core.content.ContextCompat
 import io.usys.report.R
 import io.usys.report.databinding.FragmentUserProfileCoachBinding
 import io.usys.report.model.Coach
-import io.usys.report.model.safeUser
-import io.usys.report.ui.reviewSystem.ReviewDialogFragment
-import io.usys.report.ui.setupServiceList
+import io.usys.report.ui.ysr.YsrMiddleFragment
+import io.usys.report.ui.ysr.review.coach.ReviewDialogFragment
+import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.utils.cast
 import io.usys.report.utils.loadUriIntoImgView
-import io.usys.report.utils.toUri
 
 /**
  * Created by ChazzCoin : 2020.
  */
 
-class ProfileCoachFragment : YsrMiddleFragment() {
+class CoachProfileFragment : YsrMiddleFragment() {
 
     val _SAVE = 0
     val _DISPLAY = 1

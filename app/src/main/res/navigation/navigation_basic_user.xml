@@ -17,7 +17,7 @@
         tools:layout="@layout/spot_calendar_fragment" />
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.fragments.DashboardFragment"
+        android:name="io.usys.report.ui.ysr.HomeDashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -39,56 +39,56 @@
 
     <fragment
         android:id="@+id/navigation_org_list"
-        android:name="io.usys.report.ui.fragments.OrganizationListFragment"
+        android:name="io.usys.report.ui.ysr.organization.OrganizationListFragment"
         android:label="@string/title_orgs"
         tools:layout="@layout/fragment_org_list">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_coaches_list"
-        android:name="io.usys.report.ui.fragments.CoachListFragment"
+        android:name="io.usys.report.ui.ysr.coach.CoachListFragment"
         android:label="@string/title_coaches"
         tools:layout="@layout/fragment_coaches_list">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_org_profile"
-        android:name="io.usys.report.ui.fragments.OrganizationProfileFragment"
+        android:name="io.usys.report.ui.ysr.organization.OrganizationProfileFragment"
         android:label="@string/title_org"
         tools:layout="@layout/fragment_org_profile" >
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="io.usys.report.ui.fragments.ProfileFragment"
+        android:name="io.usys.report.ui.ysr.user.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_user_profile" >
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile_coach"
-        android:name="io.usys.report.ui.fragments.ProfileCoachFragment"
+        android:name="io.usys.report.ui.ysr.coach.CoachProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_user_profile" >
     </fragment>
 
     <fragment
         android:id="@+id/navigation_service_details"
-        android:name="io.usys.report.ui.fragments.ServiceDetailsFragment"
+        android:name="io.usys.report.ui.ysr.service.ServiceDetailsFragment"
         android:label="@string/title_service"
         tools:layout="@layout/fragment_service_details" >
     </fragment>
 
     <fragment
         android:id="@+id/navigation_pop_frag"
-        android:name="io.usys.report.ui.reviewSystem.ReviewDialogFragment"
+        android:name="io.usys.report.ui.ysr.review.coach.ReviewDialogFragment"
         android:label="PopUp"
         tools:layout="@layout/dialog_review_coach_layout">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_base_frag"
-        android:name="io.usys.report.ui.fragments.YsrFragment"
+        android:name="io.usys.report.ui.ysr.YsrFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_org_list">
     </fragment>

@@ -1,4 +1,4 @@
-package io.usys.report.ui.reviewSystem
+package io.usys.report.ui.ysr.review.coach
 
 import android.content.Context
 import android.view.View
@@ -12,11 +12,11 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.model.Question
 import io.usys.report.model.getQuestionScore
-import io.usys.report.ui.loadInRealmList
-import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.A
-import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.B
-import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.C
-import io.usys.report.ui.reviewSystem.YsrCoachReview.Companion.D
+import io.usys.report.ui.ysr.loadInRealmList
+import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.A
+import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.B
+import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.C
+import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.D
 import io.usys.report.utils.bind
 import io.usys.report.utils.log
 

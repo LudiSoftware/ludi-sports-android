@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr
 
 import android.Manifest
 import android.content.Context
@@ -24,7 +24,7 @@ import io.usys.report.model.Sport
 import io.usys.report.model.User
 import io.usys.report.model.getUserId
 import io.usys.report.model.userOrLogout
-import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
+import io.usys.report.ui.ysr.YsrFragment.Companion.ARG
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

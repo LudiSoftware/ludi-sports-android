@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr.user
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,6 +10,7 @@ import io.usys.report.R
 import io.usys.report.databinding.FragmentUserProfileBinding
 import io.usys.report.model.Coach
 import io.usys.report.model.safeUser
+import io.usys.report.ui.ysr.YsrMiddleFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.loadUriIntoImgView
 import io.usys.report.utils.toUri

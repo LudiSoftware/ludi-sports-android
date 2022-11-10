@@ -6,13 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import io.usys.report.ui.fragments.DashboardFragment
-import kotlin.reflect.KClass
 
 /** startActivity **/
 inline fun <reified TO> Activity.launchActivity() {

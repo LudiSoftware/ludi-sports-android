@@ -6,6 +6,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
+import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.utils.log
@@ -151,8 +152,9 @@ inline fun <T> T?.fireWhenType(block: (T) -> Unit) {
 
 inline fun <reified T> DataSnapshot.loadIntoSession() {
     for (ds in this.children) {
-        val obj: T? = ds.getValue(T::class.java)
-        obj?.let {
+        val obj = ds.getValue(T::class.java)
+        val objCast = obj as? RealmList<*>
+        objCast?.let {
             obj.addToSession()
         }
     }

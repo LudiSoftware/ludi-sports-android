@@ -1,14 +1,14 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr.organization
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.usys.report.R
-import io.usys.report.model.*
-import io.realm.RealmList
 import io.usys.report.databinding.FragmentOrgListBinding
-import io.usys.report.ui.setupOrganizationList
+import io.usys.report.ui.ysr.YsrMiddleFragment
+import io.usys.report.ui.ysr.bundleRealmObject
+import io.usys.report.ui.ysr.toFragment
 
 /**
  * Created by ChazzCoin : October 2022.

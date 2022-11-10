@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.ui.ysr
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
+import io.usys.report.ui.RouterViewHolder
 import io.usys.report.utils.isNullOrEmpty
 
 /**

@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,38 +7,28 @@ import android.view.ViewGroup
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
-import io.usys.report.model.Session
-import io.usys.report.model.createService
-import io.usys.report.model.createSport
-import io.usys.report.ui.setupServiceList
-import io.usys.report.ui.setupSportList
-import io.usys.report.utils.log
-import io.usys.report.utils.session
+import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.ui.ysr.service.setupServiceList
+import io.usys.report.ui.ysr.sport.setupSportList
+import io.usys.report.utils.sessionSports
 
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class DashboardFragment : YsrFragment() {
+class HomeDashboardFragment : YsrFragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = null
+    var itemOnClickSportList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
+    var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
-
-//        createCoach()
-//        createService()
-//        createSport()
-        session {
-            val temp = it.services
-            log(temp)
-        }
         return binding.root
     }
 
@@ -54,11 +44,11 @@ class DashboardFragment : YsrFragment() {
 
     private fun setupSportsList() {
         _binding?.dashboardRecyclerServiceList?.setupServiceList(requireContext(), itemOnClickServiceList)
-        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClick)
+        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClickSportList)
     }
 
     override fun setupOnClickListeners() {
-        itemOnClick = { _, obj ->
+        itemOnClickSportList = { _, obj ->
             toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
         }
 

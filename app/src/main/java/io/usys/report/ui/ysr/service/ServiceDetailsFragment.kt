@@ -1,12 +1,12 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr.service
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.RealmObject
 import io.usys.report.model.*
 import io.usys.report.databinding.FragmentServiceDetailsBinding
+import io.usys.report.ui.ysr.YsrMiddleFragment
 import io.usys.report.utils.cast
 
 /**

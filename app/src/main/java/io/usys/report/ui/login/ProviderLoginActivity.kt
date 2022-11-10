@@ -37,6 +37,7 @@ class ProviderLoginActivity : AppCompatActivity() {
             .setAvailableProviders(providers)
             .setLogo(R.drawable.usysr_logo) // Set logo drawable
             .setTheme(R.style.YSR) // Set theme
+            .setIsSmartLockEnabled(true)
             .build()
         fairRegisterActivityResult<FirebaseAuthUIAuthenticationResult>(signInIntent) { res ->
             this.onSignInResult(res)

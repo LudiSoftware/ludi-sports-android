@@ -6,6 +6,7 @@ import io.realm.RealmList
 import io.usys.report.utils.toRealmList
 import java.lang.Exception
 
+
 // Verified
 inline fun firebaseDatabase(block: (DatabaseReference) -> Unit) {
     block(FirebaseDatabase.getInstance().reference)

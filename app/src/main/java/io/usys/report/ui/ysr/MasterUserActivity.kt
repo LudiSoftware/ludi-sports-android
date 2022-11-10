@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.ui.ysr
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

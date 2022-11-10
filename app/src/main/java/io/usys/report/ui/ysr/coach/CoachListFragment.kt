@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr.coach
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,15 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.usys.report.R
-import io.usys.report.model.*
-import io.usys.report.utils.*
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.databinding.FragmentOrgListBinding
-import io.usys.report.firebase.*
-import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
-import io.usys.report.ui.loadInRealmList
-import io.usys.report.ui.setupCoachList
+import io.usys.report.ui.ysr.toFragment
+import io.usys.report.ui.ysr.unbundleRealmObject
 
 /**
  * Created by ChazzCoin : October 2022.

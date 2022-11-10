@@ -1,16 +1,18 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.ysr.organization
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.navigation.fragment.findNavController
 import io.usys.report.R
 import io.usys.report.model.*
 import io.usys.report.databinding.FragmentOrgProfileBinding
-import io.usys.report.ui.reviewSystem.ReviewDialogFragment
-import io.usys.report.ui.setupReviewList
+import io.usys.report.ui.ysr.YsrMiddleFragment
+import io.usys.report.ui.ysr.bundleRealmObject
+import io.usys.report.ui.ysr.review.organization.createOrgReviewDialog
+import io.usys.report.ui.ysr.review.organization.setupOrgReviewCommentList
+import io.usys.report.ui.ysr.toFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.log
 
@@ -38,7 +40,7 @@ class OrganizationProfileFragment : YsrMiddleFragment() {
     private fun setupDisplay() {
         organization = realmObjectArg?.cast<Organization>()
         organization?.let {
-            _binding?.recyclerList.setupReviewList(requireContext(), it.id, itemOnClick)
+            _binding?.recyclerList.setupOrgReviewCommentList(requireContext(), it.id, itemOnClick)
         }
         _binding?.includeItemTitleList?.itemTitleListTxtTitle?.text = "Reviews"
         _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Staff / Coaches"

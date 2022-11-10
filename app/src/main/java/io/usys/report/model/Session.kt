@@ -4,16 +4,18 @@ import android.app.Activity
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import io.usys.report.ui.AuthControllerActivity
-import io.usys.report.utils.executeRealm
-import io.usys.report.utils.session
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.realm.annotations.PrimaryKey
+import io.usys.report.R
+import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.coreFireLogoutAsync
-import io.usys.report.utils.launchActivity
-import io.usys.report.utils.newUUID
+import io.usys.report.ui.ysr.sport.containsItem
+import io.usys.report.utils.*
+import java.util.*
+import kotlin.collections.isNullOrEmpty
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -145,8 +147,24 @@ open class Session : RealmObject() {
 
         /** -> OBJECT MODEL HELPERS <- **/
 
+        fun addSports(sports: RealmList<Sport>?) {
+            sports?.let { itSports ->
+                itSports.forEach {
+                    addSport(sport = it)
+                }
+            }
+        }
+
         //ADD SPORT, this should be safe
         fun addSport(sport: Sport?) {
+
+            sessionSports { itSports ->
+                if (itSports.containsItem(sport)) return
+                executeRealm {
+                    itSports.add(sport)
+                }
+            }
+
             session { itSession ->
                 executeRealm {
                     if (itSession.sports.isNullOrEmpty()) {
@@ -196,13 +214,13 @@ open class Session : RealmObject() {
 }
 
 
-fun <T> T?.addToSession() {
-    this?.let {
+fun <T> RealmList<T>?.addToSession() {
+    this?.first()?.let {
         when (it) {
-            is User -> Session.updateSession(it)
-            is Sport -> Session.addSport(it)
-            is Organization -> Session.addOrganization(it)
-            is Service -> Session.addService(it)
+//            is User -> Session.updateSession(it)
+            is Sport -> this.cast<RealmList<Sport>>()?.let { it1 -> Session.addSports(it1) }
+//            is Organization -> Session.addOrganization(it)
+            is Service -> this.cast<RealmList<Service>>()?.let { it1 -> Session.addServices(it1) }
             else -> { null }
         }
     }
