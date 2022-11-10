@@ -26,6 +26,9 @@ import com.bumptech.glide.Glide
  */
 
 
+fun Context.loadUriIntoImgView(uri: Uri, imageView: ImageView ) {
+    Glide.with(this).load(uri).into(imageView)
+}
 
 fun Fragment.loadUriIntoImgView(uri: Uri, imageView: ImageView ) {
     Glide.with(this).load(uri).into(imageView)

@@ -4,6 +4,7 @@ import com.google.firebase.database.*
 import io.realm.RealmList
 import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
+import io.usys.report.model.Session.Companion.createSession
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.log
 
@@ -110,6 +111,7 @@ inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (U
                 if (itUser.id == id){
                     AuthControllerActivity.USER_AUTH = itUser.auth
                     AuthControllerActivity.USER_ID = itUser.id
+                    createSession()
                     Session.updateUser(itUser)
                 }
             }

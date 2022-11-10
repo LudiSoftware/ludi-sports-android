@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
@@ -26,6 +27,24 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?, co
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
     this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    this.adapter = adapter
+    return adapter
+}
+
+inline fun <reified T> RecyclerView.loadInRealmListHorizontal(realmList: RealmList<T>?, context: Context, type: String,
+                                                    noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, itemOnClick)
+    this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    this.adapter = adapter
+    return adapter
+}
+
+inline fun <reified T> RecyclerView.loadInRealmListGrid(realmList: RealmList<T>?, context: Context, type: String,
+                                                    noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, itemOnClick)
+    this.layoutManager = GridLayoutManager(context, 2)
     this.adapter = adapter
     return adapter
 }

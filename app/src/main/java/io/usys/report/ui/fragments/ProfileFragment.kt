@@ -72,11 +72,9 @@ class ProfileFragment : YsrMiddleFragment() {
     private fun setupProfileImage() {
 
         safeUser { itUser ->
-            itUser.photoUrl?.let { itUrl ->
-                itUrl.toUri()?.let { itUri ->
-                    _binding?.includeUserProfileHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
-                        this.loadUriIntoImgView(itUri, itImgView)
-                    }
+            itUser.photoUrl.toUri()?.let { itUri ->
+                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfile?.let { itImgView ->
+                    this.loadUriIntoImgView(itUri, itImgView)
                 }
             }
         }
@@ -91,12 +89,5 @@ class ProfileFragment : YsrMiddleFragment() {
 //            }
 //        }
     }
-
-//    private fun launchCoachReviewFragment() {
-//        ReviewDialogFragment().show(childFragmentManager, ReviewDialogFragment.TAG)
-//    }
-
-
-
 
 }

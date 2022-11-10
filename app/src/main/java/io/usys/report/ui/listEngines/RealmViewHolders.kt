@@ -44,7 +44,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                 FireTypes.SPORTS -> R.layout.card_sport
                 FireTypes.REVIEWS -> R.layout.card_review_comment
                 FireTypes.USERS -> R.layout.card_sport
-                FireTypes.COACHES -> R.layout.card_sport
+                FireTypes.COACHES -> R.layout.card_coach
                 FireTypes.SERVICES -> R.layout.card_service
                 FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question
                 else -> R.layout.card_sport
@@ -131,11 +131,17 @@ fun RecyclerView?.setupCoachList(context: Context, realmObjectArg: RealmObject?,
 }
 
 class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var txtItemSpotName = itemView.bindTextView(R.id.cardSportTxtSportName)
+    var cardCoachTxtName = itemView.bindTextView(R.id.cardCoachTxtName)
+    var cardCoachImgProfile = itemView.bind<ImageView>(R.id.cardCoachImgProfile)
+    var cardCoachTxtOrg = itemView.bindTextView(R.id.cardCoachTxtOrg)
+    var cardCoachTxtEmail = itemView.bindTextView(R.id.cardCoachTxtEmail)
 
     fun bind(coach: Coach?) {
         coach?.let {
-            txtItemSpotName?.text = it.name
+            cardCoachTxtName?.text = it.name
+            cardCoachTxtEmail?.text = it.email
+            cardCoachTxtOrg?.text = it.organizationName
+            itemView.context.loadUriIntoImgView(it.imgUrl.toUri() ?: return, cardCoachImgProfile)
         }
     }
 }
@@ -174,13 +180,20 @@ class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 fun RecyclerView?.setupServiceList(context: Context, onClick: ((View, RealmObject) -> Unit)?) {
     // Load Organizations by Sport
     val rv = this
+    Session.session?.let {
+        log(it)
+        if (!it.services.isNullOrEmpty()) {
+            rv?.loadInRealmListHorizontal(it.services, context, FireTypes.SERVICES, onClick)
+            return
+        }
+    }
+
+    //From Firebase
     var serviceList: RealmList<Service>? = RealmList()
     fireGetBaseYsrObjects<Service>(FireTypes.SERVICES) {
-        executeRealm {
-            serviceList = this ?: RealmList()
-            serviceList.addToSession()
-        }
-        rv?.loadInRealmList(serviceList, context, FireTypes.SERVICES, onClick)
+        serviceList = (this ?: RealmList())
+        serviceList?.let { Session.addServices(it) }
+        rv?.loadInRealmListGrid(serviceList, context, FireTypes.SERVICES, onClick)
     }
 }
 

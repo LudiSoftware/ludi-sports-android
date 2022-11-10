@@ -62,16 +62,16 @@ open class Service : RealmObject() {
 // ckrphone@gmail.com = tnmjTR7r1HPwIaBb2oXrDrwXT842
 fun createService() {
     Service().applyAndFireSave {
-        it.name = "YSR Private Training"
+        it.name = "Some crappy shit!!"
         it.ownerId = "tnmjTR7r1HPwIaBb2oXrDrwXT842"
         it.ownerName = "Lucas Romeo"
-        it.sport = "soccer"
-        it.timeOfService = "6pm-8pm"
-        it.dateOfService = "Wednesday-Friday"
+        it.sport = "baseball"
+        it.timeOfService = "8am-12pm"
+        it.dateOfService = "Monday-Friday"
         it.recurring = true
         it.maxPeople = 10
-        it.ageRange = "8-14"
-        it.details = "I specialize in one on one training but love working with small groups of passionate kids."
+        it.ageRange = "10-18"
+        it.details = "another crappy thing!"
     }
 }
 

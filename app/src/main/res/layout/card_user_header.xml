@@ -18,7 +18,7 @@
         tools:layout_editor_absoluteY="16dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/cardUserHeaderImgProfileUser"
+            android:id="@+id/cardUserHeaderImgProfile"
             android:layout_width="139dp"
             android:layout_height="132dp"
             android:src="@drawable/ysr_bg_two"
@@ -36,7 +36,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardUserHeaderImgProfileUser" />
+            app:layout_constraintTop_toBottomOf="@+id/cardUserHeaderImgProfile" />
 
         <TextView
             android:id="@+id/cardUserHeaderTxtProfileReviewCount"

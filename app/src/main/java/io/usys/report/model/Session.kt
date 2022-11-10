@@ -9,6 +9,7 @@ import io.usys.report.utils.session
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.RealmResults
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFireLogoutAsync
 import io.usys.report.utils.launchActivity
@@ -20,7 +21,7 @@ import io.usys.report.utils.newUUID
 open class Session : RealmObject() {
     //DO NOT MAKE STATIC!
     @PrimaryKey
-    var sessionId = 0
+    var id: Int = 1
 
     //DO NOT MAKE STATIC
     var sports: RealmList<Sport>? = RealmList()
@@ -33,7 +34,7 @@ open class Session : RealmObject() {
         private const val WAITING = "waiting"
 
         /** -> Controller Methods <- >  */
-        private const val aisession = 1
+        private const val sessionId = 1
         var user: User? = null
         var USER_UID = ""
 
@@ -45,10 +46,11 @@ open class Session : RealmObject() {
             get() {
                 try {
                     if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-                    field = mRealm.where(Session::class.java).equalTo("sessionId", aisession).findFirst()
+                    field = mRealm.where(Session::class.java).equalTo("id", sessionId).findFirst()
                     if (field == null) {
                         field = Session()
-                        field?.sessionId = aisession
+                        field?.id = sessionId
+
                     }
                 } catch (e: Exception) { e.printStackTrace() }
                 return field
@@ -94,6 +96,7 @@ open class Session : RealmObject() {
         fun createObjects() {
             createUser()
             executeRealm { itRealm ->
+                itRealm.createObject(Session::class.java, sessionId)
                 itRealm.createObject(Sport::class.java, newUUID())
                 itRealm.createObject(Organization::class.java, newUUID())
                 itRealm.createObject(Review::class.java, newUUID())
@@ -101,7 +104,18 @@ open class Session : RealmObject() {
             }
 
         }
-
+        fun createSession() {
+            val realm = Realm.getDefaultInstance()
+            if (realm.where(Session::class.java) == null){
+                realm.executeTransaction { itRealm ->
+                    itRealm.createObject(Session::class.java, sessionId)
+                    val temp = Session().apply {
+                        this.services = RealmList()
+                    }
+                    itRealm.insertOrUpdate(temp)
+                }
+            }
+        }
         //CORE ->
         fun createUser() {
             val realm = Realm.getDefaultInstance()
@@ -215,14 +229,22 @@ open class Session : RealmObject() {
             }
         }
 
-        fun addService(service: Service?) {
+        fun addServices(services: RealmList<Service>) {
             session { itSession ->
-                executeRealm {
-                    itSession.services?.add(service)
-                    it.copyToRealmOrUpdate(itSession) //safe?
+                for (item in services) {
+                    executeRealm {
+                        itSession.services?.add(item)
+                    }
                 }
+
             }
         }
+
+//        fun getAllServices() {
+//            session {
+//
+//            }
+//        }
 
         //REMOVE ORGANIZATION
         fun removeOrganization(organization: Organization?) {
@@ -276,9 +298,9 @@ fun <T> T?.addToSession() {
             is Organization -> {
                 Session.addOrganization(it)
             }
-            is Service -> {
-                Session.addService(it)
-            }
+//            is Service -> {
+//                Session.addService(it)
+//            }
             else -> { null }
         }
     }

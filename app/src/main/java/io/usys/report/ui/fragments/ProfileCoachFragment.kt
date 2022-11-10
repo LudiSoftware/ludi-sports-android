@@ -11,6 +11,7 @@ import io.usys.report.databinding.FragmentUserProfileCoachBinding
 import io.usys.report.model.Coach
 import io.usys.report.model.safeUser
 import io.usys.report.ui.reviewSystem.ReviewDialogFragment
+import io.usys.report.ui.setupServiceList
 import io.usys.report.utils.cast
 import io.usys.report.utils.loadUriIntoImgView
 import io.usys.report.utils.toUri
@@ -73,13 +74,15 @@ class ProfileCoachFragment : YsrMiddleFragment() {
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.name
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.ratingScore.toFloat()
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.ratingCount} Reviews"
+
+            _binding?.fragProfileCoachRecyclerServices?.setupServiceList(requireContext(), itemOnClick)
         }
     }
 
     private fun setupProfileImage() {
         currentCoach?.let { itCoach ->
             if (!itCoach.imgUrl.isNullOrEmpty()) {
-                _binding?.includeUserProfileCoachHeader?.cardUserHeaderImgProfileUser?.let { itImgView ->
+                _binding?.includeUserProfileCoachHeader?.cardUserHeaderImgProfile?.let { itImgView ->
                     this.loadUriIntoImgView(itCoach.imgUrl, itImgView)
                 }
             }

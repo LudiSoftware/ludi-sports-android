@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
+import io.usys.report.model.Session
 import io.usys.report.model.createService
 import io.usys.report.model.createSport
 import io.usys.report.ui.setupServiceList
 import io.usys.report.ui.setupSportList
+import io.usys.report.utils.log
+import io.usys.report.utils.session
 
 
 /**
@@ -32,6 +35,10 @@ class DashboardFragment : YsrFragment() {
 //        createCoach()
 //        createService()
 //        createSport()
+        session {
+            val temp = it.services
+            log(temp)
+        }
         return binding.root
     }
 

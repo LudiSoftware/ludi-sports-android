@@ -84,6 +84,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+        <Button
+            android:id="@+id/userProfileCoachBtnReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Review This Coach"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutCoach" />
+
         <TextView
             android:id="@+id/textView9Coach"
             android:layout_width="wrap_content"
@@ -97,16 +108,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userProfileCoachBtnReview" />
 
-        <Button
-            android:id="@+id/userProfileCoachBtnReview"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragProfileCoachRecyclerServices"
+            android:layout_width="409dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Review This Coach"
+            android:layout_marginBottom="45dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutCoach" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9Coach" />
 
         <!--        <Button-->
         <!--            android:id="@+id/btnProfileReview"-->
