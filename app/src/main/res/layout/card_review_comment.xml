@@ -85,18 +85,20 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
+                android:tint="#FF0000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/path_4229" />
+                app:srcCompat="@drawable/ysr_empty_profile_icon_blue" />
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="17dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="8dp"
+                android:tint="#FF0000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cardReviewTxtComment"
-                app:srcCompat="@drawable/red_mail_ek1" />
+                app:srcCompat="@drawable/ysr_comment_icon_blue" />
 
             <ImageView
                 android:id="@+id/imageView6"
@@ -104,13 +106,14 @@
                 android:layout_height="16dp"
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="8dp"
+                android:tint="#FF0000"
                 app:layout_constraintBottom_toTopOf="@+id/imageView5"
                 app:layout_constraintEnd_toStartOf="@+id/cardReviewTxtDateCreated"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView4"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/red_mail_two_ek2" />
+                app:srcCompat="@drawable/ysr_clock_icon_blue" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

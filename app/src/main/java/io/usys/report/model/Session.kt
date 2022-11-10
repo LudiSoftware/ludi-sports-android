@@ -36,7 +36,7 @@ open class Session : RealmObject() {
         /** -> Controller Methods <- >  */
         private const val sessionId = 1
         var user: User? = null
-        var USER_UID = ""
+        var USER_ID = ""
 
         //Class Variables
         private var mRealm = Realm.getDefaultInstance()
@@ -56,18 +56,6 @@ open class Session : RealmObject() {
                 return field
             }
             private set
-
-        //GET CURRENT USER
-//        var user: User? = null
-//            get() {
-//                try {
-//                    if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-//                    field = mRealm.where(User::class.java).findFirst()
-//                    if (field == null) { field = User() }
-//                } catch (e: Exception) { e.printStackTrace() }
-//                return field
-//            }
-//            private set
 
         //CORE ->
         fun updateSession(user: User?): Session? {
@@ -126,36 +114,12 @@ open class Session : RealmObject() {
             }
         }
 
-        //CORE ->
-        fun deleteUser() {
-            executeRealm { it.delete(User::class.java) }
-        }
-
-        //CORE ->
-        fun deleteAll() {
-            executeRealm { it.deleteAll() }
-        }
-
         fun updateUser(newNser: User){
             executeRealm { itRealm ->
                 user = newNser
                 itRealm.insertOrUpdate(newNser)
             }
         }
-
-        //CORE -> CHECK IS USER IS LOGGED IN
-        val isLogged: Boolean
-            get() {
-                if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-                val session = session
-                if (session != null && session.isValid) {
-                    val user = Session.user
-                    if (user != null && user.isValid) {
-                        return true
-                    }
-                }
-                return false
-            }
 
         //CORE -> LOG CURRENT USER OUT
         private fun deleteAllRealmObjects() {
@@ -183,39 +147,23 @@ open class Session : RealmObject() {
 
         //ADD SPORT, this should be safe
         fun addSport(sport: Sport?) {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            val session = session
-            session?.let { itSession ->
-                mRealm.beginTransaction()
-                if (itSession.sports.isNullOrEmpty()) {
-                    itSession.sports = RealmList()
-                    itSession.sports?.add(sport)
-                } else {
-                    itSession.sports?.let {
-                        var containsSport = false
-                        for (item in it) {
-                            if (item.name == sport?.name) {
-                                containsSport = true
+            session { itSession ->
+                executeRealm {
+                    if (itSession.sports.isNullOrEmpty()) {
+                        itSession.sports = RealmList()
+                        itSession.sports?.add(sport)
+                    } else {
+                        itSession.sports?.let {
+                            var containsSport = false
+                            for (item in it) {
+                                if (item.name == sport?.name) {
+                                    containsSport = true
+                                }
                             }
+                            if (!containsSport) it.add(sport)
                         }
-                        if (!containsSport) it.add(sport)
                     }
                 }
-                mRealm.copyToRealmOrUpdate(session) //safe?
-                mRealm.commitTransaction()
-            }
-        }
-
-        //REMOVE ALL SPORT
-        fun removeAllSports() {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            val session = session
-            session?.let { itSession ->
-                mRealm.beginTransaction()
-                itSession.sports?.clear()
-                mRealm.where(Sport::class.java).findAll().deleteAllFromRealm()
-                mRealm.copyToRealmOrUpdate(session) //safe?
-                mRealm.commitTransaction()
             }
         }
 
@@ -224,11 +172,16 @@ open class Session : RealmObject() {
             session { itSession ->
                 executeRealm {
                     itSession.organizations?.add(organization)
-                    it.copyToRealmOrUpdate(itSession) //safe?
                 }
             }
         }
-
+        fun addService(service: Service?) {
+            session { itSession ->
+                executeRealm {
+                    itSession.services?.add(service)
+                }
+            }
+        }
         fun addServices(services: RealmList<Service>) {
             session { itSession ->
                 for (item in services) {
@@ -236,49 +189,6 @@ open class Session : RealmObject() {
                         itSession.services?.add(item)
                     }
                 }
-
-            }
-        }
-
-//        fun getAllServices() {
-//            session {
-//
-//            }
-//        }
-
-        //REMOVE ORGANIZATION
-        fun removeOrganization(organization: Organization?) {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            val session = session
-            session?.let { itSession ->
-                mRealm.beginTransaction()
-                itSession.organizations?.remove(organization)
-                mRealm.copyToRealmOrUpdate(session) //safe?
-                mRealm.commitTransaction()
-            }
-        }
-
-        //REMOVE ALL ORGANIZATION
-        fun removeAllOrganization() {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            val session = session
-            session?.let { itSession ->
-                mRealm.beginTransaction()
-                itSession.organizations?.clear()
-                mRealm.where(Organization::class.java).findAll().deleteAllFromRealm()
-                mRealm.copyToRealmOrUpdate(session) //safe?
-                mRealm.commitTransaction()
-            }
-        }
-
-
-        /** -> SPOTS <- **/
-
-        fun createNewSpot(spot: Location){
-            mRealm?.let {
-                it.beginTransaction()
-                it.insert(spot)
-                it.commitTransaction()
             }
         }
 
@@ -289,18 +199,10 @@ open class Session : RealmObject() {
 fun <T> T?.addToSession() {
     this?.let {
         when (it) {
-            is User -> {
-                Session.updateSession(it)
-            }
-            is Sport -> {
-                Session.addSport(it)
-            }
-            is Organization -> {
-                Session.addOrganization(it)
-            }
-//            is Service -> {
-//                Session.addService(it)
-//            }
+            is User -> Session.updateSession(it)
+            is Sport -> Session.addSport(it)
+            is Organization -> Session.addOrganization(it)
+            is Service -> Session.addService(it)
             else -> { null }
         }
     }

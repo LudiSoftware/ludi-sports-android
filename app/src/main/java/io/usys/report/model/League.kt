@@ -6,11 +6,12 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.applyAndFireSave
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
+import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class League : RealmObject() {
+open class League : RealmObject(), Serializable {
 
     companion object {
         const val ORDER_BY_ORGANIZATION = "organizationId"

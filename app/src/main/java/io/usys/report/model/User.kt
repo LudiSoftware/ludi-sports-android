@@ -11,6 +11,7 @@ import io.usys.report.model.AuthTypes.Companion.BASIC_USER
 import io.usys.report.model.AuthTypes.Companion.COACH_USER
 import io.usys.report.model.AuthTypes.Companion.UNASSIGNED
 import io.usys.report.utils.*
+import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -32,7 +33,7 @@ open class AuthTypes {
     }
 }
 
-open class User : RealmObject() {
+open class User : RealmObject(), Serializable {
 
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
     var dateCreated: String = getTimeStamp()

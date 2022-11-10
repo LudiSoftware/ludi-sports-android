@@ -87,7 +87,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/cardOrgIconLocation"
             app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
-            app:srcCompat="@drawable/soccer_ball_icon" />
+            app:srcCompat="@drawable/ysr_world_icon_red" />
 
         <ImageView
             android:id="@+id/cardOrgIconLocation"
@@ -97,7 +97,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/cardOrgImgOrg"
             app:layout_constraintEnd_toEndOf="@+id/cardOrgIconSport"
             app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
-            app:srcCompat="@drawable/red_mail_two" />
+            app:srcCompat="@drawable/ysr_location_icon_red" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

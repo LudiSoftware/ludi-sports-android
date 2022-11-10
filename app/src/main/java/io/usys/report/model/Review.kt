@@ -15,11 +15,12 @@ import io.usys.report.model.Review.Companion.ANSWER_COUNT
 import io.usys.report.model.Review.Companion.RATING_COUNT
 import io.usys.report.model.Review.Companion.RATING_SCORE
 import io.usys.report.utils.*
+import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class Review : RealmObject() {
+open class Review : RealmObject(), Serializable {
 
     companion object {
         const val RATING_SCORE = "ratingScore"
@@ -40,7 +41,7 @@ open class Review : RealmObject() {
     var comment: String? = ""
 }
 
-open class ReviewTemplate : RealmObject() {
+open class ReviewTemplate : RealmObject(), Serializable {
 
     companion object {
         const val UNASSIGNED = "unassigned"
@@ -85,7 +86,7 @@ fun createReviewTemplate() {
     fireAddUpdateCoachReviewDBAsync(revTemplate)
 }
 
-open class Question: RealmObject() {
+open class Question: RealmObject(), Serializable {
     companion object {
         const val A = "a"
         const val B = "b"

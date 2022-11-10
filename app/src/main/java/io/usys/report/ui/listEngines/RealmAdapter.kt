@@ -13,6 +13,10 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.utils.isNullOrEmpty
 
+/**
+ * Convenience Methods for Displaying a Realm List
+ */
+
 inline fun <reified T> RecyclerView.loadInRealmListCallback(realmList: RealmList<T>?, context: Context, type: String,
                                                     noinline updateCallback: ((String, String) -> Unit)?) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
@@ -48,6 +52,10 @@ inline fun <reified T> RecyclerView.loadInRealmListGrid(realmList: RealmList<T>?
     this.adapter = adapter
     return adapter
 }
+
+/**
+ * Dynamic Master RecyclerView Adapter
+ */
 
 open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 

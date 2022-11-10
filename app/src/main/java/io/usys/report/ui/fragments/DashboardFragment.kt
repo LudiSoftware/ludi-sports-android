@@ -59,15 +59,11 @@ class DashboardFragment : YsrFragment() {
 
     override fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
-//            PopFragment().show(childFragmentManager, PopFragment.TAG)
-//            findNavController().navigate(R.id.action_pop)
             toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
         }
 
         itemOnClickServiceList = { _, obj ->
-//            PopFragment().show(childFragmentManager, PopFragment.TAG)
-//            findNavController().navigate(R.id.action_pop)
-            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
+            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))
         }
 
     }

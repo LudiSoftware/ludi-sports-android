@@ -55,19 +55,29 @@
         android:id="@+id/navigation_org_profile"
         android:name="io.usys.report.ui.fragments.OrganizationProfileFragment"
         android:label="@string/title_org"
-        tools:layout="@layout/fragment_org_profile" />
+        tools:layout="@layout/fragment_org_profile" >
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="io.usys.report.ui.fragments.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile" >
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile_coach"
         android:name="io.usys.report.ui.fragments.ProfileCoachFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_service_details"
+        android:name="io.usys.report.ui.fragments.ServiceDetailsFragment"
+        android:label="@string/title_service"
+        tools:layout="@layout/fragment_service_details" >
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_pop_frag"

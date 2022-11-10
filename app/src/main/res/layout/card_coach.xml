@@ -25,7 +25,7 @@
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ysr_bg_two"
+            android:src="@drawable/ysr_empty_profile_icon_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -93,7 +93,7 @@
             app:layout_constraintStart_toEndOf="@+id/cardCoachImgProfile"
             app:layout_constraintTop_toBottomOf="@+id/imageView9"
             app:layout_constraintVertical_bias="0.888"
-            app:srcCompat="@drawable/red_mail_ek3" />
+            app:srcCompat="@drawable/ysr_email_icon_red" />
 
         <ImageView
             android:id="@+id/imageView9"
@@ -101,6 +101,7 @@
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:tint="#FF0000"
             app:layout_constraintStart_toEndOf="@+id/cardCoachImgProfile"
             app:layout_constraintTop_toBottomOf="@+id/cardCoachTxtName"
             app:srcCompat="@drawable/org_blue" />

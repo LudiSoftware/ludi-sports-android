@@ -5,11 +5,12 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
+import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class Location : RealmObject() {
+open class Location : RealmObject(), Serializable {
 
 
     @PrimaryKey

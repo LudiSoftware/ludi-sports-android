@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cardGenericButtonMainLayout"
+        android:id="@+id/cardServiceMainLayout"
         android:layout_width="185dp"
         android:layout_height="200dp">
 
@@ -29,57 +30,125 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ysr_bg_two" />
+            app:srcCompat="@drawable/home_banner" />
+
+        <ImageView
+            android:id="@+id/cardServiceImgBlackOverlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#9F000000"
+            app:layout_constraintBottom_toBottomOf="@+id/cardServiceImgBackground"
+            app:layout_constraintEnd_toEndOf="@+id/cardServiceImgBackground"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cardServiceImgBackground"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/cardServiceImgLocationIcon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ysr_location_icon_red" />
+
+        <ImageView
+            android:id="@+id/cardServiceImgTimeIcon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardServiceImgLocationIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ysr_clock_icon_blue"
+            app:tint="#FF0000" />
 
         <TextView
             android:id="@+id/cardServiceTxtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="3dp"
             android:text="Private Training"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/cardServiceImgProfileIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="@+id/cardServiceImgBackground"
-            app:layout_constraintTop_toTopOf="@+id/cardServiceImgBackground" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardServiceImgServiceIcon"
+            app:layout_constraintTop_toTopOf="@+id/cardServiceImgServiceIcon" />
 
         <TextView
             android:id="@+id/cardServiceTxtCoachName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="3dp"
             android:text="Lucas Romeo"
             android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardServiceImgProfileIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardServiceTxtTitle" />
+            app:layout_constraintStart_toEndOf="@+id/cardServiceImgProfileIcon"
+            app:layout_constraintTop_toTopOf="@+id/cardServiceImgProfileIcon"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cardServiceTxtTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="3dp"
             android:text="6pm-9pm"
             android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardServiceImgTimeIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardServiceTxtCoachName" />
+            app:layout_constraintStart_toEndOf="@+id/cardServiceImgTimeIcon"
+            app:layout_constraintTop_toTopOf="@+id/cardServiceImgTimeIcon"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cardServiceTxtLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="3dp"
             android:text="Rathmell Sports Complex"
             android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardServiceImgLocationIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.384"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardServiceImgLocationIcon"
+            app:layout_constraintTop_toTopOf="@+id/cardServiceImgLocationIcon"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/cardServiceImgProfileIcon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardServiceImgTimeIcon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardServiceTxtTime"
-            app:layout_constraintVertical_bias="0.245" />
+            app:srcCompat="@drawable/ysr_empty_profile_icon_blue"
+            app:tint="#FF0000" />
+
+        <ImageView
+            android:id="@+id/cardServiceImgServiceIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            app:tint="#FF0000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ysr_service_icon_blue" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

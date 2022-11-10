@@ -14,12 +14,11 @@ import io.usys.report.model.User
 class MainPendingActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private val user : User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main_pending)
+//        setContentView(R.layout.activity_main_pending)
 
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 //        val navController = findNavController(R.id.nav_host_fragment)
@@ -31,9 +30,6 @@ class MainPendingActivity : AppCompatActivity() {
 //                R.id.navigation_spot_calendar, R.id.navigation_dashboard, R.id.navigation_cart
 //            )
 //        )
-
-        val user = Session.user
-        //FoodTruck Manager
 
 
 //        navController = Navigation.findNavController(this, R.id.nav_host_fragment)

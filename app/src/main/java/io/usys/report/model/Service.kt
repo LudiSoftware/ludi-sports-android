@@ -11,7 +11,7 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class Service : RealmObject() {
+open class Service : RealmObject(), Serializable {
 
     companion object {
         const val MORNING_TIME : String = "8AM-11AM"
