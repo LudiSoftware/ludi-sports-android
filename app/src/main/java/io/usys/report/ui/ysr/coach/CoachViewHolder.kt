@@ -13,6 +13,7 @@ import io.usys.report.model.Coach
 import io.usys.report.model.Organization
 import io.usys.report.ui.ysr.loadInRealmList
 import io.usys.report.utils.*
+import io.usys.report.utils.views.loadUriIntoImgView
 
 /**
  * COACH LIST VIEW CONTROLS

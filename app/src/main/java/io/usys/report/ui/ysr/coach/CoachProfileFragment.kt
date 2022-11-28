@@ -13,7 +13,7 @@ import io.usys.report.ui.ysr.YsrMiddleFragment
 import io.usys.report.ui.ysr.review.coach.ReviewDialogFragment
 import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.utils.cast
-import io.usys.report.utils.loadUriIntoImgView
+import io.usys.report.utils.views.loadUriIntoImgView
 
 /**
  * Created by ChazzCoin : 2020.

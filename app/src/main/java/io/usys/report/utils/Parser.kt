@@ -1,6 +1,5 @@
 package io.usys.report.utils
 
-import io.realm.RealmObject
 import org.json.JSONArray
 import org.json.JSONObject
 
