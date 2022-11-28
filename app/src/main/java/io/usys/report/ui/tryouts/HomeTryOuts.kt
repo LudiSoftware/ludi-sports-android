@@ -1,24 +1,25 @@
-package io.usys.report.ui.ysr
+package io.usys.report.ui.tryouts
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.FragmentDashboardBinding
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.ui.ysr.sport.setupSportList
-import io.usys.report.utils.sessionSports
 
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class HomeDashboardFragment : YsrFragment() {
+class HomeTryOuts : Fragment() {
 
+    lateinit var rootView : View
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
@@ -29,13 +30,12 @@ class HomeDashboardFragment : YsrFragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
 //        setupOnClickListeners()
-        toFragment(R.id.navigation_tryout_frag)
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-        setupSportsList()
+//        setupSportsList()
     }
 
     override fun onDestroyView() {
@@ -43,21 +43,21 @@ class HomeDashboardFragment : YsrFragment() {
         _binding = null
     }
 
-    private fun setupSportsList() {
-        _binding?.dashboardRecyclerServiceList?.setupServiceList(requireContext(), itemOnClickServiceList)
-        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClickSportList)
-    }
-
-    override fun setupOnClickListeners() {
-        itemOnClickSportList = { _, obj ->
-            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
-        }
-
-        itemOnClickServiceList = { _, obj ->
-            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))
-        }
-
-    }
+//    private fun setupSportsList() {
+//        _binding?.dashboardRecyclerServiceList?.setupServiceList(requireContext(), itemOnClickServiceList)
+//        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClickSportList)
+//    }
+//
+//    override fun setupOnClickListeners() {
+//        itemOnClickSportList = { _, obj ->
+//            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
+//        }
+//
+//        itemOnClickServiceList = { _, obj ->
+//            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))
+//        }
+//
+//    }
 
 }
 

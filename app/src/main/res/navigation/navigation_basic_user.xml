@@ -87,6 +87,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_tryout_frag"
+        android:name="io.usys.report.ui.ysr.TryoutTestFragment"
+        android:label="Tryouts"
+        tools:layout="@layout/fragment_home_tryouts">
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_base_frag"
         android:name="io.usys.report.ui.ysr.YsrFragment"
         android:label="@string/app_name"
