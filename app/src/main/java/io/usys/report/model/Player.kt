@@ -21,6 +21,10 @@ open class Player : RealmObject(), Serializable {
     var id: String = newUUID()
     var dateCreated: String = getTimeStamp()
     var name: String = "" //Name Given by Manager
+    val firstName: String = ""
+    val lastName: String = ""
+    val age: Int = 0
+    val position: String = ""
     var imgUrl: String = ""
     var ownerId: String = "unassigned"
     var ownerName: String = "unassigned"

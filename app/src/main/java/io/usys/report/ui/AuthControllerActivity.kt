@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
-import com.jakewharton.threetenabp.AndroidThreeTen
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
@@ -46,7 +45,7 @@ class AuthControllerActivity : AppCompatActivity()  {
         //Init Firebase Instance
         FirebaseApp.initializeApp(this)
         //Init Calendar
-        AndroidThreeTen.init(this)
+//        AndroidThreeTen.init(this)
         //Init Realm DB
         Realm.init(this)
         val realmConfiguration = RealmConfiguration.Builder()
