@@ -12,7 +12,7 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.model.Question
 import io.usys.report.model.getQuestionScore
-import io.usys.report.ui.ysr.loadInRealmList
+import io.usys.report.utils.loadInRealmList
 import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.A
 import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.B
 import io.usys.report.ui.ysr.review.coach.YsrCoachReviewView.Companion.C

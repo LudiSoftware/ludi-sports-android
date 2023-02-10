@@ -5,7 +5,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateDBAsync
-import io.usys.report.model.AuthTypes.Companion.UNASSIGNED
+import io.usys.report.ui.ysr.AuthTypes.Companion.UNASSIGNED
 import io.usys.report.utils.*
 import java.io.Serializable
 

@@ -9,7 +9,7 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetReviewsByReceiverIdToCallback
 import io.usys.report.model.Review
-import io.usys.report.ui.ysr.loadInRealmList
+import io.usys.report.utils.loadInRealmList
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.toRealmList
 

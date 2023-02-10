@@ -20,16 +20,16 @@
 
         <include
             android:id="@+id/includeReviewCard"
-            layout="@layout/card_rating_bar"
+            layout="@layout/card_rating_bar_template"
             android:layout_width="175dp"
             android:layout_height="41dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardOrgTxtWebsite"
+            app:layout_constraintBottom_toTopOf="@+id/cardOrgTxtOne"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtTitle"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/cardOrgTxtName"
+            android:id="@+id/cardOrgTxtTitle"
             android:layout_width="0dp"
             android:layout_height="37dp"
             android:layout_marginTop="4dp"
@@ -44,59 +44,59 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/cardOrgTxtLeague"
+            android:id="@+id/cardOrgTxtTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Alabama State League"
-            app:layout_constraintBottom_toBottomOf="@+id/cardOrgIconLocation"
+            app:layout_constraintBottom_toBottomOf="@+id/cardOrgImgIconOne"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.017"
-            app:layout_constraintStart_toEndOf="@+id/cardOrgIconLocation"
-            app:layout_constraintTop_toTopOf="@+id/cardOrgIconLocation"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgIconOne"
+            app:layout_constraintTop_toTopOf="@+id/cardOrgImgIconOne"
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:id="@+id/cardOrgTxtWebsite"
+            android:id="@+id/cardOrgTxtOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="132dp"
             android:text="www.ussoccer.com"
-            app:layout_constraintBottom_toBottomOf="@+id/cardOrgIconSport"
+            app:layout_constraintBottom_toBottomOf="@+id/cardOrgImgIconOne"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardOrgIconSport"
-            app:layout_constraintTop_toTopOf="@+id/cardOrgIconSport" />
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgIconOne"
+            app:layout_constraintTop_toTopOf="@+id/cardOrgImgIconOne" />
 
         <ImageView
-            android:id="@+id/cardOrgImgOrg"
+            android:id="@+id/cardOrgImgMainIcon"
             android:layout_width="84dp"
             android:layout_height="94dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtName"
+            app:layout_constraintTop_toBottomOf="@+id/cardOrgTxtTitle"
             app:layout_constraintVertical_bias="0.733"
             app:srcCompat="@drawable/download" />
 
         <ImageView
-            android:id="@+id/cardOrgIconSport"
+            android:id="@+id/cardOrgImgIconTwo"
             android:layout_width="15dp"
             android:layout_height="16dp"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardOrgIconLocation"
-            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:layout_constraintBottom_toTopOf="@+id/cardOrgImgIconOne"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgMainIcon"
             app:srcCompat="@drawable/ysr_world_icon_red" />
 
         <ImageView
-            android:id="@+id/cardOrgIconLocation"
+            android:id="@+id/cardOrgImgIconOne"
             android:layout_width="15dp"
             android:layout_height="19dp"
             android:layout_marginStart="12dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardOrgImgOrg"
-            app:layout_constraintEnd_toEndOf="@+id/cardOrgIconSport"
-            app:layout_constraintStart_toEndOf="@+id/cardOrgImgOrg"
+            app:layout_constraintBottom_toBottomOf="@+id/cardOrgImgMainIcon"
+            app:layout_constraintEnd_toEndOf="@+id/cardOrgImgIconTwo"
+            app:layout_constraintStart_toEndOf="@+id/cardOrgImgMainIcon"
             app:srcCompat="@drawable/ysr_location_icon_red" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

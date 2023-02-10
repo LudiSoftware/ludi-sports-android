@@ -71,7 +71,7 @@
 
         <include
             android:id="@+id/includeUserProfileCoachHeader"
-            layout="@layout/card_user_header"
+            layout="@layout/card_user_header_template"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

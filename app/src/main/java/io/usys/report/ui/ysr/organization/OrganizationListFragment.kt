@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.FragmentOrgListBinding
-import io.usys.report.ui.ysr.YsrMiddleFragment
-import io.usys.report.ui.ysr.bundleRealmObject
-import io.usys.report.ui.ysr.toFragment
+import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.fragments.bundleRealmObject
+import io.usys.report.ui.fragments.toFragment
 
 /**
  * Created by ChazzCoin : October 2022.

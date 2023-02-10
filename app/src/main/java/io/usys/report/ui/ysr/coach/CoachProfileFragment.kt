@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
-import io.usys.report.databinding.FragmentUserProfileCoachBinding
+import io.usys.report.databinding.ProfileCoachBinding
 import io.usys.report.model.Coach
-import io.usys.report.ui.ysr.YsrMiddleFragment
+import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.ysr.review.coach.ReviewDialogFragment
-import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.utils.cast
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -32,7 +31,7 @@ class CoachProfileFragment : YsrMiddleFragment() {
         TODO("Not yet implemented")
     }
 
-    private var _binding: FragmentUserProfileCoachBinding? = null
+    private var _binding: ProfileCoachBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
@@ -44,7 +43,7 @@ class CoachProfileFragment : YsrMiddleFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        _binding = FragmentUserProfileCoachBinding.inflate(inflater, container, false)
+        _binding = ProfileCoachBinding.inflate(inflater, container, false)
         rootView = binding.root
 
         COLOR_RED = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_red)
@@ -74,7 +73,7 @@ class CoachProfileFragment : YsrMiddleFragment() {
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.ratingScore.toFloat()
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.ratingCount} Reviews"
 
-            _binding?.fragProfileCoachRecyclerServices?.setupServiceList(requireContext(), itemOnClick)
+//            _binding?.fragProfileCoachRecyclerServices?.setupServiceList(requireContext(), itemOnClick)
         }
     }
 

@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.utils
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -40,14 +40,14 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
     companion object {
         fun getLayout(type: String): Int {
             return when (type) {
-                FireTypes.ORGANIZATIONS -> R.layout.card_organization
-                FireTypes.SPORTS -> R.layout.card_sport
+                FireTypes.ORGANIZATIONS -> R.layout.card_organization_medium2
+                FireTypes.SPORTS -> R.layout.card_sport_small
                 FireTypes.REVIEWS -> R.layout.card_review_comment
-                FireTypes.USERS -> R.layout.card_sport
-                FireTypes.COACHES -> R.layout.card_coach
-                FireTypes.SERVICES -> R.layout.card_service
-                FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question
-                else -> R.layout.card_sport
+                FireTypes.USERS -> R.layout.card_sport_small
+                FireTypes.COACHES -> R.layout.card_coach_small
+                FireTypes.SERVICES -> R.layout.card_service_square
+                FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question_full
+                else -> R.layout.card_sport_small
             }
         }
     }

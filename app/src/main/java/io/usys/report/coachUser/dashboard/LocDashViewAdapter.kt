@@ -22,7 +22,7 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
     var context = mContext
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerDashViewHolder {
-        return InnerDashViewHolder(parent.inflate(R.layout.card_sport), activity)
+        return InnerDashViewHolder(parent.inflate(R.layout.card_sport_small), activity)
     }
 
     override fun onBindViewHolder(viewHolder: InnerDashViewHolder, position: Int) {

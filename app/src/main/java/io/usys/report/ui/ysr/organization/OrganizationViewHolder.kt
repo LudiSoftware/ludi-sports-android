@@ -14,7 +14,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
 import io.usys.report.model.Organization
 import io.usys.report.model.Sport
-import io.usys.report.ui.ysr.loadInRealmList
+import io.usys.report.utils.loadInRealmList
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.cast
@@ -37,10 +37,10 @@ fun RecyclerView?.setupOrganizationList(context: Context, realmObjectArg: RealmO
 class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     //    var itemLinearLayout = itemView.bindLinearLayout(R.id.itemLinearLayout)
-    var txtOrgName = itemView.bindTextView(R.id.cardOrgTxtName)
-    var txtWebsite = itemView.bindTextView(R.id.cardOrgTxtWebsite)
-    var txtLeague = itemView.bindTextView(R.id.cardOrgTxtLeague)
-    var imgOrganization: ImageView = itemView.bind(R.id.cardOrgImgOrg)
+    var txtOrgName = itemView.bindTextView(R.id.cardOrgTxtTitle)
+    var txtWebsite = itemView.bindTextView(R.id.cardOrgTxtOne)
+    var txtLeague = itemView.bindTextView(R.id.cardOrgTxtTwo)
+    var imgOrganization: ImageView = itemView.bind(R.id.cardOrgImgMainIcon)
     var includeReviewCard: FrameLayout = itemView.findViewById(R.id.includeReviewCard)
 
     var cardRatingBar: RatingBar = includeReviewCard.bind(R.id.cardRatingBar)

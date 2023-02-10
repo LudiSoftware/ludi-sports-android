@@ -16,7 +16,7 @@ import io.usys.report.model.*
 import io.usys.report.ui.onClickReturnEmpty
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.ui.ysr.loadInRealmListCallback
+import io.usys.report.utils.loadInRealmListCallback
 import io.usys.report.ui.ysr.review.engine.*
 import io.usys.report.utils.*
 

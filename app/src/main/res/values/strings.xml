@@ -2,11 +2,11 @@
 
 <resources>
     <!-- TESTING / DEV STRINGS    -->
-    <string name="test_questionA">How is this coaches communication during and after a game?</string>
-    <string name="test_choiceA">Communication is Excellent! Very responsive and professional!</string>
-    <string name="test_choiceB">Communication is Good. Timely and appropriate.</string>
-    <string name="test_choiceC">Communication is Okay. It could use some improvements.</string>
-    <string name="test_choiceD">Communication is Poor. This coach does not communicate appropriately.</string>
+    <string name="test_questionA">How would you rate the coachs ability to create a positive and inclusive environment for all players?</string>
+    <string name="test_choiceA">The coach consistently creates a positive and inclusive environment for all players.</string>
+    <string name="test_choiceB">The coach mostly creates a positive and inclusive environment for all players.</string>
+    <string name="test_choiceC">The coach occasionally creates a positive and inclusive environment for all players.</string>
+    <string name="test_choiceD">The coach rarely creates a positive and inclusive environment for all players.</string>
 
 
 

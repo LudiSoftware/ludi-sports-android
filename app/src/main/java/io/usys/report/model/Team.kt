@@ -3,6 +3,7 @@ package io.usys.report.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.ui.ysr.YsrMode
 import io.usys.report.utils.applyAndFireSave
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
@@ -26,6 +27,8 @@ open class Team : RealmObject(), Serializable {
     var coachName: String = "unassigned"
     var parentId: String = ""
     var parentName: String = ""
+    var organizationId: String = ""
+    var organizationName: String = ""
     var organizationIds: RealmList<String>? = RealmList()
     var sport: String = "unassigned"
     var type: String = "unassigned"
@@ -34,7 +37,7 @@ open class Team : RealmObject(), Serializable {
     var email: String = ""
     var phone: String = ""
     var isFree: Boolean = false
-
+    var mode: String = YsrMode.VIEW_ONLY
     var hasReview: Boolean = false
     var reviews: RealmList<String>? = RealmList()
     var ratingScore: String = ""

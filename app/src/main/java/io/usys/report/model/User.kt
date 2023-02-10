@@ -7,9 +7,11 @@ import io.realm.RealmObject
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.coreFirebaseUser
 import io.usys.report.firebase.fireUpdateSingleValueDBAsync
-import io.usys.report.model.AuthTypes.Companion.BASIC_USER
-import io.usys.report.model.AuthTypes.Companion.COACH_USER
-import io.usys.report.model.AuthTypes.Companion.UNASSIGNED
+import io.usys.report.ui.ysr.AuthTypes.Companion.BASIC_USER
+import io.usys.report.ui.ysr.AuthTypes.Companion.COACH_USER
+import io.usys.report.ui.ysr.AuthTypes.Companion.PARENT_USER
+import io.usys.report.ui.ysr.AuthTypes.Companion.PLAYER_USER
+import io.usys.report.ui.ysr.AuthTypes.Companion.UNASSIGNED
 import io.usys.report.utils.*
 import java.io.Serializable
 
@@ -17,44 +19,43 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 
-open class AuthTypes {
-    companion object {
-        // Auth Types
-        var MASTER = "master"
-        var ADMIN = "admin"
-        var ORG_ADMIN_USER = "org_admin"
-        var COACH_USER = "coach"
-        var PLAYER_USER = "player"
-        var PARENT_USER = "parent"
-        var BASIC_USER = "basic" // Default
-        var WAITING = "waiting"
 
-        var UNASSIGNED = "unassigned"
-    }
-}
 
 open class User : RealmObject(), Serializable {
 
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
     var dateCreated: String = getTimeStamp()
+    //todo: create function for updating this.
     var dateUpdated: String = getTimeStamp()
     var username: String = UNASSIGNED
-    var name: String = "" //Name Given by Manager
+    var name: String = UNASSIGNED //Name Given by Manager
     var auth: String = BASIC_USER // "basic"
-    var type: String = ""
-    var email: String = ""
-    var phone: String = ""
-    var organization: String = ""
+    var type: String = UNASSIGNED
+    var email: String = UNASSIGNED
+    var phone: String = UNASSIGNED
+    var organization: String = UNASSIGNED
+    var organizationId: String = UNASSIGNED
     var visibility: String = "closed"
-    var photoUrl: String = ""
+    var photoUrl: String = UNASSIGNED
     var emailVerified: Boolean = false
+    var parentId: String = UNASSIGNED
+    var playerId: String = UNASSIGNED
+    var coachId: String = UNASSIGNED
 
+    fun isParentUser() : Boolean {
+        if (this.auth == PARENT_USER) return true
+        return false
+    }
+    fun isPlayerUser() : Boolean {
+        if (this.auth == PLAYER_USER) return true
+        return false
+    }
     fun isCoachUser() : Boolean {
         if (this.auth == COACH_USER) return true
         return false
     }
-    fun isBasicUser() : Boolean {
-        if (this.auth == BASIC_USER) return true
+    fun isUnassignedUser() : Boolean {
+        if (this.auth == UNASSIGNED) return true
         return false
     }
 

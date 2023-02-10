@@ -1,4 +1,4 @@
-package io.usys.report.ui.ysr
+package io.usys.report.ui.views
 
 import android.content.Context
 import android.util.AttributeSet

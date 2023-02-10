@@ -67,7 +67,7 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/cardCoachImgArrow"
             app:layout_constraintHorizontal_bias="0.015"
-            app:layout_constraintStart_toEndOf="@+id/imageView9"
+            app:layout_constraintStart_toEndOf="@+id/cardCoachImgIconOne"
             app:layout_constraintTop_toBottomOf="@+id/cardCoachTxtName" />
 
         <TextView
@@ -80,23 +80,23 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cardCoachImgArrow"
-            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintStart_toEndOf="@+id/cardCoachImgIconTwo"
             app:layout_constraintTop_toBottomOf="@+id/cardCoachTxtOrg"
             app:layout_constraintVertical_bias="0.47" />
 
         <ImageView
-            android:id="@+id/imageView8"
+            android:id="@+id/cardCoachImgIconTwo"
             android:layout_width="18dp"
             android:layout_height="15dp"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/cardCoachImgProfile"
             app:layout_constraintStart_toEndOf="@+id/cardCoachImgProfile"
-            app:layout_constraintTop_toBottomOf="@+id/imageView9"
+            app:layout_constraintTop_toBottomOf="@+id/cardCoachImgIconOne"
             app:layout_constraintVertical_bias="0.888"
             app:srcCompat="@drawable/ysr_email_icon_red" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/cardCoachImgIconOne"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"

@@ -11,7 +11,7 @@
 
     <include
         android:id="@+id/includeOrgProfileCard"
-        layout="@layout/card_organization"
+        layout="@layout/card_organization_medium2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -63,7 +63,7 @@
 
             <include
                 android:id="@+id/includeGenericButtonCard"
-                layout="@layout/card_generic_button"
+                layout="@layout/card_generic_button_small"
                 android:layout_width="392dp"
                 android:layout_height="65dp"
                 android:layout_marginTop="12dp"

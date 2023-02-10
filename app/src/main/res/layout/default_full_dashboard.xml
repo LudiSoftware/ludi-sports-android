@@ -11,7 +11,7 @@
 
     <include
         android:id="@+id/includeUserProfileHeader"
-        layout="@layout/card_home_banner"
+        layout="@layout/card_home_banner_large"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
         tools:itemCount="2"
-        tools:listitem="@layout/card_sport">
+        tools:listitem="@layout/card_sport_small">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -73,6 +73,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12"
         tools:itemCount="2"
-        tools:listitem="@layout/card_sport" />
+        tools:listitem="@layout/card_sport_small" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

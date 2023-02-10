@@ -20,7 +20,7 @@ class LocManageViewAdapter(mContext: Context, val locManageFragment: LocManageFr
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerLocationViewHolder {
         reloadLocations()
-        return InnerLocationViewHolder(parent.inflate(R.layout.card_organization), locManageFragment = locManageFragment)
+        return InnerLocationViewHolder(parent.inflate(R.layout.card_organization_medium2), locManageFragment = locManageFragment)
     }
 
     override fun onBindViewHolder(viewHolder: InnerLocationViewHolder, position: Int) {

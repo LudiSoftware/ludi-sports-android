@@ -1,0 +1,192 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewServiceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Service Name" />
+
+    <EditText
+        android:id="@+id/editTextServiceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Service Name" />
+
+    <TextView
+        android:id="@+id/textViewAddressOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address One" />
+
+    <EditText
+        android:id="@+id/editTextAddressOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Address One" />
+
+    <TextView
+        android:id="@+id/textViewAddressTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address Two" />
+
+    <EditText
+        android:id="@+id/editTextAddressTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Address Two" />
+
+    <TextView
+        android:id="@+id/textViewCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City" />
+
+    <EditText
+        android:id="@+id/editTextCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter City" />
+
+    <TextView
+        android:id="@+id/textViewState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State" />
+
+    <EditText
+        android:id="@+id/editTextState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter State" />
+
+    <TextView
+        android:id="@+id/textViewZip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zip" />
+
+    <EditText
+        android:id="@+id/editTextZip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Zip" />
+
+    <TextView
+        android:id="@+id/textViewSport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sport" />
+
+    <EditText
+        android:id="@+id/editTextSport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Sport" />
+
+    <TextView
+        android:id="@+id/textViewType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type" />
+
+    <EditText
+        android:id="@+id/editTextType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Type" />
+
+    <TextView
+        android:id="@+id/textViewSubType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sub-Type" />
+
+    <EditText
+        android:id="@+id/editTextSubType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Sub-Type" />
+
+    <TextView
+        android:id="@+id/textViewTimeOfService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time of Service" />
+
+    <EditText
+        android:id="@+id/editTextTimeOfService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Time of Service" />
+
+    <TextView
+        android:id="@+id/textViewDateOfService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date of Service" />
+
+    <EditText
+        android:id="@+id/editTextDateOfService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Date of Service" />
+
+    <TextView
+        android:id="@+id/textViewMaxPeople"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max People" />
+
+    <EditText
+        android:id="@+id/editTextMaxPeople"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Max People"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textViewAgeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Age Range" />
+
+    <EditText
+        android:id="@+id/editTextAgeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter Age Range" />
+
+    <TextView
+        android:id="@+id/textViewCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cost" />
+
+    <EditText
+        android:id="@+id/editTextCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Cost"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textViewDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Details" />
+
+    <EditText
+        android:id="@+id/editTextDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Details"
+        android:inputType="textMultiLine" />
+
+</LinearLayout>
+
+

@@ -1,4 +1,4 @@
-package io.usys.report.ui.ysr
+package io.usys.report.utils
 //
 //import android.content.Context
 //import android.view.LayoutInflater
@@ -12,7 +12,7 @@ package io.usys.report.ui.ysr
 //import io.realm.RealmObject
 //import io.usys.report.R
 //import io.usys.report.firebase.FireTypes
-//import io.usys.report.ui.RouterViewHolder
+//import io.usys.report.utils.RouterViewHolder
 //import io.usys.report.utils.executeRealm
 //import io.usys.report.utils.isNullOrEmpty
 //

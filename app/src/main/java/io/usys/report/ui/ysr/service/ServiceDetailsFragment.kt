@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.usys.report.databinding.DetailsServiceBinding
 import io.usys.report.model.*
-import io.usys.report.databinding.FragmentServiceDetailsBinding
-import io.usys.report.ui.ysr.YsrMiddleFragment
+import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.cast
 
 /**
@@ -15,12 +15,12 @@ import io.usys.report.utils.cast
 
 class ServiceDetailsFragment : YsrMiddleFragment() {
 
-    private var _binding: FragmentServiceDetailsBinding? = null
+    private var _binding: DetailsServiceBinding? = null
     private val binding get() = _binding!!
     private var currentService: Service? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentServiceDetailsBinding.inflate(inflater, container, false)
+        _binding = DetailsServiceBinding.inflate(inflater, container, false)
         rootView = binding.root
         currentService = realmObjectArg?.cast<Service>()
         setupOnClickListeners()

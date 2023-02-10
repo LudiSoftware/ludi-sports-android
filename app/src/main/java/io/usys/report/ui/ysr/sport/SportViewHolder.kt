@@ -10,7 +10,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetBaseYsrObjects
 import io.usys.report.model.Sport
 import io.usys.report.model.addToSession
-import io.usys.report.ui.ysr.loadInRealmList
+import io.usys.report.utils.loadInRealmList
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.sessionSports

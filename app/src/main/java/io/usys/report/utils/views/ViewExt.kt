@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by ChazzCoin : October 2022.
  */
+fun LayoutInflater.inflateView(resource: Int, container: ViewGroup, attachToRoot: Boolean = false): View {
+    return inflate(resource, container, attachToRoot)
+}
 
 fun Activity.changeStatusBarColor() {
     this.window.statusBarColor = this.getColorCompat(R.color.black)

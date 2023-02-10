@@ -1,4 +1,4 @@
-package io.usys.report.ui.ysr
+package io.usys.report.utils
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.ui.RouterViewHolder
-import io.usys.report.utils.isNullOrEmpty
 
 /**
  * Convenience Methods for Displaying a Realm List
@@ -63,7 +61,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
     var itemClickListener: ((View, T) -> Unit)? = null
     var updateCallback: ((String, String) -> Unit)? = null
     var realmList: RealmList<T>? = null
-    var layout: Int = R.layout.card_organization
+    var layout: Int = R.layout.card_organization_medium2
     var type: String = FireTypes.ORGANIZATIONS
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {

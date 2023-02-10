@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import io.usys.report.R
-import io.usys.report.databinding.FragmentUserProfileBinding
+import io.usys.report.databinding.ProfileUserBinding
 import io.usys.report.model.Coach
 import io.usys.report.model.safeUser
-import io.usys.report.ui.ysr.YsrMiddleFragment
+import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.toUri
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -32,7 +32,7 @@ class ProfileFragment : YsrMiddleFragment() {
         TODO("Not yet implemented")
     }
 
-    private var _binding: FragmentUserProfileBinding? = null
+    private var _binding: ProfileUserBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
@@ -44,7 +44,7 @@ class ProfileFragment : YsrMiddleFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        _binding = ProfileUserBinding.inflate(inflater, container, false)
         rootView = binding.root
 
         COLOR_RED = ContextCompat.getDrawable(requireActivity(), R.drawable.ft_border_rounded_red)

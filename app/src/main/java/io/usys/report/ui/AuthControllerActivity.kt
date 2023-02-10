@@ -11,6 +11,7 @@ import io.usys.report.R
 import io.usys.report.firebase.fireGetUserUpdatesFromFirebaseAsync
 import io.usys.report.model.*
 import io.usys.report.ui.login.ProviderLoginActivity
+import io.usys.report.ui.ysr.AuthTypes
 import io.usys.report.ui.ysr.MasterUserActivity
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity

@@ -2,7 +2,8 @@
 
 <!-- Created by ChazzCoin : October 2022 -->
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +16,7 @@
 
         <include
             android:id="@+id/includeCardCoach"
-            layout="@layout/card_coach"
+            layout="@layout/card_coach_small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -38,7 +39,7 @@
 
         <include
             android:id="@+id/includeCardDetails"
-            layout="@layout/card_details"
+            layout="@layout/card_details_large"
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginStart="10dp"
@@ -51,7 +52,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCardOne"
-            layout="@layout/card_generic_button"
+            layout="@layout/card_generic_button_small"
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -61,7 +62,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCardTwo"
-            layout="@layout/card_generic_button"
+            layout="@layout/card_generic_button_small"
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -71,7 +72,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCardThree"
-            layout="@layout/card_generic_button"
+            layout="@layout/card_generic_button_small"
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
