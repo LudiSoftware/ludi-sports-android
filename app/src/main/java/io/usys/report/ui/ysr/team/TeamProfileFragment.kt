@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.model.*
 import io.usys.report.ui.fragments.YsrMiddleFragment
-import io.usys.report.ui.ysr.YsrMode
+import io.usys.report.utils.YsrMode
 
 /**
  * Created by ChazzCoin : October 2022.

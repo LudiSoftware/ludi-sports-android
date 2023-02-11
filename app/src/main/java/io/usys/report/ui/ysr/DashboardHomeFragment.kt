@@ -12,6 +12,7 @@ import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.ui.ysr.sport.setupSportList
 
 
 /**
@@ -29,7 +30,7 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
-//        setupOnClickListeners()
+        setupOnClickListeners()
 //        toFragment(R.id.navigation_tryout_frag)
         return binding.root
     }
@@ -46,7 +47,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     private fun setupSportsList() {
 //        _binding?.dashboardRecyclerServiceList?.setupServiceList(requireContext(), itemOnClickServiceList)
-//        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClickSportList)
+        _binding?.recyclerSportList?.setupSportList(requireContext(), itemOnClickSportList)
     }
 
     override fun setupOnClickListeners() {

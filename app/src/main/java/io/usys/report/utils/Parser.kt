@@ -1,5 +1,6 @@
 package io.usys.report.utils
 
+import io.realm.RealmList
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -65,9 +66,37 @@ fun JSONObject.getDeepKey(key: String): Any? {
     return null
 }
 
+//fun <reified T> HashMap<*,*>.getSafe(obj: String) : T? {
+//    if (this.containsKey(obj)) {
+//        return this[obj]?.cast<T>()
+//    }
+//    return null
+//}
+
 fun HashMap<*,*>.getSafe(obj: String, default: Any? = null) : Any? {
     if (this.containsKey(obj)) {
         return this[obj]
+    }
+    return default
+}
+
+fun HashMap<*,*>.getBoolean(obj: String, default: Boolean = false) : Boolean {
+    if (this.containsKey(obj)) {
+        return this[obj] as Boolean
+    }
+    return default
+}
+
+fun String.toRealmList(): RealmList<String> {
+    val kotlinArray = this.substring(1, this.length - 1).split(",").map { it.replace("\"", "") }
+    val realmList = RealmList<String>()
+    realmList.addAll(kotlinArray)
+    return realmList
+}
+
+fun HashMap<*,*>.getList(obj: String, default: Array<Any>? = null) : Array<Any>? {
+    if (this.containsKey(obj)) {
+        return this[obj] as Array<Any>
     }
     return default
 }

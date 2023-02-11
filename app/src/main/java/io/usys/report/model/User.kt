@@ -7,12 +7,12 @@ import io.realm.RealmObject
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.coreFirebaseUser
 import io.usys.report.firebase.fireUpdateSingleValueDBAsync
-import io.usys.report.ui.ysr.AuthTypes.Companion.BASIC_USER
-import io.usys.report.ui.ysr.AuthTypes.Companion.COACH_USER
-import io.usys.report.ui.ysr.AuthTypes.Companion.PARENT_USER
-import io.usys.report.ui.ysr.AuthTypes.Companion.PLAYER_USER
-import io.usys.report.ui.ysr.AuthTypes.Companion.UNASSIGNED
 import io.usys.report.utils.*
+import io.usys.report.utils.AuthTypes.Companion.BASIC_USER
+import io.usys.report.utils.AuthTypes.Companion.COACH_USER
+import io.usys.report.utils.AuthTypes.Companion.PARENT_USER
+import io.usys.report.utils.AuthTypes.Companion.PLAYER_USER
+import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
 import java.io.Serializable
 
 /**

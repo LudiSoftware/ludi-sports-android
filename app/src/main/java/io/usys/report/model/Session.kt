@@ -124,7 +124,7 @@ open class Session : RealmObject() {
         }
 
         //CORE -> LOG CURRENT USER OUT
-        private fun deleteAllRealmObjects() {
+        fun deleteAllRealmObjects() {
             executeRealm {
                 it.where(Session::class.java).findAll().deleteAllFromRealm()
                 it.where(User::class.java).findAll().deleteAllFromRealm()
