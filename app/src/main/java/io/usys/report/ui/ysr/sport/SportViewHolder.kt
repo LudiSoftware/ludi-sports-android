@@ -50,18 +50,18 @@ fun <T> RealmList<T>?.containsItem(item: T?) : Boolean {
     return false
 }
 
-fun RecyclerView?.setupSportList(context: Context, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+fun RecyclerView?.setupSportList(onClickReturnViewRealmObject: ((View, Sport) -> Unit)?) {
     // Load Organizations by Sport
     val rv = this
     sessionSports {
-        rv?.loadInRealmList(it, context, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInRealmList(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
         return
     }
     var sportList: RealmList<Sport>? = RealmList()
     fireGetBaseYsrObjects<Sport>(FireTypes.SPORTS) {
         sportList = this ?: RealmList()
         sportList.addToSession()
-        rv?.loadInRealmList(sportList, context, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInRealmList(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
     }
 }
 

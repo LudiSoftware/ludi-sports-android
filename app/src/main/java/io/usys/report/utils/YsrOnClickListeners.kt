@@ -18,6 +18,7 @@ fun onClickReturnEmpty(): (() -> Unit)? { return null }
 fun onClickReturnViewRealmObject(): ((View, RealmObject) -> Unit)? { return null }
 fun onClickReturnAnyAny(): ((Any, Any) -> Unit)? { return null }
 fun onClickReturnStringString(): ((String, String) -> Unit)? { return null }
+fun <T> onClickReturnViewT(): ((View, T) -> Unit)? { return null }
 //fun onClickReturnStringString(): ((String, String) -> Unit)? { return null }
 
 fun View.ysrOnLongClickListener() {

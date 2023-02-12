@@ -11,22 +11,29 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
+import io.usys.report.ui.onClickReturnStringString
+import io.usys.report.ui.onClickReturnViewT
 
 /**
  * Convenience Methods for Displaying a Realm List
  */
 
-inline fun <reified T> RecyclerView.loadInRealmListCallback(realmList: RealmList<T>?, context: Context, type: String,
+inline fun <reified T> RecyclerView.loadInRealmListCallback(realmList: RealmList<T>?,
+                                                            context: Context,
+                                                            type: String,
                                                     noinline updateCallback: ((String, String) -> Unit)?) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, null, updateCallback)
-    this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    this.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
     this.adapter = adapter
     return adapter
 }
 
-inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?, context: Context, type: String,
-                                                    noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
+inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
+                                                    context: Context,
+                                                    type: String,
+                                                    noinline itemOnClick: ((View, T) -> Unit)?
+) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
     this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -34,7 +41,21 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?, co
     return adapter
 }
 
-inline fun <reified T> RecyclerView.loadInRealmListHorizontal(realmList: RealmList<T>?, context: Context, type: String,
+inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
+                                                    type: String,
+                                                    noinline itemOnClick: ((View, T) -> Unit)?
+) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, itemOnClick)
+    this.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+    this.adapter = adapter
+    return adapter
+}
+
+
+inline fun <reified T> RecyclerView.loadInRealmListHorizontal(realmList: RealmList<T>?,
+                                                              context: Context,
+                                                              type: String,
                                                     noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
@@ -43,7 +64,9 @@ inline fun <reified T> RecyclerView.loadInRealmListHorizontal(realmList: RealmLi
     return adapter
 }
 
-inline fun <reified T> RecyclerView.loadInRealmListGrid(realmList: RealmList<T>?, context: Context, type: String,
+inline fun <reified T> RecyclerView.loadInRealmListGrid(realmList: RealmList<T>?,
+                                                        context: Context,
+                                                        type: String,
                                                     noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
@@ -58,11 +81,12 @@ inline fun <reified T> RecyclerView.loadInRealmListGrid(realmList: RealmList<T>?
 
 open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
-    var itemClickListener: ((View, T) -> Unit)? = null
-    var updateCallback: ((String, String) -> Unit)? = null
+    var itemClickListener: ((View, T) -> Unit)? = onClickReturnViewT()
+    var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
     var realmList: RealmList<T>? = null
     var layout: Int = R.layout.card_organization_medium2
     var type: String = FireTypes.ORGANIZATIONS
+
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {
         this.realmList = realmList

@@ -81,11 +81,8 @@ fun createOrg() {
     fireAddUpdateDBAsync(FireTypes.ORGANIZATIONS, org.id, org)
 }
 
-//fun <T> mapper(obj: T) {
-//
-//}
 
-
+// -> works but not used.
 fun mapJsonToOrganization(json: HashMap<String,Any>): Organization {
     val org = Organization()
     org.id = json.getSafe("id").toString()

@@ -55,7 +55,7 @@ class AuthControllerActivity : AppCompatActivity()  {
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
-        Session.deleteAllRealmObjects()
+//        Session.deleteAllRealmObjects()
     }
 
     private fun verifyUserLogin() {
