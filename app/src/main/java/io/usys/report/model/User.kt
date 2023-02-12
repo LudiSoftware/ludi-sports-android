@@ -38,25 +38,18 @@ open class User : RealmObject(), Serializable {
     var visibility: String = "closed"
     var photoUrl: String = UNASSIGNED
     var emailVerified: Boolean = false
-    var parentId: String = UNASSIGNED
-    var playerId: String = UNASSIGNED
-    var coachId: String = UNASSIGNED
+    var parent: Boolean = false
+    var player: Boolean = false
+    var coach: Boolean = false
 
     fun isParentUser() : Boolean {
-        if (this.auth == PARENT_USER) return true
-        return false
+        return this.isParentUser()
     }
     fun isPlayerUser() : Boolean {
-        if (this.auth == PLAYER_USER) return true
-        return false
+        return this.player
     }
     fun isCoachUser() : Boolean {
-        if (this.auth == COACH_USER) return true
-        return false
-    }
-    fun isUnassignedUser() : Boolean {
-        if (this.auth == UNASSIGNED) return true
-        return false
+        return this.coach
     }
 
 }

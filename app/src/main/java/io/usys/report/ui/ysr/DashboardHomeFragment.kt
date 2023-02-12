@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
-import io.usys.report.databinding.DefaultFullHomeBinding
+import io.usys.report.firebase.fireGetCoachProfile
 import io.usys.report.model.Sport
+import io.usys.report.model.safeUserId
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.ui.ysr.sport.setupSportList
+import io.usys.report.utils.log
 
 
 /**
@@ -32,6 +33,14 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
+
+        safeUserId {
+            fireGetCoachProfile(it) {
+                val t = it
+                val tt = t?.ownerName
+                log(t)
+            }
+        }
         return binding.root
     }
 
@@ -53,9 +62,9 @@ class DashboardHomeFragment : YsrFragment() {
         itemOnClickSportList = { _, obj ->
             toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
         }
-        itemOnClickServiceList = { _, obj ->
-            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))
-        }
+//        itemOnClickServiceList = { _, obj ->
+//            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))
+//        }
 
     }
 

@@ -62,17 +62,7 @@ fun realm() : Realm {
 inline fun executeRealm(crossinline block: (Realm) -> Unit) {
     realm().executeTransaction { block(it) }
 }
-//// in progress
-//inline fun <T : RealmModel> T.applyAndRealmSave(block: (T) -> Unit) {
-//    this.apply {
-//        block(this)
-//    }
-//    this.cast<T>()?.let { itObj ->
-//        this.getRealmId<T>()?.let { itId ->
-//            fireAddUpdateDBAsync(itObj.fireForceGetNameOfRealmObject(), itId, itObj)
-//        }
-//    }
-//}
+
 
 // Verified
 inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {

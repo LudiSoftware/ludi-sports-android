@@ -20,7 +20,6 @@ open class Parent : RealmObject(), Serializable {
     @PrimaryKey
     var id: String = newUUID()
     var dateCreated: String = getTimeStamp()
-    var name: String = "" //Name Given by Manager
     var imgUrl: String = ""
     var organizationIds: RealmList<String>? = RealmList()
     var sport: String = "unassigned"
@@ -41,12 +40,5 @@ open class Parent : RealmObject(), Serializable {
 }
 
 
-fun createParent() {
-    Coach().applyAndFireSave() {
-        it.name = "Lucas Romeo"
-        it.sport = "soccer"
-        it.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"
-    }
-}
 
 

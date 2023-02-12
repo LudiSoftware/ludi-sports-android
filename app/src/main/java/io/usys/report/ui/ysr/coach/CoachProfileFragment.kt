@@ -69,7 +69,7 @@ class CoachProfileFragment : YsrMiddleFragment() {
     private fun setupDisplay() {
         //General User Info
         currentCoach?.let {
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.name
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.ownerName
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.ratingScore.toFloat()
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.ratingCount} Reviews"
 

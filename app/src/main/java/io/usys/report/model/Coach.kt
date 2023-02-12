@@ -20,7 +20,6 @@ open class Coach : RealmObject(), Serializable {
     @PrimaryKey
     var id: String = newUUID()
     var dateCreated: String = getTimeStamp()
-    var name: String = "" //Name Given by Manager
     var imgUrl: String = ""
     var ownerId: String = "unassigned"
     var ownerName: String = "unassigned"
@@ -33,11 +32,7 @@ open class Coach : RealmObject(), Serializable {
     var state: String = "" // AL
     var zip: String = "" // 35223
     var sport: String = "unassigned"
-    var type: String = "unassigned"
-    var subType: String = "unassigned"
     var details: String = ""
-    var email: String = ""
-    var phone: String = ""
     var isFree: Boolean = false
     var teams: RealmList<String>? = null
 
@@ -57,7 +52,6 @@ open class Coach : RealmObject(), Serializable {
 
 fun createCoach() {
     Coach().applyAndFireSave() {
-        it.name = "Lucas Romeo"
         it.sport = "soccer"
         it.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"
     }

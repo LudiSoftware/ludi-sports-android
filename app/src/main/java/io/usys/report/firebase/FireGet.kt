@@ -40,6 +40,16 @@ inline fun fireGetSyncUserProfile(userId:String, crossinline block: (User?) -> U
     }
 }
 
+inline fun fireGetCoachProfile(userId:String, crossinline block: (Coach?) -> Unit) {
+    firebaseDatabase {
+        it.child(FireTypes.COACHES).child(userId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                val userObject = ds?.getValue(Coach::class.java)
+                block(userObject)
+            }
+    }
+}
+
 /** Get List by Single Attribute AsyncBlock */
 inline fun fireGetOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {

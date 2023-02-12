@@ -50,13 +50,6 @@ open class League : RealmObject(), Serializable {
 }
 
 
-fun createLocation() {
-    Coach().applyAndFireSave() {
-        it.id = newUUID()
-        it.name = "Lucas Romeo"
-        it.sport = "soccer"
-        it.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"
-    }
-}
+
 
 

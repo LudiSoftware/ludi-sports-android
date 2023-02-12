@@ -37,8 +37,8 @@ class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(coach: Coach?) {
         coach?.let {
-            cardCoachTxtName?.text = it.name
-            cardCoachTxtEmail?.text = it.email
+            cardCoachTxtName?.text = it.ownerName
+            cardCoachTxtEmail?.text = it.details
             cardCoachTxtOrg?.text = it.organizationName
             itemView.context.loadUriIntoImgView(it.imgUrl.toUri() ?: return, cardCoachImgProfile)
         }

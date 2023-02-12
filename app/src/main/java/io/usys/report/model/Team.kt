@@ -49,12 +49,5 @@ open class Team : RealmObject(), Serializable {
 }
 
 
-fun createTeam() {
-    Coach().applyAndFireSave() {
-        it.name = "Lucas Romeo"
-        it.sport = "soccer"
-        it.organizationId = "d72c7cd5-1789-437c-b620-bb1383d629e0"
-    }
-}
 
 
