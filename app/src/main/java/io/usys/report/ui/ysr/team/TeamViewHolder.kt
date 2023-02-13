@@ -2,7 +2,6 @@ package io.usys.report.ui.ysr.team
 
 
 import android.view.View
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -19,16 +18,16 @@ fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View,
 
     val rv = this
     sessionTeams {
-        rv?.loadInRealmList(it, FireTypes.TEAMS, onClickReturnViewRealmObject)
+        rv?.loadInRealmListGridArrangable(it, FireTypes.TEAMS, onClickReturnViewRealmObject)
         return
     }
 }
 
 class TeamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var txtItemSportName = itemView.bindTextView(R.id.cardTeamSmallTxtName)
+    var txtItemTeamName = itemView.bindTextView(R.id.cardTeamTinyTxtName)
 
     fun bind(team: Team?) {
-        team?.let { txtItemSportName?.text = it.name }
+        team?.let { txtItemTeamName?.text = it.name }
     }
 }

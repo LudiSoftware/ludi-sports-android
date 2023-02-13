@@ -51,7 +51,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                 FireTypes.REVIEWS -> R.layout.card_review_comment
                 FireTypes.USERS -> R.layout.card_sport_small
                 FireTypes.COACHES -> R.layout.card_coach_small
-                FireTypes.TEAMS -> R.layout.card_team_small
+                FireTypes.TEAMS -> R.layout.card_team_tiny
                 FireTypes.SERVICES -> R.layout.card_service_square
                 FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question_full
                 else -> R.layout.card_sport_small

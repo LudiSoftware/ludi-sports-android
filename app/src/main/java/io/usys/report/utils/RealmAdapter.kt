@@ -49,10 +49,38 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
 ) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
-    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
-    itemTouchHelper.attachToRecyclerView(this)
     this.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
     this.adapter = adapter
+    return adapter
+}
+
+inline fun <reified T> RecyclerView.loadInRealmListGridArrangable(realmList: RealmList<T>?,
+                                                    type: String,
+                                                    noinline itemOnClick: ((View, T) -> Unit)?
+) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, itemOnClick)
+
+    val gridLayoutManager = GridLayoutManager(this.context, 2)
+    this.layoutManager = gridLayoutManager
+    this.adapter = adapter
+    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter, gridLayoutManager))
+    itemTouchHelper.attachToRecyclerView(this)
+    return adapter
+}
+
+inline fun <reified T> RecyclerView.loadInRealmListArrangable(realmList: RealmList<T>?,
+                                                         type: String,
+                                                         noinline itemOnClick: ((View, T) -> Unit)?
+) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, itemOnClick)
+
+    val gridLayoutManager = GridLayoutManager(this.context, 2)
+    this.layoutManager = gridLayoutManager
+    this.adapter = adapter
+    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter, gridLayoutManager))
+    itemTouchHelper.attachToRecyclerView(this)
     return adapter
 }
 
@@ -85,6 +113,7 @@ inline fun <reified T> RecyclerView.loadInRealmListGrid(realmList: RealmList<T>?
 
 open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
+    var gridLayoutManager: GridLayoutManager? = null
     var itemClickListener: ((View, T) -> Unit)? = onClickReturnViewT()
     var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
     var realmList: RealmList<T>? = null
@@ -93,6 +122,14 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {
+        this.realmList = realmList
+        this.type = type
+        this.itemClickListener = itemClickListener
+        this.layout = RouterViewHolder.getLayout(type)
+    }
+
+    constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, gridLayoutManager: GridLayoutManager) : this() {
+        this.gridLayoutManager = gridLayoutManager
         this.realmList = realmList
         this.type = type
         this.itemClickListener = itemClickListener
@@ -111,6 +148,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         val itemView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return RouterViewHolder(itemView, type, updateCallback)
     }
+
 
     override fun getItemCount(): Int {
         return realmList?.size ?: 0
@@ -146,7 +184,7 @@ interface ItemTouchHelperAdapter {
 }
 
 
-class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>) :
+class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>, gridLayoutManager: GridLayoutManager) :
     ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {
@@ -161,7 +199,7 @@ class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>) :
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         return makeMovementFlags(dragFlags, swipeFlags)
     }
@@ -171,10 +209,18 @@ class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>) :
                         target: RecyclerView.ViewHolder): Boolean {
         val fromPosition = viewHolder.adapterPosition
         val toPosition = target.adapterPosition
-        executeRealm {
-            Collections.swap(adapter.realmList, fromPosition, toPosition)
+        val fromColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(fromPosition, adapter.gridLayoutManager!!.spanCount)
+        val toColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, adapter.gridLayoutManager!!.spanCount)
+        if (fromColumn == toColumn) {
+            // Move the item within the same column
+            executeRealm { Collections.swap(adapter.realmList, fromPosition, toPosition) }
+            adapter.notifyItemMoved(fromPosition, toPosition)
+        } else {
+            // Move the item to a different column
+            executeRealm { Collections.swap(adapter.realmList, fromPosition, toPosition) }
+            adapter.notifyItemChanged(fromPosition)
+            adapter.notifyItemChanged(toPosition)
         }
-        adapter.notifyItemMoved(fromPosition, toPosition)
         return true
     }
 

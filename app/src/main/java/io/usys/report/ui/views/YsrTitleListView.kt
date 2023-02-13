@@ -55,8 +55,6 @@ class YsrTitleListView(context: Context) : CardView(context) {
 
     fun setupTeamListFromSession(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         setTitle("Teams")
-
-
         recyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject)
     }
 
