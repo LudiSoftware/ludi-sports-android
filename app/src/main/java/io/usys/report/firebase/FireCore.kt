@@ -33,6 +33,9 @@ class FireTypes {
         const val SPORTS: String = "sports"
         const val COACHES: String = "coaches"
         const val SERVICES: String = "services"
+        const val TEAMS: String = "teams"
+        const val PARENTS: String = "parents"
+        const val PLAYERS: String = "players"
     }
 }
 

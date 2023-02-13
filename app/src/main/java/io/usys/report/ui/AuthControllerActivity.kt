@@ -15,7 +15,6 @@ import io.usys.report.ui.ysr.MasterUserActivity
 import io.usys.report.utils.AuthTypes
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
-import io.usys.report.utils.session
 
 
 /**

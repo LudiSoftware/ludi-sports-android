@@ -18,16 +18,16 @@ open class Player : RealmObject(), Serializable {
     }
 
     @PrimaryKey
-    var id: String = newUUID()
+    var ownerId: String = ""
+    var ownerName: String = ""
     var dateCreated: String = getTimeStamp()
+    var dateUpdated: String = getTimeStamp()
     var name: String = "" //Name Given by Manager
     var firstName: String = ""
     var lastName: String = ""
     var age: Int = 0
     var position: String = ""
     var imgUrl: String = ""
-    var ownerId: String = "unassigned"
-    var ownerName: String = "unassigned"
     var teamId: String = ""
     var teamName: String = ""
     var organizationId: String = ""

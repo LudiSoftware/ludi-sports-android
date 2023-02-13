@@ -3,6 +3,8 @@ package io.usys.report.model
 import android.app.Activity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import io.realm.Realm
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.coreFirebaseUser
@@ -90,6 +92,22 @@ fun ysrUpdateRealmUser() {
         }
     }
 
+}
+
+fun createUser() {
+    val realm = Realm.getDefaultInstance()
+    if (realm.where(User::class.java) == null){
+        realm.executeTransaction { itRealm ->
+            itRealm.createObject(User::class.java, newUUID())
+        }
+    }
+}
+
+fun updateUser(newNser: User){
+    executeRealm { itRealm ->
+        Session.user = newNser
+        itRealm.insertOrUpdate(newNser)
+    }
 }
 
 fun getMasterUser(): User? {

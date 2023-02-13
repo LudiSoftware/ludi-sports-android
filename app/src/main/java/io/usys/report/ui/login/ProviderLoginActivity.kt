@@ -12,6 +12,7 @@ import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
 import io.usys.report.model.toYsrRealmUser
+import io.usys.report.model.updateUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
 import io.usys.report.utils.fairRegisterActivityResult
@@ -68,7 +69,7 @@ class ProviderLoginActivity : AppCompatActivity() {
         fireSaveUserToFirebaseAsync(user) {
             log("Profile Updated! $it")
             if (user != null) {
-                Session.updateUser(user)
+                updateUser(user)
                 Session.updateSession(user)
             }
             launchActivity<AuthControllerActivity>()

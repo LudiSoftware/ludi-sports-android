@@ -29,6 +29,12 @@ open class Session : RealmObject() {
     var sports: RealmList<Sport>? = RealmList()
     var services: RealmList<Service>? = RealmList()
     var organizations: RealmList<Organization>? = RealmList()
+    var teams: RealmList<Team>? = RealmList()
+    var coaches: RealmList<Coach>? = RealmList()
+    var players: RealmList<Player>? = RealmList()
+    var parents: RealmList<Parent>? = RealmList()
+    var leagues: RealmList<League>? = RealmList()
+    var locations: RealmList<Location>? = RealmList()
 
     /** -> EVERYTHING IS STATIC BELOW THIS POINT <- **/
     companion object {
@@ -38,7 +44,6 @@ open class Session : RealmObject() {
         /** -> Controller Methods <- >  */
         private const val sessionId = 1
         var user: User? = null
-        var USER_ID = ""
 
         //Class Variables
         private var mRealm = Realm.getDefaultInstance()
@@ -91,6 +96,12 @@ open class Session : RealmObject() {
                 itRealm.createObject(Organization::class.java, newUUID())
                 itRealm.createObject(Review::class.java, newUUID())
                 itRealm.createObject(Service::class.java, newUUID())
+                itRealm.createObject(Coach::class.java, newUUID())
+                itRealm.createObject(Parent::class.java, newUUID())
+                itRealm.createObject(Player::class.java, newUUID())
+                itRealm.createObject(League::class.java, newUUID())
+                itRealm.createObject(Location::class.java, newUUID())
+                itRealm.createObject(Team::class.java, newUUID())
             }
 
         }
@@ -106,22 +117,7 @@ open class Session : RealmObject() {
                 }
             }
         }
-        //CORE ->
-        fun createUser() {
-            val realm = Realm.getDefaultInstance()
-            if (realm.where(User::class.java) == null){
-                realm.executeTransaction { itRealm ->
-                    itRealm.createObject(User::class.java, newUUID())
-                }
-            }
-        }
 
-        fun updateUser(newNser: User){
-            executeRealm { itRealm ->
-                user = newNser
-                itRealm.insertOrUpdate(newNser)
-            }
-        }
 
         //CORE -> LOG CURRENT USER OUT
         fun deleteAllRealmObjects() {
@@ -132,6 +128,7 @@ open class Session : RealmObject() {
                 it.where(Sport::class.java).findAll().deleteAllFromRealm()
                 it.where(Review::class.java).findAll().deleteAllFromRealm()
                 it.where(Service::class.java).findAll().deleteAllFromRealm()
+                it.where(Team::class.java).findAll().deleteAllFromRealm()
                 it.deleteAll()
             }
         }
@@ -210,6 +207,26 @@ open class Session : RealmObject() {
             }
         }
 
+    }
+}
+
+fun addObjectToSessionList(realmName: String, objectToAdd: RealmObject) {
+    executeRealm {
+        when (realmName) {
+            "sports" -> session{ it.sports?.add(objectToAdd as Sport) }
+            "services" -> session{ it.services?.add(objectToAdd as Service) }
+            "organizations" -> session{ it.organizations?.add(objectToAdd as Organization) }
+            "teams" -> session{
+                it.teams = RealmList()
+                it.teams?.add(objectToAdd as Team)
+            }
+            "coaches" -> session{ it.coaches?.add(objectToAdd as Coach) }
+            "players" -> session{ it.players?.add(objectToAdd as Player) }
+            "parents" -> session{ it.parents?.add(objectToAdd as Parent) }
+            "leagues" -> session{ it.leagues?.add(objectToAdd as League) }
+            "locations" -> session{ it.locations?.add(objectToAdd as Location) }
+            else -> throw IllegalArgumentException("List name not found")
+        }
     }
 }
 

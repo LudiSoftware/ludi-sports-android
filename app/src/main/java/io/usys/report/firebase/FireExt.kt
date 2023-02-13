@@ -6,6 +6,30 @@ import io.realm.RealmList
 import io.usys.report.utils.toRealmList
 import java.lang.Exception
 
+fun DataSnapshot.toHashMap(): HashMap<String, Any> {
+    val hashMap = HashMap<String, Any>()
+    this.children.forEach {
+        hashMap[it.key!!] = it.value!!
+    }
+    return hashMap
+}
+
+fun DataSnapshot.toHashMapWithRealmLists(): HashMap<String, Any> {
+    val hashMap = HashMap<String, Any>()
+    this.children.forEach { child ->
+        val key = child.key!!
+        val value = child.value
+        when (value) {
+            is ArrayList<*> -> {
+                val arrayList: ArrayList<*> = value
+                hashMap[key] = arrayList.toRealmList()
+            }
+            else -> { hashMap[key] = value!! }
+        }
+    }
+    return hashMap
+}
+
 
 // Verified
 inline fun firebaseDatabase(block: (DatabaseReference) -> Unit) {

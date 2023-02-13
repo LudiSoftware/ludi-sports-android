@@ -25,7 +25,7 @@ open class Coach : RealmObject(), Serializable {
     var ownerName: String = "unassigned"
     var organizationId: String = ""
     var organizationName: String = ""
-    var organizationIds: RealmList<String>? = RealmList()
+    var organizationIds: RealmList<String>? = null
     var addressOne: String = "" // 2323 20th Ave South
     var addressTwo: String = "" // 2323 20th Ave South
     var city: String = "" // Birmingham
@@ -35,9 +35,8 @@ open class Coach : RealmObject(), Serializable {
     var details: String = ""
     var isFree: Boolean = false
     var teams: RealmList<String>? = null
-
     var hasReview: Boolean = false
-    var reviews: RealmList<String>? = RealmList()
+    var reviews: RealmList<String>? = null
     var ratingScore: String = ""
     var ratingCount: String = ""
     var reviewAnswerCount: String = ""

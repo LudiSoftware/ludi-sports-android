@@ -33,6 +33,21 @@ fun <K, V> HashMap<K, V>?.toRealmList() : RealmList<Any> {
     return listOfT
 }
 
+//fun ArrayList<String>.toRealmList(): RealmList<String> {
+//    val realmList = RealmList<String>()
+//    for (string in this) {
+//        realmList.add(string)
+//    }
+//    return realmList
+//}
+
+fun <T> ArrayList<T>.toRealmList(): RealmList<T> {
+    val realmList = RealmList<T>()
+    for (item in this) {
+        realmList.add(item)
+    }
+    return realmList
+}
 
 //fun HashMap<*,*>.toJsonRealmList(): RealmList<Any> {
 //    var resultList: RealmList<Any> = RealmList()
@@ -80,6 +95,12 @@ fun <T> RealmModel.getRealmId() : String? {
     val id = this.getAttribute<T>("id")
     if (id.isNullOrEmpty()) { return null }
     return id.toString()
+}
+
+fun addUpdateRealmObject(realmObject: RealmModel){
+    executeRealm { itRealm ->
+        itRealm.insertOrUpdate(realmObject)
+    }
 }
 
 // Untested

@@ -4,17 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.fireGetCoachProfile
+import io.usys.report.firebase.fireGetTeamProfile
+import io.usys.report.firebase.fireGetTeamsProfiles
 import io.usys.report.model.Sport
+import io.usys.report.model.Team
+import io.usys.report.model.addObjectToSessionList
 import io.usys.report.model.safeUserId
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.utils.io
 import io.usys.report.utils.log
+import io.usys.report.utils.session
 
 
 /**
@@ -34,13 +41,18 @@ class DashboardHomeFragment : YsrFragment() {
         rootView = binding.root
         setupOnClickListeners()
 
-        safeUserId {
-            fireGetCoachProfile(it) {
-                val t = it
-                val tt = t?.ownerName
-                log(t)
-            }
+        session { itSess ->
+            val first = itSess.teams!![0]
+            log(first)
         }
+        io {
+            val ids = RealmList("3ec805dc-ab59-11ed-a39f-86f7c4c00ee3", "5e95cef0-ab61-11ed-914b-86f7c4c00ee3")
+            val testing = fireGetTeamsProfiles(ids)
+            val test1 = testing[0]
+            addObjectToSessionList("teams", test1!!)
+            log(test1)
+        }
+
         return binding.root
     }
 

@@ -3,7 +3,6 @@ package io.usys.report.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.utils.applyAndFireSave
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -18,19 +17,19 @@ open class Parent : RealmObject(), Serializable {
     }
 
     @PrimaryKey
-    var id: String = newUUID()
+    var ownerId: String = ""
+    var ownerName: String = ""
     var dateCreated: String = getTimeStamp()
+    var dateUpdated: String = getTimeStamp()
     var imgUrl: String = ""
-    var organizationIds: RealmList<String>? = RealmList()
-    var sport: String = "unassigned"
-    var type: String = "unassigned"
-    var subType: String = "unassigned"
     var details: String = ""
-    var email: String = ""
-    var phone: String = ""
     var isFree: Boolean = false
-
     var hasReview: Boolean = false
+    var player: Boolean = false
+    var playerIds: RealmList<String>? = RealmList()
+    var team: Boolean = false
+    var teamIds: RealmList<String>? = RealmList()
+    var organizationIds: RealmList<String>? = RealmList()
     var reviews: RealmList<String>? = RealmList()
     var ratingScore: String = ""
     var ratingCount: String = ""

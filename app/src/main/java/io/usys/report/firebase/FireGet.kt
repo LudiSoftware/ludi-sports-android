@@ -6,7 +6,13 @@ import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.model.Session.Companion.createSession
 import io.usys.report.ui.AuthControllerActivity
+import io.usys.report.utils.ioScope
 import io.usys.report.utils.log
+import io.usys.report.utils.toRealmList
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -48,6 +54,33 @@ inline fun fireGetCoachProfile(userId:String, crossinline block: (Coach?) -> Uni
                 block(userObject)
             }
     }
+}
+
+inline fun fireGetTeamProfile(teamId:String, crossinline block: (Team?) -> Unit) {
+    firebaseDatabase {
+        it.child(FireTypes.TEAMS).child(teamId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                val teamObject = ds?.toHashMapWithRealmLists().toTeamObject()
+                block(teamObject)
+            }
+    }
+}
+
+suspend fun fireGetTeamsProfiles(teamIds: RealmList<String>): RealmList<Team> {
+    val teams = RealmList<Team>()
+    val deferredList = mutableListOf<Deferred<Unit>>()
+    for (id in teamIds) {
+        val deferred = ioScope().async {
+            fireGetTeamProfile(id) {
+                if (it != null) {
+                    teams.add(it)
+                }
+            }
+        }
+        deferredList.add(deferred)
+    }
+    deferredList.forEach { it.await() }
+    return teams
 }
 
 /** Get List by Single Attribute AsyncBlock */
@@ -122,7 +155,7 @@ inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (U
                     AuthControllerActivity.USER_AUTH = itUser.auth
                     AuthControllerActivity.USER_ID = itUser.id
                     createSession()
-                    Session.updateUser(itUser)
+                    updateUser(itUser)
                 }
             }
             block(userUpdates)
