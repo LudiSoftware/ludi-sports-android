@@ -24,12 +24,3 @@ inline fun io(crossinline block: suspend CoroutineScope.() -> Unit) {
         block(this)
     }
 }
-
-/** -> TRIED AND TRUE! <- */
-fun ioScope(): CoroutineScope {
-    return CoroutineScope(Dispatchers.IO + SupervisorJob())
-}
-
-//fun mainScope(): CoroutineScope {
-//    return CoroutineScope(Dispatchers.Main + SupervisorJob())
-//}

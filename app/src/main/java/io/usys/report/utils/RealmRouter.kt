@@ -12,6 +12,7 @@ import io.usys.report.ui.ysr.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ysr.review.organization.OrgReviewCommentViewHolder
 import io.usys.report.ui.ysr.service.ServiceViewHolder
 import io.usys.report.ui.ysr.sport.SportViewHolder
+import io.usys.report.ui.ysr.team.TeamViewHolder
 
 /**
  * This Class will 'route' the RecyclerView to the correct ViewHolder based on its realm 'type'.
@@ -31,6 +32,11 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
             FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
+
+//            FireTypes.PARENTS -> return CoachViewHolder(itemView).bind(obj as? Parent)
+//            FireTypes.PLAYERS -> return CoachViewHolder(itemView).bind(obj as? Player)
+            FireTypes.TEAMS -> return TeamViewHolder(itemView).bind(obj as? Team)
+
             FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)
             FireTypes.REVIEWS -> return OrgReviewCommentViewHolder(itemView).bind(obj as? Review)
             FireTypes.REVIEW_TEMPLATES -> return ReviewQuestionsViewHolder(itemView, updateCallback).bind(obj as? Question)
@@ -45,6 +51,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                 FireTypes.REVIEWS -> R.layout.card_review_comment
                 FireTypes.USERS -> R.layout.card_sport_small
                 FireTypes.COACHES -> R.layout.card_coach_small
+                FireTypes.TEAMS -> R.layout.card_team_small
                 FireTypes.SERVICES -> R.layout.card_service_square
                 FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question_full
                 else -> R.layout.card_sport_small

@@ -7,8 +7,11 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
 import io.realm.RealmList
+import io.realm.RealmModel
+import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.model.*
+import io.usys.report.utils.addUpdateRealmObject
 import io.usys.report.utils.log
 
 /**
@@ -158,7 +161,7 @@ inline fun <reified T> DataSnapshot.loadIntoSession() {
         val obj = ds.getValue(T::class.java)
         val objCast = obj as? RealmList<*>
         objCast?.let {
-            obj.addToSession()
+            addObjectToSessionList(obj)
         }
     }
 }

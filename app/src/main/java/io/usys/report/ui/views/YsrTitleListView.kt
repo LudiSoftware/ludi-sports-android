@@ -5,15 +5,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.model.Sport
 import io.usys.report.ui.ysr.organization.setupOrganizationList
 import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.ui.ysr.sport.setupSportList
+import io.usys.report.ui.ysr.team.setupTeamListFromSession
 import io.usys.report.utils.*
 
 class YsrTitleListView(context: Context) : CardView(context) {
@@ -36,14 +35,6 @@ class YsrTitleListView(context: Context) : CardView(context) {
         txtTitle?.text = title
     }
 
-//    inline fun <reified T> bindRealmList(realmList:RealmList<T>): ((View, T) -> Unit)? {
-//        val onClickReturnViewRealmObject: ((View, T) -> Unit)? = onClickReturnViewT()
-//        val adapter = RealmListAdapter(realmList, FireTypes.SPORTS, onClickReturnViewRealmObject)
-//        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        recyclerView?.adapter = adapter
-//        return onClickReturnViewRealmObject
-//    }
-
     fun setupSportList(onClickReturnViewRealmObject: ((View, Sport) -> Unit)?) {
         setTitle("Sports")
         recyclerView?.setupSportList(onClickReturnViewRealmObject)
@@ -59,9 +50,10 @@ class YsrTitleListView(context: Context) : CardView(context) {
         recyclerView?.setupOrganizationList(context, realmObjectArg, onClickReturnViewRealmObject)
     }
 
-//    fun setupTeamList(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-//        recyclerView?.setupSportList(context, onClickReturnViewRealmObject)
-//    }
+    fun setupTeamListFromSession(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        setTitle("Teams")
+        recyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject)
+    }
 
 //    fun setupPlayerList(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
 //        recyclerView?.setupSportList(context, onClickReturnViewRealmObject)

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="3dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    app:cardMaxElevation="5dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cardTeamSmallImgProfile"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ysr_empty_profile_icon_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cardTeamSmallTxtName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="25dp"
+            android:text="Team Name"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamSmallImgProfile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/cardTeamSmallImgArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.492"
+            app:srcCompat="@drawable/button_arrow_right_small" />
+
+        <TextView
+            android:id="@+id/cardTeamSmallTxtOrg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="Homewood Soccer Club"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/cardTeamSmallImgArrow"
+            app:layout_constraintHorizontal_bias="0.015"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamSmallImgIconOne"
+            app:layout_constraintTop_toBottomOf="@+id/cardTeamSmallTxtName" />
+
+        <TextView
+            android:id="@+id/cardTeamSmallTxtEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="lucas.romeo@gmail.com"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cardTeamSmallImgArrow"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamSmallImgIconTwo"
+            app:layout_constraintTop_toBottomOf="@+id/cardTeamSmallTxtOrg"
+            app:layout_constraintVertical_bias="0.47" />
+
+        <ImageView
+            android:id="@+id/cardTeamSmallImgIconTwo"
+            android:layout_width="18dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardTeamSmallImgProfile"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamSmallImgProfile"
+            app:layout_constraintTop_toBottomOf="@+id/cardTeamSmallImgIconOne"
+            app:layout_constraintVertical_bias="0.888"
+            app:srcCompat="@drawable/ysr_email_icon_red" />
+
+        <ImageView
+            android:id="@+id/cardTeamSmallImgIconOne"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:tint="#FF0000"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamSmallImgProfile"
+            app:layout_constraintTop_toBottomOf="@+id/cardTeamSmallTxtName"
+            app:srcCompat="@drawable/org_blue" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
+

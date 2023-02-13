@@ -1,7 +1,9 @@
 package io.usys.report.model
 
 import android.app.Activity
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
@@ -12,6 +14,7 @@ import io.usys.report.firebase.coreFireLogoutAsync
 import io.usys.report.ui.ysr.sport.containsItem
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty
+import kotlin.reflect.full.superclasses
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -206,10 +209,11 @@ open class Session : RealmObject() {
     }
 }
 
-fun addObjectToSessionList(realmName: String, objectToAdd: RealmObject) {
+inline fun <reified T> addObjectToSessionList2(objectToAdd: T) {
+    val objectClassName = T::class.getClassName()
     executeRealm { itRealm ->
         session { itSession ->
-            when (realmName) {
+            when (objectClassName) {
                 "sports" -> itSession.sports?.add(objectToAdd as Sport)
                 "services" -> itSession.services?.add(objectToAdd as Service)
                 "organizations" -> itSession.organizations?.add(objectToAdd as Organization)
@@ -224,16 +228,97 @@ fun addObjectToSessionList(realmName: String, objectToAdd: RealmObject) {
             itRealm.insertOrUpdate(itSession)
         }
     }
-
 }
 
 
-fun <T> RealmList<T>?.addToSession() {
+inline fun <reified T> addObjectToSessionList(objectToAdd: T) {
+    val objectClassName = objectToAdd.getClassName()
+    executeRealm { itRealm ->
+        session { itSession ->
+            when (objectClassName) {
+                "Sport" -> {
+                    itSession.sports?.let { itSports ->
+                        if (!itSports.contains(objectToAdd as Sport)) {
+                            itSports.add(objectToAdd)
+                        }
+                    }
+                }
+                "Service" -> {
+                    itSession.services?.let { itServices ->
+                        if (!itServices.contains(objectToAdd as Service)) {
+                            itServices.add(objectToAdd)
+                        }
+                    }
+                }
+                "Organization" -> {
+                    itSession.organizations?.let { itOrgs ->
+                        if (!itOrgs.contains(objectToAdd as Organization)) {
+                            itOrgs.add(objectToAdd)
+                        }
+                    }
+                }
+                "Team" -> {
+                    itSession.teams?.let { itTeams ->
+                        if (!itTeams.contains(objectToAdd as Team)) {
+                            itTeams.add(objectToAdd)
+                        }
+                    }
+                }
+                "Coach" -> {
+                    itSession.coaches?.let { itCoaches ->
+                        if (!itCoaches.contains(objectToAdd as Coach)) {
+                            itCoaches.add(objectToAdd)
+                        }
+                    }
+                }
+                "Player" -> {
+                    itSession.players?.let { itPlayers ->
+                        if (!itPlayers.contains(objectToAdd as Player)) {
+                            itPlayers.add(objectToAdd)
+                        }
+                    }
+
+                }
+                "Parent" -> {
+                    itSession.parents?.let { itParents ->
+                        if (!itParents.contains(objectToAdd as Parent)) {
+                            itParents.add(objectToAdd)
+                        }
+                    }
+
+                }
+                "League" -> {
+                    itSession.leagues?.let { itLeagues ->
+                        if (!itLeagues.contains(objectToAdd as League)) {
+                            itLeagues.add(objectToAdd)
+                        }
+                    }
+                }
+                "Location" -> {
+                    itSession.locations?.let { itLocations ->
+                        if (!itLocations.contains(objectToAdd as Location)) {
+                            itLocations.add(objectToAdd)
+                        }
+                    }
+
+                }
+                else -> log("No List Found for RealmObject")
+            }
+            itRealm.insertOrUpdate(itSession)
+        }
+    }
+}
+
+inline fun <reified T> T.getClassName(): String {
+    return T::class.java.simpleName
+}
+
+
+
+inline fun <reified T> RealmList<T>?.addToSession() {
     this?.first()?.let {
         when (it) {
-//            is User -> Session.updateSession(it)
             is Sport -> this.cast<RealmList<Sport>>()?.let { it1 -> Session.addSports(it1) }
-//            is Organization -> Session.addOrganization(it)
             is Service -> this.cast<RealmList<Service>>()?.let { it1 -> Session.addServices(it1) }
             else -> { null }
         }
