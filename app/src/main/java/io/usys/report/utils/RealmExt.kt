@@ -75,7 +75,9 @@ fun realm() : Realm {
 
 //LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
 inline fun executeRealm(crossinline block: (Realm) -> Unit) {
-    realm().executeTransaction { block(it) }
+    main {
+        realm().executeTransaction { block(it) }
+    }
 }
 
 
@@ -118,6 +120,29 @@ fun sessionAndUser(block: (Session, User) -> Unit) {
 
 inline fun session(block: (Session) -> Unit) {
     Session.session?.let { block(it) }
+}
+
+inline fun sessionAndSave(crossinline block: (Session) -> Session) {
+    executeRealm { itRealm ->
+        Session.session?.let { itRealm.insertOrUpdate(block(it))}
+    }
+}
+
+fun Session.saveToRealm() {
+    executeRealm {
+        it.insertOrUpdate(this)
+    }
+}
+
+inline fun sessionSaveToRealm(crossinline block: (Session) -> Session?) {
+    executeRealm { itRealm ->
+        Session.session?.let { itSession ->
+            val updatedSession = block(itSession)
+            itRealm.insertOrUpdate(updatedSession)
+
+        }
+    }
+
 }
 
 inline fun sessionServices(block: (RealmList<Service>) -> Unit) {

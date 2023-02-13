@@ -7,14 +7,10 @@ import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.RealmResults
 import io.realm.annotations.PrimaryKey
-import io.usys.report.R
-import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.coreFireLogoutAsync
 import io.usys.report.ui.ysr.sport.containsItem
 import io.usys.report.utils.*
-import java.util.*
 import kotlin.collections.isNullOrEmpty
 
 /**
@@ -211,23 +207,24 @@ open class Session : RealmObject() {
 }
 
 fun addObjectToSessionList(realmName: String, objectToAdd: RealmObject) {
-    executeRealm {
-        when (realmName) {
-            "sports" -> session{ it.sports?.add(objectToAdd as Sport) }
-            "services" -> session{ it.services?.add(objectToAdd as Service) }
-            "organizations" -> session{ it.organizations?.add(objectToAdd as Organization) }
-            "teams" -> session{
-                it.teams = RealmList()
-                it.teams?.add(objectToAdd as Team)
+    executeRealm { itRealm ->
+        session { itSession ->
+            when (realmName) {
+                "sports" -> itSession.sports?.add(objectToAdd as Sport)
+                "services" -> itSession.services?.add(objectToAdd as Service)
+                "organizations" -> itSession.organizations?.add(objectToAdd as Organization)
+                "teams" -> itSession.teams?.add(objectToAdd as Team)
+                "coaches" -> itSession.coaches?.add(objectToAdd as Coach)
+                "players" -> itSession.players?.add(objectToAdd as Player)
+                "parents" -> itSession.parents?.add(objectToAdd as Parent)
+                "leagues" -> itSession.leagues?.add(objectToAdd as League)
+                "locations" -> itSession.locations?.add(objectToAdd as Location)
+                else -> throw IllegalArgumentException("List name not found")
             }
-            "coaches" -> session{ it.coaches?.add(objectToAdd as Coach) }
-            "players" -> session{ it.players?.add(objectToAdd as Player) }
-            "parents" -> session{ it.parents?.add(objectToAdd as Parent) }
-            "leagues" -> session{ it.leagues?.add(objectToAdd as League) }
-            "locations" -> session{ it.locations?.add(objectToAdd as Location) }
-            else -> throw IllegalArgumentException("List name not found")
+            itRealm.insertOrUpdate(itSession)
         }
     }
+
 }
 
 

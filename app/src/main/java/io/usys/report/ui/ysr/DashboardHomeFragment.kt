@@ -19,6 +19,7 @@ import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.utils.executeRealm
 import io.usys.report.utils.io
 import io.usys.report.utils.log
 import io.usys.report.utils.session
@@ -42,7 +43,7 @@ class DashboardHomeFragment : YsrFragment() {
         setupOnClickListeners()
 
         session { itSess ->
-            val first = itSess.teams!![0]
+            val first = itSess.teams
             log(first)
         }
         io {
