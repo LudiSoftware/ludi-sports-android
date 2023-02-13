@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
@@ -13,6 +14,7 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
+import java.util.*
 
 /**
  * Convenience Methods for Displaying a Realm List
@@ -47,6 +49,8 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
 ) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
+    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+    itemTouchHelper.attachToRecyclerView(this)
     this.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
     this.adapter = adapter
     return adapter
@@ -120,6 +124,8 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
                 holder.itemView.setOnRealmListener(itemClickListener, it1)
             }
         }
+
+
     }
 
 }
@@ -135,6 +141,51 @@ fun <T> View.setOnRealmListener(itemClickListener: ((View, T) -> Unit)?, item: T
         itemClickListener?.invoke(this, item)
     }
 }
+interface ItemTouchHelperAdapter {
+    fun onItemMove(fromPosition: Int, toPosition: Int)
+}
+
+
+class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>) :
+    ItemTouchHelper.Callback() {
+
+    override fun isLongPressDragEnabled(): Boolean {
+        return true
+    }
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return false
+    }
+
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        return makeMovementFlags(dragFlags, swipeFlags)
+    }
+
+    override fun onMove(recyclerView: RecyclerView,
+                        viewHolder: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder): Boolean {
+        val fromPosition = viewHolder.adapterPosition
+        val toPosition = target.adapterPosition
+        executeRealm {
+            Collections.swap(adapter.realmList, fromPosition, toPosition)
+        }
+        adapter.notifyItemMoved(fromPosition, toPosition)
+        return true
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        // not implemented
+    }
+}
+
+
+
+
 
 
 
