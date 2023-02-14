@@ -43,6 +43,9 @@ open class Session : RealmObject() {
         /** -> Controller Methods <- >  */
         private const val sessionId = 1
         var user: User? = null
+        var userCoach: Coach? = null
+//        var userParent: Parent? = Parent()
+//        var userPlayer: Player? = Player()
 
         //Class Variables
         private var mRealm = Realm.getDefaultInstance()
@@ -85,6 +88,23 @@ open class Session : RealmObject() {
             return usr
         }
 
+        fun updateUser(newUser: User) {
+            try {
+                main {
+                    val realm = Realm.getDefaultInstance()
+                    realm.executeTransaction { r ->
+                        val user = r.where(User::class.java).findFirst()
+                        user?.let { itOriginUser ->
+                            if (!itOriginUser.isIdentical(newUser)) {
+                                itOriginUser.updateUserFields(newUser)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) { e.printStackTrace() }
+        }
+
+
 
         //CORE ->
         fun createObjects() {
@@ -95,9 +115,9 @@ open class Session : RealmObject() {
                 itRealm.createObject(Organization::class.java, newUUID())
                 itRealm.createObject(Review::class.java, newUUID())
                 itRealm.createObject(Service::class.java, newUUID())
-                itRealm.createObject(Coach::class.java, newUUID())
-                itRealm.createObject(Parent::class.java, newUUID())
-                itRealm.createObject(Player::class.java, newUUID())
+                itRealm.createObject(Coach::class.java)
+                itRealm.createObject(Parent::class.java)
+                itRealm.createObject(Player::class.java)
                 itRealm.createObject(League::class.java, newUUID())
                 itRealm.createObject(Location::class.java, newUUID())
                 itRealm.createObject(Team::class.java, newUUID())
@@ -105,6 +125,9 @@ open class Session : RealmObject() {
 
         }
         fun createSession() {
+            session {
+                return
+            }
             val realm = Realm.getDefaultInstance()
             if (realm.where(Session::class.java) == null){
                 realm.executeTransaction { itRealm ->

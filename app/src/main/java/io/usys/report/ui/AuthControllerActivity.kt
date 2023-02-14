@@ -8,6 +8,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
+import io.usys.report.firebase.fireGetCoachProfileForSession
 import io.usys.report.firebase.fireGetUserUpdatesFromFirebaseAsync
 import io.usys.report.model.*
 import io.usys.report.ui.login.ProviderLoginActivity
@@ -58,9 +59,13 @@ class AuthControllerActivity : AppCompatActivity()  {
     }
 
     private fun verifyUserLogin() {
-        safeUser {
-            fireGetUserUpdatesFromFirebaseAsync(it.id) {
-                navigateUser(it)
+        safeUser { itSafeUser ->
+            fireGetUserUpdatesFromFirebaseAsync(itSafeUser.id) { itUpdatedUser ->
+                val isCoach = itUpdatedUser?.isCoachUser() ?: false
+                if (isCoach) {
+                    fireGetCoachProfileForSession(itSafeUser.id)
+                }
+                navigateUser(itUpdatedUser)
             }
             return
         }

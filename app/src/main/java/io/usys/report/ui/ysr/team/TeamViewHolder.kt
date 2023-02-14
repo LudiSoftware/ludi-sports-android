@@ -14,18 +14,14 @@ import io.usys.report.utils.*
 
 
 fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View, Team) -> Unit)?) {
-    // Load Organizations by Sport
-
-    val rv = this
     sessionTeams {
-        rv?.loadInRealmListGridArrangable(it, FireTypes.TEAMS, onClickReturnViewRealmObject)
-        return
+        this?.loadInRealmListGridArrangable(it, FireTypes.TEAMS, onClickReturnViewRealmObject)
     }
 }
 
 class TeamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var txtItemTeamName = itemView.bindTextView(R.id.cardTeamTinyTxtName)
+    var txtItemTeamName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
 
     fun bind(team: Team?) {
         team?.let { txtItemTeamName?.text = it.name }

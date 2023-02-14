@@ -33,14 +33,6 @@ fun <K, V> HashMap<K, V>?.toRealmList() : RealmList<Any> {
     return listOfT
 }
 
-//fun ArrayList<String>.toRealmList(): RealmList<String> {
-//    val realmList = RealmList<String>()
-//    for (string in this) {
-//        realmList.add(string)
-//    }
-//    return realmList
-//}
-
 fun <T> ArrayList<T>.toRealmList(): RealmList<T> {
     val realmList = RealmList<T>()
     for (item in this) {
@@ -48,15 +40,6 @@ fun <T> ArrayList<T>.toRealmList(): RealmList<T> {
     }
     return realmList
 }
-
-//fun HashMap<*,*>.toJsonRealmList(): RealmList<Any> {
-//    var resultList: RealmList<Any> = RealmList()
-//    for ((_,v) in this) {
-//        val test = (v as? HashMap<*,*>)?.toJSON()
-//        resultList.add(test)
-//    }
-//    return resultList
-//}
 
 inline fun <reified T> DataSnapshot.toRealmList(): RealmList<T> {
     val realmList: RealmList<T> = RealmList()
@@ -134,15 +117,15 @@ fun Session.saveToRealm() {
     }
 }
 
-inline fun sessionSaveToRealm(crossinline block: (Session) -> Session?) {
-    executeRealm { itRealm ->
-        Session.session?.let { itSession ->
-            val updatedSession = block(itSession)
-            itRealm.insertOrUpdate(updatedSession)
-
+inline fun executeSession(crossinline block: (Session?) -> Unit) {
+    main {
+        realm().executeTransaction {
+            Session.session?.let { itSession ->
+                block(itSession)
+                it.insertOrUpdate(itSession)
+            }
         }
     }
-
 }
 
 inline fun sessionServices(block: (RealmList<Service>) -> Unit) {
@@ -157,6 +140,11 @@ inline fun sessionSports(block: (RealmList<Sport>) -> Unit) {
 }
 inline fun sessionTeams(block: (RealmList<Team>) -> Unit) {
     Session.session?.teams?.let {
+        if (!it.isNullOrEmpty()) { block(it) }
+    }
+}
+inline fun sessionPlayers(block: (RealmList<Player>) -> Unit) {
+    Session.session?.players?.let {
         if (!it.isNullOrEmpty()) { block(it) }
     }
 }

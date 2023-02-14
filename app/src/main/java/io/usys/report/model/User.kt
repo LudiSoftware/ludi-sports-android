@@ -54,6 +54,28 @@ open class User : RealmObject(), Serializable {
         return this.coach
     }
 
+    fun isIdentical(userTwo:User): Boolean {
+        if (this == userTwo) return true
+        return false
+    }
+
+    fun updateUserFields(updatedUser: User) {
+        this.username = updatedUser.username
+        this.name = updatedUser.name
+        this.auth = updatedUser.auth
+        this.type = updatedUser.type
+        this.email = updatedUser.email
+        this.phone = updatedUser.phone
+        this.organization = updatedUser.organization
+        this.organizationId = updatedUser.organizationId
+        this.visibility = updatedUser.visibility
+        this.photoUrl = updatedUser.photoUrl
+        this.emailVerified = updatedUser.emailVerified
+        this.parent = updatedUser.parent
+        this.player = updatedUser.player
+        this.coach = updatedUser.coach
+        this.dateUpdated = getTimeStamp()
+    }
 }
 
 fun FirebaseUser?.toYsrRealmUser() : User {
@@ -105,6 +127,7 @@ fun createUser() {
 
 fun updateUser(newNser: User){
     executeRealm { itRealm ->
+        val realmUser = Session.getCurrentUser()
         Session.user = newNser
         itRealm.insertOrUpdate(newNser)
     }
@@ -155,3 +178,4 @@ fun User.fireUpdateUserProfileSingleValue(singleAttribute:String, singleValue:St
 fun fireUpdateUserProfileSingleValue(userId:String, singleAttribute:String, singleValue:String) {
     fireUpdateSingleValueDBAsync(FireTypes.USERS, userId, singleAttribute, singleValue)
 }
+

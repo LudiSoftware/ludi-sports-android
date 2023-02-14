@@ -8,6 +8,7 @@ import io.usys.report.firebase.*
 import io.usys.report.model.*
 import io.usys.report.ui.ysr.coach.CoachViewHolder
 import io.usys.report.ui.ysr.organization.OrgViewHolder
+import io.usys.report.ui.ysr.player.PlayerTinyViewHolder
 import io.usys.report.ui.ysr.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ysr.review.organization.OrgReviewCommentViewHolder
 import io.usys.report.ui.ysr.service.ServiceViewHolder
@@ -32,11 +33,9 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
             FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
-
 //            FireTypes.PARENTS -> return CoachViewHolder(itemView).bind(obj as? Parent)
-//            FireTypes.PLAYERS -> return CoachViewHolder(itemView).bind(obj as? Player)
+            FireTypes.PLAYERS -> return PlayerTinyViewHolder(itemView).bind(obj as? Player)
             FireTypes.TEAMS -> return TeamViewHolder(itemView).bind(obj as? Team)
-
             FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)
             FireTypes.REVIEWS -> return OrgReviewCommentViewHolder(itemView).bind(obj as? Review)
             FireTypes.REVIEW_TEMPLATES -> return ReviewQuestionsViewHolder(itemView, updateCallback).bind(obj as? Question)
@@ -51,6 +50,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                 FireTypes.REVIEWS -> R.layout.card_review_comment
                 FireTypes.USERS -> R.layout.card_sport_small
                 FireTypes.COACHES -> R.layout.card_coach_small
+                FireTypes.PLAYERS -> R.layout.card_player_tiny
                 FireTypes.TEAMS -> R.layout.card_team_tiny
                 FireTypes.SERVICES -> R.layout.card_service_square
                 FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question_full

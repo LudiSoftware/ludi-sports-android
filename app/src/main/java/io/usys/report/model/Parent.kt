@@ -16,7 +16,6 @@ open class Parent : RealmObject(), Serializable {
         const val ORDER_BY_ORGANIZATION = "organizationId"
     }
 
-    @PrimaryKey
     var ownerId: String = ""
     var ownerName: String = ""
     var dateCreated: String = getTimeStamp()

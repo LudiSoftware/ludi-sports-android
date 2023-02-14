@@ -7,7 +7,7 @@ import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
 import io.usys.report.model.Session.Companion.createSession
 import io.usys.report.ui.AuthControllerActivity
-import io.usys.report.utils.log
+import io.usys.report.utils.*
 import kotlinx.coroutines.*
 
 /**
@@ -48,6 +48,20 @@ inline fun fireGetCoachProfile(userId:String, crossinline block: (Coach?) -> Uni
             .fairAddListenerForSingleValueEvent { ds ->
                 val userObject = ds?.getValue(Coach::class.java)
                 block(userObject)
+            }
+    }
+}
+fun fireGetCoachProfileForSession(userId:String) {
+
+    firebaseDatabase {
+        it.child(FireTypes.COACHES).child(userId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
+                executeRealm { itRealm ->
+                    itRealm.createObject(Coach::class.java)
+                    Session.userCoach = coachObject
+                    itRealm.insertOrUpdate(coachObject)
+                }
             }
     }
 }
@@ -159,20 +173,19 @@ fun fireGetAndLoadSportsIntoSessionAsync() {
 
 inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
     var userUpdates: User? = null
-        firebaseDatabase {
-        it.child(FireTypes.USERS).child(id).fairAddListenerForSingleValueEvent {
-            userUpdates = it?.getValue(User::class.java)
-            ysrUpdateRealmUser()
-            userUpdates?.let { itUser ->
-                if (itUser.id == id){
-                    AuthControllerActivity.USER_AUTH = itUser.auth
-                    AuthControllerActivity.USER_ID = itUser.id
-                    createSession()
-                    updateUser(itUser)
+        firebaseDatabase { itFB ->
+            itFB.child(FireTypes.USERS).child(id).fairAddListenerForSingleValueEvent { itDb ->
+                userUpdates = itDb?.getValue(User::class.java)
+    //            ysrUpdateRealmUser()
+                userUpdates?.let { itUpdatedUser ->
+                    Session.updateUser(itUpdatedUser)
+//                    AuthControllerActivity.USER_AUTH = itUpdatedUser.auth
+//                    AuthControllerActivity.USER_ID = itUpdatedUser.id
+//                    createSession()
+//                    updateUser(itUpdatedUser)
                 }
+                block(userUpdates)
             }
-            block(userUpdates)
-        }
     }
     return userUpdates
 }

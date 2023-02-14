@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
 import io.usys.report.R
@@ -15,7 +14,6 @@ import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.ui.ysr.sport.setupSportList
 import io.usys.report.ui.ysr.team.setupTeamListFromSession
 import io.usys.report.utils.*
-import java.util.*
 
 class YsrTitleListView(context: Context) : CardView(context) {
     constructor(context: Context, attrs: AttributeSet) : this(context)

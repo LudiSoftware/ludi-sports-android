@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
 import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
+import io.usys.report.firebase.fireGetTeamProfileForSession
 
 
 /**
@@ -44,6 +45,8 @@ class MasterUserActivity : AppCompatActivity() {
                 R.id.navigation_profile
             )
         )
+
+//        fireGetTeamProfileForSession()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

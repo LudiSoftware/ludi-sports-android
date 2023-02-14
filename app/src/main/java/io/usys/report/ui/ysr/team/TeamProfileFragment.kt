@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.model.*
+import io.usys.report.ui.fragments.MyBottomSheetDrawerFragment
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.YsrMode
 
@@ -26,6 +27,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
         rootView = binding.root
         setupOnClickListeners()
         setupDisplay()
+
         return rootView
     }
 
