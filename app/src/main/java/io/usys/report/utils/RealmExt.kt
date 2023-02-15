@@ -5,6 +5,7 @@ import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmModel
+import io.realm.RealmObject
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.fireForceGetNameOfRealmObject
 
@@ -62,7 +63,20 @@ inline fun executeRealm(crossinline block: (Realm) -> Unit) {
         realm().executeTransaction { block(it) }
     }
 }
-
+//LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
+inline fun executeInsertOrUpdateRealm(crossinline block: (Realm) -> RealmObject) {
+    main {
+        realm().executeTransaction {
+            val obj = block(it)
+            it.insertOrUpdate(obj)
+        }
+    }
+}
+fun RealmObject.insertOrUpdateRealm() {
+    executeRealm {
+        it.insertOrUpdate(this)
+    }
+}
 
 // Verified
 inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {

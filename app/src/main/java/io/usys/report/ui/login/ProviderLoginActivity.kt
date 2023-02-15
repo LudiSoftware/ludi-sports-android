@@ -8,11 +8,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
+import io.usys.report.firebase.fireGetCoachProfileForSession
+import io.usys.report.firebase.fireSyncUserWithDatabase
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.model.Session
 import io.usys.report.model.User
-import io.usys.report.model.toYsrRealmUser
-import io.usys.report.model.updateUser
+import io.usys.report.model.fromFirebaseToRealmUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
 import io.usys.report.utils.fairRegisterActivityResult
@@ -31,8 +32,6 @@ class ProviderLoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
-
-
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
@@ -51,27 +50,22 @@ class ProviderLoginActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             // Successfully signed in
             val fireUser = FirebaseAuth.getInstance().currentUser
-            handleFireUser(fireUser)
-            // ...
+            handleFireUserLogin(fireUser)
         } else {
             log("Login Failed!")
             launchActivity<AuthControllerActivity>()
         }
     }
 
-    private fun handleFireUser(firebaseUser: FirebaseUser?) {
-        val user = firebaseUser.toYsrRealmUser()
+    private fun handleFireUserLogin(firebaseUser: FirebaseUser?) {
+        val user = firebaseUser.fromFirebaseToRealmUser()
         saveProfileToFirebaseUI(user)
     }
 
     //SAVE PROFILE
     private fun saveProfileToFirebaseUI(user:User?) {
-        fireSaveUserToFirebaseAsync(user) {
-            log("Profile Updated! $it")
-            if (user != null) {
-                updateUser(user)
-                Session.updateSession(user)
-            }
+        if (user == null) launchActivity<AuthControllerActivity>()
+        fireSyncUserWithDatabase(user!!) { itUpdatedUser ->
             launchActivity<AuthControllerActivity>()
         }
     }

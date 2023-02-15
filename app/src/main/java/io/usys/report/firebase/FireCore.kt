@@ -56,26 +56,14 @@ class FirePaths {
     }
 }
 
-//class FireLayouts {
-//    companion object {
-//        fun getLayout(type: String): Int {
-//            return when (type) {
-//                FireTypes.ORGANIZATIONS -> R.layout.card_organization
-//                FireTypes.SPORTS -> R.layout.card_sport
-//                FireTypes.REVIEWS -> R.layout.card_review_comment
-//                FireTypes.USERS -> R.layout.card_sport
-//                FireTypes.COACHES -> R.layout.card_sport
-//                FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question
-//                else -> R.layout.card_sport
-//            }
-//        }
-//    }
-//}
-
 /** UTILS **/
 
 fun coreFirebaseUser(): FirebaseUser? {
     return FirebaseAuth.getInstance().currentUser
+}
+
+fun coreFirebaseUserUid(): String? {
+    return FirebaseAuth.getInstance().currentUser?.uid
 }
 
 fun coreFireLogoutAsync(context: Context): Task<Void> {

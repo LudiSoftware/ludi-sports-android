@@ -97,7 +97,13 @@ fun Review.fireAddUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
     }
     return result
 }
-
+fun fireSaveUserToFirebaseAsync(user:User?) {
+    if (user.isNullOrEmpty()) return
+    if (user?.id.isNullOrEmpty()) return
+    firebaseDatabase {
+        it.child(FireTypes.USERS).child(user?.id ?: "unknown").setValue(user)
+    }
+}
 inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any?) -> Unit) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return

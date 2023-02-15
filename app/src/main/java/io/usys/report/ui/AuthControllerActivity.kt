@@ -1,21 +1,21 @@
 package io.usys.report.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
+import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.fireGetCoachProfileForSession
-import io.usys.report.firebase.fireGetUserUpdatesFromFirebaseAsync
+import io.usys.report.firebase.fireSyncUserWithDatabase
 import io.usys.report.model.*
 import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.ysr.MasterUserActivity
-import io.usys.report.utils.AuthTypes
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
+import io.usys.report.utils.log
 
 
 /**
@@ -26,6 +26,8 @@ import io.usys.report.utils.launchActivity
 class AuthControllerActivity : AppCompatActivity()  {
 
     companion object {
+        var HAS_INITIALIZED = false
+        var HAS_SIGNED_IN = false
         var USER_ID = ""
         var USER_AUTH = ""
     }
@@ -33,8 +35,7 @@ class AuthControllerActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
-        //Initialize
-        initializeDependencies()
+
     }
 
     override fun onStart() {
@@ -44,6 +45,7 @@ class AuthControllerActivity : AppCompatActivity()  {
     }
 
     private fun initializeDependencies() {
+        if (HAS_INITIALIZED) return
         //Init Firebase Instance
         FirebaseApp.initializeApp(this)
         //Init Calendar
@@ -55,21 +57,20 @@ class AuthControllerActivity : AppCompatActivity()  {
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
-//        Session.deleteAllRealmObjects()
+        Session.createObjects()
+        HAS_INITIALIZED = true
     }
 
+    // https://firebasestorage.googleapis.com/v0/b/usysr-a16ef.appspot.com/o/users%2FtnmjTR7r1HPwIaBb2oXrDrwXT842%2Fprofile%2Fprofile_image.jpg?alt=media&token=c5715968-19f0-4dee-b65a-3c722cafbfc9
     private fun verifyUserLogin() {
         safeUser { itSafeUser ->
-            fireGetUserUpdatesFromFirebaseAsync(itSafeUser.id) { itUpdatedUser ->
-                val isCoach = itUpdatedUser?.isCoachUser() ?: false
-                if (isCoach) {
-                    fireGetCoachProfileForSession(itSafeUser.id)
-                }
+            fireSyncUserWithDatabase(itSafeUser) { itUpdatedUser ->
                 navigateUser(itUpdatedUser)
             }
             return
         }
-        Session.createObjects()
+        //Initialize
+        initializeDependencies()
         launchActivity<ProviderLoginActivity>()
     }
 
@@ -80,19 +81,7 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     private fun navigateUser(user: User?){
         if (user.isNullOrEmpty()) launchActivity<MasterUserActivity>()
-        when (user?.auth) {
-            AuthTypes.BASIC_USER -> {
-                launchActivity<MasterUserActivity>()
-            }
-            AuthTypes.COACH_USER -> {
-                launchActivity<MasterUserActivity>()
-            }
-            else -> {
-                Toast.makeText(this, "Pending User Approval", Toast.LENGTH_LONG).show()
-                //TODO: CREATE TEMP PAGE FOR WAITING USERS
-                launchActivity<MainPendingActivity>()
-            }
-        }
+        launchActivity<MasterUserActivity>()
     }
 
 }

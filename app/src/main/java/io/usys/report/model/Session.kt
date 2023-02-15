@@ -1,9 +1,7 @@
 package io.usys.report.model
 
 import android.app.Activity
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
@@ -14,7 +12,6 @@ import io.usys.report.firebase.coreFireLogoutAsync
 import io.usys.report.ui.ysr.sport.containsItem
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty
-import kotlin.reflect.full.superclasses
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -66,7 +63,6 @@ open class Session : RealmObject() {
             }
             private set
 
-        //CORE ->
         fun updateSession(user: User?): Session? {
             if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
             //Guest guest = SessionsController.getSession().getGuest();
@@ -77,52 +73,78 @@ open class Session : RealmObject() {
             }
             return session
         }
+        /**
+         * USER BASE
+         */
 
-        fun getCurrentUser() : User? {
-            var usr: User? = null
+        fun createUserObject(userId:String) {
+            executeRealm { itRealm ->
+                itRealm.createObject(User::class.java, userId)
+            }
+        }
+
+        fun getCreateUserById(id:String) : User? {
+            var user: User? = null
             try {
-                if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-                usr = mRealm.where(User::class.java).findFirst()
-                if (usr == null) { usr = User() }
+                user = realm().where(User::class.java).equalTo("id", id).findFirst()
+                return user
             } catch (e: Exception) { e.printStackTrace() }
-            return usr
+            return user
         }
 
         fun updateUser(newUser: User) {
             try {
-                main {
-                    val realm = Realm.getDefaultInstance()
-                    realm.executeTransaction { r ->
-                        val user = r.where(User::class.java).findFirst()
-                        user?.let { itOriginUser ->
-                            if (!itOriginUser.isIdentical(newUser)) {
-                                itOriginUser.updateUserFields(newUser)
-                            }
-                        }
+                var user = realm().where(User::class.java).equalTo("id", newUser.id).findFirst()
+                user?.let { itRealmUser ->
+                    if (!itRealmUser.isIdentical(newUser)) {
+                        itRealmUser.updateUserFields(newUser)
+                        itRealmUser.saveToRealm()
+                        return
                     }
                 }
+                user = newUser
+                user.saveToRealm()
             } catch (e: Exception) { e.printStackTrace() }
         }
 
-
+        /**
+         * USER COACH
+         */
+        fun getCoachByOwnerId(ownerId:String) : Coach? {
+            var coach: Coach? = null
+            try {
+                coach = realm().where(Coach::class.java).equalTo("ownerId", ownerId).findFirst()
+                return coach
+            } catch (e: Exception) { e.printStackTrace() }
+            return coach
+        }
+        fun updateCoach(ownerId:String, newCoach: Coach) {
+            try {
+                var coach = realm().where(Coach::class.java).equalTo("ownerId", ownerId).findFirst()
+                coach?.let { itOriginCoach ->
+                    if (!itOriginCoach.isIdentical(newCoach)) {
+                        itOriginCoach.update(newCoach)
+                        itOriginCoach.saveToRealm()
+                        return
+                    }
+                }
+                coach = newCoach
+                coach.saveToRealm()
+            } catch (e: Exception) { e.printStackTrace() }
+        }
 
         //CORE ->
         fun createObjects() {
-            createUser()
             executeRealm { itRealm ->
-                itRealm.createObject(Session::class.java, sessionId)
+//                itRealm.createObject(Session::class.java, sessionId)
                 itRealm.createObject(Sport::class.java, newUUID())
                 itRealm.createObject(Organization::class.java, newUUID())
                 itRealm.createObject(Review::class.java, newUUID())
                 itRealm.createObject(Service::class.java, newUUID())
-                itRealm.createObject(Coach::class.java)
-                itRealm.createObject(Parent::class.java)
-                itRealm.createObject(Player::class.java)
                 itRealm.createObject(League::class.java, newUUID())
                 itRealm.createObject(Location::class.java, newUUID())
                 itRealm.createObject(Team::class.java, newUUID())
             }
-
         }
         fun createSession() {
             session {

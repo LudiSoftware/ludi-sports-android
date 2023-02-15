@@ -1,19 +1,15 @@
 package io.usys.report.model
 
 import android.app.Activity
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import io.realm.Realm
-import io.realm.RealmModel
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.coreFirebaseUser
+import io.usys.report.firebase.coreFirebaseUserUid
+import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.firebase.fireUpdateSingleValueDBAsync
 import io.usys.report.utils.*
 import io.usys.report.utils.AuthTypes.Companion.BASIC_USER
-import io.usys.report.utils.AuthTypes.Companion.COACH_USER
-import io.usys.report.utils.AuthTypes.Companion.PARENT_USER
-import io.usys.report.utils.AuthTypes.Companion.PLAYER_USER
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
 import java.io.Serializable
 
@@ -25,9 +21,9 @@ import java.io.Serializable
 
 open class User : RealmObject(), Serializable {
 
+    @PrimaryKey
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
     var dateCreated: String = getTimeStamp()
-    //todo: create function for updating this.
     var dateUpdated: String = getTimeStamp()
     var username: String = UNASSIGNED
     var name: String = UNASSIGNED //Name Given by Manager
@@ -59,6 +55,18 @@ open class User : RealmObject(), Serializable {
         return false
     }
 
+    fun saveToFirebase(): User {
+        fireSaveUserToFirebaseAsync(this)
+        return this
+    }
+
+    fun saveToRealm(): User {
+        executeRealm {
+            it.insertOrUpdate(this)
+        }
+        return this
+    }
+
     fun updateUserFields(updatedUser: User) {
         this.username = updatedUser.username
         this.name = updatedUser.name
@@ -78,67 +86,36 @@ open class User : RealmObject(), Serializable {
     }
 }
 
-fun FirebaseUser?.toYsrRealmUser() : User {
+fun FirebaseUser?.fromFirebaseToRealmUser() : User {
     if (this.isNullOrEmpty()) return User()
-    val uid = this?.uid
-    val email = this?.email
-    val name = this?.displayName
-    val photoUrl = this?.photoUrl
-    val emailVerified = this?.isEmailVerified
-    val user = User().apply {
-        this.id = uid ?: "unknown"
-        this.email = email ?: UNASSIGNED
-        this.name = name ?: UNASSIGNED
+    val uid = this?.uid ?: "UNKNOWN"
+    val email = this?.email ?: "UNKNOWN"
+    val name = this?.displayName ?: "UNKNOWN"
+    val photoUrl = this?.photoUrl ?: "UNKNOWN"
+    val emailVerified = this?.isEmailVerified ?: false
+    Session.createUserObject(uid)
+    val user = User()
+    user.apply {
+        this.id = uid
+        this.email = email
+        this.name = name
         this.photoUrl = photoUrl.toString()
-        this.emailVerified = emailVerified ?: false
-    }
+        this.emailVerified = emailVerified
+    }.saveToRealm()
     return user
 }
 
-fun ysrUpdateRealmUser() {
-    val fireUser = coreFirebaseUser()
-    if (fireUser.isNullOrEmpty()) return
-    val uid = fireUser?.uid
-    val email = fireUser?.email
-    val name = fireUser?.displayName
-    val photoUrl = fireUser?.photoUrl
-    val emailVerified = fireUser?.isEmailVerified
-    Session.getCurrentUser()?.let { itUser ->
-        executeRealm {
-            itUser.id = uid ?: "unknown"
-            itUser.email = email ?: UNASSIGNED
-            itUser.name = name ?: UNASSIGNED
-            itUser.photoUrl = photoUrl.toString()
-            itUser.emailVerified = emailVerified ?: false
-            it.insertOrUpdate(itUser)
+inline fun User.applyToRealm(crossinline block: (User) -> Unit) {
+    executeInsertOrUpdateRealm {
+        this.apply {
+            block(this)
         }
-    }
-
-}
-
-fun createUser() {
-    val realm = Realm.getDefaultInstance()
-    if (realm.where(User::class.java) == null){
-        realm.executeTransaction { itRealm ->
-            itRealm.createObject(User::class.java, newUUID())
-        }
-    }
-}
-
-fun updateUser(newNser: User){
-    executeRealm { itRealm ->
-        val realmUser = Session.getCurrentUser()
-        Session.user = newNser
-        itRealm.insertOrUpdate(newNser)
     }
 }
 
 fun getMasterUser(): User? {
-    val realmUser = Session.getCurrentUser()
-    val realmUserId = realmUser?.id
-    if (!realmUserId.isNullOrEmpty()) return realmUser
-    val fireUser = FirebaseAuth.getInstance().currentUser
-    return fireUser.toYsrRealmUser()
+    val uid = coreFirebaseUserUid() ?: return null
+    return Session.getCreateUserById(uid)
 }
 
 inline fun safeUser(block: (User) -> Unit) {
@@ -160,7 +137,7 @@ fun getUserId(): String? {
 }
 
 inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
-    val user = Session.getCurrentUser()
+    val user = getMasterUser()
     user?.let {
         block(it)
     } ?: run {
@@ -171,11 +148,4 @@ inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
     //todo: get firebase user, if valid, set and continue
 }
 
-fun User.fireUpdateUserProfileSingleValue(singleAttribute:String, singleValue:String) {
-    fireUpdateSingleValueDBAsync(FireTypes.USERS, this.id, singleAttribute, singleValue)
-}
-
-fun fireUpdateUserProfileSingleValue(userId:String, singleAttribute:String, singleValue:String) {
-    fireUpdateSingleValueDBAsync(FireTypes.USERS, userId, singleAttribute, singleValue)
-}
 

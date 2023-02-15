@@ -1,14 +1,10 @@
 package io.usys.report.firebase
 
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import io.realm.RealmList
 import io.usys.report.model.*
 import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
-import io.usys.report.model.Session.Companion.createSession
-import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.utils.*
-import kotlinx.coroutines.*
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -51,20 +47,7 @@ inline fun fireGetCoachProfile(userId:String, crossinline block: (Coach?) -> Uni
             }
     }
 }
-fun fireGetCoachProfileForSession(userId:String) {
 
-    firebaseDatabase {
-        it.child(FireTypes.COACHES).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
-                executeRealm { itRealm ->
-                    itRealm.createObject(Coach::class.java)
-                    Session.userCoach = coachObject
-                    itRealm.insertOrUpdate(coachObject)
-                }
-            }
-    }
-}
 fun fireGetPlayerProfiles(playerIds: RealmList<String>) {
     for (id in playerIds) {
         fireGetTeamProfileForSession(id)
@@ -169,25 +152,51 @@ fun fireGetAndLoadSportsIntoSessionAsync() {
 
 /**
  * USER
+ *
+ * 1. check if user exists in firebase.
+ *      a. IF EXISTS: make user the realm user.
+ *      b. IF DOES NOT EXIST: save new user.
+ *
+ *
  */
 
-inline fun fireGetUserUpdatesFromFirebaseAsync(id: String, crossinline block: (User?) -> Unit): User? {
-    var userUpdates: User? = null
-        firebaseDatabase { itFB ->
-            itFB.child(FireTypes.USERS).child(id).fairAddListenerForSingleValueEvent { itDb ->
-                userUpdates = itDb?.getValue(User::class.java)
-    //            ysrUpdateRealmUser()
-                userUpdates?.let { itUpdatedUser ->
-                    Session.updateUser(itUpdatedUser)
-//                    AuthControllerActivity.USER_AUTH = itUpdatedUser.auth
-//                    AuthControllerActivity.USER_ID = itUpdatedUser.id
-//                    createSession()
-//                    updateUser(itUpdatedUser)
+inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User?) -> Unit) {
+    firebaseDatabase { itFB ->
+        itFB.child(FireTypes.USERS).child(coreFireUser.id).fairAddListenerForSingleValueEvent { itDb ->
+            var userProfile = itDb?.getValue(User::class.java)
+            userProfile?.let { itUpdatedUser ->
+                // DOES EXIST: Firebase User Was Found
+                Session.updateUser(itUpdatedUser)
+                val isCoach = itUpdatedUser.isCoachUser()
+                if (isCoach) {
+                    fireGetCoachProfileForSession(itUpdatedUser.id)
                 }
-                block(userUpdates)
+                block(userProfile)
+                return@fairAddListenerForSingleValueEvent
+            }
+            // DOES NOT EXIST: Firebase User Was Not Found
+            userProfile = coreFireUser
+            userProfile.saveToRealm()
+            userProfile.saveToFirebase()
+            block(userProfile)
+            return@fairAddListenerForSingleValueEvent
+        }
+    }
+}
+
+/**
+ * USER COACH
+ */
+
+fun fireGetCoachProfileForSession(userId:String) {
+    firebaseDatabase {
+        it.child(FireTypes.COACHES).child(userId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
+                val coach = Session.getCoachByOwnerId(userId)
+                coach?.update(coachObject) ?: coachObject.saveToRealm()
             }
     }
-    return userUpdates
 }
 
 fun fireGetCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
