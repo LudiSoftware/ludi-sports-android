@@ -18,7 +18,7 @@ import kotlin.collections.isNullOrEmpty
 open class Session : RealmObject() {
     //DO NOT MAKE STATIC!
     @PrimaryKey
-    var id: Int = 1
+    var id: String = "1"
 
     //DO NOT MAKE STATIC
     var sports: RealmList<Sport>? = RealmList()
@@ -33,32 +33,29 @@ open class Session : RealmObject() {
 
     /** -> EVERYTHING IS STATIC BELOW THIS POINT <- **/
     companion object {
-        //UserController
-        private const val WAITING = "waiting"
         /** -> Controller Methods <- >  */
-        private const val sessionId = 1
-
-        //Class Variables
-        private var mRealm = Realm.getDefaultInstance()
+        private const val sessionId = "1"
 
         //GET CURRENT SESSION
         var session: Session? = null
             get() {
                 try {
-                    if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-                    field = mRealm.where(Session::class.java).equalTo("id", sessionId).findFirst()
-                    if (field == null) {
-                        field = Session()
-                        field?.id = sessionId
-
+                    executeRealm {
+                        field = realm().where(Session::class.java).equalTo("id", sessionId).findFirst()
+                        if (field == null) {
+                            field = Session()
+                            field?.id = sessionId
+                        }
                     }
+                    return field
                 } catch (e: Exception) { e.printStackTrace() }
                 return field
             }
             private set
+
         fun isSessionAlreadyCreated(sessionId: String): Boolean {
             val realm = Realm.getDefaultInstance()
-            val existingSession = realm.where(Session::class.java).equalTo("id", sessionId.toInt()).findFirst()
+            val existingSession = realm.where(Session::class.java).equalTo("id", sessionId).findFirst()
             val isCreated = existingSession != null
             realm.close()
             return isCreated
@@ -76,7 +73,6 @@ open class Session : RealmObject() {
                 itRealm.createObject(League::class.java, newUUID())
                 itRealm.createObject(Location::class.java, newUUID())
                 itRealm.createObject(Team::class.java, newUUID())
-//                itRealm.createObject(Coach::class.java)
             }
         }
 

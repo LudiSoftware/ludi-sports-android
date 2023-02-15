@@ -65,7 +65,7 @@ class ProviderLoginActivity : AppCompatActivity() {
     //SAVE PROFILE
     private fun saveProfileToFirebaseUI(user:User?) {
         if (user == null) launchActivity<AuthControllerActivity>()
-        fireSyncUserWithDatabase(user!!) { itUpdatedUser ->
+        fireSyncUserWithDatabase(user!!) {
             launchActivity<AuthControllerActivity>()
         }
     }

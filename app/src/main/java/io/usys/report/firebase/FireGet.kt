@@ -28,70 +28,6 @@ inline fun fireGetSingleValueAsync(collection:String, objId: String, singleAttri
             }
     }
 }
-inline fun fireGetSyncUserProfile(userId:String, crossinline block: (User?) -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.USERS).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                val userObject = ds?.getValue(User::class.java)
-                block(userObject)
-            }
-    }
-}
-
-inline fun fireGetCoachProfile(userId:String, crossinline block: (Coach?) -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.COACHES).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                val userObject = ds?.getValue(Coach::class.java)
-                block(userObject)
-            }
-    }
-}
-
-fun fireGetPlayerProfiles(playerIds: RealmList<String>) {
-    for (id in playerIds) {
-        fireGetTeamProfileForSession(id)
-    }
-}
-fun fireGetPlayerProfilesForSession(teamId:String) {
-    firebaseDatabase {
-        it.child(FireTypes.TEAMS).child(teamId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                //TODO:
-                val teamObject = ds?.toHashMapWithRealmLists().toTeamObject()
-                addObjectToSessionList(teamObject)
-            }
-    }
-}
-
-/** Teams Profiles */
-fun fireGetTeamsProfiles(teamIds: RealmList<String>) {
-    for (id in teamIds) {
-        fireGetTeamProfileForSession(id)
-    }
-}
-fun fireGetTeamProfileForSession(teamId:String) {
-    firebaseDatabase {
-        it.child(FireTypes.TEAMS).child(teamId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toHashMapWithRealmLists().toTeamObject()
-                addObjectToSessionList(teamObject)
-            }
-    }
-}
-inline fun fireGetTeamProfile(teamId:String, crossinline block: (Team?) -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.TEAMS).child(teamId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toHashMapWithRealmLists().toTeamObject()
-                block(teamObject)
-            }
-    }
-}
-
-
-
-
 
 /** Get List by Single Attribute AsyncBlock */
 inline fun fireGetOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
@@ -113,132 +49,15 @@ fun fireGetOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: Strin
 }
 
 
-/** Review Template */
 
-inline fun fireGetReviewTemplateAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.REVIEW_TEMPLATES).child(templateType)
-            .fairAddListenerForSingleValueEvent { ds ->
-                block(ds)
-            }
-    }
-}
 
-inline fun fireGetReviewTemplateQuestionsAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.REVIEW_TEMPLATES).child(templateType).child("master").child("questions")
-            .fairAddListenerForSingleValueEvent { ds ->
-                block(ds)
-            }
-    }
-}
 
-/**
- * SPORTS
- */
-fun fireGetAndLoadSportsIntoSessionAsync() {
-    firebaseDatabase {
-        it.child(FireTypes.SPORTS)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataSnapshot.loadIntoSession<Sport>()
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                    log("Failed")
-                }
-            })
-    }
-}
 
-/**
- * USER
- *
- * 1. check if user exists in firebase.
- *      a. IF EXISTS: make user the realm user.
- *      b. IF DOES NOT EXIST: save new user.
- *
- *
- */
 
-inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User?) -> Unit) {
-    firebaseDatabase { itFB ->
-        itFB.child(FireTypes.USERS).child(coreFireUser.id).fairAddListenerForSingleValueEvent { itDb ->
-            var userProfile = itDb?.getValue(User::class.java)
-            userProfile?.let { itUpdatedUser ->
-                // DOES EXIST: Firebase User Was Found
-                coreFireUser.updateRealm(itUpdatedUser)
-                coreFireUser.saveToRealm()
-                val isCoach = coreFireUser.isCoachUser()
-                if (isCoach) {
-                    val tempCoach = getCoachByOwnerId(coreFireUser.id)
-                    if (tempCoach == null) {
-                        fireGetCoachProfileForSession(coreFireUser.id)
-                    }
-                }
-                block(coreFireUser)
-                return@fairAddListenerForSingleValueEvent
-            }
-            // DOES NOT EXIST: Firebase User Was Not Found
-            userProfile = coreFireUser
-            userProfile.saveToRealm()
-            userProfile.saveToFirebase()
-            block(userProfile)
-            return@fairAddListenerForSingleValueEvent
-        }
-    }
-}
 
-/**
- * USER COACH
- */
 
-fun fireGetCoachProfileForSession(userId:String) {
-    firebaseDatabase {
-        it.child(FireTypes.COACHES).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                executeRealm {
-                    val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
-                    val coach = getCoachByOwnerId(userId)
-                    coach?.let {
-                        it.update(coachObject)
-                        it.saveToRealm()
-                    } ?: run {
-                        coachObject.saveToRealm()
-                    }
-                    log("Coach Updated")
-                }
 
-            }
-    }
-}
 
-fun fireGetCoachesByOrg(orgId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    fireGetOrderByEqualToCallback(FireTypes.COACHES, ORDER_BY_ORGANIZATION, orgId, callbackFunction)
-}
-
-/**
- * SERVICES
- */
-inline fun fireGetAllServicesAsync(crossinline block: DataSnapshot?.() -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.SERVICES)
-            .fairAddListenerForSingleValueEvent { ds ->
-                block(ds)
-            }
-    }
-}
-
-/**
- * REVIEWS
- */
-
-// Verified
-fun fireGetReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
-    firebaseDatabase {
-        it.child(FireTypes.REVIEWS).child(receiverId)
-            .fairAddListenerForSingleValueEvent(callbackFunction)
-    }
-}
 
 
 

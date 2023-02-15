@@ -15,8 +15,6 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 
-
-
 open class User : RealmObject(), Serializable {
 
     @PrimaryKey
@@ -124,7 +122,7 @@ fun realmUser(): User? {
 fun getRealmUserById(id:String) : User? {
     var user: User? = null
     try {
-        user = queryForUser(id)
+        executeRealm { user = queryForUser(id) }
         return user
     } catch (e: Exception) { e.printStackTrace() }
     return user

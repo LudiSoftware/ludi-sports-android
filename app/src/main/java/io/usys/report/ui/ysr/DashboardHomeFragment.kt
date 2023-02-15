@@ -40,7 +40,6 @@ class DashboardHomeFragment : YsrFragment() {
 
         safeUser {
             if (it.isCoachUser()) {
-                //todo: SAVE COACH OBJECT EXACTLY LIKE A USER OBJECT...
                 val i = getCoachByOwnerId(it.id)
                 log(i)
             }

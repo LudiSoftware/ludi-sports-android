@@ -19,24 +19,6 @@ fun <T> T.fireAddUpdateInFirebase(id: String, callbackFunction: ((Boolean, Strin
     }
 }
 
-// Verified
-fun fireAddUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
-    var result = false
-    firebaseDatabase { database ->
-        database.child(FireTypes.REVIEW_TEMPLATES).child(obj.type).child(obj.id)
-            .setValue(obj)
-            .addOnSuccessListener {
-                //TODO("HANDLE SUCCESS")
-                result = true
-            }.addOnCompleteListener {
-                //TODO("HANDLE COMPLETE")
-            }.addOnFailureListener {
-                //TODO("HANDLE FAILURE")
-                result = false
-            }
-    }
-    return result
-}
 
 // Verified
 fun fireAddUpdateDBAsync(collection: String, id: String, obj: Any): Boolean {
@@ -76,50 +58,6 @@ fun fireUpdateSingleValueDBAsync(collection: String, id: String, single_attribut
             }
     }
     return result
-}
-
-fun Review.fireAddUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
-    var result = false
-    firebaseDatabase { database ->
-        database.child(FireTypes.REVIEWS).child(this.receiverId!!).child(this.id)
-            .setValue(this).fairAddOnCompleteListener { itReturn ->
-                block?.let { block(itReturn) }
-            }
-            .addOnSuccessListener {
-                //TODO("HANDLE SUCCESS")
-                result = true
-            }.addOnCompleteListener {
-                //TODO("HANDLE COMPLETE")
-            }.addOnFailureListener {
-                //TODO("HANDLE FAILURE")
-                result = false
-            }
-    }
-    return result
-}
-fun fireSaveUserToFirebaseAsync(user:User?) {
-    if (user.isNullOrEmpty()) return
-    if (user?.id.isNullOrEmpty()) return
-    firebaseDatabase {
-        it.child(FireTypes.USERS).child(user?.id ?: "unknown").setValue(user)
-    }
-}
-fun fireSaveCoachToFirebaseAsync(coach: Coach?) {
-    if (coach.isNullOrEmpty()) return
-    if (coach?.ownerId.isNullOrEmpty()) return
-    firebaseDatabase {
-        it.child(FireTypes.COACHES).child(coach?.ownerId ?: "unknown").setValue(coach)
-    }
-}
-inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any?) -> Unit) {
-    if (user.isNullOrEmpty()) return
-    if (user?.id.isNullOrEmpty()) return
-    firebaseDatabase {
-        it.child(FireTypes.USERS).child(user?.id ?: "unknown").setValue(user)
-            .fairAddOnCompleteListener { ds ->
-                block(ds)
-            }
-    }
 }
 
 
