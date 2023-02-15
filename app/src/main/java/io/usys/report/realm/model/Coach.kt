@@ -1,9 +1,11 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.fireSaveCoachToFirebaseAsync
+import io.usys.report.realm.executeRealm
+import io.usys.report.realm.realm
 import io.usys.report.utils.*
 import java.io.Serializable
 
@@ -40,29 +42,30 @@ open class Coach : RealmObject(), Serializable {
     var reviewAnswerCount: String = ""
     var reviewDetails: String = ""
 
-    fun getCityStateZip(): String {
-        return "$city, $state $zip"
-    }
+//    fun getCityStateZip(): String {
+//        return "$city, $state $zip"
+//    }
 
-    fun isIdentical(userTwo:Coach): Boolean {
+    fun isIdenticalCoach(userTwo: Coach): Boolean {
         if (this == userTwo) return true
         return false
     }
 
-    fun saveToFirebase(): Coach {
-        fireSaveCoachToFirebaseAsync(this)
-        return this
-    }
+//    fun saveToFirebase(): Coach {
+//        fireSaveCoachToFirebaseAsync(this)
+//        return this
+//    }
 
-    fun saveToRealm(): Coach {
+    fun saveCoachToRealm(): Coach {
         executeRealm {
             it.insertOrUpdate(this)
         }
         return this
     }
 
-    fun update(newUser: Coach) {
-        if (this.isIdentical(newUser)) return
+    fun updateAndSave(newUser: Coach?) {
+        if (newUser.isNullOrEmpty()) return
+        if (this.isIdenticalCoach(newUser!!)) return
         executeRealm {
             this.apply {
                 this.dateCreated = newUser.dateCreated
@@ -90,6 +93,7 @@ open class Coach : RealmObject(), Serializable {
                 this.reviewDetails = newUser.reviewDetails
             }
         }
+        this.saveCoachToRealm()
     }
 
 

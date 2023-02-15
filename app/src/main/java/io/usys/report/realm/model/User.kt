@@ -1,4 +1,4 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import android.app.Activity
 import com.google.firebase.auth.FirebaseUser
@@ -6,6 +6,8 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
+import io.usys.report.realm.executeRealm
+import io.usys.report.realm.realm
 import io.usys.report.utils.*
 import io.usys.report.utils.AuthTypes.Companion.BASIC_USER
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
@@ -35,6 +37,7 @@ open class User : RealmObject(), Serializable {
     var parent: Boolean = false
     var player: Boolean = false
     var coach: Boolean = false
+    var coachUser: Coach? = null
 
     fun isParentUser() : Boolean {
         return this.parent
@@ -46,7 +49,16 @@ open class User : RealmObject(), Serializable {
         return this.coach
     }
 
-    fun isIdentical(userTwo:User): Boolean {
+    fun makeCoachAndSave(coach: Coach?) {
+        executeRealm {
+            this.apply {
+                this.coachUser = coach
+            }
+        }
+        this.saveToRealm()
+    }
+
+    fun isIdentical(userTwo: User): Boolean {
         if (this == userTwo) return true
         return false
     }
@@ -63,7 +75,7 @@ open class User : RealmObject(), Serializable {
         return this
     }
 
-    fun updateRealm(updatedUser: User) {
+    fun updateAndSave(updatedUser: User) {
         if (this.isIdentical(updatedUser)) return
         executeRealm {
             this.apply {
@@ -84,6 +96,7 @@ open class User : RealmObject(), Serializable {
                 this.dateUpdated = getTimeStamp()
             }
         }
+        this.saveToRealm()
     }
 
 }

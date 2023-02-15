@@ -1,11 +1,8 @@
 package io.usys.report.firebase
 
 import com.google.firebase.database.DataSnapshot
-import io.usys.report.model.Coach
-import io.usys.report.model.User
-import io.usys.report.model.getCoachByOwnerId
-import io.usys.report.model.toCoachObject
-import io.usys.report.utils.executeRealm
+import io.usys.report.realm.executeRealm
+import io.usys.report.realm.model.*
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 
@@ -14,7 +11,7 @@ import io.usys.report.utils.log
  */
 
 // -> Save
-fun fireSaveUserToFirebaseAsync(user:User?) {
+fun fireSaveUserToFirebaseAsync(user: User?) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return
     firebaseDatabase {
@@ -23,7 +20,7 @@ fun fireSaveUserToFirebaseAsync(user:User?) {
 }
 
 // -> Save
-inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any?) -> Unit) {
+inline fun fireSaveUserToFirebaseAsync(user: User?, crossinline block: (Any?) -> Unit) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return
     firebaseDatabase {
@@ -81,18 +78,19 @@ fun fireGetCoachProfileForSession(userId:String) {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
                 executeRealm {
-                    val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
+                    val coachObject = ds?.toObject<Coach>()
                     val coach = getCoachByOwnerId(userId)
-                    coach?.let {
-                        it.update(coachObject)
-                        it.saveToRealm()
-                    } ?: run {
-                        coachObject.saveToRealm()
+                    safeUser { itUser ->
+                        coach?.let { itCoach ->
+                            itUser.makeCoachAndSave(itCoach)
+                        } ?: run {
+                            itUser.makeCoachAndSave(coachObject)
+                        }
                     }
-                    log("Coach Updated")
                 }
-
+                log("Coach Updated")
             }
     }
 }
+
 

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import io.usys.report.R
-import io.usys.report.model.*
 import io.usys.report.databinding.ProfileOrganizationBinding
+import io.usys.report.realm.model.Organization
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.ysr.review.organization.createOrgReviewDialog

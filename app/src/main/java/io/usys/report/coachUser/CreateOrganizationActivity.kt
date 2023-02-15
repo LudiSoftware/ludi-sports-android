@@ -3,8 +3,8 @@ package io.usys.report.coachUser
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.usys.report.R
-import io.usys.report.model.Organization
-import io.usys.report.model.User
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.model.User
 import io.usys.report.utils.*
 
 /**

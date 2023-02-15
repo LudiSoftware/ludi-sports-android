@@ -9,10 +9,11 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetBaseYsrObjects
-import io.usys.report.model.Service
-import io.usys.report.model.addToSession
-import io.usys.report.utils.loadInRealmListGrid
-import io.usys.report.utils.loadInRealmListHorizontal
+import io.usys.report.realm.model.Service
+import io.usys.report.realm.model.addToSession
+import io.usys.report.realm.loadInRealmListGrid
+import io.usys.report.realm.loadInRealmListHorizontal
+import io.usys.report.realm.sessionServices
 import io.usys.report.utils.*
 
 /**

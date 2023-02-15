@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import io.usys.report.R
-import io.usys.report.model.User
+import io.usys.report.realm.model.User
 
 /**
  * Created by ChazzCoin : December 2019.

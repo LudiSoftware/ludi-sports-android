@@ -20,10 +20,10 @@ import io.usys.report.R
 import io.usys.report.firebase.FirePaths
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireUploadToStorage
-import io.usys.report.model.Sport
-import io.usys.report.model.User
-import io.usys.report.model.getUserId
-import io.usys.report.model.userOrLogout
+import io.usys.report.realm.model.Sport
+import io.usys.report.realm.model.User
+import io.usys.report.realm.model.getUserId
+import io.usys.report.realm.model.userOrLogout
 import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope

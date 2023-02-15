@@ -1,10 +1,8 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
-import io.usys.report.utils.newUUID
 import java.io.Serializable
 
 /**

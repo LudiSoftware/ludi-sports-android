@@ -9,9 +9,10 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
-import io.usys.report.model.Coach
-import io.usys.report.model.Organization
-import io.usys.report.utils.loadInRealmList
+import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.loadInRealmList
+import io.usys.report.realm.toRealmList
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 

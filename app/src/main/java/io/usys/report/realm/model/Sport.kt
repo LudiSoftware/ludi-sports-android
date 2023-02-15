@@ -1,4 +1,4 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

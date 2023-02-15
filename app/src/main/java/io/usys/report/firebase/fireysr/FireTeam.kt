@@ -1,9 +1,9 @@
 package io.usys.report.firebase
 
 import io.realm.RealmList
-import io.usys.report.model.Team
-import io.usys.report.model.addObjectToSessionList
-import io.usys.report.model.toTeamObject
+import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.addObjectToSessionList
+import io.usys.report.realm.model.toTeamObject
 
 /** Teams Profiles */
 fun fireGetTeamsProfiles(teamIds: RealmList<String>) {

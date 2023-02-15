@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.widget.*
 import androidx.fragment.app.Fragment
 import io.usys.report.R
-import io.usys.report.model.*
+import io.usys.report.realm.model.Session
 
 
 /**

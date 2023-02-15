@@ -1,7 +1,7 @@
 package io.usys.report.firebase
 
-import io.usys.report.model.User
-import io.usys.report.model.getCoachByOwnerId
+import io.usys.report.realm.model.User
+import io.usys.report.realm.model.getCoachByOwnerId
 
 /**
  * USER Login Handling
@@ -16,17 +16,13 @@ import io.usys.report.model.getCoachByOwnerId
 inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User?) -> Unit) {
     firebaseDatabase { itFB ->
         itFB.child(FireTypes.USERS).child(coreFireUser.id).fairAddListenerForSingleValueEvent { itDb ->
-            var userProfile = itDb?.getValue(User::class.java)
+            var userProfile = itDb?.toObject<User>()
             userProfile?.let { itUpdatedUser ->
                 // DOES EXIST: Firebase User Was Found
-                coreFireUser.updateRealm(itUpdatedUser)
-                coreFireUser.saveToRealm()
-                val isCoach = coreFireUser.isCoachUser()
-                if (isCoach) {
-                    val tempCoach = getCoachByOwnerId(coreFireUser.id)
-                    if (tempCoach == null) {
-                        fireGetCoachProfileForSession(coreFireUser.id)
-                    }
+                coreFireUser.updateAndSave(itUpdatedUser)
+                // Check if is Coach.
+                if (coreFireUser.coach && coreFireUser.coachUser == null) {
+                    fireGetCoachProfileForSession(coreFireUser.id)
                 }
                 block(coreFireUser)
                 return@fairAddListenerForSingleValueEvent

@@ -8,12 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.firebase.fireGetCoachProfileForSession
 import io.usys.report.firebase.fireSyncUserWithDatabase
-import io.usys.report.firebase.fireSaveUserToFirebaseAsync
-import io.usys.report.model.Session
-import io.usys.report.model.User
-import io.usys.report.model.fromFirebaseToRealmUser
+import io.usys.report.realm.model.User
+import io.usys.report.realm.model.fromFirebaseToRealmUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
 import io.usys.report.utils.fairRegisterActivityResult
@@ -63,7 +60,7 @@ class ProviderLoginActivity : AppCompatActivity() {
     }
 
     //SAVE PROFILE
-    private fun saveProfileToFirebaseUI(user:User?) {
+    private fun saveProfileToFirebaseUI(user: User?) {
         if (user == null) launchActivity<AuthControllerActivity>()
         fireSyncUserWithDatabase(user!!) {
             launchActivity<AuthControllerActivity>()

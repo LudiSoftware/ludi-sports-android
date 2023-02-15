@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
-import io.usys.report.model.Service
-import io.usys.report.model.Location
+import io.usys.report.realm.model.Service
+import io.usys.report.realm.model.Location
 import io.usys.report.utils.inflate
 
 class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendarFragment) : RecyclerView.Adapter<FoodCalendarViewAdapter.InnerFoodCalendarViewHolder>() {

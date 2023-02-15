@@ -1,8 +1,8 @@
 package io.usys.report.firebase
 
 import com.google.firebase.database.DataSnapshot
-import io.usys.report.model.Review
-import io.usys.report.model.ReviewTemplate
+import io.usys.report.realm.model.Review
+import io.usys.report.realm.model.ReviewTemplate
 
 /** Review Template */
 

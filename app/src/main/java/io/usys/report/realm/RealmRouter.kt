@@ -1,11 +1,11 @@
-package io.usys.report.utils
+package io.usys.report.realm
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.*
-import io.usys.report.model.*
+import io.usys.report.realm.model.*
 import io.usys.report.ui.ysr.coach.CoachViewHolder
 import io.usys.report.ui.ysr.organization.OrgViewHolder
 import io.usys.report.ui.ysr.player.PlayerTinyViewHolder

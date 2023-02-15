@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.usys.report.databinding.DetailsServiceBinding
-import io.usys.report.model.*
+import io.usys.report.realm.model.Service
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.cast
 

@@ -1,4 +1,4 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject

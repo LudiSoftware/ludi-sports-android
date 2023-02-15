@@ -1,4 +1,4 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -71,7 +71,8 @@ fun createReviewTemplate() {
             createBaseQuestion(),
             createBaseQuestion("Does this coach work well with kids?"),
             createBaseQuestion("Does this coach work well with parents?"),
-            createBaseQuestion("Is this coach Chace Zanaty?"))
+            createBaseQuestion("Is this coach Chace Zanaty?")
+        )
     }
     fireAddUpdateCoachReviewDBAsync(revTemplate)
 }

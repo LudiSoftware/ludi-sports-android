@@ -2,9 +2,6 @@ package io.usys.report.firebase
 
 import com.google.firebase.database.*
 import io.realm.RealmList
-import io.usys.report.model.*
-import io.usys.report.model.Coach.Companion.ORDER_BY_ORGANIZATION
-import io.usys.report.utils.*
 
 /**
  * Created by ChazzCoin : October 2022.

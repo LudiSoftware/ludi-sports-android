@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
-import io.usys.report.model.*
 import io.usys.report.utils.inflate
 import io.realm.RealmList
+import io.usys.report.realm.model.Location
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.model.Session
 
 class LocDashViewAdapter(mContext: Context, var activity: Activity, var locationId: String)
     : RecyclerView.Adapter<LocDashViewAdapter.InnerDashViewHolder>() {

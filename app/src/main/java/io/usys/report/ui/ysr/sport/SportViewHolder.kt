@@ -1,19 +1,17 @@
 package io.usys.report.ui.ysr.sport
 
-import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
-import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetBaseYsrObjects
-import io.usys.report.model.Sport
-import io.usys.report.model.addToSession
-import io.usys.report.utils.loadInRealmList
+import io.usys.report.realm.model.Sport
+import io.usys.report.realm.model.addToSession
+import io.usys.report.realm.loadInRealmList
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.isNullOrEmpty
-import io.usys.report.utils.sessionSports
+import io.usys.report.realm.sessionSports
 
 /**
  * SPORT LIST VIEW CONTROLS

@@ -5,7 +5,9 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.model.Team
+import io.usys.report.realm.loadInRealmListGridArrangable
+import io.usys.report.realm.model.Team
+import io.usys.report.realm.sessionTeams
 import io.usys.report.utils.*
 
 /**

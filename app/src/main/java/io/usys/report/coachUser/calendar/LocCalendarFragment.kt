@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.*
 import io.usys.report.R
-import io.usys.report.model.Organization
-import io.usys.report.model.Location
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.model.Location
 import io.realm.RealmList
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter

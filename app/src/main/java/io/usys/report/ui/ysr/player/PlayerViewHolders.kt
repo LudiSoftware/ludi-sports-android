@@ -6,7 +6,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.model.Player
+import io.usys.report.realm.loadInRealmListGridArrangable
+import io.usys.report.realm.model.Player
+import io.usys.report.realm.sessionPlayers
 import io.usys.report.utils.*
 
 /**

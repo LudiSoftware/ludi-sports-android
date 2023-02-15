@@ -12,13 +12,13 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
-import io.usys.report.model.Organization
-import io.usys.report.model.Sport
-import io.usys.report.utils.loadInRealmList
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.model.Sport
+import io.usys.report.realm.loadInRealmList
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.cast
-import io.usys.report.utils.toRealmList
+import io.usys.report.realm.toRealmList
 
 /**
  * ORGANIZATION LIST VIEW CONTROLS

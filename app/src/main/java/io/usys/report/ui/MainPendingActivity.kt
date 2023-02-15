@@ -3,9 +3,6 @@ package io.usys.report.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import io.usys.report.R
-import io.usys.report.model.Session
-import io.usys.report.model.User
 
 /**
  * Created by ChazzCoin : December 2019.

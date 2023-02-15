@@ -8,7 +8,9 @@ import android.widget.RatingBar
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateReviewDBAsync
-import io.usys.report.model.*
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.model.Review
+import io.usys.report.realm.model.safeUserId
 import io.usys.report.ui.ysr.review.engine.calculateAverageRatingScore
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingCount
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingScore

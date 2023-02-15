@@ -1,11 +1,9 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
-import io.usys.report.utils.YsrMode
-import io.usys.report.utils.applyAndFireSave
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -13,16 +11,30 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : November 2022.
  */
-open class Team : RealmObject(), Serializable {
-
-    companion object {
-        const val ORDER_BY_ORGANIZATION = "organizationId"
-    }
-
+open class CoachNote : RealmObject(), Serializable {
     @PrimaryKey
     var id: String = newUUID()
+    var coachId: String = ""
     var dateCreated: String = getTimeStamp()
     var dateUpdated: String = getTimeStamp()
+    var message: String = ""
+}
+
+
+
+open class TryOut : RealmObject(), Serializable {
+
+    @PrimaryKey
+    var teamId: String = newUUID()
+    var dateCreated: String = getTimeStamp()
+    var dateUpdated: String = getTimeStamp()
+    var coachNotes: RealmList<CoachNote>? = null
+    var playersRegistered: RealmList<GenericPlayer>? = null
+    var status: String = "active"
+    var mode: String = "viewonly"
+
+
+
     var headCoachId: String = UNASSIGNED
     var headCoachName: String = UNASSIGNED
     var coachIds: RealmList<String>? = null
@@ -32,7 +44,6 @@ open class Team : RealmObject(), Serializable {
     var organizationId: String = UNASSIGNED
     var organizationName: String = UNASSIGNED
     var organizationIds: RealmList<String>? = null
-    var roster: RealmList<String>? = null
     var name: String = UNASSIGNED
     var sport: String = "soccer"
     var year: String = UNASSIGNED
@@ -43,19 +54,17 @@ open class Team : RealmObject(), Serializable {
     var subType: String = UNASSIGNED
     var details: String = UNASSIGNED
     var isFree: Boolean = false
-    var mode: String = "viewonly"
-    var status: String = "active"
-    var hasReview: Boolean = false
-    var reviews: RealmList<String>? = null
-    var ratingScore: String = UNASSIGNED
-    var ratingCount: String = UNASSIGNED
-    var reviewAnswerCount: String = UNASSIGNED
-    var reviewDetails: String = UNASSIGNED
+
+
+    //todo: save tryout to firebase/realm
+    //todo: create note
+    //todo: register player
+
 
 }
 
 
-fun HashMap<String, Any>?.toTeamObject(): Team {
+fun HashMap<String, Any>?.toTryOutObject(): Team {
     val team = Team()
     this?.let {
         team.id = this["id"] as String

@@ -1,4 +1,4 @@
-package io.usys.report.model
+package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -7,7 +7,6 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.utils.*
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
-import org.json.JSONObject
 import java.io.Serializable
 
 /**

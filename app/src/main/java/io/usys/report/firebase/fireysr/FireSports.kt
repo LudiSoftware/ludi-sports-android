@@ -3,7 +3,7 @@ package io.usys.report.firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import io.usys.report.model.Sport
+import io.usys.report.realm.model.Sport
 import io.usys.report.utils.log
 
 /**

@@ -12,11 +12,12 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetReviewTemplateQuestionsAsync
-import io.usys.report.model.*
+import io.usys.report.realm.model.*
 import io.usys.report.ui.onClickReturnEmpty
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.utils.loadInRealmListCallback
+import io.usys.report.realm.loadInRealmListCallback
+import io.usys.report.realm.toRealmList
 import io.usys.report.ui.ysr.review.engine.*
 import io.usys.report.utils.*
 

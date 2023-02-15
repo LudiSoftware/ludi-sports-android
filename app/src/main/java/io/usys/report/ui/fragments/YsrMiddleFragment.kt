@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import io.realm.RealmObject
-import io.usys.report.model.User
-import io.usys.report.model.userOrLogout
+import io.usys.report.realm.model.User
+import io.usys.report.realm.model.userOrLogout
 
 /**
  * Created by ChazzCoin : October 2022.

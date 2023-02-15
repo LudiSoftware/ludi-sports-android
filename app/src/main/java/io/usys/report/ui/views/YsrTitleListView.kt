@@ -8,7 +8,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.model.Sport
+import io.usys.report.realm.model.Sport
 import io.usys.report.ui.ysr.organization.setupOrganizationList
 import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.ui.ysr.sport.setupSportList

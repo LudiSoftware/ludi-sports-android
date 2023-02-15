@@ -7,11 +7,14 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
-import io.usys.report.model.*
+import io.usys.report.realm.model.Session
+import io.usys.report.realm.model.User
+import io.usys.report.realm.model.safeUser
 import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.ysr.MasterUserActivity
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
+import io.usys.report.utils.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import java.util.concurrent.ExecutorService

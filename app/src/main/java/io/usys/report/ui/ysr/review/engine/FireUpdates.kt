@@ -2,7 +2,7 @@ package io.usys.report.ui.ysr.review.engine
 
 import com.google.firebase.database.DataSnapshot
 import io.usys.report.firebase.*
-import io.usys.report.model.Review
+import io.usys.report.realm.model.Review
 
 // Verified
 inline fun getOrgRatingAsync(objId: String, isScore:Boolean=false, crossinline block: DataSnapshot?.() -> Unit) {

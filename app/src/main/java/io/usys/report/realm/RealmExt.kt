@@ -1,15 +1,18 @@
-package io.usys.report.utils
+package io.usys.report.realm
 
 import com.google.firebase.database.DataSnapshot
-import io.usys.report.model.*
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.fireForceGetNameOfRealmObject
-import io.usys.report.ui.AuthControllerActivity
+import io.usys.report.realm.model.*
 import io.usys.report.ui.AuthControllerActivity.Companion.realmThread
+import io.usys.report.utils.cast
+import io.usys.report.utils.getAttribute
+import io.usys.report.utils.isNullOrEmpty
+import io.usys.report.utils.main
 import kotlinx.coroutines.launch
 
 /**

@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
-import io.usys.report.model.Session
-import io.usys.report.model.Sport
-import io.usys.report.model.getCoachByOwnerId
-import io.usys.report.model.safeUser
-import io.usys.report.ui.fragments.MyBottomSheetDrawerFragment
+import io.usys.report.realm.model.Sport
+import io.usys.report.realm.model.getCoachByOwnerId
+import io.usys.report.realm.model.safeUser
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.utils.log
-import io.usys.report.utils.session
 
 
 /**
@@ -39,7 +36,7 @@ class DashboardHomeFragment : YsrFragment() {
         setupOnClickListeners()
 
         safeUser {
-            if (it.isCoachUser()) {
+            if (it.coach) {
                 val i = getCoachByOwnerId(it.id)
                 log(i)
             }

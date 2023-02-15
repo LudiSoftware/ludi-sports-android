@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
-import io.usys.report.model.Organization
-import io.usys.report.model.Session
+import io.usys.report.realm.model.Organization
+import io.usys.report.realm.model.Session
 import io.usys.report.utils.inflate
 import io.realm.RealmList
 
