@@ -9,6 +9,7 @@ import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.model.Session
 import io.usys.report.model.Sport
+import io.usys.report.model.getCoachByOwnerId
 import io.usys.report.model.safeUser
 import io.usys.report.ui.fragments.MyBottomSheetDrawerFragment
 import io.usys.report.ui.fragments.YsrFragment
@@ -40,7 +41,7 @@ class DashboardHomeFragment : YsrFragment() {
         safeUser {
             if (it.isCoachUser()) {
                 //todo: SAVE COACH OBJECT EXACTLY LIKE A USER OBJECT...
-                val i = Session.userCoach
+                val i = getCoachByOwnerId(it.id)
                 log(i)
             }
         }

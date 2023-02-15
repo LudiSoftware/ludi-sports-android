@@ -1,7 +1,6 @@
 package io.usys.report.model
 
 import android.app.Activity
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.Realm
@@ -36,13 +35,8 @@ open class Session : RealmObject() {
     companion object {
         //UserController
         private const val WAITING = "waiting"
-
         /** -> Controller Methods <- >  */
         private const val sessionId = 1
-        var user: User? = null
-        var userCoach: Coach? = null
-//        var userParent: Parent? = Parent()
-//        var userPlayer: Player? = Player()
 
         //Class Variables
         private var mRealm = Realm.getDefaultInstance()
@@ -62,81 +56,19 @@ open class Session : RealmObject() {
                 return field
             }
             private set
-
-        fun updateSession(user: User?): Session? {
-            if (mRealm == null) { mRealm = Realm.getDefaultInstance() }
-            //Guest guest = SessionsController.getSession().getGuest();
-            val session = session
-            Log.e("loggedUser", "_wait__")
-            session { itSession ->
-                executeRealm { it.insertOrUpdate(itSession) }
-            }
-            return session
+        fun isSessionAlreadyCreated(sessionId: String): Boolean {
+            val realm = Realm.getDefaultInstance()
+            val existingSession = realm.where(Session::class.java).equalTo("id", sessionId.toInt()).findFirst()
+            val isCreated = existingSession != null
+            realm.close()
+            return isCreated
         }
-        /**
-         * USER BASE
-         */
-
-        fun createUserObject(userId:String) {
-            executeRealm { itRealm ->
-                itRealm.createObject(User::class.java, userId)
-            }
-        }
-
-        fun getCreateUserById(id:String) : User? {
-            var user: User? = null
-            try {
-                user = realm().where(User::class.java).equalTo("id", id).findFirst()
-                return user
-            } catch (e: Exception) { e.printStackTrace() }
-            return user
-        }
-
-        fun updateUser(newUser: User) {
-            try {
-                var user = realm().where(User::class.java).equalTo("id", newUser.id).findFirst()
-                user?.let { itRealmUser ->
-                    if (!itRealmUser.isIdentical(newUser)) {
-                        itRealmUser.updateUserFields(newUser)
-                        itRealmUser.saveToRealm()
-                        return
-                    }
-                }
-                user = newUser
-                user.saveToRealm()
-            } catch (e: Exception) { e.printStackTrace() }
-        }
-
-        /**
-         * USER COACH
-         */
-        fun getCoachByOwnerId(ownerId:String) : Coach? {
-            var coach: Coach? = null
-            try {
-                coach = realm().where(Coach::class.java).equalTo("ownerId", ownerId).findFirst()
-                return coach
-            } catch (e: Exception) { e.printStackTrace() }
-            return coach
-        }
-        fun updateCoach(ownerId:String, newCoach: Coach) {
-            try {
-                var coach = realm().where(Coach::class.java).equalTo("ownerId", ownerId).findFirst()
-                coach?.let { itOriginCoach ->
-                    if (!itOriginCoach.isIdentical(newCoach)) {
-                        itOriginCoach.update(newCoach)
-                        itOriginCoach.saveToRealm()
-                        return
-                    }
-                }
-                coach = newCoach
-                coach.saveToRealm()
-            } catch (e: Exception) { e.printStackTrace() }
-        }
-
-        //CORE ->
+        //Must Have.
         fun createObjects() {
             executeRealm { itRealm ->
-//                itRealm.createObject(Session::class.java, sessionId)
+                if (!isSessionAlreadyCreated("1")) {
+                    itRealm.createObject(Session::class.java, sessionId)
+                }
                 itRealm.createObject(Sport::class.java, newUUID())
                 itRealm.createObject(Organization::class.java, newUUID())
                 itRealm.createObject(Review::class.java, newUUID())
@@ -144,24 +76,9 @@ open class Session : RealmObject() {
                 itRealm.createObject(League::class.java, newUUID())
                 itRealm.createObject(Location::class.java, newUUID())
                 itRealm.createObject(Team::class.java, newUUID())
+//                itRealm.createObject(Coach::class.java)
             }
         }
-        fun createSession() {
-            session {
-                return
-            }
-            val realm = Realm.getDefaultInstance()
-            if (realm.where(Session::class.java) == null){
-                realm.executeTransaction { itRealm ->
-                    itRealm.createObject(Session::class.java, sessionId)
-                    val temp = Session().apply {
-                        this.services = RealmList()
-                    }
-                    itRealm.insertOrUpdate(temp)
-                }
-            }
-        }
-
 
         //CORE -> LOG CURRENT USER OUT
         fun deleteAllRealmObjects() {
@@ -226,21 +143,6 @@ open class Session : RealmObject() {
             }
         }
 
-        //ADD ORGANIZATION, this should be safe
-        fun addOrganization(organization: Organization?) {
-            session { itSession ->
-                executeRealm {
-                    itSession.organizations?.add(organization)
-                }
-            }
-        }
-        fun addService(service: Service?) {
-            session { itSession ->
-                executeRealm {
-                    itSession.services?.add(service)
-                }
-            }
-        }
         fun addServices(services: RealmList<Service>) {
             session { itSession ->
                 for (item in services) {
@@ -357,8 +259,6 @@ inline fun <reified T> addObjectToSessionList(objectToAdd: T) {
 inline fun <reified T> T.getClassName(): String {
     return T::class.java.simpleName
 }
-
-
 
 inline fun <reified T> RealmList<T>?.addToSession() {
     this?.first()?.let {

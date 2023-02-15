@@ -219,11 +219,11 @@ class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>) :
         val toColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, adapter.gridLayoutManager!!.spanCount)
         if (fromColumn == toColumn) {
             // Move the item within the same column
-            executeRealm { Collections.swap(adapter.realmList, fromPosition, toPosition) }
+            executeRealmOnMain { Collections.swap(adapter.realmList, fromPosition, toPosition) }
             adapter.notifyItemMoved(fromPosition, toPosition)
         } else {
             // Move the item to a different column
-            executeRealm { Collections.swap(adapter.realmList, fromPosition, toPosition) }
+            executeRealmOnMain { Collections.swap(adapter.realmList, fromPosition, toPosition) }
             adapter.notifyItemChanged(fromPosition)
             adapter.notifyItemChanged(toPosition)
         }

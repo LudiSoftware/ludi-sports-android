@@ -8,8 +8,6 @@ import com.google.firebase.auth.FirebaseAuth
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.databinding.ActivityLoginBinding
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
-import io.usys.report.model.Session
-import io.usys.report.model.Session.Companion.updateUser
 import io.usys.report.model.User
 import io.usys.report.model.fromFirebaseToRealmUser
 import io.usys.report.utils.*
@@ -51,10 +49,9 @@ class YsrLoginActivity : AppCompatActivity() {
     private fun saveProfileToFirebase(user:User?) {
         fireSaveUserToFirebaseAsync(user) {
             log("Profile Updated! $it")
-            if (user != null) {
-                updateUser(user)
-                Session.updateSession(user)
-            }
+//            if (user != null) {
+//                updateUser(user)
+//            }
             launchActivity<AuthControllerActivity>()
         }
     }

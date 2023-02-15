@@ -166,12 +166,16 @@ inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User
             var userProfile = itDb?.getValue(User::class.java)
             userProfile?.let { itUpdatedUser ->
                 // DOES EXIST: Firebase User Was Found
-                Session.updateUser(itUpdatedUser)
-                val isCoach = itUpdatedUser.isCoachUser()
+                coreFireUser.updateRealm(itUpdatedUser)
+                coreFireUser.saveToRealm()
+                val isCoach = coreFireUser.isCoachUser()
                 if (isCoach) {
-                    fireGetCoachProfileForSession(itUpdatedUser.id)
+                    val tempCoach = getCoachByOwnerId(coreFireUser.id)
+                    if (tempCoach == null) {
+                        fireGetCoachProfileForSession(coreFireUser.id)
+                    }
                 }
-                block(userProfile)
+                block(coreFireUser)
                 return@fairAddListenerForSingleValueEvent
             }
             // DOES NOT EXIST: Firebase User Was Not Found
@@ -192,9 +196,18 @@ fun fireGetCoachProfileForSession(userId:String) {
     firebaseDatabase {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
-                val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
-                val coach = Session.getCoachByOwnerId(userId)
-                coach?.update(coachObject) ?: coachObject.saveToRealm()
+                executeRealm {
+                    val coachObject = ds?.toHashMapWithRealmLists().toCoachObject()
+                    val coach = getCoachByOwnerId(userId)
+                    coach?.let {
+                        it.update(coachObject)
+                        it.saveToRealm()
+                    } ?: run {
+                        coachObject.saveToRealm()
+                    }
+                    log("Coach Updated")
+                }
+
             }
     }
 }

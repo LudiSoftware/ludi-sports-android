@@ -104,6 +104,13 @@ fun fireSaveUserToFirebaseAsync(user:User?) {
         it.child(FireTypes.USERS).child(user?.id ?: "unknown").setValue(user)
     }
 }
+fun fireSaveCoachToFirebaseAsync(coach: Coach?) {
+    if (coach.isNullOrEmpty()) return
+    if (coach?.ownerId.isNullOrEmpty()) return
+    firebaseDatabase {
+        it.child(FireTypes.COACHES).child(coach?.ownerId ?: "unknown").setValue(coach)
+    }
+}
 inline fun fireSaveUserToFirebaseAsync(user:User?, crossinline block: (Any?) -> Unit) {
     if (user.isNullOrEmpty()) return
     if (user?.id.isNullOrEmpty()) return

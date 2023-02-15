@@ -8,6 +8,9 @@ import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.fireForceGetNameOfRealmObject
+import io.usys.report.ui.AuthControllerActivity
+import io.usys.report.ui.AuthControllerActivity.Companion.realmThread
+import kotlinx.coroutines.launch
 
 /**
  * Created by ChazzCoin : December 2019.
@@ -57,24 +60,24 @@ fun realm() : Realm {
     return Realm.getDefaultInstance()
 }
 
+inline fun <reified T: RealmObject> createRealmObject(id:String): T {
+    return realm().createObject(T::class.java, id)
+}
+
 //LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
 inline fun executeRealm(crossinline block: (Realm) -> Unit) {
-    main {
+    realm().executeTransaction { block(it) }
+}
+
+inline fun executeRealmOnRealmThread(crossinline block: (Realm) -> Unit) {
+    realmThread.launch {
         realm().executeTransaction { block(it) }
     }
 }
-//LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
-inline fun executeInsertOrUpdateRealm(crossinline block: (Realm) -> RealmObject) {
+
+inline fun executeRealmOnMain(crossinline block: (Realm) -> Unit) {
     main {
-        realm().executeTransaction {
-            val obj = block(it)
-            it.insertOrUpdate(obj)
-        }
-    }
-}
-fun RealmObject.insertOrUpdateRealm() {
-    executeRealm {
-        it.insertOrUpdate(this)
+        realm().executeTransaction { block(it) }
     }
 }
 

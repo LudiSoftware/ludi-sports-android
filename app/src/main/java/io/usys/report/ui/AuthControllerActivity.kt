@@ -7,15 +7,15 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.usys.report.BuildConfig
 import io.usys.report.R
-import io.usys.report.firebase.coreFirebaseUserUid
-import io.usys.report.firebase.fireGetCoachProfileForSession
-import io.usys.report.firebase.fireSyncUserWithDatabase
 import io.usys.report.model.*
 import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.ysr.MasterUserActivity
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
-import io.usys.report.utils.log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 /**
@@ -30,12 +30,15 @@ class AuthControllerActivity : AppCompatActivity()  {
         var HAS_SIGNED_IN = false
         var USER_ID = ""
         var USER_AUTH = ""
+        private val singleThreadExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+        val realmThread = CoroutineScope(singleThreadExecutor.asCoroutineDispatcher())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
-
+        //Initialize
+        initializeDependencies()
     }
 
     override fun onStart() {
@@ -64,13 +67,9 @@ class AuthControllerActivity : AppCompatActivity()  {
     // https://firebasestorage.googleapis.com/v0/b/usysr-a16ef.appspot.com/o/users%2FtnmjTR7r1HPwIaBb2oXrDrwXT842%2Fprofile%2Fprofile_image.jpg?alt=media&token=c5715968-19f0-4dee-b65a-3c722cafbfc9
     private fun verifyUserLogin() {
         safeUser { itSafeUser ->
-            fireSyncUserWithDatabase(itSafeUser) { itUpdatedUser ->
-                navigateUser(itUpdatedUser)
-            }
+            navigateUser(itSafeUser)
             return
         }
-        //Initialize
-        initializeDependencies()
         launchActivity<ProviderLoginActivity>()
     }
 

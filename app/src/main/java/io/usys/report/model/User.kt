@@ -4,10 +4,8 @@ import android.app.Activity
 import com.google.firebase.auth.FirebaseUser
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
-import io.usys.report.firebase.fireUpdateSingleValueDBAsync
 import io.usys.report.utils.*
 import io.usys.report.utils.AuthTypes.Companion.BASIC_USER
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
@@ -67,23 +65,29 @@ open class User : RealmObject(), Serializable {
         return this
     }
 
-    fun updateUserFields(updatedUser: User) {
-        this.username = updatedUser.username
-        this.name = updatedUser.name
-        this.auth = updatedUser.auth
-        this.type = updatedUser.type
-        this.email = updatedUser.email
-        this.phone = updatedUser.phone
-        this.organization = updatedUser.organization
-        this.organizationId = updatedUser.organizationId
-        this.visibility = updatedUser.visibility
-        this.photoUrl = updatedUser.photoUrl
-        this.emailVerified = updatedUser.emailVerified
-        this.parent = updatedUser.parent
-        this.player = updatedUser.player
-        this.coach = updatedUser.coach
-        this.dateUpdated = getTimeStamp()
+    fun updateRealm(updatedUser: User) {
+        if (this.isIdentical(updatedUser)) return
+        executeRealm {
+            this.apply {
+                this.username = updatedUser.username
+                this.name = updatedUser.name
+                this.auth = updatedUser.auth
+                this.type = updatedUser.type
+                this.email = updatedUser.email
+                this.phone = updatedUser.phone
+                this.organization = updatedUser.organization
+                this.organizationId = updatedUser.organizationId
+                this.visibility = updatedUser.visibility
+                this.photoUrl = updatedUser.photoUrl
+                this.emailVerified = updatedUser.emailVerified
+                this.parent = updatedUser.parent
+                this.player = updatedUser.player
+                this.coach = updatedUser.coach
+                this.dateUpdated = getTimeStamp()
+            }
+        }
     }
+
 }
 
 fun FirebaseUser?.fromFirebaseToRealmUser() : User {
@@ -93,7 +97,7 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
     val name = this?.displayName ?: "UNKNOWN"
     val photoUrl = this?.photoUrl ?: "UNKNOWN"
     val emailVerified = this?.isEmailVerified ?: false
-    Session.createUserObject(uid)
+    createUserObject(uid)
     val user = User()
     user.apply {
         this.id = uid
@@ -105,39 +109,48 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
     return user
 }
 
-inline fun User.applyToRealm(crossinline block: (User) -> Unit) {
-    executeInsertOrUpdateRealm {
-        this.apply {
-            block(this)
-        }
-    }
-}
-
-fun getMasterUser(): User? {
-    val uid = coreFirebaseUserUid() ?: return null
-    return Session.getCreateUserById(uid)
-}
 
 inline fun safeUser(block: (User) -> Unit) {
-    val user = getMasterUser()
+    val user = realmUser()
     user?.let {
         if (it.id.isNullOrEmpty()) return@let
         block(it)
     }
 }
+fun realmUser(): User? {
+    val uid = coreFirebaseUserUid() ?: return null
+    return getRealmUserById(uid)
+}
+fun getRealmUserById(id:String) : User? {
+    var user: User? = null
+    try {
+        user = queryForUser(id)
+        return user
+    } catch (e: Exception) { e.printStackTrace() }
+    return user
+}
+
+fun queryForUser(userId:String): User? {
+    return realm().where(User::class.java).equalTo("id", userId).findFirst()
+}
+fun createUserObject(userId:String) {
+    executeRealm { itRealm ->
+        itRealm.createObject(User::class.java, userId)
+    }
+}
 
 inline fun safeUserId(crossinline block: (String) -> Unit) {
-    getMasterUser()?.id?.let { itId ->
+    realmUser()?.id?.let { itId ->
         block(itId)
     }
 }
 
 fun getUserId(): String? {
-    return getMasterUser()?.id
+    return realmUser()?.id
 }
 
 inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
-    val user = getMasterUser()
+    val user = realmUser()
     user?.let {
         block(it)
     } ?: run {
