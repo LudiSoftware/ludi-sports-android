@@ -23,7 +23,6 @@ open class Team : RealmObject(), Serializable {
 
     @PrimaryKey
     var teamId: String = newUUID()
-    var base: YsrRealmObject? = YsrRealmObject()
     var teamName: String? = null
     var headCoachId: String? = null
     var headCoachName: String? = null
@@ -37,6 +36,20 @@ open class Team : RealmObject(), Serializable {
     var gender: String? = null
     var hasReview: Boolean = false
     var reviews: ReviewBundle? = null
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 
 }
 

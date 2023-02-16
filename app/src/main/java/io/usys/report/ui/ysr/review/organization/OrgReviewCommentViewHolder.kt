@@ -34,7 +34,7 @@ class OrgReviewCommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
 
     fun bind(review: Review?) {
         review?.let {
-            cardReviewTxtDateCreated?.text = it.base?.dateCreated
+            cardReviewTxtDateCreated?.text = it.dateCreated
             cardReviewTxtComment?.text = it.comment
         }
     }

@@ -1,8 +1,8 @@
 package io.usys.report.firebase
 
-import io.usys.report.realm.model.User
-import io.usys.report.realm.model.getCoachByOwnerId
+import io.usys.report.realm.model.users.User
 import io.usys.report.realm.updateFieldsAndSave
+
 
 /**
  * USER Login Handling

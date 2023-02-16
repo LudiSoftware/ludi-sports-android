@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.realm.model.Sport
 import io.usys.report.realm.model.getCoachByOwnerId
-import io.usys.report.realm.model.safeUser
+import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment

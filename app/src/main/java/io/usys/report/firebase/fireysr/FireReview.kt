@@ -53,7 +53,7 @@ fun Review.fireAddUpdateReviewDBAsync(block: ((Any) -> Unit)? = null): Boolean {
 fun fireAddUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
     var result = false
     firebaseDatabase { database ->
-        database.child(FireTypes.REVIEW_TEMPLATES).child(obj.base?.type!!).child(obj.id)
+        database.child(FireTypes.REVIEW_TEMPLATES).child(obj.type!!).child(obj.id)
             .setValue(obj)
             .addOnSuccessListener {
                 //TODO("HANDLE SUCCESS")

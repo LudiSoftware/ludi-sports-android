@@ -20,7 +20,6 @@ open class Service : RealmObject() {
 
     @PrimaryKey
     var id: String = newUUID() //UUID
-    var base: YsrRealmObject? = YsrRealmObject()
     var ownerId: String? = null
     var ownerName: String? = null
     var timeOfService: String? = null

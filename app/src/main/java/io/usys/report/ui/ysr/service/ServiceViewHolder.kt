@@ -47,7 +47,7 @@ class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(service: Service?) {
         service?.let {
-            cardServiceTxtTitle?.text = it.base?.name
+            cardServiceTxtTitle?.text = it.name
             cardServiceTxtCoachName?.text = it.ownerName
             cardServiceTxtTime?.text = it.timeOfService
 //            cardServiceTxtLocation?.text = it.address?.addressOne

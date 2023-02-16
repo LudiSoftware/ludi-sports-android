@@ -30,6 +30,6 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
 
     fun bind(player: Player?) {
-        player?.let { txtItemPlayerName?.text = it.base?.name }
+        player?.let { txtItemPlayerName?.text = it.name }
     }
 }

@@ -9,6 +9,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFireLogoutAsync
 import io.usys.report.realm.executeRealm
+import io.usys.report.realm.model.users.User
 import io.usys.report.realm.realm
 import io.usys.report.realm.session
 import io.usys.report.realm.sessionSports

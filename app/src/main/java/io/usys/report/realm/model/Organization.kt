@@ -6,7 +6,6 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.utils.*
-import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
 import java.io.Serializable
 
 /**
@@ -24,7 +23,6 @@ open class Organization : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String = newUUID()
-    var base: YsrRealmObject? = YsrRealmObject()
     var ratingScore: String? = null
     var ratingCount: String? = null
     var officeHours: String? = null
@@ -38,7 +36,7 @@ open class Organization : RealmObject(), Serializable {
     var reviewIds: RealmList<String>? = null
     var leagueRefs: RealmList<LeagueRef>? = null
     var regionRefs: RealmList<String>? = null
-    var locationRefs: RealmList<String>? = null
+    var locationRefs: RealmList<LocationRef>? = null
     var imgUris: RealmList<String>? = null
     var fromGoogle: Boolean = false
     var google_place_category: String? = null

@@ -8,6 +8,8 @@ import io.realm.RealmObject
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.fireForceGetNameOfRealmObject
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.User
+import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.ui.AuthControllerActivity.Companion.realmThread
 import io.usys.report.utils.cast
 import io.usys.report.utils.getAttribute

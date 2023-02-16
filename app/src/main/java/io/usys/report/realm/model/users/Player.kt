@@ -27,7 +27,6 @@ open class Player : RealmObject() {
 
     @PrimaryKey
     var playerId: String = newUUID()
-    var base: YsrRealmObject? = YsrRealmObject()
     var teamRef: TeamRef? = TeamRef()
     var rank: Int = 0
     var number: Int = 0

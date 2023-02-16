@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.usys.report.R
 import io.usys.report.realm.model.Organization
-import io.usys.report.realm.model.User
+import io.usys.report.realm.model.users.User
 import io.usys.report.utils.*
 
 /**

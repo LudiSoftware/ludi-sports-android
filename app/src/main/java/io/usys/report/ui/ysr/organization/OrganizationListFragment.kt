@@ -19,9 +19,6 @@ class OrganizationListFragment : YsrMiddleFragment() {
     private var _binding: FragmentOrgListBinding? = null
     private val binding get() = _binding!!
 
-//    private var hasBeenLoaded = false
-//    private var organizationList: RealmList<Organization>? = RealmList() // -> ORIGINAL LIST
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentOrgListBinding.inflate(inflater, container, false)
         rootView = binding.root

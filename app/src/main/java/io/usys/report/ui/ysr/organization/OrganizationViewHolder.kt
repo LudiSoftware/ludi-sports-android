@@ -49,7 +49,7 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var cardRatingBarCount: TextView = includeReviewCard.bind(R.id.cardRatingTxtCount)
 
     fun bind(org: Organization?) {
-        txtOrgName?.text = org?.base?.name
+        txtOrgName?.text = org?.name
         txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
         txtLeague?.text = org?.leagueRefs?.first()?.leagueName ?: "Alabama State League"
         cardRatingBar.rating = org?.ratingScore?.toFloat() ?: 0.0F

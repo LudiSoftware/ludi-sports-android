@@ -28,13 +28,26 @@ open class Review : RealmObject() {
 
     @PrimaryKey
     var id: String = newUUID()
-    var base: YsrRealmObject? = YsrRealmObject()
     var creatorId: String? = null
     var receiverId: String? = null
     var sportName: String? = null
     var score: String = "0" // score 1 or 5
     var questions: RealmList<Question>? = null
     var comment: String? = ""
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 }
 
 open class ReviewTemplate : RealmObject() {
@@ -47,12 +60,25 @@ open class ReviewTemplate : RealmObject() {
 
     @PrimaryKey
     var id: String = "master"
-    var base: YsrRealmObject? = YsrRealmObject()
     var sportName: String = ""
     var topScore: String = "5" // score 1 or 5
     var lowScore: String = "0"
     var questions: RealmList<Question>? = null
     var commentsEnabled: Boolean = false
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 }
 
 fun getQuestionScore(letter:String?) : String {

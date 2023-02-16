@@ -9,8 +9,8 @@ import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.firebase.fireSyncUserWithDatabase
-import io.usys.report.realm.model.User
-import io.usys.report.realm.model.fromFirebaseToRealmUser
+import io.usys.report.realm.model.users.User
+import io.usys.report.realm.model.users.fromFirebaseToRealmUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
 import io.usys.report.utils.fairRegisterActivityResult

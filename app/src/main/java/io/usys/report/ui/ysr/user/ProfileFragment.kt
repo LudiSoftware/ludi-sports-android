@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import io.usys.report.R
 import io.usys.report.databinding.ProfileUserBinding
 import io.usys.report.realm.model.Coach
-import io.usys.report.realm.model.safeUser
+import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.toUri

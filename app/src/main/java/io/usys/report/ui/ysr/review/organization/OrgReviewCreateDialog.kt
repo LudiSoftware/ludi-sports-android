@@ -10,7 +10,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateReviewDBAsync
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Review
-import io.usys.report.realm.model.safeUserId
+import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.ui.ysr.review.engine.calculateAverageRatingScore
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingCount
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingScore
@@ -52,7 +52,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
                 this.comment = commentEditTxt.text.toString()
                 this.score = newOverallAvgScore
                 this.sportName = SPORT
-                this.base?.type = TYPE
+                this.type = TYPE
             }.fireAddUpdateReviewDBAsync()
         }
     }

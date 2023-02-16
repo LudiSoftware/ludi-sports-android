@@ -3,6 +3,8 @@ package io.usys.report.firebase
 import com.google.firebase.database.DataSnapshot
 import io.usys.report.realm.executeRealm
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.User
+import io.usys.report.realm.model.users.safeUser
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 

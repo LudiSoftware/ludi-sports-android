@@ -1,4 +1,4 @@
-package io.usys.report.realm.model
+package io.usys.report.realm.model.users
 
 import android.app.Activity
 import com.google.firebase.auth.FirebaseUser
@@ -7,6 +7,9 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.realm.executeRealm
+import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.Player
+import io.usys.report.realm.model.Session
 import io.usys.report.realm.realm
 import io.usys.report.utils.*
 import io.usys.report.utils.AuthTypes.Companion.BASIC_USER

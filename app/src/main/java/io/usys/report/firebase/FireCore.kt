@@ -8,13 +8,12 @@ import com.google.firebase.auth.*
 import com.google.firebase.database.*
 import io.realm.RealmList
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.User
 import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
  */
-
-
 
 class FireTypes {
     companion object {
@@ -92,11 +91,6 @@ fun coreFireChangeUserPassword(newPassword:String) {
 fun coreFireSendResetUserPasswordEmail(newPassword:String) {
     //todo
 }
-
-//fun coreAuthenticateUser(email:String, password:String) {
-//    val credential = EmailAuthProvider.getCredential(email, "password1234")
-//    GoogleAuthProvider.getCredential(email, password)
-//}
 
 fun Any?.fireGetNameOfRealmObject(): String? {
     this?.let {
