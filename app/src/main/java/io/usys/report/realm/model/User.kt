@@ -38,6 +38,7 @@ open class User : RealmObject(), Serializable {
     var player: Boolean = false
     var coach: Boolean = false
     var coachUser: Coach? = null
+    var playerUser: Player? = null
 
     fun isParentUser() : Boolean {
         return this.parent

@@ -11,6 +11,11 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : November 2022.
  */
+
+open class TeamRef : RealmObject(), Serializable {
+    var teamId: String? = null
+    var teamName: String? = null
+}
 open class Team : RealmObject(), Serializable {
 
     companion object {

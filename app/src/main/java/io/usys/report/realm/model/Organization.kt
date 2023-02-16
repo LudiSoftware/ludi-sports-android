@@ -12,7 +12,10 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
-
+open class OrganizationRef : RealmObject(), Serializable {
+    var organizationId: String? = null
+    var organizationName: String? = null
+}
 open class Organization : RealmObject(), Serializable {
 
     companion object {

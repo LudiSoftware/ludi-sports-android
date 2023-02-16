@@ -10,6 +10,16 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
+
+
+
+open class ReviewBundle : RealmObject(), Serializable {
+    var reviewIds: RealmList<String>? = null
+    var ratingScore: String? = null //"0"
+    var ratingCount: String? = null //"0"
+    var reviewAnswerCount: String? = null //"0"
+    var reviewDetails: String? = null
+}
 open class Review : RealmObject(), Serializable {
 
     companion object {

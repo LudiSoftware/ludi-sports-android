@@ -30,9 +30,6 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     companion object {
         var HAS_INITIALIZED = false
-        var HAS_SIGNED_IN = false
-        var USER_ID = ""
-        var USER_AUTH = ""
         private val singleThreadExecutor: ExecutorService = Executors.newSingleThreadExecutor()
         val realmThread = CoroutineScope(singleThreadExecutor.asCoroutineDispatcher())
     }

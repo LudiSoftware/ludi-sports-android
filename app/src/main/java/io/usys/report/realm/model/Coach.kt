@@ -12,6 +12,10 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
+open class CoachRef : RealmObject(), Serializable {
+    var coachId: String? = null
+    var coachName: String? = null
+}
 open class Coach : RealmObject(), Serializable {
 
     companion object {
@@ -42,19 +46,15 @@ open class Coach : RealmObject(), Serializable {
     var reviewAnswerCount: String = ""
     var reviewDetails: String = ""
 
-//    fun getCityStateZip(): String {
-//        return "$city, $state $zip"
-//    }
-
     fun isIdenticalCoach(userTwo: Coach): Boolean {
         if (this == userTwo) return true
         return false
     }
 
-//    fun saveToFirebase(): Coach {
-//        fireSaveCoachToFirebaseAsync(this)
-//        return this
-//    }
+    fun saveToFirebase(): Coach {
+        fireSaveCoachToFirebaseAsync(this)
+        return this
+    }
 
     fun saveCoachToRealm(): Coach {
         executeRealm {

@@ -29,7 +29,7 @@ open class TryOut : RealmObject(), Serializable {
     var dateCreated: String = getTimeStamp()
     var dateUpdated: String = getTimeStamp()
     var coachNotes: RealmList<CoachNote>? = null
-    var playersRegistered: RealmList<GenericPlayer>? = null
+    var playersRegistered: RealmList<Player>? = null
     var status: String = "active"
     var mode: String = "viewonly"
 
