@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.realm.model.Sport

@@ -6,6 +6,14 @@ import io.usys.report.realm.model.*
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 
+// -> Save
+fun fireSaveProfileToFirebaseAsync(id:String, realmObject: Any?, type:String) {
+    if (realmObject.isNullOrEmpty()) return
+    firebaseDatabase {
+        it.child(type).child(id).setValue(realmObject)
+    }
+}
+
 /**
  * USER
  */
@@ -51,9 +59,9 @@ inline fun fireGetSyncUserProfile(userId:String, crossinline block: (User?) -> U
 // -> Save
 fun fireSaveCoachToFirebaseAsync(coach: Coach?) {
     if (coach.isNullOrEmpty()) return
-    if (coach?.ownerId.isNullOrEmpty()) return
+    if (coach?.coachId.isNullOrEmpty()) return
     firebaseDatabase {
-        it.child(FireTypes.COACHES).child(coach?.ownerId ?: "unknown").setValue(coach)
+        it.child(FireTypes.COACHES).child(coach?.coachId ?: "unknown").setValue(coach)
     }
 }
 

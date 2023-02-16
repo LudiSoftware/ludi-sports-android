@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -17,7 +18,7 @@ import io.usys.report.realm.toRealmList
  * REVIEW LIST VIEW CONTROLS
  */
 
-fun RecyclerView?.setupOrgReviewCommentList(context: Context, receiverId:String, itemOnClick: ((View, RealmObject) -> Unit)?) {
+fun RecyclerView?.setupOrgReviewCommentList(context: Context, receiverId:String, itemOnClick: ((View, RealmModel) -> Unit)?) {
     // Load Reviews by Receiver.id
     val rv = this
     val callBack : ((DataSnapshot?) -> Unit) = { ds ->
@@ -33,7 +34,7 @@ class OrgReviewCommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
 
     fun bind(review: Review?) {
         review?.let {
-            cardReviewTxtDateCreated?.text = it.dateCreated
+            cardReviewTxtDateCreated?.text = it.base?.dateCreated
             cardReviewTxtComment?.text = it.comment
         }
     }

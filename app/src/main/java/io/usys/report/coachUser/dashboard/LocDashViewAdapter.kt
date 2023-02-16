@@ -30,7 +30,7 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
     override fun onBindViewHolder(viewHolder: InnerDashViewHolder, position: Int) {
         arrayOfSpots.let {
             it[position].let { it1 ->
-                if (it1.id == locationId) {
+                if (it1.locationId == locationId) {
                     viewHolder.containerView.visibility = View.VISIBLE
                     viewHolder.containerView.layoutParams = RecyclerView
                         .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)

@@ -69,9 +69,9 @@ class CoachProfileFragment : YsrMiddleFragment() {
     private fun setupDisplay() {
         //General User Info
         currentCoach?.let {
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.ownerName
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.ratingScore.toFloat()
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.ratingCount} Reviews"
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.coachName
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.reviewBundle?.ratingScore?.toFloat()!!
+            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.reviewBundle?.ratingCount} Reviews"
 
 //            _binding?.fragProfileCoachRecyclerServices?.setupServiceList(requireContext(), itemOnClick)
         }
@@ -81,7 +81,7 @@ class CoachProfileFragment : YsrMiddleFragment() {
         currentCoach?.let { itCoach ->
             if (!itCoach.imgUrl.isNullOrEmpty()) {
                 _binding?.includeUserProfileCoachHeader?.cardUserHeaderImgProfile?.let { itImgView ->
-                    this.loadUriIntoImgView(itCoach.imgUrl, itImgView)
+                    this.loadUriIntoImgView(itCoach.imgUrl!!, itImgView)
                 }
             }
         }

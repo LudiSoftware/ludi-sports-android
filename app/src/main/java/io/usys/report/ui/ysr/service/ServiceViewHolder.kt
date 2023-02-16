@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -46,10 +47,10 @@ class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(service: Service?) {
         service?.let {
-            cardServiceTxtTitle?.text = it.name
+            cardServiceTxtTitle?.text = it.base?.name
             cardServiceTxtCoachName?.text = it.ownerName
             cardServiceTxtTime?.text = it.timeOfService
-            cardServiceTxtLocation?.text = it.addressOne
+//            cardServiceTxtLocation?.text = it.address?.addressOne
         }
     }
 }

@@ -3,6 +3,7 @@ package io.usys.report.ui.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.realm.model.User
 import io.usys.report.realm.model.userOrLogout

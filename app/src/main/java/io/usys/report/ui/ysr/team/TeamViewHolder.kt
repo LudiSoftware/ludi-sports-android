@@ -26,6 +26,6 @@ class TeamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtItemTeamName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
 
     fun bind(team: Team?) {
-        team?.let { txtItemTeamName?.text = it.name }
+        team?.let { txtItemTeamName?.text = it.base?.name }
     }
 }

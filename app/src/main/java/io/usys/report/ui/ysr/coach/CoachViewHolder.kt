@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -38,10 +39,10 @@ class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(coach: Coach?) {
         coach?.let {
-            cardCoachTxtName?.text = it.ownerName
+            cardCoachTxtName?.text = it.coachName
             cardCoachTxtEmail?.text = it.details
-            cardCoachTxtOrg?.text = it.organizationName
-            itemView.context.loadUriIntoImgView(it.imgUrl.toUri() ?: return, cardCoachImgProfile)
+            cardCoachTxtOrg?.text = it.organizationRefs?.first()?.name
+            itemView.context.loadUriIntoImgView(it.imgUrl?.toUri() ?: return, cardCoachImgProfile)
         }
     }
 }

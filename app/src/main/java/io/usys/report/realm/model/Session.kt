@@ -3,8 +3,8 @@ package io.usys.report.realm.model
 import android.app.Activity
 import androidx.core.app.ActivityCompat
 import io.usys.report.ui.AuthControllerActivity
-import io.realm.Realm
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFireLogoutAsync
@@ -58,11 +58,12 @@ open class Session : RealmObject() {
             private set
 
         fun isSessionAlreadyCreated(sessionId: String): Boolean {
-            val realm = Realm.getDefaultInstance()
-            val existingSession = realm.where(Session::class.java).equalTo("id", sessionId).findFirst()
-            val isCreated = existingSession != null
-            realm.close()
-            return isCreated
+            tryCatch {
+                val existingSession =
+                    realm().where(Session::class.java).equalTo("id", sessionId).findFirst()
+                return existingSession != null
+            }
+            return false
         }
         //Must Have.
         fun createObjects() {
@@ -132,7 +133,7 @@ open class Session : RealmObject() {
                         itSession.sports?.let {
                             var containsSport = false
                             for (item in it) {
-                                if (item.name == sport?.name) {
+                                if (item.toString() == sport?.id) {
                                     containsSport = true
                                 }
                             }

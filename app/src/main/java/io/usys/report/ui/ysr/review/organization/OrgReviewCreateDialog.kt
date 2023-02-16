@@ -42,7 +42,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
         val newOverallAvgScore = calculateAverageRatingScore(currentRatingScore, newRatingScore)
         updateOrgRatingScore(receiverId, newOverallAvgScore)
         // New Count
-        val newOverallCount = (currentRatingCount.toInt() + 1)
+        val newOverallCount = (currentRatingCount?.toInt()?.plus(1))
         updateOrgRatingCount(receiverId, newOverallCount.toString())
         // New Review
         safeUserId { itUserId ->
@@ -52,7 +52,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
                 this.comment = commentEditTxt.text.toString()
                 this.score = newOverallAvgScore
                 this.sportName = SPORT
-                this.type = TYPE
+                this.base?.type = TYPE
             }.fireAddUpdateReviewDBAsync()
         }
     }

@@ -11,68 +11,43 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class Service : RealmObject(), Serializable {
+open class Service : RealmObject() {
 
     companion object {
-        const val MORNING_TIME : String = "8AM-11AM"
-        const val AFTERNOON_TIME : String = "12PM-3PM"
-        const val EVENING_TIME : String = "4PM-7PM"
-        const val NIGHT_TIME : String = "8PM-10PM"
-
-        const val PRICE : String = "5.00"
-
-        const val AVAILABLE : String = "available"
         const val PENDING : String = "pending"
         const val BOOKED : String = "booked"
     }
 
     @PrimaryKey
     var id: String = newUUID() //UUID
-    var dateCreated: String = getTimeStamp()
-    var name: String = "" //Name Given by Manager
-    var ownerId: String = "unassigned"
-    var ownerName: String = "unassigned"
-    var addressOne: String = "" // 2323 20th Ave South
-    var addressTwo: String = "" // 2323 20th Ave South
-    var city: String = "" // Birmingham
-    var state: String = "" // AL
-    var zip: String = "" // 35223
-    var imgUrl: String = ""
-    var status : String = AVAILABLE //Has it been bought?
-    var sport: String = "unassigned"
-    var type: String = "unassigned"
-    var subType: String = "unassigned"
-    var timeOfService: String = ""
-    var dateOfService: String = ""
+    var base: YsrRealmObject? = YsrRealmObject()
+    var ownerId: String? = null
+    var ownerName: String? = null
+    var timeOfService: String? = null
+    var dateOfService: String? = null
     var recurring: Boolean = false
-    var maxPeople: Int = 0
-    var ageRange: String = "7-14"
-    var cost: String = "0.00"
-    var details: String = ""
+    var maxPeople: Int? = null
+    var ageRange: String? = null
+    var cost: String? = null
     var staff: RealmList<String>? = null
     var reviews: RealmList<String>? = null
-    var likes: Int = 0
-
-    fun getCityStateZip(): String {
-        return "$city, $state $zip"
-    }
+    var likes: Int? = null
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 
 }
 
-// ckrphone@gmail.com = tnmjTR7r1HPwIaBb2oXrDrwXT842
-fun createService() {
-    Service().applyAndFireSave {
-        it.name = "Some crappy shit!!"
-        it.ownerId = "tnmjTR7r1HPwIaBb2oXrDrwXT842"
-        it.ownerName = "Lucas Romeo"
-        it.sport = "baseball"
-        it.timeOfService = "8am-12pm"
-        it.dateOfService = "Monday-Friday"
-        it.recurring = true
-        it.maxPeople = 10
-        it.ageRange = "10-18"
-        it.details = "another crappy thing!"
-    }
-}
 
 

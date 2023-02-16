@@ -59,6 +59,18 @@ inline fun <reified T> DataSnapshot.toRealmList(): RealmList<T> {
     return realmList
 }
 
+fun RealmObject.updateFieldsAndSave(newObject: RealmObject) {
+    executeRealm {
+        val fields = this.javaClass.declaredFields
+        for (field in fields) {
+            field.isAccessible = true
+            val newValue = field.get(newObject)
+            field.set(this, newValue)
+        }
+        it.insertOrUpdate(this)
+    }
+}
+
 fun realm() : Realm {
     return Realm.getDefaultInstance()
 }

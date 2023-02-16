@@ -15,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FirePaths
@@ -38,7 +39,7 @@ import kotlinx.coroutines.SupervisorJob
 abstract class YsrFragment : Fragment() {
 
     companion object {
-        val ARG = "realmObj"
+        const val ARG = "realmObj"
     }
 
     lateinit var rootView : View

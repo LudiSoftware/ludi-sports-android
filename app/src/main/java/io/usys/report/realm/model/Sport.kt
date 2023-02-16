@@ -15,24 +15,24 @@ open class Sport : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String = newUUID()
-    var dateCreated: String = getTimeStamp()
-    var name: String = ""
-    var imgUrl: String = ""
-    var type: String = ""
-    var subType: String = ""
     var isVisible: Boolean = true
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 
 }
 
 fun Sport.fireAddUpdateToDB(): Boolean {
     return fireAddUpdateDBAsync(FireTypes.SPORTS, this.id, this)
-}
-
-fun createSport() {
-    val sport = Sport()
-    sport.apply {
-        this.name = "baseball"
-        this.imgUrl = ""
-    }
-    fireAddUpdateDBAsync(FireTypes.SPORTS, sport.id, sport)
 }

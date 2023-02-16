@@ -1,31 +1,16 @@
 package io.usys.report.realm.model
 
-import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
-import io.usys.report.utils.newUUID
-import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
+ *
+ * - TODO: Abandon this idea unless we can just not make it a realm object and still inherit from it.
+ *
  */
-
-open class LeagueRef : RealmObject(), Serializable {
-    var leagueId: String? = null
-    var leagueName: String? = null
-    var sport: String? = null
-}
-
-open class League : RealmObject() {
-
-    @PrimaryKey
-    var leagueId: String = newUUID()
-    var leagueName: String? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
-    var hasReview: Boolean = false
-    var reviews: ReviewBundle? = null
-    // base
+open class YsrRealmObject: RealmObject() {
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
     var name: String? = null
@@ -39,11 +24,4 @@ open class League : RealmObject() {
     var mode: String? = null
     var imgUrl: String? = null
     var sport: String? = null
-
-
 }
-
-
-
-
-

@@ -32,6 +32,15 @@ fun <T> Any.cast(): T? {
     return null
 }
 
+fun <T : Any> T.updateObjectFields(newObject: T) {
+    val fields = this.javaClass.declaredFields
+    for (field in fields) {
+        field.isAccessible = true
+        val newValue = field.get(newObject)
+        field.set(this, newValue)
+    }
+}
+
 inline fun <reified T> T.getObjectType(): String {
     return T::class.java.simpleName
 }

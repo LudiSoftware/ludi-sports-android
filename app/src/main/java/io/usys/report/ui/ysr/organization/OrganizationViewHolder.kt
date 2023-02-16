@@ -8,6 +8,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -48,9 +49,9 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var cardRatingBarCount: TextView = includeReviewCard.bind(R.id.cardRatingTxtCount)
 
     fun bind(org: Organization?) {
-        txtOrgName?.text = org?.name
+        txtOrgName?.text = org?.base?.name
         txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
-        txtLeague?.text = org?.leagueIds?.first() ?: "Alabama State League"
+        txtLeague?.text = org?.leagueRefs?.first()?.leagueName ?: "Alabama State League"
         cardRatingBar.rating = org?.ratingScore?.toFloat() ?: 0.0F
         cardRatingBarScore.text = org?.ratingScore
         cardRatingBarCount.text = "${org?.ratingCount} Reviews"

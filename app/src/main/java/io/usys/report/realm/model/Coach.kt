@@ -1,8 +1,10 @@
 package io.usys.report.realm.model
 
 import io.realm.RealmList
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.realm.annotations.RealmClass
 import io.usys.report.firebase.fireSaveCoachToFirebaseAsync
 import io.usys.report.realm.executeRealm
 import io.usys.report.realm.realm
@@ -15,36 +17,36 @@ import java.io.Serializable
 open class CoachRef : RealmObject(), Serializable {
     var coachId: String? = null
     var coachName: String? = null
+    var coachTitle: String? = null
 }
-open class Coach : RealmObject(), Serializable {
+open class Coach : RealmObject() {
 
     companion object {
         const val ORDER_BY_ORGANIZATION = "organizationId"
     }
     @PrimaryKey
-    var ownerId: String = "unassigned"
-    var ownerName: String = "unassigned"
-    var dateCreated: String = getTimeStamp()
-    var dateUpdated: String = getTimeStamp()
-    var imgUrl: String = ""
-    var organizationId: String = ""
-    var organizationName: String = ""
-    var organizationIds: RealmList<String>? = null
-    var addressOne: String = "" // 2323 20th Ave South
-    var addressTwo: String = "" // 2323 20th Ave South
-    var city: String = "" // Birmingham
-    var state: String = "" // AL
-    var zip: String = "" // 35223
-    var sport: String = "unassigned"
-    var details: String = ""
-    var isFree: Boolean = false
-    var teams: RealmList<String>? = null
+    var coachId: String = "unassigned"
+    var coachName: String = "unassigned"
+    var coachTitle: String? = null
+    var organizationRefs: RealmList<OrganizationRef>? = null
+    var teamRefs: RealmList<TeamRef>? = null
     var hasReview: Boolean = false
-    var reviews: RealmList<String>? = null
-    var ratingScore: String = ""
-    var ratingCount: String = ""
-    var reviewAnswerCount: String = ""
-    var reviewDetails: String = ""
+    var reviewBundle: ReviewBundle? = null
+
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 
     fun isIdenticalCoach(userTwo: Coach): Boolean {
         if (this == userTwo) return true
@@ -68,29 +70,13 @@ open class Coach : RealmObject(), Serializable {
         if (this.isIdenticalCoach(newUser!!)) return
         executeRealm {
             this.apply {
-                this.dateCreated = newUser.dateCreated
-                this.dateUpdated = newUser.dateUpdated
-                this.imgUrl = newUser.imgUrl
-                this.ownerId = newUser.ownerId
-                this.ownerName = newUser.ownerName
-                this.organizationId = newUser.organizationId
-                this.organizationName = newUser.organizationName
-                this.organizationIds = newUser.organizationIds
-                this.addressOne = newUser.addressOne
-                this.addressTwo = newUser.addressTwo
-                this.city = newUser.city
-                this.state = newUser.state
-                this.zip = newUser.zip
-                this.sport = newUser.sport
-                this.details = newUser.details
-                this.isFree = newUser.isFree
-                this.teams = newUser.teams
+//                this.base = newUser.base
+                this.coachId = newUser.coachId
+                this.coachName = newUser.coachName
+                this.organizationRefs = newUser.organizationRefs
+                this.teamRefs = newUser.teamRefs
                 this.hasReview = newUser.hasReview
-                this.reviews = newUser.reviews
-                this.ratingScore = newUser.ratingScore
-                this.ratingCount = newUser.ratingCount
-                this.reviewAnswerCount = newUser.reviewAnswerCount
-                this.reviewDetails = newUser.reviewDetails
+                this.reviewBundle = newUser.reviewBundle
             }
         }
         this.saveCoachToRealm()
@@ -116,31 +102,4 @@ fun getCoachByOwnerId(ownerId:String) : Coach? {
     return coach
 }
 
-
-
-fun HashMap<String, Any>?.toCoachObject(): Coach {
-    val _id = this?.get("ownerId") as String
-    val coach = realm().createObject(Coach::class.java, _id)
-    this.let {
-        coach.dateCreated = this["dateCreated"] as String
-        coach.dateUpdated = this["dateUpdated"] as String
-        coach.imgUrl = this["imgUrl"] as String
-        coach.ownerName = this["ownerName"] as String
-        coach.organizationId = this["organizationId"] as String
-        coach.organizationName = this["organizationName"] as String
-        coach.organizationIds = this["organizationIds"] as? RealmList<String>?
-        coach.teams = this["teams"] as? RealmList<String>?
-        coach.sport = this["sport"] as String
-        coach.details = this["details"] as String
-        coach.isFree = this["isFree"] as Boolean
-        coach.hasReview = this["hasReview"] as Boolean
-        coach.reviews = this["reviews"] as? RealmList<String>?
-        coach.ratingScore = this["ratingScore"] as String
-        coach.ratingCount = this["ratingCount"] as String
-        coach.reviewAnswerCount = this["reviewAnswerCount"] as String
-        coach.reviewDetails = this["reviewDetails"] as String
-    }
-
-    return coach
-}
 

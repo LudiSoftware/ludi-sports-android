@@ -11,8 +11,6 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 
-
-
 open class ReviewBundle : RealmObject(), Serializable {
     var reviewIds: RealmList<String>? = null
     var ratingScore: String? = null //"0"
@@ -20,7 +18,7 @@ open class ReviewBundle : RealmObject(), Serializable {
     var reviewAnswerCount: String? = null //"0"
     var reviewDetails: String? = null
 }
-open class Review : RealmObject(), Serializable {
+open class Review : RealmObject() {
 
     companion object {
         const val RATING_SCORE = "ratingScore"
@@ -30,18 +28,16 @@ open class Review : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String = newUUID()
-    var dateCreated: String? = getTimeStamp()
+    var base: YsrRealmObject? = YsrRealmObject()
     var creatorId: String? = null
     var receiverId: String? = null
     var sportName: String? = null
     var score: String = "0" // score 1 or 5
-    var type: String? = null
-    var details: String? = null //
     var questions: RealmList<Question>? = null
     var comment: String? = ""
 }
 
-open class ReviewTemplate : RealmObject(), Serializable {
+open class ReviewTemplate : RealmObject() {
 
     companion object {
         const val UNASSIGNED = "unassigned"
@@ -51,12 +47,10 @@ open class ReviewTemplate : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String = "master"
-    var type: String = UNASSIGNED
-    var dateCreated: String? = getTimeStamp()
+    var base: YsrRealmObject? = YsrRealmObject()
     var sportName: String = ""
     var topScore: String = "5" // score 1 or 5
     var lowScore: String = "0"
-    var details: String = "" //
     var questions: RealmList<Question>? = null
     var commentsEnabled: Boolean = false
 }
@@ -71,21 +65,7 @@ fun getQuestionScore(letter:String?) : String {
     }
 }
 
-fun createReviewTemplate() {
-    val revTemplate = ReviewTemplate()
-    revTemplate.apply {
-        this.sportName = "soccer"
-        this.type = FireTypes.COACHES
-        this.details = "us soccer based review system for coaches"
-        this.questions = RealmList(
-            createBaseQuestion(),
-            createBaseQuestion("Does this coach work well with kids?"),
-            createBaseQuestion("Does this coach work well with parents?"),
-            createBaseQuestion("Is this coach Chace Zanaty?")
-        )
-    }
-    fireAddUpdateCoachReviewDBAsync(revTemplate)
-}
+
 
 open class Question: RealmObject(), Serializable {
     companion object {

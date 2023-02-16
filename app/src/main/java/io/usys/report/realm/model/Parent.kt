@@ -2,36 +2,52 @@ package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
 import java.io.Serializable
 
 /**
  * Created by ChazzCoin : November 2022.
  */
-open class Parent : RealmObject(), Serializable {
+open class ParentRef : RealmObject(), Serializable {
+    var parentId: String? = null
+    var parentName: String? = null
+    var playerRefs: RealmList<PlayerRef>? = null
+    var teamRefs: RealmList<TeamRef>? = null
+    var organizationRefs: RealmList<OrganizationRef>? = null
+    // base
+    var dateCreated: String? = getTimeStamp()
+    var dateUpdated: String? = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
+
+    fun getParent(): Parent? {
+        return null
+    }
+
+}
+open class Parent : RealmObject() {
 
     companion object {
         const val ORDER_BY_ORGANIZATION = "organizationId"
     }
-
-    var ownerId: String = ""
-    var ownerName: String = ""
-    var dateCreated: String = getTimeStamp()
-    var dateUpdated: String = getTimeStamp()
-    var imgUrl: String = ""
-    var details: String = ""
-    var isFree: Boolean = false
-    var hasReview: Boolean = false
+    @PrimaryKey
+    var parentId: String = ""
+    var parentName: String = ""
     var player: Boolean = false
-    var playerIds: RealmList<String>? = RealmList()
+    var playerRefs: RealmList<PlayerRef>? = null
     var team: Boolean = false
-    var teamIds: RealmList<String>? = RealmList()
-    var organizationIds: RealmList<String>? = RealmList()
-    var reviews: RealmList<String>? = RealmList()
-    var ratingScore: String = ""
-    var ratingCount: String = ""
-    var reviewAnswerCount: String = ""
-    var reviewDetails: String = ""
+    var teamRefs: RealmList<TeamRef>? = null
+    var organizationRefs: RealmList<OrganizationRef>? = null
 
 }
 

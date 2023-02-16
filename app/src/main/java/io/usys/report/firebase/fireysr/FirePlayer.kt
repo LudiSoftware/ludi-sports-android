@@ -1,8 +1,8 @@
 package io.usys.report.firebase
 
 import io.realm.RealmList
+import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.addObjectToSessionList
-import io.usys.report.realm.model.toTeamObject
 
 fun fireGetPlayerProfiles(playerIds: RealmList<String>) {
     for (id in playerIds) {
@@ -14,7 +14,7 @@ fun fireGetPlayerProfilesForSession(teamId:String) {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
                 //TODO:
-                val teamObject = ds?.toHashMapWithRealmLists().toTeamObject()
+                val teamObject = ds?.toObject<Team>()
                 addObjectToSessionList(teamObject)
             }
     }

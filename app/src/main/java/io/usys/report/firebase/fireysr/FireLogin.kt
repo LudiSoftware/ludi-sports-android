@@ -2,6 +2,7 @@ package io.usys.report.firebase
 
 import io.usys.report.realm.model.User
 import io.usys.report.realm.model.getCoachByOwnerId
+import io.usys.report.realm.updateFieldsAndSave
 
 /**
  * USER Login Handling
@@ -19,7 +20,7 @@ inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User
             var userProfile = itDb?.toObject<User>()
             userProfile?.let { itUpdatedUser ->
                 // DOES EXIST: Firebase User Was Found
-                coreFireUser.updateAndSave(itUpdatedUser)
+                coreFireUser.updateFieldsAndSave(itUpdatedUser)
                 // Check if is Coach.
                 if (coreFireUser.coach && coreFireUser.coachUser == null) {
                     fireGetCoachProfileForSession(coreFireUser.id)
@@ -29,7 +30,7 @@ inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User
             }
             // DOES NOT EXIST: Firebase User Was Not Found
             userProfile = coreFireUser
-            userProfile.saveToRealm()
+//            userProfile.saveToRealm()
             userProfile.saveToFirebase()
             block(userProfile)
             return@fairAddListenerForSingleValueEvent

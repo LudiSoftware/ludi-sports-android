@@ -110,10 +110,10 @@ class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(conte
 
 
         currentCoach?.let {
-            reviewCount = (tempCount + it.ratingCount.toInt()).toString()
-            reviewAnswerCount = (tempAnswerCount + it.reviewAnswerCount.toInt()).toString()
+            reviewCount = (tempCount + it.reviewBundle?.ratingCount?.toInt()!!).toString()
+            reviewAnswerCount = (tempAnswerCount + it.reviewBundle?.reviewAnswerCount?.toInt()!!).toString()
             val tempRating = tempScore / tempAnswerCount
-            reviewScore = calculateAverageRatingScore(it.ratingScore, tempRating.toFloat())
+            reviewScore = calculateAverageRatingScore(it.reviewBundle?.ratingScore, tempRating.toFloat())
         }
 
     }
@@ -127,15 +127,15 @@ class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(conte
                currentCoach?.let { itCoach ->
                    Review().apply {
                        this.creatorId = itUserId
-                       this.receiverId = itCoach.ownerId
+                       this.receiverId = itCoach.coachId
                        this.sportName = "soccer"
-                       this.type = FireTypes.COACHES
+                       this.base?.type = FireTypes.COACHES
                        this.questions = reviewQuestions
                        this.score = reviewScore
                    }.fireAddUpdateToDB()
-                   updateCoachRatingScore(itCoach.ownerId, reviewScore)
-                   updateCoachReviewCount(itCoach.ownerId, reviewCount)
-                   updateCoachReviewAnswerCount(itCoach.ownerId, reviewAnswerCount)
+                   updateCoachRatingScore(itCoach.coachId, reviewScore)
+                   updateCoachReviewCount(itCoach.coachId, reviewCount)
+                   updateCoachReviewAnswerCount(itCoach.coachId, reviewAnswerCount)
                }
            }
            finishCallback?.invoke()

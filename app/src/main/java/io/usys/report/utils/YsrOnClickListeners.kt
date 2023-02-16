@@ -7,6 +7,7 @@ import android.view.DragEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.utils.MyDragShadowBuilder
 import io.usys.report.utils.log

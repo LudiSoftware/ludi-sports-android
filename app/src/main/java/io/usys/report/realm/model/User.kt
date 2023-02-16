@@ -21,12 +21,8 @@ open class User : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
-    var dateCreated: String = getTimeStamp()
-    var dateUpdated: String = getTimeStamp()
     var username: String = UNASSIGNED
-    var name: String = UNASSIGNED //Name Given by Manager
     var auth: String = BASIC_USER // "basic"
-    var type: String = UNASSIGNED
     var email: String = UNASSIGNED
     var phone: String = UNASSIGNED
     var organization: String = UNASSIGNED
@@ -39,6 +35,20 @@ open class User : RealmObject(), Serializable {
     var coach: Boolean = false
     var coachUser: Coach? = null
     var playerUser: Player? = null
+    // Base -> YsrRealmObject
+    var dateCreated: String = getTimeStamp()
+    var dateUpdated: String = getTimeStamp()
+    var name: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var type: String? = null
+    var subType: String? = null
+    var details: String? = null
+    var isFree: Boolean = false
+    var status: String? = null
+    var mode: String? = null
+    var imgUrl: String? = null
+    var sport: String? = null
 
     fun isParentUser() : Boolean {
         return this.parent
@@ -71,33 +81,9 @@ open class User : RealmObject(), Serializable {
 
     fun saveToRealm(): User {
         executeRealm {
-            it.insertOrUpdate(this)
+            this.saveToRealm()
         }
         return this
-    }
-
-    fun updateAndSave(updatedUser: User) {
-        if (this.isIdentical(updatedUser)) return
-        executeRealm {
-            this.apply {
-                this.username = updatedUser.username
-                this.name = updatedUser.name
-                this.auth = updatedUser.auth
-                this.type = updatedUser.type
-                this.email = updatedUser.email
-                this.phone = updatedUser.phone
-                this.organization = updatedUser.organization
-                this.organizationId = updatedUser.organizationId
-                this.visibility = updatedUser.visibility
-                this.photoUrl = updatedUser.photoUrl
-                this.emailVerified = updatedUser.emailVerified
-                this.parent = updatedUser.parent
-                this.player = updatedUser.player
-                this.coach = updatedUser.coach
-                this.dateUpdated = getTimeStamp()
-            }
-        }
-        this.saveToRealm()
     }
 
 }
@@ -117,10 +103,9 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
         this.name = name
         this.photoUrl = photoUrl.toString()
         this.emailVerified = emailVerified
-    }.saveToRealm()
+    }
     return user
 }
-
 
 inline fun safeUser(block: (User) -> Unit) {
     val user = realmUser()

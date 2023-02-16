@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import io.realm.RealmModel
 import io.usys.report.R
 import io.realm.RealmObject
 import io.usys.report.databinding.FragmentOrgListBinding
