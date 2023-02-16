@@ -17,7 +17,6 @@ import io.usys.report.ui.onClickReturnViewT
 import io.usys.report.utils.getObjectType
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
-import java.util.*
 
 /**
  * Convenience Methods for Displaying a Realm List
@@ -66,7 +65,7 @@ inline fun <reified T> RecyclerView.loadInRealmListGridArrangable(realmList: Rea
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
     this.layoutManager = GridLayoutManager(this.context, 2)
     this.adapter = adapter
-    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+    val itemTouchHelper = ItemTouchHelper(RealmListTouchAdapter(adapter))
     itemTouchHelper.attachToRecyclerView(this)
 }
 
@@ -79,7 +78,7 @@ inline fun <reified T> RecyclerView.loadInRealmListArrangable(realmList: RealmLi
     val gridLayoutManager = gridLayoutManager(this.context, 2)
     this.layoutManager = gridLayoutManager
     this.adapter = adapter
-    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+    val itemTouchHelper = ItemTouchHelper(RealmListTouchAdapter(adapter))
     itemTouchHelper.attachToRecyclerView(this)
     return adapter
 }
@@ -188,55 +187,6 @@ fun <T> View.setOnRealmListener(itemClickListener: ((View, T) -> Unit)?, item: T
 }
 
 
-/**
- * Ability to Re-Arrange Items in RecyclerView
- */
-
-
-class ItemTouchHelperCallback(private val adapter: RealmListAdapter<*>) :
-    ItemTouchHelper.Callback() {
-
-    override fun isLongPressDragEnabled(): Boolean {
-        return true
-    }
-
-    override fun isItemViewSwipeEnabled(): Boolean {
-        return false
-    }
-
-    override fun getMovementFlags(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
-    ): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        return makeMovementFlags(dragFlags, swipeFlags)
-    }
-
-    override fun onMove(recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder,
-                        target: RecyclerView.ViewHolder): Boolean {
-        val fromPosition = viewHolder.adapterPosition
-        val toPosition = target.adapterPosition
-        val fromColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(fromPosition, adapter.gridLayoutManager!!.spanCount)
-        val toColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, adapter.gridLayoutManager!!.spanCount)
-        if (fromColumn == toColumn) {
-            // Move the item within the same column
-            executeRealmOnMain { Collections.swap(adapter.realmList, fromPosition, toPosition) }
-            adapter.notifyItemMoved(fromPosition, toPosition)
-        } else {
-            // Move the item to a different column
-            executeRealmOnMain { Collections.swap(adapter.realmList, fromPosition, toPosition) }
-            adapter.notifyItemChanged(fromPosition)
-            adapter.notifyItemChanged(toPosition)
-        }
-        return true
-    }
-
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        // not implemented
-    }
-}
 
 
 
