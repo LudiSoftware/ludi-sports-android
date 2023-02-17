@@ -20,7 +20,7 @@ open class LocationRef : RealmObject(), Serializable {
 open class Location : RealmObject(), Serializable {
 
     @PrimaryKey
-    var locationId: String = newUUID()
+    var id: String = newUUID()
     var sports: RealmList<String>? = null
     var fields: RealmList<String>? = null
     var address: Address? = null

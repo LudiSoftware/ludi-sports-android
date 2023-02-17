@@ -8,7 +8,7 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.realm.model.Sport
-import io.usys.report.realm.model.getCoachByOwnerId
+import io.usys.report.realm.model.getCoachByCoachId
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
@@ -37,7 +37,7 @@ class DashboardHomeFragment : YsrFragment() {
 
         safeUser {
             if (it.coach) {
-                val i = getCoachByOwnerId(it.id)
+                val i = getCoachByCoachId(it.id)
                 log(i)
             }
         }

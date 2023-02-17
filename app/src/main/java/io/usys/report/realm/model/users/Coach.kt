@@ -1,10 +1,8 @@
 package io.usys.report.realm.model
 
 import io.realm.RealmList
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.realm.annotations.RealmClass
 import io.usys.report.firebase.fireSaveCoachToFirebaseAsync
 import io.usys.report.realm.executeRealm
 import io.usys.report.realm.realm
@@ -15,9 +13,9 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 open class CoachRef : RealmObject(), Serializable {
-    var coachId: String? = null
-    var coachName: String? = null
-    var coachTitle: String? = null
+    var id: String? = null
+    var name: String? = null
+    var title: String? = null
 }
 open class Coach : RealmObject() {
 
@@ -25,9 +23,9 @@ open class Coach : RealmObject() {
         const val ORDER_BY_ORGANIZATION = "organizationId"
     }
     @PrimaryKey
-    var coachId: String = "unassigned"
-    var coachName: String = "unassigned"
-    var coachTitle: String? = null
+    var id: String = "unassigned"
+    var name: String = "unassigned"
+    var title: String? = null
     var organizationRefs: RealmList<OrganizationRef>? = null
     var teamRefs: RealmList<TeamRef>? = null
     var hasReview: Boolean = false
@@ -36,7 +34,6 @@ open class Coach : RealmObject() {
     // base
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
-    var name: String? = null
     var firstName: String? = null
     var lastName: String? = null
     var type: String? = null
@@ -51,6 +48,10 @@ open class Coach : RealmObject() {
     fun isIdenticalCoach(userTwo: Coach): Boolean {
         if (this == userTwo) return true
         return false
+    }
+
+    fun loadTeamRefsFromFirebase() {
+        return
     }
 
     fun saveToFirebase(): Coach {
@@ -70,9 +71,8 @@ open class Coach : RealmObject() {
         if (this.isIdenticalCoach(newUser!!)) return
         executeRealm {
             this.apply {
-//                this.base = newUser.base
-                this.coachId = newUser.coachId
-                this.coachName = newUser.coachName
+                this.id = newUser.id
+                this.name = newUser.name
                 this.organizationRefs = newUser.organizationRefs
                 this.teamRefs = newUser.teamRefs
                 this.hasReview = newUser.hasReview
@@ -88,7 +88,7 @@ open class Coach : RealmObject() {
 /**
  * USER COACH
  */
-fun getCoachByOwnerId(ownerId:String) : Coach? {
+fun getCoachByCoachId(ownerId:String) : Coach? {
     var coach: Coach? = null
     try {
         executeRealm {

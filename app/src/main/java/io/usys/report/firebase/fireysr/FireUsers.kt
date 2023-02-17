@@ -61,9 +61,9 @@ inline fun fireGetSyncUserProfile(userId:String, crossinline block: (User?) -> U
 // -> Save
 fun fireSaveCoachToFirebaseAsync(coach: Coach?) {
     if (coach.isNullOrEmpty()) return
-    if (coach?.coachId.isNullOrEmpty()) return
+    if (coach?.id.isNullOrEmpty()) return
     firebaseDatabase {
-        it.child(FireTypes.COACHES).child(coach?.coachId ?: "unknown").setValue(coach)
+        it.child(FireTypes.COACHES).child(coach?.id ?: "unknown").setValue(coach)
     }
 }
 
@@ -89,7 +89,7 @@ fun fireGetCoachProfileForSession(userId:String) {
             .fairAddListenerForSingleValueEvent { ds ->
                 executeRealm {
                     val coachObject = ds?.toObject<Coach>()
-                    val coach = getCoachByOwnerId(userId)
+                    val coach = getCoachByCoachId(userId)
                     safeUser { itUser ->
                         coach?.let { itCoach ->
                             itUser.makeCoachAndSave(itCoach)

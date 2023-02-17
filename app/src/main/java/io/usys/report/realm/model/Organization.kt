@@ -60,6 +60,7 @@ open class Organization : RealmObject(), Serializable {
     var mode: String? = null
     var imgUrl: String? = null
     var sport: String? = null
+    var chatEnabled: Boolean = false
 
 
     fun addUpdateOrgToFirebase(): Boolean {

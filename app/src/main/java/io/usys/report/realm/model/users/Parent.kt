@@ -10,9 +10,24 @@ import java.io.Serializable
  * Created by ChazzCoin : November 2022.
  */
 open class ParentRef : RealmObject(), Serializable {
-    var parentId: String? = null
-    var parentName: String? = null
+    var id: String? = null
+    var name: String? = null
     var playerRefs: RealmList<PlayerRef>? = null
+    var teamRefs: RealmList<TeamRef>? = null
+    var organizationRefs: RealmList<OrganizationRef>? = null
+
+    fun getParent(): Parent? {
+        return null
+    }
+
+}
+open class Parent : RealmObject() {
+
+    @PrimaryKey
+    var id: String = ""
+    var player: Boolean = false
+    var playerRefs: RealmList<PlayerRef>? = null
+    var team: Boolean = false
     var teamRefs: RealmList<TeamRef>? = null
     var organizationRefs: RealmList<OrganizationRef>? = null
     // base
@@ -29,25 +44,6 @@ open class ParentRef : RealmObject(), Serializable {
     var mode: String? = null
     var imgUrl: String? = null
     var sport: String? = null
-
-    fun getParent(): Parent? {
-        return null
-    }
-
-}
-open class Parent : RealmObject() {
-
-    companion object {
-        const val ORDER_BY_ORGANIZATION = "organizationId"
-    }
-    @PrimaryKey
-    var parentId: String = ""
-    var parentName: String = ""
-    var player: Boolean = false
-    var playerRefs: RealmList<PlayerRef>? = null
-    var team: Boolean = false
-    var teamRefs: RealmList<TeamRef>? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
 
 }
 

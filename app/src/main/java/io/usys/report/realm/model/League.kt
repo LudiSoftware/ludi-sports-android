@@ -20,15 +20,14 @@ open class LeagueRef : RealmObject(), Serializable {
 open class League : RealmObject() {
 
     @PrimaryKey
-    var leagueId: String = newUUID()
-    var leagueName: String? = null
+    var id: String = newUUID()
+    var name: String? = null
     var organizationRefs: RealmList<OrganizationRef>? = null
     var hasReview: Boolean = false
     var reviews: ReviewBundle? = null
     // base
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
-    var name: String? = null
     var firstName: String? = null
     var lastName: String? = null
     var type: String? = null

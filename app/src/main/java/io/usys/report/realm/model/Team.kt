@@ -22,14 +22,14 @@ open class TeamRef : RealmObject(), Serializable {
 open class Team : RealmObject(), Serializable {
 
     @PrimaryKey
-    var teamId: String = newUUID()
-    var teamName: String? = null
+    var id: String = newUUID()
     var headCoachId: String? = null
     var headCoachName: String? = null
     var coachRefs: RealmList<CoachRef>? = null
     var managerRefs: RealmList<ParentRef>? = null
     var organizationRefs: RealmList<OrganizationRef>? = null
     var roster: RealmList<PlayerRef>? = null
+    var schedule: Schedule? = null
     var year: String? = null
     var ageGroup: String? = null
     var isActive: Boolean = false
@@ -50,6 +50,7 @@ open class Team : RealmObject(), Serializable {
     var mode: String? = null
     var imgUrl: String? = null
     var sport: String? = null
+    var chatEnabled: Boolean = false
 
 }
 

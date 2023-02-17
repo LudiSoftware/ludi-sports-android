@@ -128,15 +128,15 @@ class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(conte
                currentCoach?.let { itCoach ->
                    Review().apply {
                        this.creatorId = itUserId
-                       this.receiverId = itCoach.coachId
+                       this.receiverId = itCoach.id
                        this.sportName = "soccer"
                        this.type = FireTypes.COACHES
                        this.questions = reviewQuestions
                        this.score = reviewScore
                    }.fireAddUpdateToDB()
-                   updateCoachRatingScore(itCoach.coachId, reviewScore)
-                   updateCoachReviewCount(itCoach.coachId, reviewCount)
-                   updateCoachReviewAnswerCount(itCoach.coachId, reviewAnswerCount)
+                   updateCoachRatingScore(itCoach.id, reviewScore)
+                   updateCoachReviewCount(itCoach.id, reviewCount)
+                   updateCoachReviewAnswerCount(itCoach.id, reviewAnswerCount)
                }
            }
            finishCallback?.invoke()
