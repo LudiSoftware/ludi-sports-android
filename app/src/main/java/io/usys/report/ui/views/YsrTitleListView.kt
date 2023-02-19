@@ -6,11 +6,11 @@ import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.realm.model.Sport
 import io.usys.report.ui.ysr.organization.setupOrganizationList
+import io.usys.report.ui.ysr.player.setupPlayerListFromSession
 import io.usys.report.ui.ysr.service.setupServiceList
 import io.usys.report.ui.ysr.sport.setupSportList
 import io.usys.report.ui.ysr.team.setupTeamListFromSession
@@ -57,8 +57,9 @@ class YsrTitleListView(context: Context) : CardView(context) {
         recyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject)
     }
 
-//    fun setupPlayerList(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-//        recyclerView?.setupSportList(context, onClickReturnViewRealmObject)
-//    }
+    fun setupPlayerList(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        setTitle("Roster")
+        recyclerView?.setupPlayerListFromSession(id, onClickReturnViewRealmObject)
+    }
 
 }

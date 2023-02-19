@@ -177,11 +177,7 @@ inline fun sessionTeams(block: (RealmList<Team>) -> Unit) {
         if (!it.isNullOrEmpty()) { block(it) }
     }
 }
-inline fun sessionPlayers(block: (RealmList<Player>) -> Unit) {
-    Session.session?.players?.let {
-        if (!it.isNullOrEmpty()) { block(it) }
-    }
-}
+
 inline fun sessionOrganizationList(block: (RealmList<Organization>) -> Unit) {
     Session.session?.organizations?.let { block(it) }
 }

@@ -72,6 +72,9 @@ class DashboardHomeFragment : YsrFragment() {
         itemOnClickSportList = { _, obj ->
             toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
         }
+        itemOnClickTeamList = { _, obj ->
+            toFragment(R.id.navigation_team_profile, bundleRealmObject(obj))
+        }
 //        itemOnClickServiceList = { _, obj ->
 //            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))
 //        }

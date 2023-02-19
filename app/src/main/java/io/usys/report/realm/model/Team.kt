@@ -4,6 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.realm.executeRealm
+import io.usys.report.realm.realm
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.isNullOrEmpty
@@ -76,3 +77,22 @@ open class Team : RealmObject(), Serializable {
 
 }
 
+fun executeGetTeamById(teamId:String) : Team? {
+    var team: Team? = null
+    try {
+        executeRealm {
+            team = realm().where(Team::class.java).equalTo("id", teamId).findFirst()
+        }
+        return team
+    } catch (e: Exception) { e.printStackTrace() }
+    return team
+}
+
+fun getTeamById(teamId:String) : Team? {
+    var team: Team? = null
+    try {
+        team = realm().where(Team::class.java).equalTo("id", teamId).findFirst()
+        return team
+    } catch (e: Exception) { e.printStackTrace() }
+    return team
+}

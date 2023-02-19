@@ -4,11 +4,13 @@ package io.usys.report.ui.ysr.player
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import de.hdodenhof.circleimageview.CircleImageView
+import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.loadInRealmListGridArrangable
-import io.usys.report.realm.model.Player
-import io.usys.report.realm.sessionPlayers
+import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.getPlayerRefsByTeamId
 import io.usys.report.utils.*
 
 /**
@@ -16,20 +18,19 @@ import io.usys.report.utils.*
  */
 
 
-fun RecyclerView?.setupPlayerListFromSession(onClickReturnViewRealmObject: ((View, Player) -> Unit)?) {
+fun RecyclerView?.setupPlayerListFromSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
-    sessionPlayers {
+    getPlayerRefsByTeamId(id) {
         rv?.loadInRealmListGridArrangable(it, FireTypes.PLAYERS, onClickReturnViewRealmObject)
-        return
     }
 }
 
 class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var imgPlayerProfile = itemView.bind<ImageView>(R.id.cardPlayerTinyTxtName)
+    var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerTinyImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
 
-    fun bind(player: Player?) {
+    fun bind(player: PlayerRef?) {
         player?.let { txtItemPlayerName?.text = it.name }
     }
 }

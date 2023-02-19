@@ -8,6 +8,7 @@ import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.YsrMode
+import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -24,6 +25,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
         rootView = binding.root
+        team = realmObjectArg as? Team
         setupOnClickListeners()
         setupDisplay()
 
@@ -32,7 +34,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
 
     private fun setupDisplay() {
         setupHeader()
-//        _binding?.includeItemTitleList?.itemTitleListTxtTitle?.text = "Try-Out Roster"
+        _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
 //        _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Services"
     }
 
@@ -42,6 +44,9 @@ class TeamProfileFragment : YsrMiddleFragment() {
 //        _binding?.includeOrgProfileCard?.cardTxtTwo?.text = ""
     }
     override fun setupOnClickListeners() {
+        itemOnClick = { _,obj ->
+            log(obj)
+        }
 
     }
 

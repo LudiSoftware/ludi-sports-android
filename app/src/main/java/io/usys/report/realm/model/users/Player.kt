@@ -4,6 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -62,5 +63,10 @@ open class Player : RealmObject() {
 }
 
 
-
+inline fun getPlayerRefsByTeamId(id:String, block: (RealmList<PlayerRef>) -> Unit) {
+    val team = getTeamById(id)
+    team?.roster?.let {
+        if (!it.isNullOrEmpty()) { block(it) }
+    }
+}
 

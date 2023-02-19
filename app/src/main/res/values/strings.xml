@@ -22,6 +22,7 @@
     <string name="title_org">Organization</string>
     <string name="title_profile">Profile</string>
     <string name="title_service">Service</string>
+    <string name="title_team">Team</string>
     <string name="title_management">Management</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_activity_login">Sign in</string>

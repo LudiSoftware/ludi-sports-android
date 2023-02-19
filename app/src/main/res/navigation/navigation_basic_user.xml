@@ -63,8 +63,8 @@
     <!-- TEAM PROFILE PAGE -->
     <fragment
         android:id="@+id/navigation_team_profile"
-        android:name="io.usys.report.ui.ysr.organization.OrganizationProfileFragment"
-        android:label="@string/title_org"
+        android:name="io.usys.report.ui.ysr.team.TeamProfileFragment"
+        android:label="@string/title_team"
         tools:layout="@layout/profile_team" >
     </fragment>
 

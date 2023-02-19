@@ -41,26 +41,14 @@
             app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard" />
 
         <include
-            android:id="@+id/includeItemTitleList"
-            layout="@layout/item_title_list"
+            android:id="@+id/includeYsrListViewRoster"
+            layout="@layout/ysr_title_list_view"
             android:layout_width="0dp"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/includeGenericButtonCard" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00FFFAF4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/includeItemTitleList"
-            tools:itemCount="2"
-            tools:listitem="@layout/card_player_small" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

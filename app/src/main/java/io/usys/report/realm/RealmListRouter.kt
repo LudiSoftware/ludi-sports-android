@@ -34,7 +34,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
 //            FireTypes.PARENTS -> return CoachViewHolder(itemView).bind(obj as? Parent)
-            FireTypes.PLAYERS -> return PlayerTinyViewHolder(itemView).bind(obj as? Player)
+            FireTypes.PLAYERS -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef)
             FireTypes.TEAMS -> return TeamViewHolder(itemView).bind(obj as? Team)
             FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)
             FireTypes.REVIEWS -> return OrgReviewCommentViewHolder(itemView).bind(obj as? Review)
@@ -51,7 +51,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                 FireTypes.USERS -> R.layout.card_sport_small
                 FireTypes.COACHES -> R.layout.card_coach_small
                 FireTypes.PLAYERS -> R.layout.card_player_tiny
-                FireTypes.TEAMS -> R.layout.card_team_tiny
+                FireTypes.TEAMS -> R.layout.card_team_small
                 FireTypes.SERVICES -> R.layout.card_service_square
                 FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question_full
                 else -> R.layout.card_sport_small
