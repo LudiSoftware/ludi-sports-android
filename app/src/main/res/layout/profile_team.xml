@@ -2,53 +2,86 @@
 
 <!-- Created by ChazzCoin : October 2022 -->
 
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="75dp">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/includeTeamProfileCard"
             layout="@layout/card_team_medium"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.421"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/includeGenericButtonCard"
-            layout="@layout/card_generic_button_small"
-            android:layout_width="0dp"
-            android:layout_height="65dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+        <Button
+            android:id="@+id/btnTeamTabHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:text="Home"
+            app:layout_constraintBottom_toBottomOf="@+id/button4"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button4"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btnTeamTabTryOuts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Try-Outs"
+            app:layout_constraintBottom_toBottomOf="@+id/button4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.327"
+            app:layout_constraintStart_toEndOf="@+id/button4"
+            app:layout_constraintTop_toTopOf="@+id/button4"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:text="Button"
+            app:layout_constraintStart_toEndOf="@+id/btnTeamTabHome"
             app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard" />
 
-        <include
-            android:id="@+id/includeYsrListViewRoster"
-            layout="@layout/ysr_title_list_view"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/includeGenericButtonCard" />
+            app:layout_constraintTop_toBottomOf="@+id/button4"
+            app:layout_constraintVertical_bias="1.0">
+
+            <include
+                android:id="@+id/includeGenericButtonCard"
+                layout="@layout/card_generic_button_small"
+                android:layout_width="match_parent"
+                android:layout_height="65dp" />
+
+            <include
+                android:id="@+id/includeYsrListViewRoster"
+                layout="@layout/ysr_title_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="242dp"
+                android:layout_marginTop="36dp" />
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
