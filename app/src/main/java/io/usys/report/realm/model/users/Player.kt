@@ -12,11 +12,13 @@ import java.io.Serializable
  */
 
 open class PlayerRef : RealmObject(), Serializable {
-    var id: String? = null
-    var name: String? = null
-    var rank: Int? = null
-    var tryoutTag: String? = null
-    var imgUrl: String? = null
+    @PrimaryKey
+    var playerId: String? = "null"
+    var id: String? = newUUID()
+    var name: String? = "null"
+    var rank: Int? = 0
+    var tryoutTag: String? = "null"
+    var imgUrl: String? = "null"
 
     fun getPlayer(): Player? {
         return null

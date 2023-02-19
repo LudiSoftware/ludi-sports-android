@@ -13,6 +13,8 @@ import java.io.Serializable
  */
 
 open class LocationRef : RealmObject(), Serializable {
+    @PrimaryKey
+    var id: String = newUUID()
     var locationId: String? = ""
     var name: String? = null
 }

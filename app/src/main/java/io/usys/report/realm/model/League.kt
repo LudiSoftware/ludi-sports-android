@@ -12,6 +12,8 @@ import java.io.Serializable
  */
 
 open class LeagueRef : RealmObject(), Serializable {
+    @PrimaryKey
+    var id: String? = newUUID()
     var leagueId: String? = null
     var leagueName: String? = null
     var sport: String? = null

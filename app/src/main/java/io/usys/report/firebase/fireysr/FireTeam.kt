@@ -1,6 +1,7 @@
 package io.usys.report.firebase
 
 import io.realm.RealmList
+import io.usys.report.realm.executeRealm
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.addObjectToSessionList
 
@@ -23,8 +24,9 @@ inline fun fireGetTeamProfile(teamId:String, crossinline block: (Team?) -> Unit)
     firebaseDatabase {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toObject<Team>()
-                block(teamObject)
+                val teamObject = ds?.toObjectRealm()
+                block(teamObject as? Team)
+
             }
     }
 }

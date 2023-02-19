@@ -7,14 +7,21 @@ import android.view.ViewGroup
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
+import io.usys.report.firebase.fireGetTeamProfile
+import io.usys.report.realm.executeRealm
 import io.usys.report.realm.model.Sport
+import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.executeGetCoachByCoachId
 import io.usys.report.realm.model.getCoachByCoachId
 import io.usys.report.realm.model.users.safeUser
+import io.usys.report.realm.updateFieldsAndSave
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.utils.cast
 import io.usys.report.utils.log
+import io.usys.report.utils.tryCatch
 
 
 /**
@@ -35,9 +42,23 @@ class DashboardHomeFragment : YsrFragment() {
         rootView = binding.root
         setupOnClickListeners()
 
-        safeUser {
-            if (it.coach) {
-                val i = getCoachByCoachId(it.id)
+        safeUser { itUser ->
+            fireGetTeamProfile("a8d341b2-affa-11ed-a62e-86f7c4c00ee3") { itTeam ->
+                val teamObj = itTeam?.cast<Team>()
+//                val tempTeam = Team()
+//                tempTeam.updateFieldsAndSave(teamObj)
+//                teamObj?.saveToRealm()
+                val managed = teamObj?.isManaged
+                val valid = teamObj?.isValid
+                val name = teamObj?.name
+                val roster = teamObj?.roster
+                val coaches = teamObj?.coachRefs
+                log(coaches)
+
+            }
+
+            if (itUser.coach) {
+                val i = executeGetCoachByCoachId(itUser.id)
                 log(i)
             }
         }

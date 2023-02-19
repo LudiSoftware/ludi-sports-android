@@ -12,6 +12,8 @@ import java.io.Serializable
  */
 
 open class ReviewBundle : RealmObject(), Serializable {
+    @PrimaryKey
+    var id: String = newUUID()
     var reviewIds: RealmList<String>? = null
     var ratingScore: String? = null //"0"
     var ratingCount: String? = null //"0"

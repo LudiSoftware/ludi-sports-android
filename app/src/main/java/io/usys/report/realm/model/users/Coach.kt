@@ -13,7 +13,9 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 open class CoachRef : RealmObject(), Serializable {
-    var id: String? = null
+    @PrimaryKey
+    var coachId: String? = "null"
+    var id: String? = newUUID()
     var name: String? = null
     var title: String? = null
 }
@@ -91,8 +93,19 @@ open class Coach : RealmObject() {
 fun getCoachByCoachId(ownerId:String) : Coach? {
     var coach: Coach? = null
     try {
+        coach = realm().where(Coach::class.java).equalTo("id", ownerId).findFirst()
+        if (coach == null) {
+            coach = realm().createObject(Coach::class.java, ownerId)
+        }
+        return coach
+    } catch (e: Exception) { e.printStackTrace() }
+    return coach
+}
+fun executeGetCoachByCoachId(ownerId:String) : Coach? {
+    var coach: Coach? = null
+    try {
         executeRealm {
-            coach = realm().where(Coach::class.java).equalTo("ownerId", ownerId).findFirst()
+            coach = realm().where(Coach::class.java).equalTo("id", ownerId).findFirst()
             if (coach == null) {
                 coach = realm().createObject(Coach::class.java, ownerId)
             }
@@ -101,5 +114,4 @@ fun getCoachByCoachId(ownerId:String) : Coach? {
     } catch (e: Exception) { e.printStackTrace() }
     return coach
 }
-
 

@@ -12,7 +12,8 @@ import java.io.Serializable
  * Created by ChazzCoin : October 2022.
  */
 open class OrganizationRef : RealmObject(), Serializable {
-    var id: String? = null
+    @PrimaryKey
+    var id: String? = newUUID()
     var name: String? = null
 }
 open class Organization : RealmObject(), Serializable {

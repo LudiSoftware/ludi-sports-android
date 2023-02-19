@@ -4,13 +4,16 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.newUUID
 import java.io.Serializable
 
 /**
  * Created by ChazzCoin : November 2022.
  */
 open class ParentRef : RealmObject(), Serializable {
-    var id: String? = null
+    @PrimaryKey
+    var parentId: String? = "null"
+    var id: String? = newUUID()
     var name: String? = null
     var playerRefs: RealmList<PlayerRef>? = null
     var teamRefs: RealmList<TeamRef>? = null

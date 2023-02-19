@@ -62,8 +62,12 @@ open class User : RealmObject(), Serializable {
     fun isCoachUser() : Boolean {
         return this.coach
     }
-
     fun makeCoachAndSave(coach: Coach?) {
+        this.apply {
+            this.coachUser = coach
+        }
+    }
+    fun executeMakeCoachAndSave(coach: Coach?) {
         executeRealm {
             this.apply {
                 this.coachUser = coach
@@ -84,7 +88,7 @@ open class User : RealmObject(), Serializable {
 
     fun saveToRealm(): User {
         executeRealm {
-            this.saveToRealm()
+            it.insertOrUpdate(this)
         }
         return this
     }
@@ -98,7 +102,7 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
     val name = this?.displayName ?: "UNKNOWN"
     val photoUrl = this?.photoUrl ?: "UNKNOWN"
     val emailVerified = this?.isEmailVerified ?: false
-    createUserObject(uid)
+    executeCreateUserObject(uid)
     val user = User()
     user.apply {
         this.id = uid
@@ -121,7 +125,7 @@ fun realmUser(): User? {
     val uid = coreFirebaseUserUid() ?: return null
     return getRealmUserById(uid)
 }
-fun getRealmUserById(id:String) : User? {
+fun executeGetRealmUserById(id:String) : User? {
     var user: User? = null
     try {
         executeRealm { user = queryForUser(id) }
@@ -129,11 +133,18 @@ fun getRealmUserById(id:String) : User? {
     } catch (e: Exception) { e.printStackTrace() }
     return user
 }
-
+fun getRealmUserById(id:String) : User? {
+    var user: User? = null
+    try {
+        user = queryForUser(id)
+        return user
+    } catch (e: Exception) { e.printStackTrace() }
+    return user
+}
 fun queryForUser(userId:String): User? {
     return realm().where(User::class.java).equalTo("id", userId).findFirst()
 }
-fun createUserObject(userId:String) {
+fun executeCreateUserObject(userId:String) {
     executeRealm { itRealm ->
         itRealm.createObject(User::class.java, userId)
     }
