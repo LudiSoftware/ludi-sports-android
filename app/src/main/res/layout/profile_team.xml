@@ -59,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,17 +69,11 @@
             app:layout_constraintVertical_bias="1.0">
 
             <include
-                android:id="@+id/includeGenericButtonCard"
-                layout="@layout/card_generic_button_small"
-                android:layout_width="match_parent"
-                android:layout_height="65dp" />
-
-            <include
                 android:id="@+id/includeYsrListViewRoster"
                 layout="@layout/ysr_title_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="242dp"
-                android:layout_marginTop="36dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp" />
 
         </LinearLayout>
 

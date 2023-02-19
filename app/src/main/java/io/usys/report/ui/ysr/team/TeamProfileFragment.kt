@@ -44,7 +44,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
 
     private fun setupDisplay() {
         setupHeader()
-//        _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
+        _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
 //        _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Services"
     }
 
