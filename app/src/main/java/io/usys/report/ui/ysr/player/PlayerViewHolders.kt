@@ -1,8 +1,6 @@
 package io.usys.report.ui.ysr.player
 
-
 import android.view.View
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.realm.RealmObject
@@ -17,7 +15,6 @@ import io.usys.report.utils.*
  * SPORT LIST VIEW CONTROLS
  */
 
-
 fun RecyclerView?.setupPlayerListFromSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
     getPlayerRefsByTeamId(id) {
@@ -29,8 +26,12 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerTinyImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
+    var txtItemPlayerRank = itemView.bindTextView(R.id.cardPlayerTinyTxtRank)
 
     fun bind(player: PlayerRef?) {
-        player?.let { txtItemPlayerName?.text = it.name }
+        player?.let {
+            txtItemPlayerName?.text = it.name
+            txtItemPlayerRank?.text = it.rank.toString()
+        }
     }
 }

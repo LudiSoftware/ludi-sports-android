@@ -10,11 +10,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.databinding.ProfileTeamViewpagerBinding
+import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.fragments.YsrPagerAdapter
 import io.usys.report.ui.tryouts.HomeTryOuts
 import io.usys.report.ui.tryouts.TryoutTestFragment
+import io.usys.report.ui.ysr.player.createPlayerProfileDialog
 import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
 
@@ -55,7 +57,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
     }
     override fun setupOnClickListeners() {
         itemOnClick = { _,obj ->
-            log(obj)
+            createPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
         }
 
     }

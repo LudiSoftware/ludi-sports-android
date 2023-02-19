@@ -60,6 +60,16 @@ open class Player : RealmObject() {
     var imgUrl: String? = null
     var sport: String? = null
 
+//    fun createPlayerRef(): Player {
+//        val playerRef = Player()
+//        id = this.id
+//        name = this.name
+//        rank = this.rank
+//        tryoutTag = this.tryoutTag
+//        imgUrl = this.imgUrl
+//        return playerRef
+//    }
+
 }
 
 
