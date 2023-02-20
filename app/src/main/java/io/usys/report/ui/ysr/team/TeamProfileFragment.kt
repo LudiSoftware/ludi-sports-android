@@ -40,12 +40,9 @@ class TeamProfileFragment : YsrMiddleFragment() {
     private fun setupDisplay() {
         setupHeader()
         _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
-        _binding?.btnTeamTabHome?.setOnClickListener {
-            safeUser { itUser ->
-                val chatDialogFragment = ChatDialogFragment.newInstance(itUser.name ?: "Chazzy")
-                chatDialogFragment.show(childFragmentManager, "chat_dialog")
-            }
-
+        _binding?.btnTeamTabChat?.setOnClickListener {
+            val chatDialogFragment = ChatDialogFragment.newInstance(team!!.id)
+            chatDialogFragment.show(childFragmentManager, "chat_dialog")
         }
 //        _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Services"
     }

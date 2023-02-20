@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.*
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.R
+import io.usys.report.firebase.DatabasePaths
 import io.usys.report.realm.executeRealm
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.newUUID
@@ -42,6 +44,10 @@ open class Chat: RealmObject(), Serializable {
         // ...
     }
 
+}
+
+fun getFireDBChat(): DatabaseReference {
+    return FirebaseDatabase.getInstance().reference.child(DatabasePaths.CHAT.path)
 }
 
 
@@ -94,4 +100,31 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
         notifyItemInserted(chatMessages.size - 1)
     }
 
+}
+
+
+class ChatFireBaseDatabaseListener(val adapter: ChatAdapter, val recyclerView: RecyclerView) : ChildEventListener {
+    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+        val chatMessage = snapshot.getValue(Chat::class.java)
+        chatMessage?.let {
+            adapter.addMessage(it)
+            recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+        }
+    }
+
+    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+        // not used in this example
+    }
+
+    override fun onChildRemoved(snapshot: DataSnapshot) {
+        // not used in this example
+    }
+
+    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+        // not used in this example
+    }
+
+    override fun onCancelled(error: DatabaseError) {
+        // not used in this example
+    }
 }

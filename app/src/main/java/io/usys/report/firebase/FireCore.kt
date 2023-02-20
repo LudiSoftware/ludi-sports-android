@@ -27,6 +27,7 @@ enum class DatabasePaths(val path: String) {
     ORGANIZATIONS("organizations"),
     TEAMS("teams"),
     NOTES("notes"),
+    CHAT("chat"),
     EVALUATIONS("evaluations"),
     REVIEW_TEMPLATES("review_templates")
 }

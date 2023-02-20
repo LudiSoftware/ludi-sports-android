@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="52dp"
             android:text="Home"
-            app:layout_constraintBottom_toBottomOf="@+id/button4"
+            app:layout_constraintBottom_toBottomOf="@+id/btnTeamTabChat"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button4"
+            app:layout_constraintTop_toTopOf="@+id/btnTeamTabChat"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
@@ -38,20 +38,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Try-Outs"
-            app:layout_constraintBottom_toBottomOf="@+id/button4"
+            app:layout_constraintBottom_toBottomOf="@+id/btnTeamTabChat"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.327"
-            app:layout_constraintStart_toEndOf="@+id/button4"
-            app:layout_constraintTop_toTopOf="@+id/button4"
+            app:layout_constraintStart_toEndOf="@+id/btnTeamTabChat"
+            app:layout_constraintTop_toTopOf="@+id/btnTeamTabChat"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnTeamTabChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="24dp"
-            android:text="Button"
+            android:text="Chat"
             app:layout_constraintStart_toEndOf="@+id/btnTeamTabHome"
             app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard" />
 
@@ -65,7 +65,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button4"
+            app:layout_constraintTop_toBottomOf="@+id/btnTeamTabChat"
             app:layout_constraintVertical_bias="1.0">
 
             <include
