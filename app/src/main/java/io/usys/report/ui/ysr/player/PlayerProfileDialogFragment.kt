@@ -3,6 +3,7 @@ package io.usys.report.ui.ysr.player
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -14,7 +15,7 @@ import io.usys.report.utils.bind
 import io.usys.report.utils.log
 
 /**
- * Created by ChazzCoin : November 2022.
+ * Created by ChazzCoin : February 2023.
  */
 
 class PlayerProfileDialogFragment(var currentPlayer: PlayerRef) : DialogFragment() {
@@ -37,6 +38,7 @@ class PlayerProfileDialogFragment(var currentPlayer: PlayerRef) : DialogFragment
         rootview = this.layoutInflater.inflate(R.layout.dialog_player_profile_layout, null)
         cancelButton = rootview?.bind(R.id.reviewBtnCancel)
         setOnClickListeners()
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         dialogFragment?.setView(rootview)
             ?.setMessage(message)
             ?.fairSetPositiveButton(positiveButton, positiveButtonCallbackFunction)

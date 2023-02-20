@@ -1,14 +1,17 @@
 package io.usys.report.realm.model
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.R
 import io.usys.report.realm.executeRealm
+import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 import java.text.DateFormat
@@ -30,7 +33,7 @@ open class Chat: RealmObject(), Serializable {
             this.apply {
                 this.messageText = message
                 this.senderId = senderId
-                this.senderName = senderId
+                this.senderName = senderName
                 this.chatId = chatId
                 this.timestamp = timestamp
             }
@@ -42,10 +45,14 @@ open class Chat: RealmObject(), Serializable {
 }
 
 
-class ChatAdapter(private val chatMessages: MutableList<Chat>) :
-    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+
+
+    var chatMessages: MutableList<Chat> = mutableListOf()
+    var userId: String? = null
 
     inner class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val messageContainer: LinearLayout = itemView.findViewById(R.id.message_container)
         val messageText: TextView = itemView.findViewById(R.id.message_text)
         val messageSender: TextView = itemView.findViewById(R.id.message_sender)
         val messageTime: TextView = itemView.findViewById(R.id.message_time)
@@ -54,14 +61,28 @@ class ChatAdapter(private val chatMessages: MutableList<Chat>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_chat_message, parent, false)
+        safeUserId { itUserId ->
+            userId = itUserId
+        }
         return ChatViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val chatMessage = chatMessages[position]
-        holder.messageText.text = chatMessage.messageText
-        holder.messageSender.text = chatMessage.senderName
-        holder.messageTime.text = DateFormat.getTimeInstance(DateFormat.SHORT).format(chatMessage.timestamp)
+
+        if (chatMessage.senderId == userId) {
+            holder.messageContainer.gravity = Gravity.END
+            holder.messageText.text = chatMessage.messageText
+            holder.messageSender.text = chatMessage.senderName
+            holder.messageTime.text = DateFormat.getTimeInstance(DateFormat.SHORT).format(chatMessage.timestamp)
+        } else {
+            holder.messageContainer.gravity = Gravity.START
+            holder.messageText.text = chatMessage.messageText
+            holder.messageSender.text = chatMessage.senderName
+            holder.messageTime.text = DateFormat.getTimeInstance(DateFormat.SHORT).format(chatMessage.timestamp)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
