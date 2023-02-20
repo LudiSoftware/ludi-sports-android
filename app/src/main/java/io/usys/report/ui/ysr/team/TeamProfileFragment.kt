@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.ysr.chat.ChatDialogFragment
 import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.YsrMode
 
@@ -38,6 +40,13 @@ class TeamProfileFragment : YsrMiddleFragment() {
     private fun setupDisplay() {
         setupHeader()
         _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
+        _binding?.btnTeamTabHome?.setOnClickListener {
+            safeUser { itUser ->
+                val chatDialogFragment = ChatDialogFragment.newInstance(itUser.name ?: "Chazzy")
+                chatDialogFragment.show(childFragmentManager, "chat_dialog")
+            }
+
+        }
 //        _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Services"
     }
 
