@@ -15,6 +15,22 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
+enum class DatabasePaths(val path: String) {
+    SPORTS("sports"),
+    USERS("users"),
+    ADMIN("admin"),
+    COACHES("coaches"),
+    PARENTS("parents"),
+    PLAYERS("players"),
+    REVIEWS("reviews"),
+    SERVICES("services"),
+    ORGANIZATIONS("organizations"),
+    TEAMS("teams"),
+    NOTES("notes"),
+    EVALUATIONS("evaluations"),
+    REVIEW_TEMPLATES("review_templates")
+}
+
 class FireTypes {
     companion object {
         // DATE FORMATS
@@ -23,17 +39,26 @@ class FireTypes {
         const val DATE_MONTH = "MMMM"
         const val FIRE_DATE_FORMAT = "EEE, MMM d yyyy, hh:mm:ss a"
         // DATABASE ROUTES
-        const val ADMIN: String = "admin"
-        const val USERS: String = "users"
-        const val ORGANIZATIONS: String = "organizations"
-        const val REVIEWS: String = "reviews"
-        const val REVIEW_TEMPLATES: String = "review_templates"
         const val SPORTS: String = "sports"
+        const val ADMIN: String = "admin"
+        //Users
+        const val USERS: String = "users"
         const val COACHES: String = "coaches"
-        const val SERVICES: String = "services"
-        const val TEAMS: String = "teams"
         const val PARENTS: String = "parents"
         const val PLAYERS: String = "players"
+        //Org
+        const val ORGANIZATIONS: String = "organizations"
+        const val TEAMS: String = "teams"
+        //Reviews
+        const val REVIEWS: String = "reviews"
+        const val REVIEW_TEMPLATES: String = "review_templates"
+        //Services
+        const val SERVICES: String = "services"
+        //Notes
+        const val NOTES: String = "notes"
+        const val EVALUATIONS: String = "evaluations"
+
+        //create a function that takes in a string, lowers it, then loops through
     }
 }
 

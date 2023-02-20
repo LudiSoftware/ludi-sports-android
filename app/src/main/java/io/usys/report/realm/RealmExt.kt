@@ -73,30 +73,7 @@ fun RealmObject.updateFieldsAndSave(newObject: RealmObject) {
     }
 }
 
-fun realm() : Realm {
-    return Realm.getDefaultInstance()
-}
 
-inline fun <reified T: RealmObject> createRealmObject(id:String): T {
-    return realm().createObject(T::class.java, id)
-}
-
-//LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
-inline fun executeRealm(crossinline block: (Realm) -> Unit) {
-    realm().executeTransaction { block(it) }
-}
-
-inline fun executeRealmOnRealmThread(crossinline block: (Realm) -> Unit) {
-    realmThread.launch {
-        realm().executeTransaction { block(it) }
-    }
-}
-
-inline fun executeRealmOnMain(crossinline block: (Realm) -> Unit) {
-    main {
-        realm().executeTransaction { block(it) }
-    }
-}
 
 // Verified
 inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {
@@ -116,11 +93,7 @@ fun <T> RealmModel.getRealmId() : String? {
     return id.toString()
 }
 
-fun addUpdateRealmObject(realmObject: RealmModel){
-    executeRealm { itRealm ->
-        itRealm.insertOrUpdate(realmObject)
-    }
-}
+
 
 // Untested
 fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {

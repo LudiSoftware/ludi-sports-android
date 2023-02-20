@@ -45,7 +45,14 @@ fun fireGetOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: Strin
     }
 }
 
-
+/** Get List by Single Attribute with Callback */
+fun fireGetOrderByEqualToCallback(collection:String, childOwnerId:String, orderBy: String, equalTo: String,
+                                  callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+    firebaseDatabase(collection) {
+        it.child(childOwnerId).orderByChild(orderBy).equalTo(equalTo)
+            .fairAddListenerForSingleValueEvent(callbackFunction)
+    }
+}
 
 
 

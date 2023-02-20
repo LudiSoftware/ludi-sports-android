@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reviewRootCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/ysrWindowBackground"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/createNoteMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF">
+
+        <TextView
+            android:id="@+id/createNoteTxtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Leave a Note"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/createNoteBtnSubmit"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:text="Submit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/createNoteBtnCancel"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:text="Cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/createNoteEditComment"
+            android:layout_width="341dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="Leave a note"
+            android:inputType="textLongMessage|textMultiLine|textPersonName"
+            android:maxLength="150"
+            android:maxLines="6"
+            android:minHeight="96dp"
+            android:padding="5dp"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/createNoteBtnSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createNoteTxtTitle"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

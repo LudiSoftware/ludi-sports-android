@@ -8,20 +8,32 @@ import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireAddUpdateReviewDBAsync
-import io.usys.report.realm.model.Organization
-import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.Review
+import io.usys.report.firebase.toRealmObject
+import io.usys.report.firebase.toRealmObjects
+import io.usys.report.realm.loadInRealmList
+import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
+import io.usys.report.ui.onClickDataSnapShot
+import io.usys.report.ui.views.YsrTitleListView
 import io.usys.report.ui.ysr.review.engine.calculateAverageRatingScore
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingCount
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingScore
 import io.usys.report.utils.bind
+import io.usys.report.utils.log
 import io.usys.report.utils.makeGone
+import io.usys.report.utils.makeVisible
+import org.w3c.dom.Text
 
-fun createPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
+fun popPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
+
+    var onClick: ((dataSnapshot: DataSnapshot?) -> Unit)?
+
 
     val dialog = Dialog(activity)
     dialog.setContentView(R.layout.dialog_player_profile_layout)
@@ -36,15 +48,32 @@ fun createPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
     val playerRank = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogRank)
     val playerTryoutTag = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogTryOutTag)
     val playerPosition = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogPosition)
+    val includeNotes = playerProfile.rootView?.findViewById<View>(R.id.includeYsrListViewNotes)
+    val includeNotesRecyclerView = includeNotes?.rootView?.findViewById<RecyclerView>(R.id.ysrRecycler)
+    val includeNotesTitle = includeNotes?.rootView?.findViewById<TextView>(R.id.ysrTxtTitle)
+    includeNotes?.makeGone()
     // Hide unused views
     playerProfile.rootView?.findViewById<TextView>(R.id.cardUserHeaderTxtProfileReviewCount)?.makeGone()
     playerProfile.rootView?.findViewById<RatingBar>(R.id.cardUserHeaderRatingBar)?.makeGone()
 
     fun loadData() {
         playerName?.text = player.name
-        playerRank?.text = player.rank.toString()
-//        playerPosition?.text = player.position
-        playerTryoutTag?.text = player.tryoutTag
+        playerRank?.text = "Rank: ${player.rank.toString()}"
+        playerPosition?.text = "Forward"
+        playerTryoutTag?.text = "TryOut Tag: ${player.tryoutTag}"
+    }
+
+    onClick = { itSnapShot ->
+        val notes = itSnapShot?.toRealmObjects()
+        log("notes: $notes")
+        if (!notes.isNullOrEmpty() && notes.size > 0) {
+            includeNotes?.makeVisible()
+            includeNotesTitle?.text = "Notes (${notes?.size})"
+            includeNotesRecyclerView?.loadInRealmList(notes, FireTypes.NOTES, null)
+        }
+    }
+    player.id?.let {
+        getPlayerNotes(it, onClick)
     }
     loadData()
 
@@ -59,6 +88,4 @@ fun createPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
     }
 
     return dialog
-
-
 }

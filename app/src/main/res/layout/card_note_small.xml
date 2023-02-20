@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="3dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    app:cardMaxElevation="5dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cardNoteSmallImgProfile"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ysr_empty_profile_icon_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cardNoteSmallImgIconDate"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="36dp"
+            android:src="@drawable/ysr_empty_profile_icon_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallImgProfile"
+            app:layout_constraintVertical_bias="0.437" />
+
+        <TextView
+            android:id="@+id/cardNoteSmallTxtUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="25dp"
+            android:text="Chazz Romeo"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardNoteSmallImgProfile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/cardNoteSmallTxtDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Tuesday, May 16th 2023"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardNoteSmallImgIconDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardNoteSmallImgIconDate"
+            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallTxtUserName" />
+
+        <TextView
+            android:id="@+id/cardNoteSmallTxtMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="This is a message"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallImgIconDate" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
+

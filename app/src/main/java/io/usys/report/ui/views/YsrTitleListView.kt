@@ -6,8 +6,10 @@ import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
+import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.Sport
 import io.usys.report.ui.ysr.organization.setupOrganizationList
 import io.usys.report.ui.ysr.player.setupPlayerListFromSession
@@ -35,6 +37,10 @@ class YsrTitleListView(context: Context) : CardView(context) {
 
     fun setTitle(title:String) {
         txtTitle?.text = title
+    }
+
+    fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        recyclerView?.loadInRealmList(realmObjectList, type, onClickReturnViewRealmObject)
     }
 
     fun setupSportList(onClickReturnViewRealmObject: ((View, Sport) -> Unit)?) {

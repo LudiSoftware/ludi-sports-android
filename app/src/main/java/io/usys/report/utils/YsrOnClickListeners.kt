@@ -7,6 +7,7 @@ import android.view.DragEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import com.google.firebase.database.DataSnapshot
 import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.utils.MyDragShadowBuilder
@@ -20,6 +21,7 @@ fun onClickReturnViewRealmObject(): ((View, RealmObject) -> Unit)? { return null
 fun onClickReturnAnyAny(): ((Any, Any) -> Unit)? { return null }
 fun onClickReturnStringString(): ((String, String) -> Unit)? { return null }
 fun <T> onClickReturnViewT(): ((View, T) -> Unit)? { return null }
+fun onClickDataSnapShot(): ((dataSnapshot: DataSnapshot?) -> Unit)? { return null }
 //fun onClickReturnStringString(): ((String, String) -> Unit)? { return null }
 
 fun View.ysrOnLongClickListener() {

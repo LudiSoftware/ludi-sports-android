@@ -164,7 +164,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         println("binding realmlist")
         realmList?.let {
             it[position]?.let { it1 ->
-                holder.bind(it1 as RealmObject)
+                holder.bind(it1 as RealmObject, position=position)
                 holder.itemView.setOnRealmListener(itemClickListener, it1)
             }
         }

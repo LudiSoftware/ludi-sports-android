@@ -28,10 +28,11 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
     var txtItemPlayerRank = itemView.bindTextView(R.id.cardPlayerTinyTxtRank)
 
-    fun bind(player: PlayerRef?) {
+    fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let {
             txtItemPlayerName?.text = it.name
-            txtItemPlayerRank?.text = it.rank.toString()
+            txtItemPlayerRank?.text = position.toString()
+
         }
     }
 }

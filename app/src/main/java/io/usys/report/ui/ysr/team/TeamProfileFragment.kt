@@ -4,21 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
-import io.usys.report.databinding.ProfileTeamViewpagerBinding
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.YsrMiddleFragment
-import io.usys.report.ui.fragments.YsrPagerAdapter
-import io.usys.report.ui.tryouts.HomeTryOuts
-import io.usys.report.ui.tryouts.TryoutTestFragment
-import io.usys.report.ui.ysr.player.createPlayerProfileDialog
+import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.YsrMode
-import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -57,7 +48,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
     }
     override fun setupOnClickListeners() {
         itemOnClick = { _,obj ->
-            createPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
+            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
         }
 
     }

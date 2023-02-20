@@ -44,7 +44,28 @@ fun DataSnapshot?.toRealmObject(): RealmObject? {
     }
     return null
 }
-
+fun DataSnapshot?.toRealmObjects(): RealmList<RealmObject>? {
+    this?.let {
+        val realmList = RealmList<RealmObject>()
+        val hashmap = it.toHashMap()
+        val hashSize = hashmap.size
+        var temp: RealmObject?
+        if (hashSize > 1) {
+            for ((_,value) in hashmap) {
+                if (value is HashMap<*,*>) {
+                    val tempHash = value as HashMap<String, Any>
+                    temp = tempHash.mapHashMapToRealmObject() as? RealmObject
+                    temp?.let { itTemp-> realmList.add(itTemp) }
+                }
+            }
+        } else {
+            temp = hashmap.mapHashMapToRealmObject() as? RealmObject
+            temp?.let { itTemp-> realmList.add(itTemp) }
+        }
+        return realmList
+    }
+    return null
+}
 /**
  * 2. Master Parsing Function Part 2
  *    - From HashMap<String,Any> to Realm Object
