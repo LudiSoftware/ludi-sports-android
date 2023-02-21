@@ -120,7 +120,7 @@ class ChatDialogFragment : DialogFragment() {
          * val chatDialogFragment = ChatDialogFragment.newInstance(team!!.id)
          * chatDialogFragment.show(childFragmentManager, "chat_dialog")
          */
-        fun newInstance(chatId: String): ChatDialogFragment {
+        fun newChatInstance(chatId: String): ChatDialogFragment {
             val args = Bundle()
             args.putString("chatId", chatId)
             val fragment = ChatDialogFragment()

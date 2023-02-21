@@ -49,7 +49,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
             _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
         }
         _binding?.btnTeamTabChat?.setOnClickListener {
-            val chatDialogFragment = ChatDialogFragment.newInstance(team!!.id)
+            val chatDialogFragment = ChatDialogFragment.newChatInstance(team!!.id)
             chatDialogFragment.show(childFragmentManager, "chat_dialog")
         }
         _binding?.btnTeamTabHome?.setOnClickListener {
@@ -68,6 +68,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
     }
 
     private fun setupHeader() {
+        //TODO: Setup header
 //        _binding?.includeOrgProfileCard?.cardTxtTitle?.text = "U17 Lady Angels (Bad Girls)"
 //        _binding?.includeOrgProfileCard?.cardTxtOne?.text = "Region 3 Premier League"
 //        _binding?.includeOrgProfileCard?.cardTxtTwo?.text = ""

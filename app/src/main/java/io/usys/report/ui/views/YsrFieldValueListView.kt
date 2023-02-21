@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
+import io.realm.RealmObjectSchema
+import io.realm.RealmSchema
 import io.usys.report.R
 import io.usys.report.realm.*
 import io.usys.report.utils.*
@@ -47,10 +49,10 @@ open class YsrFieldValueListAdapter<T: RealmObject>(var realmObject: T?, var typ
     RecyclerView.Adapter<FieldValueViewHolder>() {
 
     var fieldNames: MutableSet<String>? = mutableSetOf()
+    var avoidFieldList: MutableList<String> = mutableListOf()
 
     init {
-        val schema = realm().schema.get(type)
-        fieldNames = schema?.fieldNames
+        fieldNames = getRealmFields(type)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FieldValueViewHolder {
@@ -67,7 +69,15 @@ open class YsrFieldValueListAdapter<T: RealmObject>(var realmObject: T?, var typ
 
         fieldNames?.let {
             val key = it.elementAt(position)
-            val value = realmObject?.getValue<RealmObject, String>(key, "null")
+            val value = realmObject?.getValue(key, "null")
+
+            if (avoidFieldList.isNotEmpty()) {
+                if (avoidFieldList.contains(key)) {
+                    holder.bind(key, null)
+                    return@let
+                }
+            }
+
             if (key == "id" || value is String && value == "null") {
                 // remove item completely.
                 holder.bind(key, null)
@@ -77,14 +87,14 @@ open class YsrFieldValueListAdapter<T: RealmObject>(var realmObject: T?, var typ
         }
     }
 
+    // Add field names to avoid in the list
+    fun addAvoidFieldList(vararg fieldNames: String) {
+        avoidFieldList.addAll(fieldNames)
+    }
+
 }
 
-fun String.capitalizeFirstChar(): String {
-    if (this.isEmpty()) {
-        return this
-    }
-    return this.substring(0, 1).toUpperCase(Locale.ROOT) + this.substring(1)
-}
+
 
 class FieldValueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtFieldName = itemView.bindTextView(R.id.ysrTxtItemFieldName)
@@ -95,11 +105,15 @@ class FieldValueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtFieldName?.text = key.capitalizeFirstChar()
             editValue.setText(value)
         } else {
-            // Set the height of the view holder to 0
-            itemView.layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 0)
-            // Set the margin of the view holder to 0
-            val marginLayoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams
-            marginLayoutParams.setMargins(0, 0, 0, 0)
+            itemView.removeItemViewFromList()
         }
     }
+}
+
+fun View.removeItemViewFromList() {
+    // Set the height of the view holder to 0
+    this.layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 0)
+    // Set the margin of the view holder to 0
+    val marginLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    marginLayoutParams.setMargins(0, 0, 0, 0)
 }
