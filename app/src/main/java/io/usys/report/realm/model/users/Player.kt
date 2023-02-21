@@ -38,6 +38,8 @@ open class Player : RealmObject() {
     var age: Int = 0
     var dob: String? = null
     var position: String? = null
+    var foot: String? = null
+    var contacts: RealmList<Contact>? = null
     //Extras
     var playerName: String? = null
     var teamName: String? = null

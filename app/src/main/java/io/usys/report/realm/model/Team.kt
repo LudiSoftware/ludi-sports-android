@@ -33,6 +33,7 @@ open class Team : RealmObject(), Serializable {
     var managerRefs: RealmList<Parent>? = RealmList()
     var organizationRefs: RealmList<Organization>? = RealmList()
     var roster: RealmList<PlayerRef>? = RealmList()
+    var season: String? = "null"
     var schedule: Schedule? = Schedule()
     var year: String? = "null"
     var ageGroup: String? = "null"

@@ -56,6 +56,7 @@
             app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard" />
 
         <LinearLayout
+            android:id="@+id/includeYsrListViewRosterLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
@@ -66,7 +67,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnTeamTabChat"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="1.0"
+            tools:visibility="gone">
 
             <include
                 android:id="@+id/includeYsrListViewRoster"
@@ -76,6 +78,32 @@
                 android:layout_marginBottom="25dp" />
 
         </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/includeYsrListScheduleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnTeamTabChat"
+            app:layout_constraintVertical_bias="1.0"
+            tools:visibility="visible">
+
+            <include
+                android:id="@+id/includeYsrListSchedule"
+                layout="@layout/ysr_field_value_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp" />
+
+        </LinearLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

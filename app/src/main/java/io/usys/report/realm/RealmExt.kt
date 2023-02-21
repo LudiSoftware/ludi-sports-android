@@ -21,46 +21,6 @@ import kotlinx.coroutines.launch
  * Created by ChazzCoin : December 2019.
  */
 
-/** -> TRIED AND TRUE! <- */
-fun <T> RealmList<T>?.toMutableList() : MutableList<T> {
-    val listOfT = mutableListOf<T>()
-    this?.let {
-        for (item in it) {
-            listOfT.add(item)
-        }
-    }
-    return listOfT
-}
-
-fun <K, V> HashMap<K, V>?.toRealmList() : RealmList<Any> {
-    val listOfT = RealmList<Any>()
-    this?.let {
-        for ((_,value) in it) {
-            listOfT.add(value as? Any)
-        }
-    }
-    return listOfT
-}
-
-fun <T> ArrayList<T>.toRealmList(): RealmList<T> {
-    val realmList = RealmList<T>()
-    for (item in this) {
-        realmList.add(item)
-    }
-    return realmList
-}
-
-inline fun <reified T> DataSnapshot.toRealmList(): RealmList<T> {
-    val realmList: RealmList<T> = RealmList()
-    for (ds in this.children) {
-        val org: T? = ds.getValue(T::class.java)
-        org?.let {
-            realmList.add(org)
-        }
-    }
-    return realmList
-}
-
 fun RealmObject.updateFieldsAndSave(newObject: RealmObject) {
     executeRealm {
         val fields = this.javaClass.declaredFields
@@ -72,8 +32,6 @@ fun RealmObject.updateFieldsAndSave(newObject: RealmObject) {
         it.insertOrUpdate(this)
     }
 }
-
-
 
 // Verified
 inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {
@@ -93,8 +51,15 @@ fun <T> RealmModel.getRealmId() : String? {
     return id.toString()
 }
 
+inline fun <reified T : RealmObject, reified R> RealmObject.getValue(fieldName: String, defaultValue: R): R {
+    val field = this.javaClass.getDeclaredField(fieldName)
+    field.isAccessible = true
 
-
+    return when (val value = field.get(this)) {
+        is R -> value
+        else -> defaultValue
+    }
+}
 // Untested
 fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {
     return this.getValue(clazz)
