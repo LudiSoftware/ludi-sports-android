@@ -7,26 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.realm.Realm
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
-import io.usys.report.realm.loadInRealmList
-import io.usys.report.realm.model.Coach
-import io.usys.report.realm.model.Sport
-import io.usys.report.ui.onClickReturnStringString
-import io.usys.report.ui.onClickReturnViewT
-import io.usys.report.ui.ysr.organization.setupOrganizationList
-import io.usys.report.ui.ysr.player.setupPlayerListFromSession
-import io.usys.report.ui.ysr.service.setupServiceList
-import io.usys.report.ui.ysr.sport.setupSportList
-import io.usys.report.ui.ysr.team.setupTeamListFromSession
 import io.usys.report.utils.*
-import io.usys.report.utils.views.loadUriIntoImgView
 import java.util.*
 
 class YsrFieldValueListView(context: Context) : CardView(context) {
