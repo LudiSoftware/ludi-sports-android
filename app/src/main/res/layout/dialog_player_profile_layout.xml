@@ -4,128 +4,127 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reviewRootCard"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="10dp"
     app:cardBackgroundColor="@color/ysrWindowBackground"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/reviewMainLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#00FFFFFF">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/includePlayerProfileHeader"
-            layout="@layout/card_user_header_template"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogTryOutTag" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reviewMainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00FFFFFF">
 
-        <Button
-            android:id="@+id/btnPlayerDialogCreateEval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:text="Create Evaluation"
-            app:layout_constraintBottom_toBottomOf="@+id/includePlayerProfileHeader"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader" />
+            <include
+                android:id="@+id/includePlayerProfileHeader"
+                layout="@layout/card_user_header_template_basic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogTryOutTag" />
 
-        <Button
-            android:id="@+id/btnPlayerDialogCreateNote"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="Create Note"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogCreateEval" />
+            <Button
+                android:id="@+id/btnPlayerDialogCreateEval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="102dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:text="Create Evaluation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader" />
 
-        <Button
-            android:id="@+id/btnPlayerDialogSendOffer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Send Offer"
-            app:layout_constraintBottom_toBottomOf="@+id/btnPlayerDialogCreateNote"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader" />
+            <Button
+                android:id="@+id/btnPlayerDialogSendOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:text="Send Offer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader" />
 
-        <TextView
-            android:id="@+id/txtPlayerDialogTryOutTag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Try-Out Tag:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogRank" />
+            <TextView
+                android:id="@+id/txtPlayerDialogTryOutTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Try-Out Tag:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogRank" />
 
-        <TextView
-            android:id="@+id/txtPlayerDialogJerseyNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Jersey Number:"
-            app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogAge"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogAge" />
+            <TextView
+                android:id="@+id/txtPlayerDialogJerseyNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Jersey Number:"
+                app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogAge"
+                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogAge" />
 
-        <TextView
-            android:id="@+id/txtPlayerDialogPosition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:text="Position:"
-            app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
-            app:layout_constraintTop_toTopOf="@+id/includePlayerProfileHeader" />
+            <TextView
+                android:id="@+id/txtPlayerDialogPosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:text="Position:"
+                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintTop_toTopOf="@+id/includePlayerProfileHeader" />
 
-        <TextView
-            android:id="@+id/txtPlayerDialogDOB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Date Of Birth:"
-            app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogPosition"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogPosition" />
+            <TextView
+                android:id="@+id/txtPlayerDialogDOB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Date Of Birth:"
+                app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogPosition"
+                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogPosition" />
 
-        <TextView
-            android:id="@+id/txtPlayerDialogAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Age:"
-            app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogDOB"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogDOB" />
+            <TextView
+                android:id="@+id/txtPlayerDialogAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Age:"
+                app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogDOB"
+                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogDOB" />
 
-        <TextView
-            android:id="@+id/txtPlayerDialogRank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Rank:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txtPlayerDialogRank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Rank:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/includeYsrListViewNotes"
-            layout="@layout/ysr_title_list_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogCreateNote" />
+            <include
+                android:id="@+id/includeYsrListViewNotes"
+                layout="@layout/ysr_title_create_list_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogCreateEval"
+                app:layout_constraintVertical_bias="1.0" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 
 </androidx.cardview.widget.CardView>

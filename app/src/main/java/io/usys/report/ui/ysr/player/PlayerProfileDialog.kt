@@ -20,6 +20,7 @@ import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.ui.onClickDataSnapShot
+import io.usys.report.ui.views.YsrCreateListView
 import io.usys.report.ui.views.YsrTitleListView
 import io.usys.report.ui.ysr.review.engine.calculateAverageRatingScore
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingCount
@@ -40,7 +41,6 @@ fun popPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     // Buttons
     val btnCreateEval = dialog.bind<Button>(R.id.btnPlayerDialogCreateEval)
-    val btnCreateNote = dialog.bind<Button>(R.id.btnPlayerDialogCreateNote)
     val btnSendOffer = dialog.bind<Button>(R.id.btnPlayerDialogSendOffer)
     // Includes
     val playerProfile = dialog.bind<View>(R.id.includePlayerProfileHeader)
@@ -49,9 +49,9 @@ fun popPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
     val playerTryoutTag = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogTryOutTag)
     val playerPosition = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogPosition)
     val includeNotes = playerProfile.rootView?.findViewById<View>(R.id.includeYsrListViewNotes)
-    val includeNotesRecyclerView = includeNotes?.rootView?.findViewById<RecyclerView>(R.id.ysrRecycler)
-    val includeNotesTitle = includeNotes?.rootView?.findViewById<TextView>(R.id.ysrTxtTitle)
-    includeNotes?.makeGone()
+    val includeNotesRecyclerView = includeNotes?.rootView?.findViewById<RecyclerView>(R.id.ysrCreateListRecycler)
+    val includeNotesTitle = includeNotes?.rootView?.findViewById<TextView>(R.id.ysrCreateListTxtTitle)
+//    includeNotes?.makeGone()
     // Hide unused views
     playerProfile.rootView?.findViewById<TextView>(R.id.cardUserHeaderTxtProfileReviewCount)?.makeGone()
     playerProfile.rootView?.findViewById<RatingBar>(R.id.cardUserHeaderRatingBar)?.makeGone()
@@ -72,15 +72,16 @@ fun popPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
             includeNotesRecyclerView?.loadInRealmList(notes, FireTypes.NOTES, null)
         }
     }
+//    createButton?.setOnClickListener {
+//        includeNotesIncludeCreateNote?.toggleCreateLayout()
+//    }
+
     player.id?.let {
         getPlayerNotes(it, onClick)
     }
     loadData()
 
     btnCreateEval.setOnClickListener {
-        dialog.dismiss()
-    }
-    btnCreateNote.setOnClickListener {
         dialog.dismiss()
     }
     btnSendOffer.setOnClickListener {
