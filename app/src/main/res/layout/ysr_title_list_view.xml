@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ysrTxtTitle"
             tools:itemCount="2"
-            tools:listitem="@layout/card_sport_small">
+            tools:listitem="@layout/card_player_tiny">
 
         </androidx.recyclerview.widget.RecyclerView>
 

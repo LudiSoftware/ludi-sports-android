@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.realm.model.DayEvent
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.fragments.bundleRealmObject
+import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.ysr.chat.ChatDialogFragment
 import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.YsrMode
@@ -44,9 +47,10 @@ class TeamProfileFragment : YsrMiddleFragment() {
         _binding?.includeYsrListScheduleLayout?.makeGone()
         _binding?.includeYsrListViewRosterLayout?.makeGone()
         _binding?.btnTeamTabTryOuts?.setOnClickListener {
-            _binding?.includeYsrListViewRosterLayout?.makeVisible()
-            _binding?.includeYsrListScheduleLayout?.makeGone()
-            _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
+            toFragment(R.id.navigation_tryout_frag, bundleRealmObject(team!!))
+//            _binding?.includeYsrListViewRosterLayout?.makeVisible()
+//            _binding?.includeYsrListScheduleLayout?.makeGone()
+//            _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
         }
         _binding?.btnTeamTabChat?.setOnClickListener {
             val chatDialogFragment = ChatDialogFragment.newChatInstance(team!!.id)

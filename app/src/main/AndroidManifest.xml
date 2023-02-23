@@ -41,7 +41,14 @@
             android:label="Main Location Manager Activity" />
         <activity
             android:name="io.usys.report.ui.ysr.MasterUserActivity"
-            android:label="Main Food Truck Activity">
+            android:label="Main Food Truck Activity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.usys.report.ui.ysr.MasterUserActivity" />
