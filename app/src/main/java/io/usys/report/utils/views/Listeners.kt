@@ -47,7 +47,7 @@ fun View?.onMoveListener(window: Window?) {
 }
 
 @SuppressLint("ClickableViewAccessibility")
-fun View?.onMoveListener4(relativeLayout: RelativeLayout) {
+fun View?.onMoveListenerRosterFormation(relativeLayout: RelativeLayout, height:Int=200, width: Int=200) {
     // Window Height and Width
     val parentWidth = relativeLayout.width
     val parentHeight = relativeLayout.height
@@ -74,8 +74,8 @@ fun View?.onMoveListener4(relativeLayout: RelativeLayout) {
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
                 )
-                lp.width = 200
-                lp.height = 200
+                lp.width = width
+                lp.height = height
                 lp.leftMargin = max(0, min(newLeft, parentWidth - width))
                 lp.topMargin = max(0, min(newTop, parentHeight - height))
                 layoutParams = lp

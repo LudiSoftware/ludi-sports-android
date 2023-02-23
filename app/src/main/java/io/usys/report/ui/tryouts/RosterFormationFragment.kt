@@ -2,10 +2,6 @@ package io.usys.report.ui.tryouts
 
 import android.content.ClipData
 import android.content.res.Configuration
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -13,19 +9,17 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarMenu
 import io.usys.report.R
-import io.usys.report.databinding.FragmentListFormationsLandscapeBinding
-import io.usys.report.databinding.FragmentListFormationsPortraitBinding
 import io.usys.report.realm.linearLayoutManager
-import io.usys.report.realm.loadInRealmList
+import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.getPlayerFromRoster
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.utils.bind
+import io.usys.report.utils.log
 import io.usys.report.utils.views.*
 import java.util.*
 
@@ -33,18 +27,14 @@ import java.util.*
  * Created by ChazzCoin : October 2022.
  */
 
-class TryoutTestFragment : YsrMiddleFragment() {
+class RosterFormationFragment : YsrMiddleFragment() {
 
+    var adapter: RosterFormationListAdapter? = null
     var soccerFieldLayout: RelativeLayout? = null
     var rosterListRecyclerView: RecyclerView? = null
 
-    private var _binding: FragmentListFormationsLandscapeBinding? = null
-    private val binding get() = _binding!!
-    private var _binding2: FragmentListFormationsPortraitBinding? = null
-    private val binding2 get() = _binding2!!
-    var isLandscape = false
-    var rosterList = mutableListOf<String>()
-    var formationList = mutableListOf<String>()
+    var rosterList = mutableListOf<PlayerRef>()
+    var formationList = mutableListOf<PlayerRef>()
 
     var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
     var team: Team? = null
@@ -59,14 +49,11 @@ class TryoutTestFragment : YsrMiddleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         this.inflater = inflater
         this.container = container
-
-//        val imgv = ImageView(context)
-//        imgv.setImageDrawable(getDrawable(context, R.drawable.usysr_logo))
         team = realmObjectArg as? Team
-        // Show the navigation bar
-        // Get a reference to the action bar and hide it
+        //Hiding the action bar
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         rootView = inflater.inflate(R.layout.fragment_list_formations_portrait, container, false)
+        //Hiding the bottom navigation bar
         val item = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
         item?.visibility = View.GONE
         setupDisplay()
@@ -87,15 +74,15 @@ class TryoutTestFragment : YsrMiddleFragment() {
 
             val roster = team?.roster
             roster?.forEach {
-                rosterList.add(it.name ?: "Anonymous")
+                rosterList.add(it)
             }
 
-            val adapter = RosterListAdapter(rosterList, onItemDragged!!)
+            adapter = RosterFormationListAdapter(rosterList, onItemDragged!!)
             rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext())
             rosterListRecyclerView?.adapter = adapter
-//            val itemTouchHelperCallback = MyItemTouchHelperCallback(adapter)
-//            val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-//            itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
+            val itemTouchHelperCallback = RosterFormationTouchHelperCallback(adapter!!)
+            val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+            itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
             createOnDragListener()
         }
 
@@ -113,7 +100,7 @@ class TryoutTestFragment : YsrMiddleFragment() {
     }
 
 
-    fun createOnDragListener() {
+    private fun createOnDragListener() {
 
         /**
          *
@@ -135,18 +122,24 @@ class TryoutTestFragment : YsrMiddleFragment() {
                 DragEvent.ACTION_DROP -> {
                     val clipData = event.clipData
                     if (clipData != null && clipData.itemCount > 0) {
-                        val itemName = clipData.getItemAt(0).text.toString()
+                        //TODO: Fix this to get the correct realm object
+                        val playerId = clipData.getItemAt(0).text.toString()
+                        team?.getPlayerFromRoster(playerId)?.let {
+                            formationList.add(it)
+                            this.adapter?.removeItem(it.id!!)
+                        }
                         val layoutParams = RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                         )
                         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+                        //TODO: What exactly do we put here, the entire item from the list?
                         val imgv = ImageView(context)
                         layoutParams.width = 200
                         layoutParams.height = 200
                         imgv.layoutParams = layoutParams
                         imgv.setImageDrawable(getDrawable(context, R.drawable.usysr_logo))
-                        imgv.onMoveListener4(soccerFieldLayout!!)
+                        imgv.onMoveListenerRosterFormation(soccerFieldLayout!!)
                         soccerFieldLayout?.addView(imgv)
                     }
                     true
@@ -161,36 +154,26 @@ class TryoutTestFragment : YsrMiddleFragment() {
         soccerFieldLayout?.setOnDragListener(dragListener)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
 }
 
-fun ImageView.resizeBy(width: Int, height: Int) {
-    val layoutParams = this.layoutParams
-    layoutParams.width = width
-    layoutParams.height = height
-    this.layoutParams = layoutParams
-}
-fun Drawable.resize(width: Int, height: Int, resources:Resources): Drawable {
-    val bitmap = Bitmap.createScaledBitmap(
-        (this as BitmapDrawable).bitmap, width, height, false
-    )
-    return BitmapDrawable(resources, bitmap)
-}
-
-class MyItemTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
+//    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+//        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+//        return true
+//    }
+
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        val fromPosition = viewHolder.adapterPosition
+        val toPosition = target.adapterPosition
+        log(toPosition)
         return true
     }
 
@@ -202,23 +185,31 @@ class MyItemTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : 
 /**
  * RecyclerView Adapter
  */
-class RosterListAdapter(private val itemList: MutableList<String>, private val onItemMoved: (start: Int, end: Int) -> Unit)
-    : RecyclerView.Adapter<RosterListAdapter.MyViewHolder>(), ItemTouchHelperAdapter {
+class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>, private val onItemMoved: (start: Int, end: Int) -> Unit)
+    : RecyclerView.Adapter<RosterFormationListAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_player_tiny, parent, false)
-        return MyViewHolder(view)
+        return RosterFormationViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textView.text = itemList[position]
+    override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
+        holder.textView.text = itemList[position].name
         holder.itemView.setOnLongClickListener {
             val dragShadow = View.DragShadowBuilder(holder.itemView)
-            val clipData = ClipData.newPlainText("item_name", itemList[position])
+            val clipData = ClipData.newPlainText("playerId", itemList[position].id)
             holder.itemView.startDragAndDrop(clipData, dragShadow, holder, 0)
         }
     }
 
+    fun removeItem(playerId: String) {
+        val player = itemList.find { it.id == playerId }
+        player?.let {
+            val index = itemList.indexOf(it)
+            itemList.removeAt(index)
+            notifyItemRemoved(index)
+        }
+    }
     override fun getItemCount() = itemList.size
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
@@ -241,7 +232,7 @@ class RosterListAdapter(private val itemList: MutableList<String>, private val o
         notifyItemRemoved(position)
     }
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class RosterFormationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.bind(R.id.cardPlayerTinyTxtName)
     }
 }

@@ -24,23 +24,21 @@
         android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tryoutsRootViewRosterFormation"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"
         tools:itemCount="2"
         tools:listitem="@layout/card_player_tiny" />
 
     <RelativeLayout
         android:id="@+id/tryoutsRootViewRosterFormation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="512dp"
         android:background="@drawable/soccer_field"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
     </RelativeLayout>

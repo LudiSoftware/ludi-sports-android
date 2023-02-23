@@ -78,6 +78,11 @@ open class Team : RealmObject(), Serializable {
 
 }
 
+fun Team?.getPlayerFromRoster(playerId: String): PlayerRef? {
+    if (this.isNullOrEmpty()) return null
+    return this?.roster?.where()?.equalTo("id", playerId)?.findFirst()
+}
+
 fun executeGetTeamById(teamId:String) : Team? {
     var team: Team? = null
     try {

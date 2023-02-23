@@ -101,7 +101,7 @@
     <!-- TRY-OUT TESTING PAGE -->
     <fragment
         android:id="@+id/navigation_tryout_frag"
-        android:name="io.usys.report.ui.tryouts.TryoutTestFragment"
+        android:name="io.usys.report.ui.tryouts.RosterFormationFragment"
         android:label="Tryouts"
         tools:layout="@layout/fragment_home_tryouts">
     </fragment>
