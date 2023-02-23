@@ -1,5 +1,6 @@
 package io.usys.report.realm.model
 
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -11,6 +12,7 @@ open class Evaluation: RealmObject(), Serializable {
     var teamId: String? = null
     var overall_score: Int? = null
     var coachNotes: String? = null
+    var attributes: RealmList<CustomAttribute>? = null
     var technical_skills: String? = null
     var technical_skills_score: Int? = null
     var physical_fitness: String? = null

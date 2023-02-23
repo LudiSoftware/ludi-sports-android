@@ -50,7 +50,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
             toFragment(R.id.navigation_tryout_frag, bundleRealmObject(team!!))
 //            _binding?.includeYsrListViewRosterLayout?.makeVisible()
 //            _binding?.includeYsrListScheduleLayout?.makeGone()
-//            _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
+            _binding?.includeYsrListViewRoster?.root?.setupPlayerList(team!!.id, itemOnClick)
         }
         _binding?.btnTeamTabChat?.setOnClickListener {
             val chatDialogFragment = ChatDialogFragment.newChatInstance(team!!.id)

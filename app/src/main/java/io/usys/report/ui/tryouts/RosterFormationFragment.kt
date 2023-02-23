@@ -1,6 +1,8 @@
 package io.usys.report.ui.tryouts
 
+import android.app.Activity
 import android.content.ClipData
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
@@ -67,9 +69,9 @@ class RosterFormationFragment : YsrMiddleFragment() {
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
 
             onItemDragged = { start, end ->
-                val item = formationList[start]
-                formationList.removeAt(start)
-                formationList.add(end, item)
+//                val item = formationList[start]
+//                formationList.removeAt(start)
+//                formationList.add(end, item)
             }
 
             val roster = team?.roster
@@ -77,7 +79,7 @@ class RosterFormationFragment : YsrMiddleFragment() {
                 rosterList.add(it)
             }
 
-            adapter = RosterFormationListAdapter(rosterList, onItemDragged!!)
+            adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
             rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext())
             rosterListRecyclerView?.adapter = adapter
             val itemTouchHelperCallback = RosterFormationTouchHelperCallback(adapter!!)
@@ -124,7 +126,9 @@ class RosterFormationFragment : YsrMiddleFragment() {
                     if (clipData != null && clipData.itemCount > 0) {
                         //TODO: Fix this to get the correct realm object
                         val playerId = clipData.getItemAt(0).text.toString()
+                        var tempPlayer = PlayerRef()
                         team?.getPlayerFromRoster(playerId)?.let {
+                            tempPlayer = it
                             formationList.add(it)
                             this.adapter?.removeItem(it.id!!)
                         }
@@ -165,17 +169,17 @@ class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAd
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
-//    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-//        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
-//        return true
-//    }
-
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        val fromPosition = viewHolder.adapterPosition
-        val toPosition = target.adapterPosition
-        log(toPosition)
+        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }
+
+//    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+//        val fromPosition = viewHolder.adapterPosition
+//        val toPosition = target.adapterPosition
+//        log(toPosition)
+//        return true
+//    }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         mAdapter.onItemDismiss(viewHolder.adapterPosition)
@@ -185,7 +189,9 @@ class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAd
 /**
  * RecyclerView Adapter
  */
-class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>, private val onItemMoved: (start: Int, end: Int) -> Unit)
+class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
+                                 private val onItemMoved: (start: Int, end: Int) -> Unit,
+                                 private val activity: Activity)
     : RecyclerView.Adapter<RosterFormationListAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
@@ -194,7 +200,11 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>, p
     }
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
+        val currentPlayerRef: PlayerRef = itemList[position]
         holder.textView.text = itemList[position].name
+        holder.itemView.setOnClickListener {
+            currentPlayerRef.showPlayerProfile(activity)
+        }
         holder.itemView.setOnLongClickListener {
             val dragShadow = View.DragShadowBuilder(holder.itemView)
             val clipData = ClipData.newPlainText("playerId", itemList[position].id)

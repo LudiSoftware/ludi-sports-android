@@ -76,8 +76,10 @@ fun View?.onMoveListenerRosterFormation(relativeLayout: RelativeLayout, height:I
                 )
                 lp.width = width
                 lp.height = height
-                lp.leftMargin = max(0, min(newLeft, parentWidth - width))
-                lp.topMargin = max(0, min(newTop, parentHeight - height))
+                lp.leftMargin = newLeft
+                lp.topMargin = newTop
+//                lp.leftMargin = max(0, min(newLeft, parentWidth - width))
+//                lp.topMargin = max(0, min(newTop, parentHeight - height))
                 layoutParams = lp
 
                 // Save the last touch position

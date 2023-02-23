@@ -1,8 +1,10 @@
 package io.usys.report.realm.model
 
+import android.app.Activity
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.newUUID
@@ -23,6 +25,9 @@ open class PlayerRef : RealmObject(), Serializable {
 
     fun getPlayer(): Player? {
         return null
+    }
+    fun showPlayerProfile(activity: Activity) {
+        popPlayerProfileDialog(activity, this).show()
     }
 }
 
