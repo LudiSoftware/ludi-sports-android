@@ -4,12 +4,17 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.usys.report.R
 
 /** startActivity **/
 inline fun <reified TO> Activity.launchActivity() {
@@ -56,6 +61,50 @@ inline fun <reified T> isFragmentActivity(): Boolean {
     return false
 }
 
+fun AppCompatActivity.ludiActionBar(): ActionBar? {
+    return this.supportActionBar
+}
+
+fun Activity.ludiActionBar(): ActionBar? {
+    return (this as AppCompatActivity).supportActionBar
+}
+
+fun Activity.hideLudiActionBar() {
+    this.ludiActionBar()?.hide()
+}
+
+fun Activity.showLudiActionBar() {
+    this.ludiActionBar()?.show()
+}
+
+fun Activity.ludiNavView(): View? {
+    return this.findViewById<BottomNavigationView>(R.id.nav_view)
+}
+
+fun Activity.hideLudiNavView() {
+    this.ludiNavView()?.visibility = View.GONE
+}
+
+fun Activity.showLudiNavView() {
+    this.ludiNavView()?.visibility = View.VISIBLE
+}
+
+fun Fragment.hideLudiActionBar() {
+    this.requireActivity().hideLudiActionBar()
+}
+fun Fragment.showLudiActionBar() {
+    this.requireActivity().showLudiActionBar()
+}
+fun Fragment.hideLudiNavView() {
+    this.requireActivity().hideLudiNavView()
+}
+fun Fragment.showLudiNavView() {
+    this.requireActivity().showLudiNavView()
+}
+
+fun Activity.changeStatusBarColor() {
+    this.window.statusBarColor = this.getColorCompat(android.R.color.black)
+}
 inline fun <reified T> T.fairPickImageFromGalleryTest(crossinline block: (Uri?) -> Unit) {
     if (!isFragment<T>() && !isFragmentActivity<T>()) return
     if (isFragment<T>()) {

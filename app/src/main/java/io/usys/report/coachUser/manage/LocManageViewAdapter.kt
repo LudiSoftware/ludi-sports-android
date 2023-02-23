@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Session
-import io.usys.report.utils.inflate
+import io.usys.report.utils.inflateLayout
 import io.realm.RealmList
 
 
@@ -20,7 +20,7 @@ class LocManageViewAdapter(mContext: Context, val locManageFragment: LocManageFr
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerLocationViewHolder {
         reloadLocations()
-        return InnerLocationViewHolder(parent.inflate(R.layout.card_organization_medium2), locManageFragment = locManageFragment)
+        return InnerLocationViewHolder(parent.inflateLayout(R.layout.card_organization_medium2), locManageFragment = locManageFragment)
     }
 
     override fun onBindViewHolder(viewHolder: InnerLocationViewHolder, position: Int) {

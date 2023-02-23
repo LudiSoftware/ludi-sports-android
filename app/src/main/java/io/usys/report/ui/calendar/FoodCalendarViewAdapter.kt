@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.realm.model.Service
 import io.usys.report.realm.model.Location
-import io.usys.report.utils.inflate
+import io.usys.report.utils.inflateLayout
 
 class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendarFragment) : RecyclerView.Adapter<FoodCalendarViewAdapter.InnerFoodCalendarViewHolder>() {
 
@@ -16,7 +16,7 @@ class FoodCalendarViewAdapter(var activity: Activity, val fragment: FoodCalendar
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerFoodCalendarViewHolder {
         return InnerFoodCalendarViewHolder(
-            parent.inflate(R.layout.card_sport_small),
+            parent.inflateLayout(R.layout.card_sport_small),
             activity,
             fragment
         )

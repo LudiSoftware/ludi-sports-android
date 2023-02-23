@@ -1,9 +1,9 @@
 package io.usys.report.utils
 
-import android.R
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +17,19 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by ChazzCoin : October 2022.
  */
-fun LayoutInflater.inflateView(resource: Int, container: ViewGroup, attachToRoot: Boolean = false): View {
-    return inflate(resource, container, attachToRoot)
+
+// INFLATERS
+
+fun ViewGroup?.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(this?.context).inflate(layoutRes, this, attachToRoot)
+}
+fun RelativeLayout.takeScreenshot(): Bitmap {
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    draw(canvas)
+    return bitmap
 }
 
-fun Activity.changeStatusBarColor() {
-    this.window.statusBarColor = this.getColorCompat(R.color.black)
-}
 
 fun <T: View> Dialog.bind(res: Int) : T {
     return this.findViewById(res)
@@ -71,9 +77,6 @@ fun View.makeGone() {
 
 fun dpToPx(dp: Int, context: Context): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), context.resources.displayMetrics).toInt()
 
-internal fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
-    return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
-}
 
 internal fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 

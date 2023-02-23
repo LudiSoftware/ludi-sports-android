@@ -26,20 +26,7 @@ class RealmListTouchAdapter(private val adapter: RealmListAdapter<*>) : ItemTouc
     }
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        val fromPosition = viewHolder.adapterPosition
-        val toPosition = target.adapterPosition
-        val fromColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(fromPosition, adapter.gridLayoutManager!!.spanCount)
-        val toColumn = adapter.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, adapter.gridLayoutManager!!.spanCount)
-        if (fromColumn == toColumn) {
-            // Move the item within the same column
-            executeRealmOnMain { Collections.swap(adapter.realmList, fromPosition, toPosition) }
-            adapter.notifyItemMoved(fromPosition, toPosition)
-        } else {
-            // Move the item to a different column
-            executeRealmOnMain { Collections.swap(adapter.realmList, fromPosition, toPosition) }
-            adapter.notifyItemChanged(fromPosition)
-            adapter.notifyItemChanged(toPosition)
-        }
+        adapter.swapRealmObjects(viewHolder, target)
         return true
     }
 

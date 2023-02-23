@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
-import io.usys.report.utils.inflate
+import io.usys.report.utils.inflateLayout
 import io.realm.RealmList
 import io.usys.report.realm.model.Location
 import io.usys.report.realm.model.Organization
@@ -24,7 +24,7 @@ class LocDashViewAdapter(mContext: Context, var activity: Activity, var location
     var context = mContext
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerDashViewHolder {
-        return InnerDashViewHolder(parent.inflate(R.layout.card_sport_small), activity)
+        return InnerDashViewHolder(parent.inflateLayout(R.layout.card_sport_small), activity)
     }
 
     override fun onBindViewHolder(viewHolder: InnerDashViewHolder, position: Int) {
