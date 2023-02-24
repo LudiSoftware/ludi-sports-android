@@ -57,10 +57,12 @@ fun popPlayerProfileDialog(activity: Activity, player: PlayerRef) : Dialog {
     playerProfile.rootView?.findViewById<RatingBar>(R.id.cardUserHeaderRatingBar)?.makeGone()
 
     fun loadData() {
-        playerName?.text = player.name
-        playerRank?.text = "Rank: ${player.rank.toString()}"
-        playerPosition?.text = "Forward"
-        playerTryoutTag?.text = "TryOut Tag: ${player.tryoutTag}"
+        player?.let {
+            playerName?.text = it.name
+            playerRank?.text = "Rank: ${it.rank.toString()}"
+            playerPosition?.text = "Forward"
+            playerTryoutTag?.text = "TryOut Tag: ${it.tryoutTag}"
+        }
     }
 
     onClick = { itSnapShot ->

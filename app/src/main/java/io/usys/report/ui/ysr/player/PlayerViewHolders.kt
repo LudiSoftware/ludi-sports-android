@@ -18,7 +18,7 @@ import io.usys.report.utils.*
 fun RecyclerView?.setupPlayerListFromSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
     getPlayerRefsByTeamId(id) {
-        rv?.loadInRealmListGridArrangable(it, FireTypes.PLAYERS, onClickReturnViewRealmObject)
+        rv?.loadInRealmListGridArrangable(it.players, FireTypes.PLAYERS, onClickReturnViewRealmObject)
     }
 }
 

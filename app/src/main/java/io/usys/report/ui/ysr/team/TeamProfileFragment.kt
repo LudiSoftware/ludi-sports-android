@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
-import io.usys.report.realm.model.DayEvent
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.YsrMiddleFragment
@@ -57,15 +56,9 @@ class TeamProfileFragment : YsrMiddleFragment() {
             chatDialogFragment.show(childFragmentManager, "chat_dialog")
         }
         _binding?.btnTeamTabHome?.setOnClickListener {
-            val dayEvent: DayEvent = DayEvent().apply {
-                type = "Practice"
-                startTime = "6:00pm"
-                endTime = "8:00pm"
-                name = "Rathmell Sports Complex"
-            }
             _binding?.includeYsrListScheduleLayout?.makeVisible()
             _binding?.includeYsrListViewRosterLayout?.makeGone()
-            _binding?.includeYsrListSchedule?.root?.loadInRealmObject(dayEvent, "DayEvent")
+//            _binding?.includeYsrListSchedule?.root?.loadInRealmObject(dayEvent, "DayEvent")
         }
 
 //        _binding?.includeGenericButtonCard?.cardGenericButtonTxtTitle?.text = "Services"

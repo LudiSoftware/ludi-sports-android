@@ -39,7 +39,15 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
         safeUser { itUser ->
-            fireGetTeamProfile("a8d341b2-affa-11ed-a62e-86f7c4c00ee3") { itTeam ->
+
+//            sessionTeams {
+//                val first = it.firstOrNull()
+//                if (first != null) {
+//                    val name = first.name
+//                    log(name)
+//                }
+//            }
+            fireGetTeamProfile("9374e9f6-53ce-4ca5-90c6-cd613ad52c6a") { itTeam ->
                 addObjectToSessionList(itTeam)
             }
 

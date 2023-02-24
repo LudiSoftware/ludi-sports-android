@@ -9,6 +9,7 @@ import android.view.Window
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import com.afollestad.materialdialogs.utils.MDUtil.getWidthAndHeight
+import io.usys.report.utils.log
 import kotlin.math.max
 import kotlin.math.min
 
@@ -47,10 +48,8 @@ fun View?.onMoveListener(window: Window?) {
 }
 
 @SuppressLint("ClickableViewAccessibility")
-fun View?.onMoveListenerRosterFormation(relativeLayout: RelativeLayout, height:Int=200, width: Int=200) {
+fun View?.onMoveListenerRosterFormation(height:Int=200, width: Int=200) {
     // Window Height and Width
-    val parentWidth = relativeLayout.width
-    val parentHeight = relativeLayout.height
     var lastX = 0
     var lastY = 0
     // OnTouch
@@ -70,16 +69,13 @@ fun View?.onMoveListenerRosterFormation(relativeLayout: RelativeLayout, height:I
                 val newTop = top + dy
 
                 // Make sure the child view doesn't go outside the bounds of the parent layout
-                val lp = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-                )
+                val lp = getRelativeLayoutParams()
                 lp.width = width
                 lp.height = height
+                //todo: Save the (x,y) coordinates of the view in the RealmObject/Firebase.
+                //      - Then load in the coordinates when the view is created.
                 lp.leftMargin = newLeft
                 lp.topMargin = newTop
-//                lp.leftMargin = max(0, min(newLeft, parentWidth - width))
-//                lp.topMargin = max(0, min(newTop, parentHeight - height))
                 layoutParams = lp
 
                 // Save the last touch position

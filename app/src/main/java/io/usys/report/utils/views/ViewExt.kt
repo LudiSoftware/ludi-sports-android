@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -19,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
  */
 
 // INFLATERS
-
+fun inflateView(context: Context, @LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(context).inflate(layoutRes, null, attachToRoot)
+}
 fun ViewGroup?.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(this?.context).inflate(layoutRes, this, attachToRoot)
 }
@@ -28,6 +31,24 @@ fun RelativeLayout.takeScreenshot(): Bitmap {
     val canvas = Canvas(bitmap)
     draw(canvas)
     return bitmap
+}
+
+fun View.enablePinchToZoom() {
+    val scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        private var scaleFactor = 1.0f
+
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            scaleFactor *= detector.scaleFactor
+            this@enablePinchToZoom.scaleX = scaleFactor
+            this@enablePinchToZoom.scaleY = scaleFactor
+            return true
+        }
+    })
+
+    setOnTouchListener { _, event ->
+        scaleGestureDetector.onTouchEvent(event)
+        true
+    }
 }
 
 

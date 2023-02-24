@@ -14,6 +14,7 @@ import java.io.Serializable
 open class OrganizationRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
+    var organizationId: String? = ""
     var name: String? = null
 }
 open class Organization : RealmObject(), Serializable {
@@ -33,11 +34,11 @@ open class Organization : RealmObject(), Serializable {
     var managerName: String? = null
     var estMemberCount: String? = null
     var estStaffCount: String? = null
-    var staffRefs: RealmList<CoachRef>? = null
-    var reviewIds: RealmList<String>? = null
-    var leagueRefs: RealmList<LeagueRef>? = null
-    var regionRefs: RealmList<String>? = null
-    var locationRefs: RealmList<LocationRef>? = null
+    var staff: RealmList<CoachRef>? = null
+    var reviews: RealmList<String>? = null
+    var leagues: RealmList<LeagueRef>? = null
+    var regions: RealmList<String>? = null
+    var locations: RealmList<LocationRef>? = null
     var imgUris: RealmList<String>? = null
     var fromGoogle: Boolean = false
     var google_place_category: String? = null

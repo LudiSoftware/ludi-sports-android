@@ -5,9 +5,11 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.realm.executeRealm
 import io.usys.report.realm.realm
-import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
+import io.usys.report.realm.session
+import io.usys.report.realm.sessionTeams
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.isNullOrEmpty
+import io.usys.report.utils.log
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -18,7 +20,13 @@ import java.io.Serializable
 open class TeamRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
+    var teamId: String? = null
     var name: String? = null
+    var headCoachId: String? = "null"
+    var headCoachName: String? = "null"
+    var year: String? = "null"
+    var ageGroup: String? = "null"
+    var gender: String? = "null"
     var sport: String? = null
     var status: String? = null
 }
@@ -29,12 +37,13 @@ open class Team : RealmObject(), Serializable {
     var id: String = newUUID()
     var headCoachId: String? = "null"
     var headCoachName: String? = "null"
-    var coachRefs: RealmList<CoachRef>? = RealmList()
-    var managerRefs: RealmList<Parent>? = RealmList()
-    var organizationRefs: RealmList<Organization>? = RealmList()
-    var roster: RealmList<PlayerRef>? = RealmList()
+    var coaches: RealmList<CoachRef>? = RealmList()
+    var managers: RealmList<ParentRef>? = RealmList()
+    var organizations: RealmList<OrganizationRef>? = RealmList()
+    var roster: Roster? = null
+    var evaluations: RealmList<PlayerEvaluationRef>? = null
     var season: String? = "null"
-    var schedule: Schedule? = Schedule()
+//    var schedule: Schedule? = null
     var year: String? = "null"
     var ageGroup: String? = "null"
     var isActive: Boolean = false
@@ -68,9 +77,9 @@ open class Team : RealmObject(), Serializable {
             this.apply {
                 this.id = newTeam?.id ?: newUUID()
                 this.name = newTeam?.name
-                this.organizationRefs = newTeam?.organizationRefs
+                this.organizations = newTeam?.organizations
                 this.roster = newTeam?.roster
-                this.coachRefs = newTeam?.coachRefs
+                this.coaches = newTeam?.coaches
             }
         }
         this.saveToRealm()
@@ -80,7 +89,12 @@ open class Team : RealmObject(), Serializable {
 
 fun Team?.getPlayerFromRoster(playerId: String): PlayerRef? {
     if (this.isNullOrEmpty()) return null
-    return this?.roster?.where()?.equalTo("id", playerId)?.findFirst()
+    this?.roster?.players?.forEach {
+        if (it.id == playerId) {
+            return it
+        }
+    }
+    return this?.roster?.players?.where()?.equalTo("id", playerId)?.findFirst()
 }
 
 fun executeGetTeamById(teamId:String) : Team? {
@@ -97,7 +111,15 @@ fun executeGetTeamById(teamId:String) : Team? {
 fun getTeamById(teamId:String) : Team? {
     var team: Team? = null
     try {
-        team = realm().where(Team::class.java).equalTo("id", teamId).findFirst()
+        session {
+            val teams = it.teams
+            team = teams?.find {
+                it.id == teamId
+            }
+        }
+        if (team == null) {
+            team = realm().where(Team::class.java).equalTo("id", teamId).findFirst()
+        }
         return team
     } catch (e: Exception) { e.printStackTrace() }
     return team

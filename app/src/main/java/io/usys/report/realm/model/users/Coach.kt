@@ -17,6 +17,7 @@ open class CoachRef : RealmObject(), Serializable {
     var coachId: String? = "null"
     var id: String? = newUUID()
     var name: String? = null
+    var isHeadCoach: Boolean = false
     var title: String? = null
 }
 open class Coach : RealmObject() {
@@ -28,8 +29,9 @@ open class Coach : RealmObject() {
     var id: String = "unassigned"
     var name: String = "unassigned"
     var title: String? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
-    var teamRefs: RealmList<TeamRef>? = null
+    var organizations: RealmList<OrganizationRef>? = null
+    var teams: RealmList<TeamRef>? = null
+    var evaluations: RealmList<PlayerEvaluationRef>? = null
     var hasReview: Boolean = false
     var reviewBundle: ReviewBundle? = null
 
@@ -75,8 +77,8 @@ open class Coach : RealmObject() {
             this.apply {
                 this.id = newUser.id
                 this.name = newUser.name
-                this.organizationRefs = newUser.organizationRefs
-                this.teamRefs = newUser.teamRefs
+                this.organizations = newUser.organizations
+                this.teams = newUser.teams
                 this.hasReview = newUser.hasReview
                 this.reviewBundle = newUser.reviewBundle
             }

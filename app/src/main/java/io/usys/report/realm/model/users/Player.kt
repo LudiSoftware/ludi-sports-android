@@ -6,7 +6,6 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.getTimeStamp
-import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -20,8 +19,14 @@ open class PlayerRef : RealmObject(), Serializable {
     var id: String? = newUUID()
     var name: String? = "null"
     var rank: Int? = 0
-    var tryoutTag: String? = "null"
+    var number: Int = 0
+    var tryoutTag: String? = "unassigned"
+    var position: String? = "unassigned"
+    var foot: String? = "right"
+    var dob: String? = "null"
     var imgUrl: String? = "null"
+    var pointX: Int? = 0
+    var pointY: Int? = 0
 
     fun getPlayer(): Player? {
         return null
@@ -35,7 +40,7 @@ open class Player : RealmObject() {
 
     @PrimaryKey
     var id: String = newUUID()
-    var teamRef: TeamRef? = TeamRef()
+    var team: TeamRef? = TeamRef()
     var rank: Int = 0
     var number: Int = 0
     var tryoutTag: String? = null
@@ -45,11 +50,12 @@ open class Player : RealmObject() {
     var position: String? = null
     var foot: String? = null
     var contacts: RealmList<Contact>? = null
+    var evaluations: RealmList<PlayerEvaluationRef>? = null
     //Extras
     var playerName: String? = null
     var teamName: String? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
-    var teamIds: RealmList<String>? = null
+    var organizations: RealmList<OrganizationRef>? = null
+    var teams: RealmList<TeamRef>? = null
     var hasReview: Boolean = false
     var reviewBundle: ReviewBundle? = null
     // base
@@ -67,23 +73,11 @@ open class Player : RealmObject() {
     var imgUrl: String? = null
     var sport: String? = null
 
-//    fun createPlayerRef(): Player {
-//        val playerRef = Player()
-//        id = this.id
-//        name = this.name
-//        rank = this.rank
-//        tryoutTag = this.tryoutTag
-//        imgUrl = this.imgUrl
-//        return playerRef
-//    }
-
 }
 
 
-inline fun getPlayerRefsByTeamId(id:String, block: (RealmList<PlayerRef>) -> Unit) {
+inline fun getPlayerRefsByTeamId(id:String, block: (Roster) -> Unit) {
     val team = getTeamById(id)
-    team?.roster?.let {
-        if (!it.isNullOrEmpty()) { block(it) }
-    }
+    team?.roster?.let { block(it) }
 }
 

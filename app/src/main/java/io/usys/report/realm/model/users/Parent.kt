@@ -15,9 +15,10 @@ open class ParentRef : RealmObject(), Serializable {
     var parentId: String? = "null"
     var id: String? = newUUID()
     var name: String? = null
-    var playerRefs: RealmList<PlayerRef>? = null
-    var teamRefs: RealmList<TeamRef>? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
+    var isManager: Boolean = false
+    var players: RealmList<PlayerRef>? = null
+    var teams: RealmList<TeamRef>? = null
+    var organizations: RealmList<OrganizationRef>? = null
 
     fun getParent(): Parent? {
         return null
@@ -28,11 +29,11 @@ open class Parent : RealmObject() {
 
     @PrimaryKey
     var id: String = ""
-    var player: Boolean = false
-    var playerRefs: RealmList<PlayerRef>? = null
+    var hasPlayer: Boolean = false
+    var players: RealmList<PlayerRef>? = null
     var team: Boolean = false
-    var teamRefs: RealmList<TeamRef>? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
+    var teams: RealmList<TeamRef>? = null
+    var organizations: RealmList<OrganizationRef>? = null
     // base
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()

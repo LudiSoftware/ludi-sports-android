@@ -2,16 +2,26 @@ package io.usys.report.realm.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
-open class Evaluation: RealmObject(), Serializable {
+open class PlayerEvaluationRef: RealmObject(), Serializable {
+    @PrimaryKey
+    var evalId: String = newUUID()
+    var coachId: String? = null
+    var playerId: String? = null
+    var teamId: String? = null
+}
+
+open class PlayerEvaluation: RealmObject(), Serializable {
+    @PrimaryKey
     var id: String = newUUID()
     var coachId: String? = null
     var playerId: String? = null
     var teamId: String? = null
     var overall_score: Int? = null
-    var coachNotes: String? = null
+    var notes: String? = null
     var attributes: RealmList<CustomAttribute>? = null
     var technical_skills: String? = null
     var technical_skills_score: Int? = null

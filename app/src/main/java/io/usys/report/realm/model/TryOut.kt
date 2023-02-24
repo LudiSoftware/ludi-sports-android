@@ -16,19 +16,22 @@ open class TryOut : RealmObject(), Serializable {
 
     @PrimaryKey
     var id: String = newUUID()
+    var isActive: Boolean = false
     var teamId: String? = null
-    var notes: RealmList<Note>? = null
-    var playersRegisteredRefs: RealmList<PlayerRef>? = null
-    var playersRankedRefs: RealmList<PlayerRef>? = null
     var headCoachId: String? = null
     var headCoachName: String? = null
-    var coachRefs: RealmList<CoachRef>? = null
-    var managerRefs: RealmList<ParentRef>? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
+    var notes: RealmList<Note>? = null
+    // Master Roster for Tryouts
+    var tryoutRoster: Roster? = null
+    // Each Coach gets a their own List of Rosters.
+    var coachRosters: RealmList<CoachRosters>? = null
+    // References
+    var coaches: RealmList<CoachRef>? = null
+    var managers: RealmList<ParentRef>? = null
+    var organizations: RealmList<OrganizationRef>? = null
     var schedule: Schedule? = null
     var year: String? = null
     var ageGroup: String? = null
-    var isActive: Boolean = false
     var gender: String? = null
     // base
     var dateCreated: String? = getTimeStamp()

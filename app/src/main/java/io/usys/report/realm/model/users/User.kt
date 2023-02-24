@@ -19,7 +19,14 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
-
+open class UserRef : RealmObject(), Serializable {
+    @PrimaryKey
+    var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
+    var username: String = UNASSIGNED
+    var auth: String = BASIC_USER // "basic"
+    var email: String = UNASSIGNED
+    var phone: String = UNASSIGNED
+}
 open class User : RealmObject(), Serializable {
 
     @PrimaryKey

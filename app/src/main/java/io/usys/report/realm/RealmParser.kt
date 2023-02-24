@@ -81,6 +81,7 @@ inline fun <reified T> HashMap<*, *>.toObject(): T {
  *    - From HashMap<String,Any> to Realm Object
  */
 fun HashMap<String, Any>.mapHashMapToRealmObject(): Any? {
+    if (this.isEmpty()) return null
     val realm = Realm.getDefaultInstance()
     val mediator = realm.configuration.realmObjectClasses
     var result: Any? = null
@@ -95,7 +96,7 @@ fun HashMap<String, Any>.mapHashMapToRealmObject(): Any? {
                     if (checker) {
                         val jsonString = Gson().toJson(this)
                         executeRealm {
-                            result = realm.createOrUpdateObjectFromJson(clazz, jsonString)
+                            result = it.createOrUpdateObjectFromJson(clazz, jsonString)
                         }
                     }
                     if (result != null) {

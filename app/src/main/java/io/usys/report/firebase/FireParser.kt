@@ -12,7 +12,11 @@ fun DataSnapshot.toHashMap(): HashMap<String, Any> {
     this.children.forEach {
         tryCatch {
             it.key?.let { key ->
-                hashMap[key] = it.value ?: ""
+                var newValue = it.value
+                if (it.value is Long) {
+                    newValue = (it.value as Long).toInt()
+                }
+                hashMap[key] = newValue ?: ""
             }
         }
     }

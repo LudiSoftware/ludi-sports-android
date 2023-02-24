@@ -11,15 +11,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
+import io.usys.report.realm.executeRealm
 import io.usys.report.realm.linearLayoutManager
-import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.Team
-import io.usys.report.realm.model.getPlayerFromRoster
+import io.usys.report.realm.model.*
+import io.usys.report.realm.realm
+import io.usys.report.realm.session
 import io.usys.report.ui.fragments.YsrMiddleFragment
-import io.usys.report.utils.bind
-import io.usys.report.utils.hideLudiActionBar
-import io.usys.report.utils.hideLudiNavView
-import io.usys.report.utils.inflateLayout
+import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
 /**
@@ -74,7 +72,9 @@ class RosterFormationFragment : YsrMiddleFragment() {
             }
 
             val roster = team?.roster
-            roster?.forEach {
+            roster?.players?.forEach {
+                val test = it.name
+                log("Player: $test")
                 rosterList.add(it)
             }
 
@@ -133,14 +133,18 @@ class RosterFormationFragment : YsrMiddleFragment() {
                         val layoutParams = getRelativeLayoutParams()
                         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
                         //TODO: What exactly do we put here, the entire item from the list?
-                        val imgv = ImageView(context)
-                        layoutParams.width = 200
-                        layoutParams.height = 200
-                        imgv.layoutParams = layoutParams
-                        imgv.setImageDrawable(getDrawable(context, R.drawable.usysr_logo))
-                        imgv.onMoveListenerRosterFormation(soccerFieldLayout!!)
-
-                        soccerFieldLayout?.addView(imgv)
+                        val tempView = inflateView(requireContext(), R.layout.card_player_tiny)
+                        tempView.tag = tempPlayer.id
+                        val playerName = tempView.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
+                        val playerIcon = tempView.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
+                        playerName.text = tempPlayer.name
+                        layoutParams.width = 300
+                        layoutParams.height = 75
+                        tempView.layoutParams = layoutParams
+                        playerIcon.setImageDrawable(getDrawable(context, R.drawable.usysr_logo))
+//                        tempView.enablePinchToZoom()
+                        tempView.onMoveListenerRosterFormation(width = 300, height = 75)
+                        soccerFieldLayout?.addView(tempView)
                     }
                     true
                 }
@@ -171,11 +175,14 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
     }
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
-        val currentPlayerRef: PlayerRef = itemList[position]
+        val currentPlayerRef = itemList[position] as PlayerRef
         holder.textView.text = itemList[position].name
         // On Click
         holder.itemView.setOnClickListener {
-            currentPlayerRef.showPlayerProfile(activity)
+            val t = getTeamById("9374e9f6-53ce-4ca5-90c6-cd613ad52c6a")
+            val p = t?.getPlayerFromRoster(currentPlayerRef.id!!)
+            p?.showPlayerProfile(activity)
+
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {
@@ -230,13 +237,6 @@ class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAd
         mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }
-
-//    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-//        val fromPosition = viewHolder.adapterPosition
-//        val toPosition = target.adapterPosition
-//        log(toPosition)
-//        return true
-//    }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         mAdapter.onItemDismiss(viewHolder.adapterPosition)
