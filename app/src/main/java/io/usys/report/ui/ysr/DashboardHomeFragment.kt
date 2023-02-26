@@ -10,19 +10,15 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
-import io.usys.report.firebase.DatabasePaths
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.fireGetCoachProfile
-import io.usys.report.firebase.fireGetTeamProfile
 import io.usys.report.realm.findByField
 import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
-import io.usys.report.realm.session
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
-import io.usys.report.ui.fragments.toFragment
+import io.usys.report.ui.fragments.toFragmentWithRealmObject
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.utils.log
 
@@ -103,10 +99,10 @@ class DashboardHomeFragment : YsrFragment() {
 
     override fun setupOnClickListeners() {
         itemOnClickSportList = { _, obj ->
-            toFragment(R.id.navigation_org_list, bundleRealmObject(obj))
+            toFragmentWithRealmObject(R.id.navigation_org_list, bundleRealmObject(obj))
         }
         itemOnClickTeamList = { _, obj ->
-            toFragment(R.id.navigation_team_profile, bundleRealmObject(obj))
+            toFragmentWithRealmObject(R.id.navigation_team_profile, bundleRealmObject(obj))
         }
 //        itemOnClickServiceList = { _, obj ->
 //            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))

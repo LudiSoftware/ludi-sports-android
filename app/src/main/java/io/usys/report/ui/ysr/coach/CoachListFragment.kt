@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.realm.RealmModel
 import io.usys.report.R
 import io.realm.RealmObject
 import io.usys.report.databinding.FragmentOrgListBinding
-import io.usys.report.ui.fragments.toFragment
+import io.usys.report.ui.fragments.toFragmentWithRealmObject
 import io.usys.report.ui.fragments.unbundleRealmObject
 
 /**
@@ -43,7 +42,7 @@ class CoachListFragment : Fragment() {
 
     private fun setupOnClickListeners() {
         itemOnClick = { _, obj ->
-            toFragment(R.id.navigation_profile_coach, obj)
+            toFragmentWithRealmObject(R.id.navigation_profile_coach, obj)
         }
     }
 

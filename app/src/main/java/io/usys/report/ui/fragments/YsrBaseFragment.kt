@@ -112,19 +112,31 @@ abstract class YsrFragment : Fragment() {
 
 }
 
-fun Fragment.toFragment(fragId: Int, bundle: Bundle = bundleOf()) {
+fun Fragment.toFragmentWithRealmObject(fragId: Int, bundle: Bundle = bundleOf()) {
     this.findNavController().navigate(fragId, bundle)
 }
 
-fun Fragment.toFragment(fragId: Int, realmObject: RealmObject) {
+fun Fragment.toFragmentWithRealmObject(fragId: Int, realmObject: RealmObject) {
     this.findNavController().navigate(fragId, bundleRealmObject(realmObject))
+}
+
+fun Fragment.toFragmentWithId(fragId: Int, stringId: String) {
+    this.findNavController().navigate(fragId, bundleStringId(stringId))
 }
 
 fun Fragment.unbundleRealmObject(): RealmObject? {
     return arguments?.get(ARG) as? RealmObject
 }
 
+fun Fragment.unbundleStringId(): String? {
+    return arguments?.getString(ARG)
+}
+
 fun bundleRealmObject(obj: RealmObject): Bundle {
+    return bundleOf(ARG to obj)
+}
+
+fun bundleStringId(obj: String): Bundle {
     return bundleOf(ARG to obj)
 }
 

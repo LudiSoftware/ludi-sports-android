@@ -11,7 +11,7 @@ import io.usys.report.realm.model.Organization
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.ysr.review.organization.createOrgReviewDialog
-import io.usys.report.ui.fragments.toFragment
+import io.usys.report.ui.fragments.toFragmentWithRealmObject
 import io.usys.report.utils.cast
 import io.usys.report.utils.log
 
@@ -48,7 +48,7 @@ class OrganizationProfileFragment : YsrMiddleFragment() {
 //        _binding?.includeGenericButtonCard?.cardGenericButtonImgIcon?.setImageDrawable(imageDraw)
         _binding?.includeGenericButtonCard?.cardGenericButtonMainLayout?.setOnClickListener {
             organization?.let {
-                toFragment(R.id.navigation_coaches_list, bundleRealmObject(it))
+                toFragmentWithRealmObject(R.id.navigation_coaches_list, bundleRealmObject(it))
             }
         }
     }
@@ -65,7 +65,7 @@ class OrganizationProfileFragment : YsrMiddleFragment() {
         }
 
         itemOnClick = { _, obj ->
-            toFragment(R.id.navigation_coaches_list, bundleRealmObject(obj))
+            toFragmentWithRealmObject(R.id.navigation_coaches_list, bundleRealmObject(obj))
         }
     }
 

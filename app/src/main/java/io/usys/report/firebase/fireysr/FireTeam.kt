@@ -1,8 +1,12 @@
 package io.usys.report.firebase
 
 import io.realm.RealmList
+import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.Session.Companion.addCoachToSession
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.addObjectToSessionList
+import io.usys.report.realm.writeToRealm
+import io.usys.report.utils.log
 
 /** Teams Profiles */
 fun fireGetTeamsProfiles(teamIds: RealmList<String>) {
@@ -16,6 +20,7 @@ fun fireGetTeamProfileForSession(teamId:String) {
             .fairAddListenerForSingleValueEvent { ds ->
                 val teamObject = ds?.toRealmObjectCast<Team>()
                 addObjectToSessionList(teamObject)
+                log("Team Updated")
             }
     }
 }
