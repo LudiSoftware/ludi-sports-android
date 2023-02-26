@@ -1,10 +1,8 @@
 package io.usys.report.realm.model
 
-import android.app.Activity
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -28,12 +26,6 @@ open class PlayerRef : RealmObject(), Serializable {
     var pointX: Int? = 0
     var pointY: Int? = 0
 
-    fun getPlayer(): Player? {
-        return null
-    }
-    fun showPlayerProfile(activity: Activity) {
-        popPlayerProfileDialog(activity, this).show()
-    }
 }
 
 open class Player : RealmObject() {
@@ -81,3 +73,7 @@ inline fun getPlayerRefsByTeamId(id:String, block: (Roster) -> Unit) {
     team?.roster?.let { block(it) }
 }
 
+fun getPlayerRefsByTeamId(teamId:String, playerId:String): PlayerRef? {
+    val team = getTeamById(teamId)
+    return team?.roster?.players?.find { it.id == playerId }
+}

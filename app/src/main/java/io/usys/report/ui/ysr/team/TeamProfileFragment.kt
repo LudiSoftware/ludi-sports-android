@@ -72,7 +72,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
     }
     override fun setupOnClickListeners() {
         itemOnClick = { _,obj ->
-            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
+//            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
         }
 
     }

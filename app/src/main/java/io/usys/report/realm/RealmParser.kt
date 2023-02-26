@@ -76,6 +76,15 @@ inline fun <reified T> HashMap<*, *>.toObject(): T {
     return obj
 }
 
+inline fun <reified T:RealmObject> HashMap<String, Any>.toRealmObject(): T? {
+    val jsonString = Gson().toJson(this)
+    var result: Any? = null
+    writeToRealm {
+        result = it.createOrUpdateObjectFromJson(T::class.java, jsonString)
+    }
+    return result as? T
+}
+
 /**
  * 2. Master Parsing Function Part 2
  *    - From HashMap<String,Any> to Realm Object
@@ -83,8 +92,9 @@ inline fun <reified T> HashMap<*, *>.toObject(): T {
 fun HashMap<String, Any>.mapHashMapToRealmObject(): Any? {
     if (this.isEmpty()) return null
     val realm = Realm.getDefaultInstance()
-    val mediator = realm.configuration.realmObjectClasses
     var result: Any? = null
+    val mediator = realm.configuration.realmObjectClasses
+
     try {
         // Loop through all classes in the schema
         for (clazz in mediator) {
@@ -95,7 +105,7 @@ fun HashMap<String, Any>.mapHashMapToRealmObject(): Any? {
                     val checker = hashMapKeysMatch(realmFieldNames.toList(), this)
                     if (checker) {
                         val jsonString = Gson().toJson(this)
-                        executeRealm {
+                        writeToRealm {
                             result = it.createOrUpdateObjectFromJson(clazz, jsonString)
                         }
                     }

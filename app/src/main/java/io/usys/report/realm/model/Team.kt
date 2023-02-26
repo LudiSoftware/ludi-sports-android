@@ -3,13 +3,11 @@ package io.usys.report.realm.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.realm
 import io.usys.report.realm.session
-import io.usys.report.realm.sessionTeams
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.isNullOrEmpty
-import io.usys.report.utils.log
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
@@ -29,6 +27,7 @@ open class TeamRef : RealmObject(), Serializable {
     var gender: String? = "null"
     var sport: String? = null
     var status: String? = null
+    var imgUrl: String? = null
 }
 
 open class Team : RealmObject(), Serializable {
@@ -65,7 +64,7 @@ open class Team : RealmObject(), Serializable {
     var chatEnabled: Boolean = false
 
     fun saveToRealm() {
-        executeRealm { realm ->
+        writeToRealm { realm ->
             realm.insertOrUpdate(this)
         }
     }
@@ -73,7 +72,7 @@ open class Team : RealmObject(), Serializable {
     fun updateAndSave(newTeam: Team?) {
         if (newTeam.isNullOrEmpty()) return
 //        if (this.isIdenticalCoach(newUser!!)) return
-        executeRealm {
+        writeToRealm {
             this.apply {
                 this.id = newTeam?.id ?: newUUID()
                 this.name = newTeam?.name
@@ -87,20 +86,25 @@ open class Team : RealmObject(), Serializable {
 
 }
 
-fun Team?.getPlayerFromRoster(playerId: String): PlayerRef? {
+fun Team?.getPlayerFromRosterNoThread(playerId: String): PlayerRef? {
     if (this.isNullOrEmpty()) return null
-    this?.roster?.players?.forEach {
-        if (it.id == playerId) {
-            return it
+    var player: PlayerRef? = null
+    this?.roster?.players?.forEach { itPlayerRef ->
+        if (itPlayerRef.id == playerId) {
+            player = itPlayerRef
+            return@forEach
         }
     }
-    return this?.roster?.players?.where()?.equalTo("id", playerId)?.findFirst()
+    if (player == null) {
+        player = realm().where(PlayerRef::class.java).equalTo("id", playerId).findFirst()
+    }
+    return player
 }
 
 fun executeGetTeamById(teamId:String) : Team? {
     var team: Team? = null
     try {
-        executeRealm {
+        writeToRealm {
             team = realm().where(Team::class.java).equalTo("id", teamId).findFirst()
         }
         return team

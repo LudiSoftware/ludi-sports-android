@@ -13,12 +13,12 @@ import io.usys.report.ui.ysr.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ysr.review.organization.OrgReviewCommentViewHolder
 import io.usys.report.ui.ysr.service.ServiceViewHolder
 import io.usys.report.ui.ysr.sport.SportViewHolder
-import io.usys.report.ui.ysr.team.TeamViewHolder
+import io.usys.report.ui.ysr.team.TeamSmallViewHolder
 
 /**
  * This Class will 'route' the RecyclerView to the correct ViewHolder based on its realm 'type'.
  */
-class RouterViewHolder(itemView: View, var type:String, var updateCallback:((String, String) -> Unit)?=null) : RecyclerView.ViewHolder(itemView) {
+class RouterViewHolder(itemView: View, var type:String, var updateCallback:((String, String) -> Unit)?=null, var isRef:Boolean=false) : RecyclerView.ViewHolder(itemView) {
 
     /**     Router / RecyclerView Checklist.
      * 1. Realm Model of FireType
@@ -35,7 +35,10 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
 //            FireTypes.PARENTS -> return CoachViewHolder(itemView).bind(obj as? Parent)
             FireTypes.PLAYERS -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef, position=position)
-            FireTypes.TEAMS -> return TeamViewHolder(itemView).bind(obj as? Team)
+            FireTypes.TEAMS -> {
+                if (isRef) return TeamSmallViewHolder(itemView).bindRef(obj as? TeamRef)
+                else return TeamSmallViewHolder(itemView).bind(obj as? Team)
+            }
             FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)
             FireTypes.REVIEWS -> return OrgReviewCommentViewHolder(itemView).bind(obj as? Review)
             FireTypes.NOTES -> return NoteViewHolder(itemView).bind(obj as? Note)

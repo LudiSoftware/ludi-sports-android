@@ -1,10 +1,11 @@
 package io.usys.report.realm.model
 
+import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.fireSaveCoachToFirebaseAsync
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.realm
 import io.usys.report.utils.*
 import java.io.Serializable
@@ -28,14 +29,13 @@ open class Coach : RealmObject() {
     @PrimaryKey
     var id: String = "unassigned"
     var name: String = "unassigned"
-    var title: String? = null
-    var organizations: RealmList<OrganizationRef>? = null
-    var teams: RealmList<TeamRef>? = null
-    var evaluations: RealmList<PlayerEvaluationRef>? = null
+//    var organizations: RealmList<OrganizationRef>? = RealmList()
+    var teams: RealmList<TeamRef>? = RealmList()
+//    var evaluations: RealmList<PlayerEvaluationRef>? = RealmList()
     var hasReview: Boolean = false
-    var reviewBundle: ReviewBundle? = null
+//    var reviewBundle: ReviewBundle? = null
 
-    // base
+    // base (12)
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
     var firstName: String? = null
@@ -49,44 +49,6 @@ open class Coach : RealmObject() {
     var imgUrl: String? = null
     var sport: String? = null
 
-    fun isIdenticalCoach(userTwo: Coach): Boolean {
-        if (this == userTwo) return true
-        return false
-    }
-
-    fun loadTeamRefsFromFirebase() {
-        return
-    }
-
-    fun saveToFirebase(): Coach {
-        fireSaveCoachToFirebaseAsync(this)
-        return this
-    }
-
-    fun saveCoachToRealm(): Coach {
-        executeRealm {
-            it.insertOrUpdate(this)
-        }
-        return this
-    }
-
-    fun updateAndSave(newUser: Coach?) {
-        if (newUser.isNullOrEmpty()) return
-        if (this.isIdenticalCoach(newUser!!)) return
-        executeRealm {
-            this.apply {
-                this.id = newUser.id
-                this.name = newUser.name
-                this.organizations = newUser.organizations
-                this.teams = newUser.teams
-                this.hasReview = newUser.hasReview
-                this.reviewBundle = newUser.reviewBundle
-            }
-        }
-        this.saveCoachToRealm()
-    }
-
-
 }
 
 /**
@@ -96,24 +58,16 @@ fun getCoachByCoachId(ownerId:String) : Coach? {
     var coach: Coach? = null
     try {
         coach = realm().where(Coach::class.java).equalTo("id", ownerId).findFirst()
-        if (coach == null) {
-            coach = realm().createObject(Coach::class.java, ownerId)
-        }
-        return coach
-    } catch (e: Exception) { e.printStackTrace() }
-    return coach
-}
-fun executeGetCoachByCoachId(ownerId:String) : Coach? {
-    var coach: Coach? = null
-    try {
-        executeRealm {
-            coach = realm().where(Coach::class.java).equalTo("id", ownerId).findFirst()
-            if (coach == null) {
-                coach = realm().createObject(Coach::class.java, ownerId)
-            }
-        }
         return coach
     } catch (e: Exception) { e.printStackTrace() }
     return coach
 }
 
+fun Realm.getCoachByCoachId(ownerId:String) : Coach? {
+    var coach: Coach? = null
+    try {
+        coach = this.where(Coach::class.java).equalTo("id", ownerId).findFirst()
+        return coach
+    } catch (e: Exception) { e.printStackTrace() }
+    return coach
+}

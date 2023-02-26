@@ -70,8 +70,8 @@ class CoachProfileFragment : YsrMiddleFragment() {
         //General User Info
         currentCoach?.let {
             _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileName?.text = it.name
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.reviewBundle?.ratingScore?.toFloat()!!
-            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.reviewBundle?.ratingCount} Reviews"
+//            _binding?.includeUserProfileCoachHeader?.cardUserHeaderRatingBar?.rating = it.reviewBundle?.ratingScore?.toFloat()!!
+//            _binding?.includeUserProfileCoachHeader?.cardUserHeaderTxtProfileReviewCount?.text = "${it.reviewBundle?.ratingCount} Reviews"
 
 //            _binding?.fragProfileCoachRecyclerServices?.setupServiceList(requireContext(), itemOnClick)
         }

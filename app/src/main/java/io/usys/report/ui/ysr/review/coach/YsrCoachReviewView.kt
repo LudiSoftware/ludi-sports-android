@@ -18,6 +18,7 @@ import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.realm.loadInRealmListCallback
 import io.usys.report.realm.model.users.safeUserId
+import io.usys.report.realm.realm
 import io.usys.report.realm.toRealmList
 import io.usys.report.ui.ysr.review.engine.*
 import io.usys.report.utils.*
@@ -110,12 +111,12 @@ class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(conte
         }
 
 
-        currentCoach?.let {
-            reviewCount = (tempCount + it.reviewBundle?.ratingCount?.toInt()!!).toString()
-            reviewAnswerCount = (tempAnswerCount + it.reviewBundle?.reviewAnswerCount?.toInt()!!).toString()
-            val tempRating = tempScore / tempAnswerCount
-            reviewScore = calculateAverageRatingScore(it.reviewBundle?.ratingScore, tempRating.toFloat())
-        }
+//        currentCoach?.let {
+//            reviewCount = (tempCount + it.reviewBundle?.ratingCount?.toInt()!!).toString()
+//            reviewAnswerCount = (tempAnswerCount + it.reviewBundle?.reviewAnswerCount?.toInt()!!).toString()
+//            val tempRating = tempScore / tempAnswerCount
+//            reviewScore = calculateAverageRatingScore(it.reviewBundle?.ratingScore, tempRating.toFloat())
+//        }
 
     }
 
@@ -124,7 +125,7 @@ class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(conte
        //TODO: not complete yet!
        btnSubmit?.setOnClickListener {
            generateRatingScoreCount()
-           safeUserId { itUserId ->
+           realm().safeUserId { itUserId ->
                currentCoach?.let { itCoach ->
                    Review().apply {
                        this.creatorId = itUserId

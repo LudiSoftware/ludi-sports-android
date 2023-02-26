@@ -48,10 +48,11 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
 
 inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
                                                     type: String,
-                                                    noinline itemOnClick: ((View, T) -> Unit)?
+                                                    noinline itemOnClick: ((View, T) -> Unit)?,
+                                                    isRef:Boolean = false
 ) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
-    val adapter = RealmListAdapter(realmList, type, itemOnClick)
+    val adapter = RealmListAdapter(realmList, type, itemOnClick, isRef)
     this.layoutManager = linearLayoutManager(this.context)
     this.adapter = adapter
     return adapter
@@ -127,6 +128,7 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
     var realmList: RealmList<T>? = null
     var layout: Int = R.layout.card_organization_medium2
     var type: String = FireTypes.ORGANIZATIONS
+    var isRef: Boolean = false
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?) : this() {
         this.realmList = realmList
@@ -135,6 +137,13 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.layout = RouterViewHolder.getLayout(type)
     }
 
+    constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, isRef:Boolean) : this() {
+        this.realmList = realmList
+        this.type = type
+        this.itemClickListener = itemClickListener
+        this.layout = RouterViewHolder.getLayout(type)
+        this.isRef = isRef
+    }
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, gridLayoutManager: GridLayoutManager) : this() {
         this.gridLayoutManager = gridLayoutManager
         this.realmList = realmList
@@ -153,9 +162,8 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouterViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        return RouterViewHolder(itemView, type, updateCallback)
+        return RouterViewHolder(itemView, type, updateCallback, isRef)
     }
-
 
     override fun getItemCount(): Int {
         return realmList?.size ?: 0
@@ -172,12 +180,12 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
     }
 
     fun addRealmObject(realmObject: T) {
-        executeRealmOnMain { realmList?.add(realmObject) }
+        writeToRealmOnMain { realmList?.add(realmObject) }
         this.notifyItemInserted(realmList?.size ?: 0)
     }
 
     fun removeRealmObject(realmObject: T) {
-        executeRealmOnMain { realmList?.remove(realmObject) }
+        writeToRealmOnMain { realmList?.remove(realmObject) }
         this.notifyItemRemoved(realmList?.size ?: 0)
     }
 
@@ -190,11 +198,11 @@ fun <T> RealmListAdapter<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder
     val toColumn = this.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, this.gridLayoutManager!!.spanCount)
     if (fromColumn == toColumn) {
         // Move the item within the same column
-        executeRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
+        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
         this.notifyItemMoved(fromPosition, toPosition)
     } else {
         // Move the item to a different column
-        executeRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
+        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
         this.notifyItemChanged(fromPosition)
         this.notifyItemChanged(toPosition)
     }

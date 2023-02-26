@@ -10,6 +10,7 @@ import io.usys.report.R
 import io.usys.report.realm.model.Session
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
+import io.usys.report.realm.realm
 import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.ysr.MasterUserActivity
 import io.usys.report.utils.isNullOrEmpty
@@ -26,6 +27,7 @@ import java.util.concurrent.Executors
  */
 
 class AuthControllerActivity : AppCompatActivity()  {
+
 
     companion object {
         var HAS_INITIALIZED = false
@@ -65,7 +67,7 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     // https://firebasestorage.googleapis.com/v0/b/usysr-a16ef.appspot.com/o/users%2FtnmjTR7r1HPwIaBb2oXrDrwXT842%2Fprofile%2Fprofile_image.jpg?alt=media&token=c5715968-19f0-4dee-b65a-3c722cafbfc9
     private fun verifyUserLogin() {
-        safeUser { itSafeUser ->
+        realm().safeUser { itSafeUser ->
             navigateUser(itSafeUser)
             return
         }

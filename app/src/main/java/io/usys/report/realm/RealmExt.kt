@@ -5,19 +5,16 @@ import io.realm.*
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.fireForceGetNameOfRealmObject
 import io.usys.report.realm.model.*
-import io.usys.report.realm.model.users.User
-import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.utils.cast
 import io.usys.report.utils.getAttribute
 import io.usys.report.utils.isNullOrEmpty
-import io.usys.report.utils.main
 
 /**
  * Created by ChazzCoin : December 2019.
  */
 
 fun RealmObject.updateFieldsAndSave(newObject: RealmObject) {
-    executeRealm {
+    writeToRealm {
         val fields = this.javaClass.declaredFields
         for (field in fields) {
             field.isAccessible = true
@@ -91,6 +88,15 @@ inline fun sessionSports(block: (RealmList<Sport>) -> Unit) {
 inline fun sessionTeams(block: (RealmList<Team>) -> Unit) {
     Session.session?.teams?.let {
         if (!it.isNullOrEmpty()) { block(it) }
+    }
+}
+
+inline fun sessionTeamRoster(teamId: String, block: (Roster) -> Unit) {
+    Session.session?.teams?.let { itList ->
+        val team = itList.find { itTeam -> itTeam.id == teamId }
+        team?.roster?.let { itRoster ->
+            block(itRoster)
+        }
     }
 }
 

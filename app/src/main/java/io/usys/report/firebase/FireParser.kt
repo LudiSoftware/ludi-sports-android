@@ -5,6 +5,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.realm.mapHashMapToRealmObject
 import io.usys.report.realm.toObject
+import io.usys.report.realm.toRealmObject
 import io.usys.report.utils.tryCatch
 
 fun DataSnapshot.toHashMap(): HashMap<String, Any> {
@@ -15,6 +16,14 @@ fun DataSnapshot.toHashMap(): HashMap<String, Any> {
                 var newValue = it.value
                 if (it.value is Long) {
                     newValue = (it.value as Long).toInt()
+                }
+                if (it.value is ArrayList<*>) {
+                    val list = it.value as ArrayList<*>
+                    val realmList = RealmList<Any>()
+                    list.forEach { item ->
+                        realmList.add(item)
+                    }
+                    newValue = realmList
                 }
                 hashMap[key] = newValue ?: ""
             }
@@ -42,6 +51,15 @@ fun DataSnapshot?.toRealmObject(): RealmObject? {
         var temp: RealmObject? = null
         val hashmap = it.toHashMap()
         temp = hashmap.mapHashMapToRealmObject() as? RealmObject
+        return temp
+    }
+    return null
+}
+inline fun <reified T:RealmObject> DataSnapshot?.toRealmObjectCast(): RealmObject? {
+    this?.let {
+        var temp: RealmObject? = null
+        val hashmap = it.toHashMap()
+        temp = hashmap.toRealmObject<T>()
         return temp
     }
     return null

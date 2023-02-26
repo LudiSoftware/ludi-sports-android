@@ -7,6 +7,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
+import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -34,7 +35,7 @@ open class Note : RealmObject(), Serializable {
     var message: String? = null
 }
 
-fun getPlayerNotes(playerId:String, onClick: ((DataSnapshot?) -> Unit)?) {
+fun Realm.getPlayerNotes(playerId:String, onClick: ((DataSnapshot?) -> Unit)?) {
     safeUserId { itUserId ->
         fireGetOrderByEqualToCallback(DatabasePaths.NOTES.path, itUserId, "aboutPlayerId", playerId, onClick)
     }

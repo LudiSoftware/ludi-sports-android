@@ -1,8 +1,9 @@
 package io.usys.report.firebase
 
 import com.google.firebase.database.DataSnapshot
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.Session.Companion.addCoachToSession
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.utils.isNullOrEmpty
@@ -77,8 +78,8 @@ inline fun fireGetCoachProfile(userId:String, crossinline block: (Coach?) -> Uni
     firebaseDatabase {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
-                val userObject = ds?.getValue(Coach::class.java)
-                block(userObject)
+                val userObject = ds?.toRealmObjectCast<Coach>()
+                block(userObject as? Coach)
             }
     }
 }
@@ -87,16 +88,9 @@ fun fireGetCoachProfileForSession(userId:String) {
     firebaseDatabase {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
-                executeRealm {
-                    val coachObject = ds?.toObject<Coach>()
-                    val coach = getCoachByCoachId(userId)
-                    safeUser { itUser ->
-                        coach?.let { itCoach ->
-                            itUser.makeCoachAndSave(itCoach)
-                        } ?: run {
-                            itUser.makeCoachAndSave(coachObject)
-                        }
-                    }
+                writeToRealm { itRealm ->
+                    val coach = ds?.toRealmObjectCast<Coach>() as? Coach
+                    coach?.let { itCoach -> itRealm.addCoachToSession(itCoach) }
                 }
                 log("Coach Updated")
             }

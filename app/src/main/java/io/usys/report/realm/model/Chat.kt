@@ -12,8 +12,9 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.users.safeUserId
+import io.usys.report.realm.realm
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 import java.text.DateFormat
@@ -31,7 +32,7 @@ open class Chat: RealmObject(), Serializable {
     // create function to send message to firebase
     fun sendMessageToChat(message: String, senderId: String, senderName: String, chatId: String, timestamp: Long) {
         // create a new chat object
-        executeRealm {
+        writeToRealm {
             this.apply {
                 this.messageText = message
                 this.senderId = senderId
@@ -67,7 +68,7 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_chat_message, parent, false)
-        safeUserId { itUserId ->
+        realm().safeUserId { itUserId ->
             userId = itUserId
         }
         return ChatViewHolder(view)

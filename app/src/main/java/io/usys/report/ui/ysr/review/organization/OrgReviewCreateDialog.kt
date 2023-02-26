@@ -11,6 +11,7 @@ import io.usys.report.firebase.fireAddUpdateReviewDBAsync
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Review
 import io.usys.report.realm.model.users.safeUserId
+import io.usys.report.realm.realm
 import io.usys.report.ui.ysr.review.engine.calculateAverageRatingScore
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingCount
 import io.usys.report.ui.ysr.review.engine.updateOrgRatingScore
@@ -45,7 +46,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
         val newOverallCount = (currentRatingCount?.toInt()?.plus(1))
         updateOrgRatingCount(receiverId, newOverallCount.toString())
         // New Review
-        safeUserId { itUserId ->
+        realm().safeUserId { itUserId ->
             Review().apply {
                 this.creatorId = itUserId
                 this.receiverId = receiverId

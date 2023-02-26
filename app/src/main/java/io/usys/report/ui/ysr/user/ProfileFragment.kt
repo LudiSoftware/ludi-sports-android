@@ -72,7 +72,7 @@ class ProfileFragment : YsrMiddleFragment() {
 
     private fun setupProfileImage() {
 
-        safeUser { itUser ->
+        realmInstance?.safeUser { itUser ->
             itUser.photoUrl.toUri()?.let { itUri ->
                 _binding?.includeUserProfileHeader?.cardUserHeaderImgProfile?.let { itImgView ->
                     this.loadUriIntoImgView(itUri, itImgView)

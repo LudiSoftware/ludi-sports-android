@@ -14,7 +14,7 @@ fun fireGetTeamProfileForSession(teamId:String) {
     firebaseDatabase {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toObject<Team>()
+                val teamObject = ds?.toRealmObjectCast<Team>()
                 addObjectToSessionList(teamObject)
             }
     }
@@ -23,9 +23,8 @@ inline fun fireGetTeamProfile(teamId:String, crossinline block: (Team?) -> Unit)
     firebaseDatabase {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toRealmObject()
+                val teamObject = ds?.toRealmObjectCast<Team>()
                 block(teamObject as? Team)
-
             }
     }
 }

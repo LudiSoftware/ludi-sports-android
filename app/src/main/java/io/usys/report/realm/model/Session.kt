@@ -2,13 +2,13 @@ package io.usys.report.realm.model
 
 import android.app.Activity
 import androidx.core.app.ActivityCompat
+import io.realm.Realm
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.RealmList
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFireLogoutAsync
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.realm
 import io.usys.report.realm.session
@@ -26,6 +26,10 @@ open class Session : RealmObject() {
     var id: String = "1"
 
     //DO NOT MAKE STATIC
+    var user: User? = null
+    var coach: Coach? = null
+    var player: Player? = null
+    var parent: Parent? = null
     var sports: RealmList<Sport>? = RealmList()
     var services: RealmList<Service>? = RealmList()
     var organizations: RealmList<Organization>? = RealmList()
@@ -45,7 +49,7 @@ open class Session : RealmObject() {
         var session: Session? = null
             get() {
                 try {
-                    executeRealm {
+                    writeToRealm {
                         field = realm().where(Session::class.java).equalTo("id", sessionId).findFirst()
                         if (field == null) {
                             field = Session()
@@ -66,9 +70,26 @@ open class Session : RealmObject() {
             }
             return false
         }
+
+        fun addUserToSession(user: User) {
+            writeToRealm { itRealm ->
+                session { itSession ->
+                    itSession.user = user
+                    itRealm.copyToRealmOrUpdate(itSession)
+                }
+            }
+        }
+
+        fun Realm.addCoachToSession(coach: Coach) {
+            session { itSession ->
+                itSession.coach = coach
+                this.copyToRealmOrUpdate(itSession)
+            }
+        }
+
         //Must Have.
         fun createObjects() {
-            executeRealm { itRealm ->
+            writeToRealm { itRealm ->
                 if (!isSessionAlreadyCreated("1")) {
                     itRealm.createObject(Session::class.java, sessionId)
                 }
@@ -84,7 +105,7 @@ open class Session : RealmObject() {
 
         //CORE -> LOG CURRENT USER OUT
         fun deleteAllRealmObjects() {
-            executeRealm {
+            writeToRealm {
                 it.where(Session::class.java).findAll().deleteAllFromRealm()
                 it.where(User::class.java).findAll().deleteAllFromRealm()
                 it.where(Organization::class.java).findAll().deleteAllFromRealm()
@@ -120,13 +141,13 @@ open class Session : RealmObject() {
 
             sessionSports { itSports ->
                 if (itSports.containsItem(sport)) return
-                executeRealm {
+                writeToRealm {
                     itSports.add(sport)
                 }
             }
 
             session { itSession ->
-                executeRealm {
+                writeToRealm {
                     if (itSession.sports.isNullOrEmpty()) {
                         itSession.sports = RealmList()
                         itSession.sports?.add(sport)
@@ -148,7 +169,7 @@ open class Session : RealmObject() {
         fun addServices(services: RealmList<Service>) {
             session { itSession ->
                 for (item in services) {
-                    executeRealm {
+                    writeToRealm {
                         itSession.services?.add(item)
                     }
                 }
@@ -160,7 +181,7 @@ open class Session : RealmObject() {
 
 inline fun <reified T> addObjectToSessionList2(objectToAdd: T) {
     val objectClassName = T::class.getClassName()
-    executeRealm { itRealm ->
+    writeToRealm { itRealm ->
         session { itSession ->
             when (objectClassName) {
                 "sports" -> itSession.sports?.add(objectToAdd as Sport)
@@ -182,7 +203,7 @@ inline fun <reified T> addObjectToSessionList2(objectToAdd: T) {
 
 inline fun <reified T> addObjectToSessionList(objectToAdd: T) {
     val objectClassName = objectToAdd.getClassName()
-    executeRealm { itRealm ->
+    writeToRealm { itRealm ->
         session { itSession ->
             when (objectClassName) {
                 "Sport" -> {

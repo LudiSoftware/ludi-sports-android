@@ -9,14 +9,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
-import io.usys.report.realm.executeRealm
 import io.usys.report.realm.linearLayoutManager
 import io.usys.report.realm.model.*
-import io.usys.report.realm.realm
-import io.usys.report.realm.session
 import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
@@ -36,7 +33,6 @@ class RosterFormationFragment : YsrMiddleFragment() {
     var dragListener: View.OnDragListener? = null
     var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
     var team: Team? = null
-
 
     var container: ViewGroup? = null
     var inflater: LayoutInflater? = null
@@ -125,7 +121,7 @@ class RosterFormationFragment : YsrMiddleFragment() {
                         //TODO: Fix this to get the correct realm object
                         val playerId = clipData.getItemAt(0).text.toString()
                         var tempPlayer = PlayerRef()
-                        team?.getPlayerFromRoster(playerId)?.let {
+                        team?.getPlayerFromRosterNoThread(playerId)?.let {
                             tempPlayer = it
                             formationList.add(it)
                             this.adapter?.removePlayer(it.id!!)
@@ -179,9 +175,14 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
         holder.textView.text = itemList[position].name
         // On Click
         holder.itemView.setOnClickListener {
-            val t = getTeamById("9374e9f6-53ce-4ca5-90c6-cd613ad52c6a")
-            val p = t?.getPlayerFromRoster(currentPlayerRef.id!!)
-            p?.showPlayerProfile(activity)
+//            sessionTeamRoster(teamId = "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a") {
+//                val players = it.players
+//                val player = players?.find { it.id == currentPlayerRef.id }
+//                val playerId = player?.playerId
+//                val playerName = player?.name
+//
+//            }
+            popPlayerProfileDialog(activity, "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a", itemList[position].playerId!!).show()
 
         }
         // On Long Click

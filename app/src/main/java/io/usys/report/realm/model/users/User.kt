@@ -2,11 +2,12 @@ package io.usys.report.realm.model.users
 
 import android.app.Activity
 import com.google.firebase.auth.FirebaseUser
+import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.Coach
 import io.usys.report.realm.model.Player
 import io.usys.report.realm.model.Session
@@ -75,7 +76,7 @@ open class User : RealmObject(), Serializable {
         }
     }
     fun executeMakeCoachAndSave(coach: Coach?) {
-        executeRealm {
+        writeToRealm {
             this.apply {
                 this.coachUser = coach
             }
@@ -94,7 +95,7 @@ open class User : RealmObject(), Serializable {
     }
 
     fun saveToRealm(): User {
-        executeRealm {
+        writeToRealm {
             it.insertOrUpdate(this)
         }
         return this
@@ -121,29 +122,29 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
     return user
 }
 
-inline fun safeUser(block: (User) -> Unit) {
+inline fun Realm.safeUser(block: (User) -> Unit) {
     val user = realmUser()
     user?.let {
         if (it.id.isNullOrEmpty()) return@let
         block(it)
     }
 }
-fun realmUser(): User? {
+fun Realm.realmUser(): User? {
     val uid = coreFirebaseUserUid() ?: return null
     return getRealmUserById(uid)
 }
 fun executeGetRealmUserById(id:String) : User? {
     var user: User? = null
     try {
-        executeRealm { user = queryForUser(id) }
+        writeToRealm { user = queryForUser(id) }
         return user
     } catch (e: Exception) { e.printStackTrace() }
     return user
 }
-fun getRealmUserById(id:String) : User? {
+fun Realm.getRealmUserById(id:String) : User? {
     var user: User? = null
     try {
-        user = queryForUser(id)
+        user = queryForUserById(id)
         return user
     } catch (e: Exception) { e.printStackTrace() }
     return user
@@ -151,23 +152,27 @@ fun getRealmUserById(id:String) : User? {
 fun queryForUser(userId:String): User? {
     return realm().where(User::class.java).equalTo("id", userId).findFirst()
 }
+
+fun Realm.queryForUserById(userId:String): User? {
+    return this.where(User::class.java).equalTo("id", userId).findFirst()
+}
 fun executeCreateUserObject(userId:String) {
-    executeRealm { itRealm ->
+    writeToRealm { itRealm ->
         itRealm.createObject(User::class.java, userId)
     }
 }
 
-inline fun safeUserId(crossinline block: (String) -> Unit) {
+inline fun Realm.safeUserId(crossinline block: (String) -> Unit) {
     realmUser()?.id?.let { itId ->
         block(itId)
     }
 }
 
-fun getUserId(): String? {
+fun Realm.getUserId(): String? {
     return realmUser()?.id
 }
 
-inline fun userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
+inline fun Realm.userOrLogout(activity: Activity? = null, block: (User) -> Unit) {
     val user = realmUser()
     user?.let {
         block(it)

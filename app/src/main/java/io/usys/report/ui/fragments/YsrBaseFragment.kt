@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
@@ -23,7 +24,9 @@ import io.usys.report.firebase.fireUploadToStorage
 import io.usys.report.realm.model.Sport
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.getUserId
+import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.model.users.userOrLogout
+import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
@@ -47,8 +50,10 @@ abstract class YsrFragment : Fragment() {
     var pickImageIntent: ActivityResultLauncher<PickVisualMediaRequest>? = null
 
     var user: User? = null
+    var userId: String? = null
     val main = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
+    var realmInstance: Realm? = null
     var sportList : RealmList<Sport> = RealmList()
     var realmObjectArg: RealmObject? = null
 
@@ -63,7 +68,7 @@ abstract class YsrFragment : Fragment() {
         //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
-            itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS, getUserId() ?: return@fairGetPickImageFromGalleryIntent))
+            itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS, realmInstance?.getUserId() ?: return@fairGetPickImageFromGalleryIntent))
         }
         setupMenu()
 
@@ -71,7 +76,12 @@ abstract class YsrFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        userOrLogout(requireActivity()) { user = it }
+        realmInstance = realm()
+        realmInstance?.safeUser {
+            user = it
+            userId = it.id
+        }
+        realmInstance?.userOrLogout(requireActivity()) { user = it }
         storage = Firebase.storage
         realmObjectArg = unbundleRealmObject()
     }

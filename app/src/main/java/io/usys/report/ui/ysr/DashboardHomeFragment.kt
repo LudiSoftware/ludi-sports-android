@@ -4,22 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.RealmChangeListener
+import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
+import io.usys.report.firebase.DatabasePaths
+import io.usys.report.firebase.FireTypes
+import io.usys.report.firebase.fireGetCoachProfile
 import io.usys.report.firebase.fireGetTeamProfile
-import io.usys.report.realm.executeRealm
+import io.usys.report.realm.findByField
+import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
-import io.usys.report.realm.sessionTeams
-import io.usys.report.realm.updateFieldsAndSave
+import io.usys.report.realm.realm
+import io.usys.report.realm.session
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragment
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.utils.cast
 import io.usys.report.utils.log
-import io.usys.report.utils.tryCatch
 
 
 /**
@@ -35,28 +40,38 @@ class DashboardHomeFragment : YsrFragment() {
     var itemOnClickTeamList: ((View, RealmObject) -> Unit)? = null
     var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
 
+    var teamRefList: RealmList<TeamRef>? = RealmList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
-        safeUser { itUser ->
-
-//            sessionTeams {
-//                val first = it.firstOrNull()
-//                if (first != null) {
-//                    val name = first.name
-//                    log(name)
-//                }
-//            }
-            fireGetTeamProfile("9374e9f6-53ce-4ca5-90c6-cd613ad52c6a") { itTeam ->
-                addObjectToSessionList(itTeam)
-            }
-
-
-            if (itUser.coach) {
-                val i = executeGetCoachByCoachId(itUser.id)
-                log(i)
+        realmInstance = realm()
+        realmInstance?.safeUser { itUser ->
+            _binding?.txtWelcomeDashboard?.text = "Welcome, ${itUser.name}"
+            // Check For Coach User
+            val coach = realmInstance?.findByField<Coach>("id", itUser.id)
+            if (coach != null) {
+                log("Coach is not null")
+                val teams = coach.teams
+                teams?.let {
+                    teamRefList = it
+                }
             }
         }
+
+        val coachListener = RealmChangeListener<RealmResults<Coach>> {
+            // Handle changes to the Realm data here
+            log("Coach listener called")
+            val coach = realmInstance?.findByField<Coach>("id", userId!!)
+            if (coach != null) {
+                val teams = coach.teams
+                teams?.let {
+                    teamRefList = it
+                }
+            }
+            setupTeamList()
+        }
+        realmInstance?.where(Coach::class.java)?.findAllAsync()?.addChangeListener(coachListener)
         setupOnClickListeners()
         return binding.root
     }
@@ -64,6 +79,12 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onStart() {
         super.onStart()
         setupSportsList()
+//        setupTeamList()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        realmInstance?.removeAllChangeListeners()
     }
 
     override fun onDestroyView() {
@@ -73,7 +94,11 @@ class DashboardHomeFragment : YsrFragment() {
 
     private fun setupSportsList() {
         _binding?.includeYsrListViewSports?.root?.setupSportList(itemOnClickSportList)
-        _binding?.includeYsrListViewTeams?.root?.setupTeamListFromSession(itemOnClickTeamList)
+    }
+
+    private fun setupTeamList() {
+        _binding?.includeYsrListViewTeams?.root?.setTitle("Teams")
+        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmList(teamRefList, FireTypes.TEAMS, itemOnClickTeamList, true)
     }
 
     override fun setupOnClickListeners() {
