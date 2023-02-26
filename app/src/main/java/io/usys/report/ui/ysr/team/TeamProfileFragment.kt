@@ -9,9 +9,11 @@ import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.firebase.fireGetTeamProfileForSession
+import io.usys.report.firebase.fireGetTryOutProfileForSession
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
+import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragmentWithRealmObject
@@ -34,18 +36,25 @@ class TeamProfileFragment : YsrMiddleFragment() {
     private var teamId: String? = null
     private var teamRef: TeamRef? = null
     private var team: Team? = null
+    private var tryout: TryOut? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
+        _binding?.btnTeamTabTryOuts?.makeGone()
         rootView = binding.root
         //Basic Setup
         teamRef = realmObjectArg as? TeamRef
         teamId = teamRef?.id
         setupTeamRealmListener()
+        setupTryOutRealmListener()
         setupOnClickListeners()
         teamId?.let {
             fireGetTeamProfileForSession(it)
         }
+        if (_MODE == YsrMode.TRYOUTS) {
+            fireGetTryOutProfileForSession(teamId!!)
+        }
+
 //        setupDisplay()
         return rootView
     }
@@ -63,6 +72,22 @@ class TeamProfileFragment : YsrMiddleFragment() {
         realmInstance?.where(Team::class.java)?.findAllAsync()?.addChangeListener(teamListener)
     }
 
+    private fun setupTryOutRealmListener() {
+        val tryoutListener = RealmChangeListener<RealmResults<TryOut>> {
+            // Handle changes to the Realm data here
+            log("TryOut listener called")
+            val realmTeam = realmInstance?.findByField<TryOut>("teamId", teamId!!)
+            if (realmTeam != null) {
+                tryout = realmTeam
+            }
+            _binding?.btnTeamTabTryOuts?.makeVisible()
+            _binding?.btnTeamTabTryOuts?.setOnClickListener {
+                toFragmentWithRealmObject(R.id.navigation_tryout_frag, bundleRealmObject(teamRef!!))
+            }
+        }
+        realmInstance?.where(TryOut::class.java)?.findAllAsync()?.addChangeListener(tryoutListener)
+    }
+
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
@@ -78,9 +103,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
         setupHeader()
         _binding?.includeYsrListScheduleLayout?.makeGone()
         _binding?.includeYsrListViewRosterLayout?.makeGone()
-        _binding?.btnTeamTabTryOuts?.setOnClickListener {
-            toFragmentWithRealmObject(R.id.navigation_tryout_frag, bundleRealmObject(teamRef!!))
-        }
+
         _binding?.btnTeamTabHome?.setOnClickListener {
             _binding?.includeYsrListScheduleLayout?.makeVisible()
             _binding?.includeYsrListViewRosterLayout?.makeGone()

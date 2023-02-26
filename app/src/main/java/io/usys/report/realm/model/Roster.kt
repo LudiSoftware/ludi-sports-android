@@ -21,5 +21,9 @@ open class Roster : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
     var teamId: String? = ""
+    var name: String? = ""
+    var season: String? = ""
+    var gender: String? = ""
+    var isLocked: Boolean = false
     var players: RealmList<PlayerRef>? = RealmList()
 }

@@ -51,7 +51,7 @@ fun popPlayerProfileDialog(activity: Activity, teamId:String, playerId: String) 
     }
 
     onClick = { itSnapShot ->
-        val notes = itSnapShot?.toRealmObjects()
+        val notes = itSnapShot?.toRealmObjects<Note>()
         log("notes: $notes")
         if (!notes.isNullOrEmpty() && notes.size > 0) {
             includeNotes?.makeVisible()

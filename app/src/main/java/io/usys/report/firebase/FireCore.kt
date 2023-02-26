@@ -50,6 +50,7 @@ class FireTypes {
         //Org
         const val ORGANIZATIONS: String = "organizations"
         const val TEAMS: String = "teams"
+        const val TRYOUTS: String = "tryouts"
         //Reviews
         const val REVIEWS: String = "reviews"
         const val REVIEW_TEMPLATES: String = "review_templates"

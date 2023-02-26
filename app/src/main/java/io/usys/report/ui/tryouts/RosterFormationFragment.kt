@@ -175,15 +175,7 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
         holder.textView.text = itemList[position].name
         // On Click
         holder.itemView.setOnClickListener {
-//            sessionTeamRoster(teamId = "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a") {
-//                val players = it.players
-//                val player = players?.find { it.id == currentPlayerRef.id }
-//                val playerId = player?.playerId
-//                val playerName = player?.name
-//
-//            }
             popPlayerProfileDialog(activity, "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a", itemList[position].playerId!!).show()
-
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {

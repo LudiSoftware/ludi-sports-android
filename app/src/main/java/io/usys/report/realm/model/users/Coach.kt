@@ -15,8 +15,8 @@ import java.io.Serializable
  */
 open class CoachRef : RealmObject(), Serializable {
     @PrimaryKey
-    var coachId: String? = "null"
     var id: String? = newUUID()
+    var coachId: String? = ""
     var name: String? = null
     var isHeadCoach: Boolean = false
     var title: String? = null

@@ -13,32 +13,34 @@ import java.io.Serializable
 
 
 open class TryOut : RealmObject(), Serializable {
-
+    // Primary (5) -> 27
     @PrimaryKey
     var id: String = newUUID()
     var isActive: Boolean = false
+    var isFinalized: Boolean = false
     var teamId: String? = null
     var headCoachId: String? = null
     var headCoachName: String? = null
-    var notes: RealmList<Note>? = null
-    // Master Roster for Tryouts
+    // Notes (1)
+//    var notes: RealmList<Note>? = null
+    // Master Roster for Tryouts (1)
     var tryoutRoster: Roster? = null
-    // Each Coach gets a their own List of Rosters.
+    // Each Coach gets a their own List of Rosters. (1)
     var coachRosters: RealmList<CoachRosters>? = null
-    // References
+    // References (3)
     var coaches: RealmList<CoachRef>? = null
-    var managers: RealmList<ParentRef>? = null
-    var organizations: RealmList<OrganizationRef>? = null
-    var schedule: Schedule? = null
+//    var managers: RealmList<ParentRef>? = null
+//    var organizations: RealmList<OrganizationRef>? = null
+    // Schedule (1)
+//    var schedule: Schedule? = null
+    // Team Attributes (3)
     var year: String? = null
     var ageGroup: String? = null
     var gender: String? = null
-    // base
+    // base (12)
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
     var name: String? = null
-    var firstName: String? = null
-    var lastName: String? = null
     var type: String? = null
     var subType: String? = null
     var details: String? = null

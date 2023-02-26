@@ -12,8 +12,8 @@ import java.io.Serializable
  */
 open class ParentRef : RealmObject(), Serializable {
     @PrimaryKey
-    var parentId: String? = "null"
     var id: String? = newUUID()
+    var parentId: String? = newUUID()
     var name: String? = null
     var isManager: Boolean = false
     var players: RealmList<PlayerRef>? = null

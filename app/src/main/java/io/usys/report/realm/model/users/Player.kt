@@ -13,8 +13,8 @@ import java.io.Serializable
 
 open class PlayerRef : RealmObject(), Serializable {
     @PrimaryKey
-    var playerId: String? = "null"
     var id: String? = newUUID()
+    var playerId: String? = newUUID()
     var name: String? = "null"
     var rank: Int? = 0
     var number: Int = 0
