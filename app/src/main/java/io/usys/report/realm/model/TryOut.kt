@@ -22,17 +22,17 @@ open class TryOut : RealmObject(), Serializable {
     var headCoachId: String? = null
     var headCoachName: String? = null
     // Notes (1)
-//    var notes: RealmList<Note>? = null
+    var notes: RealmList<Note>? = null
     // Master Roster for Tryouts (1)
     var tryoutRoster: Roster? = null
     // Each Coach gets a their own List of Rosters. (1)
     var coachRosters: RealmList<CoachRosters>? = null
     // References (3)
     var coaches: RealmList<CoachRef>? = null
-//    var managers: RealmList<ParentRef>? = null
-//    var organizations: RealmList<OrganizationRef>? = null
+    var managers: RealmList<ParentRef>? = null
+    var organizations: RealmList<OrganizationRef>? = null
     // Schedule (1)
-//    var schedule: Schedule? = null
+    var schedule: Schedule? = null
     // Team Attributes (3)
     var year: String? = null
     var ageGroup: String? = null
