@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.realm.RealmChangeListener
 import io.realm.RealmResults
-import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.firebase.fireGetTeamProfileForSession
 import io.usys.report.firebase.fireGetTryOutProfileForSession
@@ -20,11 +18,8 @@ import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.tryouts.RosterFormationFragment
-import io.usys.report.ui.ysr.chat.ChatDialogFragment
 import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
-import io.usys.report.utils.makeGone
-import io.usys.report.utils.makeVisible
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -50,13 +45,15 @@ class TeamProfileFragment : YsrMiddleFragment() {
 
         viewPager = _binding?.teamViewPager!!
         tabLayout = _binding?.teamTabLayout!!
-        val adapter = LudiPagerAdapter2(this)
-        adapter.addFragment(RosterFormationFragment())
-        adapter.addFragment(RosterFormationFragment())
+        val adapter = LudiPagerAdapter(this)
+        val fragPair1 = Pair("Roster", RosterFormationFragment())
+        val fragPair2 = Pair("Formations", RosterFormationFragment())
+        adapter.addFragment(fragPair1)
+        adapter.addFragment(fragPair2)
         viewPager.adapter = adapter
 //        childFragmentManager.beginTransaction().replace(R.id.teamFragmentContainerView, this).commit()
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "Tab ${position + 1}"
+            tab.text = adapter.fragments[position].first
         }.attach()
 
         //Basic Setup

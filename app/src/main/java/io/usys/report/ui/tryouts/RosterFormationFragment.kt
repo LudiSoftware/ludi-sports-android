@@ -27,6 +27,13 @@ import java.util.*
 
 class RosterFormationFragment : YsrMiddleFragment() {
 
+    companion object {
+        const val TAG = "Formation"
+        fun newInstance(): RosterFormationFragment {
+            return RosterFormationFragment()
+        }
+    }
+
     var adapter: RosterFormationListAdapter? = null
     var soccerFieldLayout: RelativeLayout? = null
     var rosterListRecyclerView: RecyclerView? = null
