@@ -52,7 +52,7 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
         txtLeague?.text = org?.leagues?.first()?.leagueName ?: "Alabama State League"
         cardRatingBar.rating = org?.ratingScore?.toFloat() ?: 0.0F
-        cardRatingBarScore.text = org?.ratingScore
+        cardRatingBarScore.text = org?.ratingScore.toString()
         cardRatingBarCount.text = "${org?.ratingCount} Reviews"
     }
 }

@@ -14,6 +14,7 @@ import io.usys.report.realm.model.users.fromFirebaseToRealmUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
 import io.usys.report.utils.fairRegisterActivityResult
+import io.usys.report.utils.hideLudiActionBar
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -29,17 +30,19 @@ class ProviderLoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
+
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .setLogo(R.drawable.usysr_logo) // Set logo drawable
-            .setTheme(R.style.YSR) // Set theme
+            .setTheme(R.style.LudiSplash) // Set theme
             .setIsSmartLockEnabled(true)
             .build()
         fairRegisterActivityResult<FirebaseAuthUIAuthenticationResult>(signInIntent) { res ->
             this.onSignInResult(res)
         }
-
+        supportActionBar?.title = ""
+        hideLudiActionBar()
     }
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse

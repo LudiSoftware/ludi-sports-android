@@ -40,7 +40,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
     fun addUpdateNewRating() {
         val newRatingScore: Float = reviewRatingBar.rating
         // New Score
-        val newOverallAvgScore = calculateAverageRatingScore(currentRatingScore, newRatingScore)
+        val newOverallAvgScore = calculateAverageRatingScore(currentRatingScore.toString(), newRatingScore)
         updateOrgRatingScore(receiverId, newOverallAvgScore)
         // New Count
         val newOverallCount = (currentRatingCount?.toInt()?.plus(1))

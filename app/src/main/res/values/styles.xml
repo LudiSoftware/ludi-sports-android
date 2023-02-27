@@ -1,6 +1,26 @@
 <!-- Created by ChazzCoin : December 2019 -->
 
 <resources>
+
+    <style name="LudiSplash" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="colorAccent">@color/transparent</item>
+        <item name="android:windowBackground">@drawable/arizona_sunset_landscapeone</item>
+        <item name="android:textColor">@color/transparent</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <style name="LudiSplash.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/transparent</item>
+    </style>
+    <style name="LudiSplash.BottomNavigationTheme">
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="android:textColorSecondary">@color/transparent</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="enforceTextAppearance">false</item>
+    </style>
     <!-- Base application theme. -->
     <style name="YSR" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
