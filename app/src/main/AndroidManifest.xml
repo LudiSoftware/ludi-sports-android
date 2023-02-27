@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
-        android:theme="@style/LudiSplash">
+        android:theme="@style/YSR">
 <!--        <activity android:name="io.usys.report.admin.AdminActivity"></activity>-->
 <!--        <activity android:name="io.usys.report.ui.ysr.user.ProfileFragment" />-->
         <activity

@@ -10,12 +10,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
+import io.usys.report.realm.RealmListAdapter
+import io.usys.report.realm.findByField
 import io.usys.report.realm.linearLayoutManager
 import io.usys.report.realm.model.*
+import io.usys.report.realm.writeToRealmOnMain
 import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.ysr.player.popPlayerProfileDialog
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
+import java.util.*
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -44,7 +48,7 @@ class RosterFormationFragment : YsrMiddleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         this.inflater = inflater
         this.container = container
-        team = realmObjectArg as? Team
+        team = realmInstance?.findByField("id", "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a")
         //Hiding the action bar
         hideLudiActionBar()
 
@@ -66,6 +70,7 @@ class RosterFormationFragment : YsrMiddleFragment() {
 //                formationList.removeAt(start)
 //                formationList.add(end, item)
             }
+
 
             val roster = team?.roster
             roster?.players?.forEach {
@@ -99,7 +104,7 @@ class RosterFormationFragment : YsrMiddleFragment() {
 
     private fun createOnDragListener() {
         /**
-         *
+         * Drag Listener for when a player is dragged onto the soccer field
          */
         dragListener = View.OnDragListener { v, event ->
             when (event.action) {
@@ -120,6 +125,7 @@ class RosterFormationFragment : YsrMiddleFragment() {
                     if (clipData != null && clipData.itemCount > 0) {
                         //TODO: Fix this to get the correct realm object
                         val playerId = clipData.getItemAt(0).text.toString()
+                        adapter?.removePlayer(playerId)
                         var tempPlayer = PlayerRef()
                         team?.getPlayerFromRosterNoThread(playerId)?.let {
                             tempPlayer = it
@@ -179,7 +185,8 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {
-            holder.startClipDataDragAndDrop(itemList[position].id ?: "Unknown")
+            val tempID = itemList[position].id
+            holder.startClipDataDragAndDrop(tempID ?: "Unknown")
         }
     }
 
@@ -189,6 +196,7 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
             val index = itemList.indexOf(it)
             itemList.removeAt(index)
             notifyItemRemoved(index)
+            this.notifyDataSetChanged()
         }
     }
 
@@ -218,6 +226,9 @@ interface ItemTouchHelperAdapter {
     fun onItemDismiss(position: Int)
 }
 
+/**
+ * ItemTouchHelperCallback
+ */
 class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -237,3 +248,17 @@ class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAd
 }
 
 
+//fun <T> MutableList<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
+//    val fromPosition = viewHolder.adapterPosition
+//    val toPosition = target.adapterPosition
+//    if (fromColumn == toColumn) {
+//        // Move the item within the same column
+//        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
+//        this.notifyItemMoved(fromPosition, toPosition)
+//    } else {
+//        // Move the item to a different column
+//        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
+//        this.notifyItemChanged(fromPosition)
+//        this.notifyItemChanged(toPosition)
+//    }
+//}

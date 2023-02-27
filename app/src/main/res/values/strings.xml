@@ -8,8 +8,6 @@
     <string name="test_choiceC">The coach occasionally creates a positive and inclusive environment for all players.</string>
     <string name="test_choiceD">The coach rarely creates a positive and inclusive environment for all players.</string>
 
-
-
     <string name="about_ysr">Youth Sports Report\'s goal is simply to help make Youth Sports in America become more transparent!</string>
 
     <string name="app_name">Ludi Sports</string>
@@ -36,7 +34,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="logout">"Logout"</string>
     <string name="title_activity_calendar_view">CalendarView</string>
-
 
     <string name="example_1_title">Example 1</string>
     <string name="example_1_subtitle">Multiple selection, horizontal scrolling, shows usage of \"maxRowCount\" property to switch between week and month modes. Also shows usage of OutDateStyle \"endOfRow\".</string>

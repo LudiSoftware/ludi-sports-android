@@ -18,8 +18,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardPlayerTinyMainLayout"
-        android:layout_width="200dp"
-        android:layout_height="30dp">
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:minWidth="100dp"
+        android:minHeight="22dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cardPlayerTinyImgProfile"
@@ -33,13 +35,13 @@
 
         <TextView
             android:id="@+id/cardPlayerTinyTxtName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="3dp"
             android:drawablePadding="25dp"
             android:text="Player Name"
-            android:textSize="10sp"
+            android:textSize="9sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardPlayerTinyImgProfile"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,8 +49,9 @@
 
         <TextView
             android:id="@+id/cardPlayerTinyTxtRank"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
             android:gravity="center"
             android:text="1"
             android:textSize="10sp"
