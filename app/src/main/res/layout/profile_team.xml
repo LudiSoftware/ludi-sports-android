@@ -2,13 +2,16 @@
 
 <!-- Created by ChazzCoin : October 2022 -->
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/profileTeamConstraintLayout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -22,89 +25,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnTeamTabHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:text="Home"
-            app:layout_constraintBottom_toBottomOf="@+id/btnTeamTabChat"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnTeamTabChat"
-            app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/btnTeamTabTryOuts"
-            android:layout_width="wrap_content"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/teamTabLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Try-Outs"
-            app:layout_constraintBottom_toBottomOf="@+id/btnTeamTabChat"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.327"
-            app:layout_constraintStart_toEndOf="@+id/btnTeamTabChat"
-            app:layout_constraintTop_toTopOf="@+id/btnTeamTabChat"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/btnTeamTabChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:text="Chat"
-            app:layout_constraintStart_toEndOf="@+id/btnTeamTabHome"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard" />
 
         <LinearLayout
-            android:id="@+id/includeYsrListViewRosterLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="50dp"
+            android:layout_height="500dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnTeamTabChat"
-            app:layout_constraintVertical_bias="1.0"
-            tools:visibility="gone">
+            app:layout_constraintTop_toBottomOf="@+id/teamTabLayout">
 
-            <include
-                android:id="@+id/includeYsrListViewRoster"
-                layout="@layout/ysr_title_list_view"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/teamViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp" />
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/includeYsrListScheduleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="50dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnTeamTabChat"
-            app:layout_constraintVertical_bias="1.0"
-            tools:visibility="visible">
-
-            <include
-                android:id="@+id/includeYsrListSchedule"
-                layout="@layout/ysr_field_value_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp" />
-
-        </LinearLayout>
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.core.widget.NestedScrollView>

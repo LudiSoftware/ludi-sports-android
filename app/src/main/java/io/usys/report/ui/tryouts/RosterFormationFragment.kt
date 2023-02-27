@@ -52,13 +52,23 @@ class RosterFormationFragment : YsrMiddleFragment() {
         //Hiding the action bar
         hideLudiActionBar()
 
-        rootView = container?.inflateLayout(R.layout.fragment_list_formations_portrait)!!
+        if (container == null) {
+            val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
+            rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait)!!
+        } else {
+            rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)!!
+        }
         //Hiding the bottom navigation bar
         hideLudiNavView()
         setupDisplay()
         return rootView
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        hideLudiActionBar()
+        hideLudiNavView()
+    }
     private fun setupDisplay() {
 
         activity?.window?.let {
@@ -130,11 +140,9 @@ class RosterFormationFragment : YsrMiddleFragment() {
                         team?.getPlayerFromRosterNoThread(playerId)?.let {
                             tempPlayer = it
                             formationList.add(it)
-                            this.adapter?.removePlayer(it.id!!)
                         }
                         val layoutParams = getRelativeLayoutParams()
                         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-                        //TODO: What exactly do we put here, the entire item from the list?
                         val tempView = inflateView(requireContext(), R.layout.card_player_tiny)
                         tempView.tag = tempPlayer.id
                         val playerName = tempView.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
@@ -208,6 +216,7 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
     override fun getItemCount() = itemList.size
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        // This is for movements within the recyclerView. Not for dragging to the soccer field.
         return true
     }
 
@@ -221,14 +230,16 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
     }
 }
 
+
+/**
+ * ItemTouchHelperCallback
+ * -> This is for movements within the recyclerView. Not for dragging to the soccer field.
+ */
 interface ItemTouchHelperAdapter {
     fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
     fun onItemDismiss(position: Int)
 }
 
-/**
- * ItemTouchHelperCallback
- */
 class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -246,19 +257,3 @@ class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAd
         mAdapter.onItemDismiss(viewHolder.adapterPosition)
     }
 }
-
-
-//fun <T> MutableList<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
-//    val fromPosition = viewHolder.adapterPosition
-//    val toPosition = target.adapterPosition
-//    if (fromColumn == toColumn) {
-//        // Move the item within the same column
-//        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
-//        this.notifyItemMoved(fromPosition, toPosition)
-//    } else {
-//        // Move the item to a different column
-//        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
-//        this.notifyItemChanged(fromPosition)
-//        this.notifyItemChanged(toPosition)
-//    }
-//}
