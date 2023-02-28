@@ -1,9 +1,22 @@
 package io.usys.report.utils.views
 
+import android.animation.ObjectAnimator
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import io.usys.report.R
+
+
+
+fun Button.wiggle() {
+    val rotation = ObjectAnimator.ofFloat(this, "rotation", 0f, 10f, -10f, 6f, -6f, 3f, -3f, 0f)
+    rotation.duration = 1000
+    rotation.interpolator = AccelerateInterpolator()
+    rotation.repeatCount = ObjectAnimator.INFINITE
+    rotation.start()
+}
 
 fun View.fadeInOut(otherView: View, duration: Long) {
     animate().alpha(0f).setDuration(duration).withEndAction {
@@ -13,22 +26,6 @@ fun View.fadeInOut(otherView: View, duration: Long) {
     otherView.visibility = View.VISIBLE
     otherView.animate().alpha(1f).setDuration(duration).start()
 }
-
-//fun View.lockToTopOfScrollView() {
-//    val parentScrollView = findParentOfType<NestedScrollView>()
-//    val topAppBar = getTopAppBar()
-//    val topInset = getTopInset()
-//
-//    parentScrollView?.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-//        val topOffset = parentScrollView.y + y
-//        val lockToTop = topAppBar != null && topOffset < topAppBar.y + topAppBar.height + topInset
-//        if (scrollY > topOffset && !lockToTop) {
-//            y = scrollY - topOffset
-//        } else {
-//            y = if (lockToTop) topAppBar.y + topAppBar.height + topInset - y else 0f
-//        }
-//    }
-//}
 
 inline fun <reified T : View> View.findParentOfType(): T? {
     var parent = parent
@@ -40,11 +37,6 @@ inline fun <reified T : View> View.findParentOfType(): T? {
     }
     return null
 }
-
-//fun View.getTopAppBar(): View? {
-//    val activity = context as? AppCompatActivity ?: return null
-//    return activity.findViewById<View>(R.id.appBarLayout) ?: activity.findViewById<View>(R.id.app)
-//}
 
 fun View.getTopInset(): Int {
     val windowInsets = rootWindowInsets ?: return 0

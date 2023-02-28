@@ -93,7 +93,7 @@ class ChatFragment : LudiStringIdFragment() {
                 messageEditText.text.clear()
             }
             //Add Toast for empty message
-            Toast.makeText(context, "Please enter a message", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Please enter a message", Toast.LENGTH_SHORT).show()
         } ?: run {
             Toast.makeText(context, "ChatId is null", Toast.LENGTH_SHORT).show()
         }
@@ -106,7 +106,7 @@ class ChatFragment : LudiStringIdFragment() {
             userName = user.name ?: "Anonymous"
             sender = user.name ?: "Anonymous"
         }
-        database.addChildEventListener(messageListener)
+//        database.addChildEventListener(messageListener)
     }
 
     override fun onStop() {

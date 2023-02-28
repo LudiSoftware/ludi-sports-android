@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,9 @@ import io.usys.report.firebase.toRealmObjects
 import io.usys.report.realm.*
 import io.usys.report.realm.model.*
 import io.usys.report.utils.*
+import io.usys.report.utils.views.loadUriIntoImgView
+import java.time.LocalDate
+import java.time.Period
 import kotlin.collections.isNullOrEmpty
 
 fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
@@ -30,22 +34,33 @@ fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
     val playerProfile = dialog.bind<View>(R.id.includePlayerProfileHeader)
     val playerTxtName = playerProfile.rootView?.findViewById<TextView>(R.id.cardUserHeaderBasicTxtProfileName)
     val playerTxtRank = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogRank)
+    val playerImage = playerProfile.rootView?.findViewById<ImageView>(R.id.cardUserHeaderBasicImgProfile)
     val playerTxtTryoutTag = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogTryOutTag)
     val playerTxtPosition = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogPosition)
+    // date of birth
+    val playerTxtDOB = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogDOB)
+    // age
+    val playerTxtAge = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogAge)
+    // jersey number
+    val playerTxtJerseyNumber = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogJerseyNumber)
     val includeNotes = playerProfile.rootView?.findViewById<View>(R.id.includeYsrListViewNotes)
     val includeNotesRecyclerView = includeNotes?.rootView?.findViewById<RecyclerView>(R.id.ysrCreateListRecycler)
     val includeNotesTitle = includeNotes?.rootView?.findViewById<TextView>(R.id.ysrCreateListTxtTitle)
     // Hide unused views
-    playerProfile.rootView?.findViewById<TextView>(R.id.cardUserHeaderTxtProfileReviewCount)?.makeGone()
-    playerProfile.rootView?.findViewById<RatingBar>(R.id.cardUserHeaderRatingBar)?.makeGone()
 
     fun loadData() {
         val player = realm().findByField<PlayerRef>("playerId", playerId)
         player?.let {
             playerTxtName?.text = it.name
-            playerTxtRank?.text = it.rank.toString()
-            playerTxtPosition?.text = it.position
-            playerTxtTryoutTag?.text = it.tryoutTag
+            playerTxtRank?.text = "Rank: ${it.rank.toString()}"
+            playerTxtPosition?.text = "Position: ${it.position}"
+            playerTxtTryoutTag?.text = "Tryout Tag: ${it.tryoutTag}"
+            playerTxtDOB?.text = "DOB: ${it.dob}"
+            playerTxtAge?.text = "Dominate Foot: ${it.foot}"
+            playerTxtJerseyNumber?.text = "Jersey Number: ${it.number}"
+            it.imgUrl?.let { imgUrl ->
+                playerImage?.loadUriIntoImgView(imgUrl)
+            }
         }
     }
 

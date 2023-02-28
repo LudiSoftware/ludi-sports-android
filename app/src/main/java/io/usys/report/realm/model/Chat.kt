@@ -1,9 +1,12 @@
 package io.usys.report.realm.model
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -89,7 +92,6 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
             holder.messageTime.text = DateFormat.getTimeInstance(DateFormat.SHORT).format(chatMessage.timestamp)
         }
 
-
     }
 
     override fun getItemCount(): Int {
@@ -97,8 +99,12 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     }
 
     fun addMessage(chatMessage: Chat) {
+        if (chatMessages.contains(chatMessage)) {
+            return
+        }
         chatMessages.add(chatMessage)
         notifyItemInserted(chatMessages.size - 1)
+        this.notifyDataSetChanged()
     }
 
 }
