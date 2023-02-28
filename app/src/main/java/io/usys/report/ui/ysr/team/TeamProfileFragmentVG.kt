@@ -2,6 +2,7 @@ package io.usys.report.ui.ysr.team
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
@@ -18,14 +19,17 @@ import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.tryouts.RosterFormationFragment
+import io.usys.report.ui.ysr.chat.ChatDialogFragment
+import io.usys.report.ui.ysr.chat.ChatFragment
 import io.usys.report.utils.YsrMode
+import io.usys.report.utils.hideLudiNavView
 import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class TeamProfileFragment : YsrMiddleFragment() {
+class TeamProfileFragmentVG : YsrMiddleFragment() {
 
     private var _MODE = YsrMode.TRYOUTS
 
@@ -42,23 +46,12 @@ class TeamProfileFragment : YsrMiddleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
         rootView = binding.root
-
-        viewPager = _binding?.teamViewPager!!
-        tabLayout = _binding?.teamTabLayout!!
-        val adapter = LudiPagerAdapter(this)
-        val fragPair1 = Pair("Roster", RosterFormationFragment())
-        val fragPair2 = Pair("Formations", RosterFormationFragment())
-        adapter.addFragment(fragPair1)
-        adapter.addFragment(fragPair2)
-        viewPager.adapter = adapter
-//        childFragmentManager.beginTransaction().replace(R.id.teamFragmentContainerView, this).commit()
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = adapter.fragments[position].first
-        }.attach()
-
+        hideLudiNavView()
         //Basic Setup
         teamRef = realmObjectArg as? TeamRef
         teamId = teamRef?.id
+        //Setup Functions
+        setupTeamViewPager()
         setupTeamRealmListener()
         setupTryOutRealmListener()
         setupOnClickListeners()
@@ -68,9 +61,25 @@ class TeamProfileFragment : YsrMiddleFragment() {
         if (_MODE == YsrMode.TRYOUTS) {
             fireGetTryOutProfileForSession(teamId!!)
         }
-
-//        setupDisplay()
         return rootView
+    }
+
+    private fun setupTeamViewPager() {
+        viewPager = _binding?.teamViewPager!!
+        tabLayout = _binding?.teamTabLayout!!
+        tabLayout.isNestedScrollingEnabled = true
+        tabLayout.tabMode = TabLayout.MODE_FIXED
+        viewPager.isUserInputEnabled = false
+        val adapter = LudiPagerAdapter(this)
+        adapter.addRealmIdArg(teamId)
+        val fragPair1 = Pair("Roster", TeamRosterFragment())
+        val fragPair2 = Pair("Chat", ChatFragment())
+        adapter.addFragment(fragPair1)
+        adapter.addFragment(fragPair2)
+        viewPager.adapter = adapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = adapter.fragments[position].first
+        }.attach()
     }
 
     private fun setupTeamRealmListener() {
@@ -94,10 +103,7 @@ class TeamProfileFragment : YsrMiddleFragment() {
             if (realmTeam != null) {
                 tryout = realmTeam
             }
-//            _binding?.btnTeamTabTryOuts?.makeVisible()
-//            _binding?.btnTeamTabTryOuts?.setOnClickListener {
-//                toFragmentWithRealmObject(R.id.navigation_tryout_frag, bundleRealmObject(teamRef!!))
-//            }
+
         }
         realmInstance?.where(TryOut::class.java)?.findAllAsync()?.addChangeListener(tryoutListener)
     }
@@ -115,27 +121,11 @@ class TeamProfileFragment : YsrMiddleFragment() {
 
     private fun setupDisplay() {
         setupHeader()
-//        _binding?.includeYsrListScheduleLayout?.makeGone()
-//        _binding?.includeYsrListViewRosterLayout?.makeGone()
-//
-//        _binding?.btnTeamTabHome?.setOnClickListener {
-//            _binding?.includeYsrListScheduleLayout?.makeVisible()
-//            _binding?.includeYsrListViewRosterLayout?.makeGone()
-//        }
-    }
 
-    fun setupCoachesChat() {
-//        _binding?.btnTeamTabChat?.setOnClickListener {
-//            val chatDialogFragment = ChatDialogFragment.newChatInstance(teamRef!!.id!!)
-//            chatDialogFragment.show(childFragmentManager, "chat_dialog")
-//        }
     }
-
 
     override fun setupOnClickListeners() {
-        itemOnClick = { _,obj ->
-//            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
-        }
+        log("Setting up onClickListeners")
     }
 
 }

@@ -2,16 +2,16 @@
 
 <!-- Created by ChazzCoin : October 2022 -->
 
-<!--<androidx.core.widget.NestedScrollView -->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--<io.usys.report.ui.fragments.LudiNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
 <!--    xmlns:tools="http://schemas.android.com/tools"-->
 <!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content">-->
+<!--    android:layout_height="match_parent">-->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/profileTeamConstraintLayout"
+    android:id="@+id/profileTeamRosterConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -31,6 +31,7 @@
         android:id="@+id/teamTabLayout"
         android:layout_width="0dp"
         android:layout_height="45dp"
+        app:tabMode="fixed"
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
@@ -43,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:id="@+id/teamViewPagerLinearLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,4 +60,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--</androidx.core.widget.NestedScrollView>-->
+<!--</io.usys.report.ui.fragments.LudiNestedScrollView>-->

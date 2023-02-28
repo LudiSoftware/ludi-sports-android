@@ -1,31 +1,27 @@
 package io.usys.report.realm
 
 import io.realm.Realm
-import io.realm.RealmModel
+import io.realm.RealmChangeListener
 import io.realm.RealmObject
-import io.usys.report.ui.AuthControllerActivity
+import io.realm.RealmResults
+import io.usys.report.realm.model.Team
 import io.usys.report.utils.main
-import kotlinx.coroutines.launch
 
 /**
  * Realm Rules
     * 1. Read like normal.
     * 2. Write under a ExecuteTransaction Function
  */
-
+fun realm() : Realm {
+    return Realm.getDefaultInstance()
+}
 //This works.
 inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String): T? {
     return this.where(T::class.java).equalTo(field, value).findFirst()
 }
-
-fun realm() : Realm {
-    return Realm.getDefaultInstance()
+fun Realm.findTeamById(teamId:String): Team? {
+    return this.where(Team::class.java).equalTo("id", teamId).findFirst()
 }
-
-
-//inline fun <reified T: RealmObject> createRealmObject(id:String): T {
-//    return realm().createObject(T::class.java, id)
-//}
 
 inline fun writeToRealmOnMain(crossinline block: (Realm) -> Unit) {
     main {

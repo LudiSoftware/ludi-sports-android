@@ -1,12 +1,23 @@
 package io.usys.report.ui.fragments
 
+import android.content.Context
+import android.util.AttributeSet
+import android.view.MotionEvent
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import io.usys.report.ui.fragments.LudiStringIdFragment.Companion.ARG
 
 
 class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
 
+    var realmIdArg: String? = null
     var fragments: MutableList<Pair<String, Fragment>> = mutableListOf()
+
+    fun addRealmIdArg(realmIdArg: String?) {
+        this.realmIdArg = realmIdArg
+    }
 
     fun addFragment(fragmentName: String, fragment: Fragment) {
         fragments.add(Pair(fragmentName, fragment))
@@ -23,6 +34,28 @@ class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFr
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragments[position].second
+        return fragments[position].second.apply {
+            arguments = bundleStringId(realmIdArg ?: "unknown")
+        }
+    }
+}
+
+
+
+//not working
+class LudiNestedScrollView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : NestedScrollView(context, attrs) {
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        when (ev.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                // Disallow the NestedScrollView to intercept touch events when the ViewPager2 is being touched
+                parent.requestDisallowInterceptTouchEvent(true)
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                // Allow the NestedScrollView to intercept touch events after the ViewPager2 has finished being touched
+                parent.requestDisallowInterceptTouchEvent(false)
+            }
+        }
+        return super.onInterceptTouchEvent(ev)
     }
 }

@@ -38,7 +38,6 @@ inline fun fireGetTeamProfile(teamId:String, crossinline block: (Team?) -> Unit)
 /**
  * TryOuts
  */
-
 fun fireGetTryOutProfileForSession(teamId:String) {
     firebaseDatabase {
         it.child(FireTypes.TRYOUTS).orderByChild("teamId").equalTo(teamId)
