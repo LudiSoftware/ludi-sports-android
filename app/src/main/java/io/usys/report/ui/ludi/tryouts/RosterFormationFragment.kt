@@ -20,6 +20,7 @@ import io.usys.report.realm.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdFragment
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
+import io.usys.report.ui.views.LudiFreeFormGestureDetector
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
@@ -78,9 +79,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
 
     private fun setupDisplay() {
 
-//        popupMenu.show()
-
-
+        setupFloatingActionMenu()
         activity?.window?.let {
             soccerFieldLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
@@ -134,39 +133,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 else -> false
             }
         }
-        fabMenu.setOnTouchListener(object : View.OnTouchListener {
-            private var lastAction = MotionEvent.ACTION_UP
-            private var xDelta = 0f
-            private var yDelta = 0f
-
-            override fun onTouch(view: View, event: MotionEvent): Boolean {
-                val x = event.rawX
-                val y = event.rawY
-                when (event.action and MotionEvent.ACTION_MASK) {
-                    MotionEvent.ACTION_DOWN -> {
-                        val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
-                        xDelta = x - layoutParams.leftMargin
-                        yDelta = y - layoutParams.topMargin
-                        lastAction = MotionEvent.ACTION_DOWN
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
-                        layoutParams.leftMargin = (x - xDelta).toInt()
-                        layoutParams.topMargin = (y - yDelta).toInt()
-                        view.layoutParams = layoutParams
-                        lastAction = MotionEvent.ACTION_MOVE
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        if (lastAction == MotionEvent.ACTION_DOWN) {
-                            // perform click action
-                            popupMenu.show()
-                        }
-                        lastAction = MotionEvent.ACTION_UP
-                    }
-                }
-                return true
-            }
-        })
+        val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { view, event ->
+            // Show the PopupMenu when the FloatingActionButton is single-tapped
+            popupMenu.show()
+        }
+        fabMenu.setOnTouchListener(gestureDetector)
     }
 
     private fun createOnDragListener() {
