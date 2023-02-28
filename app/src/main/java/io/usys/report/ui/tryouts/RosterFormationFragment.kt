@@ -58,24 +58,18 @@ class RosterFormationFragment : YsrMiddleFragment() {
         team = realmInstance?.findByField("id", "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a")
         //Hiding the action bar
         hideLudiActionBar()
-
+        //Hiding the bottom navigation bar
+        hideLudiNavView()
         if (container == null) {
             val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
             rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait)!!
         } else {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)!!
         }
-        //Hiding the bottom navigation bar
-        hideLudiNavView()
         setupDisplay()
         return rootView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        hideLudiActionBar()
-        hideLudiNavView()
-    }
     private fun setupDisplay() {
 
         activity?.window?.let {
@@ -87,7 +81,6 @@ class RosterFormationFragment : YsrMiddleFragment() {
 //                formationList.removeAt(start)
 //                formationList.add(end, item)
             }
-
 
             val roster = team?.roster
             roster?.players?.forEach {
@@ -117,7 +110,6 @@ class RosterFormationFragment : YsrMiddleFragment() {
             setupDisplay()
         }
     }
-
 
     private fun createOnDragListener() {
         /**

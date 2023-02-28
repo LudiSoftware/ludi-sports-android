@@ -12,6 +12,7 @@ import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findByField
+import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
@@ -41,35 +42,35 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
-        realmInstance = realm()
         realmInstance?.safeUser { itUser ->
             _binding?.txtWelcomeDashboard?.text = "Welcome, ${itUser.name}"
             // Check For Coach User
-            val coach = realmInstance?.findByField<Coach>("id", itUser.id)
-            if (coach != null) {
-                log("Coach is not null")
-                val teams = coach.teams
-                teams?.let {
-                    teamRefList = it
-                }
-            }
+            setupCoachDisplay()
         }
 
+        setupRealmCoachListener()
+        setupOnClickListeners()
+        return binding.root
+    }
+
+    private fun setupRealmCoachListener() {
         val coachListener = RealmChangeListener<RealmResults<Coach>> {
             // Handle changes to the Realm data here
             log("Coach listener called")
-            val coach = realmInstance?.findByField<Coach>("id", userId!!)
-            if (coach != null) {
-                val teams = coach.teams
-                teams?.let {
-                    teamRefList = it
-                }
-            }
-            setupTeamList()
+            setupCoachDisplay()
         }
         realmInstance?.where(Coach::class.java)?.findAllAsync()?.addChangeListener(coachListener)
-        setupOnClickListeners()
-        return binding.root
+    }
+
+    private fun setupCoachDisplay() {
+        val coach = realmInstance?.findCoachBySafeId()
+        if (coach != null) {
+            val teams = coach.teams
+            teams?.let {
+                teamRefList = it
+                setupTeamList()
+            }
+        }
     }
 
     override fun onStart() {

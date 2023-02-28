@@ -1,10 +1,10 @@
 package io.usys.report.realm
 
 import io.realm.Realm
-import io.realm.RealmChangeListener
 import io.realm.RealmObject
-import io.realm.RealmResults
+import io.usys.report.realm.model.Coach
 import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.main
 
 /**
@@ -18,6 +18,13 @@ fun realm() : Realm {
 //This works.
 inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String): T? {
     return this.where(T::class.java).equalTo(field, value).findFirst()
+}
+fun Realm.findCoachBySafeId(): Coach? {
+    var temp: Coach? = null
+    safeUserId {
+        temp = this.where(Coach::class.java).equalTo("id", it).findFirst()
+    }
+    return temp
 }
 fun Realm.findTeamById(teamId:String): Team? {
     return this.where(Team::class.java).equalTo("id", teamId).findFirst()
