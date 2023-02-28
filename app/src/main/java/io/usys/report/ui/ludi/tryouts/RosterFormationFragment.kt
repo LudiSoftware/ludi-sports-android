@@ -153,7 +153,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         tempView.layoutParams = layoutParams
                         playerIcon.setImageDrawable(getDrawable(context, R.drawable.usysr_logo))
 //                        tempView.enablePinchToZoom()
-                        tempView.onMoveListenerRosterFormation(width = 300, height = 75)
+                        val onTap: () -> Unit = {
+                            popPlayerProfileDialog(requireActivity(), playerId).show()
+                        }
+                        tempView.onMoveListenerRosterFormation2(width = 300, height = 75, onSingleTapUp = onTap)
+
                         soccerFieldLayout?.addView(tempView)
                     }
                     true
@@ -185,11 +189,11 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
     }
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
-        val currentPlayerRef = itemList[position] as PlayerRef
+        val playerId = itemList[position].id ?: "unknown"
         holder.textView.text = itemList[position].name
         // On Click
         holder.itemView.setOnClickListener {
-            popPlayerProfileDialog(activity, "9374e9f6-53ce-4ca5-90c6-cd613ad52c6a", itemList[position].playerId!!).show()
+            popPlayerProfileDialog(activity, playerId).show()
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {

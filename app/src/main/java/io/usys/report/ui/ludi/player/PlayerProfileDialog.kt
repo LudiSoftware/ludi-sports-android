@@ -16,7 +16,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty
 
-fun popPlayerProfileDialog(activity: Activity, teamId:String, playerId: String) : Dialog {
+fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
 
     var onClick: ((dataSnapshot: DataSnapshot?) -> Unit)?
 
