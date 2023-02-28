@@ -5,10 +5,14 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.usys.report.R
 import io.usys.report.realm.findByField
 import io.usys.report.realm.gridLayoutManager
@@ -44,6 +48,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
     var team: Team? = null
     var teamId: String? = null
 
+    var constraintLayout: ConstraintLayout? = null
     var container: ViewGroup? = null
     var inflater: LayoutInflater? = null
 
@@ -66,11 +71,15 @@ class RosterFormationFragment : LudiStringIdFragment() {
         } else {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)!!
         }
+        constraintLayout = rootView.findViewById(R.id.TryoutTestFragment)
         setupDisplay()
         return rootView
     }
 
     private fun setupDisplay() {
+
+//        popupMenu.show()
+
 
         activity?.window?.let {
             soccerFieldLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
@@ -109,6 +118,55 @@ class RosterFormationFragment : LudiStringIdFragment() {
             this.inflater?.inflate(R.layout.fragment_list_formations_portrait, container, false)
             setupDisplay()
         }
+    }
+
+    private fun setupFloatingActionMenu() {
+        val fabMenu = rootView.findViewById<FloatingActionButton>(R.id.tryoutFormationFloatingActionButton)
+        val popupMenu = PopupMenu(requireContext(), fabMenu)
+        popupMenu.inflate(R.menu.general_top_menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            // Handle menu item click events
+            when (menuItem.itemId) {
+                R.id.menu_logout -> {
+                    // Do something
+                    true
+                }
+                else -> false
+            }
+        }
+        fabMenu.setOnTouchListener(object : View.OnTouchListener {
+            private var lastAction = MotionEvent.ACTION_UP
+            private var xDelta = 0f
+            private var yDelta = 0f
+
+            override fun onTouch(view: View, event: MotionEvent): Boolean {
+                val x = event.rawX
+                val y = event.rawY
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_DOWN -> {
+                        val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+                        xDelta = x - layoutParams.leftMargin
+                        yDelta = y - layoutParams.topMargin
+                        lastAction = MotionEvent.ACTION_DOWN
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+                        layoutParams.leftMargin = (x - xDelta).toInt()
+                        layoutParams.topMargin = (y - yDelta).toInt()
+                        view.layoutParams = layoutParams
+                        lastAction = MotionEvent.ACTION_MOVE
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        if (lastAction == MotionEvent.ACTION_DOWN) {
+                            // perform click action
+                            popupMenu.show()
+                        }
+                        lastAction = MotionEvent.ACTION_UP
+                    }
+                }
+                return true
+            }
+        })
     }
 
     private fun createOnDragListener() {

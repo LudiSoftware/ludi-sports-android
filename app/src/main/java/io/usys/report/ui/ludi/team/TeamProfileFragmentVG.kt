@@ -3,6 +3,7 @@ package io.usys.report.ui.ludi.team
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -29,6 +30,7 @@ import io.usys.report.utils.views.loadUriIntoImgView
 class TeamProfileFragmentVG : YsrMiddleFragment() {
 
     private var _MODE = YsrMode.TRYOUTS
+    private var menu: TeamMenuProvider? = null
 
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -43,10 +45,14 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
         rootView = binding.root
+
         hideLudiNavView()
+        showLudiActionBar()
         //Basic Setup
         teamRef = realmObjectArg as? TeamRef
-        teamId = teamRef?.id
+        teamId = teamRef?.id ?: "unknown"
+        menu = TeamMenuProvider(this, teamId!!)
+        requireActivity().addMenuProvider(menu!!)
         //Setup Functions
         setupTeamViewPager()
         setupTeamRealmListener()
@@ -58,7 +64,6 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
         if (_MODE == YsrMode.TRYOUTS) {
             fireGetTryOutProfileForSession(teamId!!)
         }
-        setupMenu()
         return rootView
     }
 
@@ -109,10 +114,15 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
+        menu?.let {
+            requireActivity().removeMenuProvider(it)
+        }
     }
 
     private fun setupHeader() {
-        requireActivity().ludiActionBar()?.title = teamRef?.name
+        tryCatch {
+            requireActivity().ludiActionBar()?.title = teamRef?.name
+        }
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = teamRef?.name
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = teamRef?.headCoachName
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = teamRef?.ageGroup + teamRef?.year
@@ -125,25 +135,22 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
         log("Setting up onClickListeners")
     }
 
+}
 
-    private fun setupMenu() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.top_team_menu, menu)
-            }
+class TeamMenuProvider(val fragment:Fragment, val teamId: String) : MenuProvider {
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.top_team_menu, menu)
+    }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menuitem_formation -> {
-                        toFragmentWithId(R.id.navigation_tryout_frag, teamId!!)
-                        return true
-                    }
-                    else -> {}
-                }
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.menuitem_formation -> {
+                fragment.toFragmentWithId(R.id.navigation_tryout_frag, teamId)
                 return true
             }
-
-        })
+            else -> {}
+        }
+        return true
     }
 
 }

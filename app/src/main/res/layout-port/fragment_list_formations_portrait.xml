@@ -18,6 +18,20 @@
     <!--        app:layout_constraintTop_toTopOf="parent"-->
     <!--        app:layout_constraintVertical_bias="0.0" />-->
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/tryoutFormationFloatingActionButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/soccer_ball_icon"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/colorAccent" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ysrTORecycler"
         android:layout_width="0dp"

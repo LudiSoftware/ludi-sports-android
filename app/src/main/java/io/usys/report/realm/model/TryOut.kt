@@ -21,6 +21,10 @@ open class TryOut : RealmObject(), Serializable {
     var teamId: String? = null
     var headCoachId: String? = null
     var headCoachName: String? = null
+    //TODO: ADD FIELD ABILITY!
+    var fieldNumber: String? = null
+    //TODO: Create a Form Object to hold urls for images uploaded and type of form.
+    var formUrls: RealmList<String>? = null
     // Notes (1)
     var notes: RealmList<Note>? = null
     // Master Roster for Tryouts (1)
