@@ -17,7 +17,7 @@
         tools:layout="@layout/spot_calendar_fragment" />
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.ysr.DashboardHomeFragment"
+        android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/default_full_dashboard">
         <action
@@ -40,7 +40,7 @@
     <!-- ORGANIZATION LIST PAGE -->
     <fragment
         android:id="@+id/navigation_org_list"
-        android:name="io.usys.report.ui.ysr.organization.OrganizationListFragment"
+        android:name="io.usys.report.ui.ludi.organization.OrganizationListFragment"
         android:label="@string/title_orgs"
         tools:layout="@layout/fragment_org_list">
     </fragment>
@@ -48,7 +48,7 @@
     <!-- COACHES LIST PAGE -->
     <fragment
         android:id="@+id/navigation_coaches_list"
-        android:name="io.usys.report.ui.ysr.coach.CoachListFragment"
+        android:name="io.usys.report.ui.ludi.coach.CoachListFragment"
         android:label="@string/title_coaches"
         tools:layout="@layout/fragment_coaches_list">
     </fragment>
@@ -56,14 +56,14 @@
     <!-- ORGANIZATION PROFILE PAGE -->
     <fragment
         android:id="@+id/navigation_org_profile"
-        android:name="io.usys.report.ui.ysr.organization.OrganizationProfileFragment"
+        android:name="io.usys.report.ui.ludi.organization.OrganizationProfileFragment"
         android:label="@string/title_org"
         tools:layout="@layout/profile_organization" >
     </fragment>
     <!-- TEAM PROFILE PAGE -->
     <fragment
         android:id="@+id/navigation_team_profile"
-        android:name="io.usys.report.ui.ysr.team.TeamProfileFragmentVG"
+        android:name="io.usys.report.ui.ludi.team.TeamProfileFragmentVG"
         android:label="@string/title_team"
         tools:layout="@layout/profile_team" >
     </fragment>
@@ -71,7 +71,7 @@
     <!-- USER PROFILE PAGE -->
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="io.usys.report.ui.ysr.user.ProfileFragment"
+        android:name="io.usys.report.ui.ludi.user.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_user" >
     </fragment>
@@ -79,21 +79,21 @@
     <!-- COACH PROFILE PAGE -->
     <fragment
         android:id="@+id/navigation_profile_coach"
-        android:name="io.usys.report.ui.ysr.coach.CoachProfileFragment"
+        android:name="io.usys.report.ui.ludi.coach.CoachProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_user" >
     </fragment>
 
     <fragment
         android:id="@+id/navigation_service_details"
-        android:name="io.usys.report.ui.ysr.service.ServiceDetailsFragment"
+        android:name="io.usys.report.ui.ludi.service.ServiceDetailsFragment"
         android:label="@string/title_service"
         tools:layout="@layout/default_full_home" >
     </fragment>
 
     <fragment
         android:id="@+id/navigation_pop_frag"
-        android:name="io.usys.report.ui.ysr.review.coach.ReviewDialogFragment"
+        android:name="io.usys.report.ui.ludi.review.coach.ReviewDialogFragment"
         android:label="PopUp"
         tools:layout="@layout/dialog_review_coach_layout">
     </fragment>
@@ -101,7 +101,7 @@
     <!-- TRY-OUT TESTING PAGE -->
     <fragment
         android:id="@+id/navigation_tryout_frag"
-        android:name="io.usys.report.ui.tryouts.RosterFormationFragment"
+        android:name="io.usys.report.ui.ludi.tryouts.RosterFormationFragment"
         android:label="Tryouts"
         tools:layout="@layout/fragment_home_tryouts">
     </fragment>

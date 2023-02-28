@@ -70,7 +70,7 @@ abstract class YsrFragment : Fragment() {
             log(itUri)
             itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS, realmInstance?.getUserId() ?: return@fairGetPickImageFromGalleryIntent))
         }
-        setupMenu()
+//        setupMenu()
 
     }
 

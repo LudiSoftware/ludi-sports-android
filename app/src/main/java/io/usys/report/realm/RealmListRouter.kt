@@ -6,14 +6,14 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.*
 import io.usys.report.realm.model.*
-import io.usys.report.ui.ysr.coach.CoachViewHolder
-import io.usys.report.ui.ysr.organization.OrgViewHolder
-import io.usys.report.ui.ysr.player.PlayerTinyViewHolder
-import io.usys.report.ui.ysr.review.coach.ReviewQuestionsViewHolder
-import io.usys.report.ui.ysr.review.organization.OrgReviewCommentViewHolder
-import io.usys.report.ui.ysr.service.ServiceViewHolder
-import io.usys.report.ui.ysr.sport.SportViewHolder
-import io.usys.report.ui.ysr.team.TeamSmallViewHolder
+import io.usys.report.ui.ludi.coach.CoachViewHolder
+import io.usys.report.ui.ludi.organization.OrgViewHolder
+import io.usys.report.ui.ludi.player.PlayerTinyViewHolder
+import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
+import io.usys.report.ui.ludi.review.organization.OrgReviewCommentViewHolder
+import io.usys.report.ui.ludi.service.ServiceViewHolder
+import io.usys.report.ui.ludi.sport.SportViewHolder
+import io.usys.report.ui.ludi.team.TeamSmallViewHolder
 
 /**
  * This Class will 'route' the RecyclerView to the correct ViewHolder based on its realm 'type'.

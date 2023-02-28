@@ -39,7 +39,7 @@
             android:name="io.usys.report.coachUser.MainLocationManagerActivity"
             android:label="Main Location Manager Activity" />
         <activity
-            android:name="io.usys.report.ui.ysr.MasterUserActivity"
+            android:name="io.usys.report.ui.ludi.MasterUserActivity"
             android:label="Main Food Truck Activity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
@@ -50,7 +50,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.usys.report.ui.ysr.MasterUserActivity" />
+                android:value="io.usys.report.ui.ludi.MasterUserActivity" />
         </activity>
 <!--        <activity-->
 <!--            android:name="io.usys.report.ui.calendar.FoodCalendarFragment"-->

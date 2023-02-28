@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuitem_formation"
+        android:enabled="true"
+        android:icon="@drawable/soccer_field"
+        android:title="Formation"
+        android:visible="true"
+        app:showAsAction="ifRoom|withText" />
+</menu>

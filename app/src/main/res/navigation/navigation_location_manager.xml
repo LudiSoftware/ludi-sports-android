@@ -17,7 +17,7 @@
         tools:layout="@layout/spot_calendar_fragment" />
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.ysr.DashboardHomeFragment"
+        android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/default_full_dashboard" />
     <fragment
@@ -27,7 +27,7 @@
         tools:layout="@layout/fragment_locations" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="io.usys.report.ui.ysr.user.ProfileFragment"
+        android:name="io.usys.report.ui.ludi.user.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_user" />
 

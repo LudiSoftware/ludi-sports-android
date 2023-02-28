@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.usys.report.ui.ysr.review.coach.YsrCoachReviewView
+<io.usys.report.ui.ludi.review.coach.YsrCoachReviewView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -75,4 +75,4 @@
     </androidx.core.widget.NestedScrollView>
 
 
-</io.usys.report.ui.ysr.review.coach.YsrCoachReviewView>
+</io.usys.report.ui.ludi.review.coach.YsrCoachReviewView>

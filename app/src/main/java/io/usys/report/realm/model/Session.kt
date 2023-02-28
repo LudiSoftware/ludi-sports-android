@@ -13,7 +13,7 @@ import io.usys.report.realm.model.users.User
 import io.usys.report.realm.realm
 import io.usys.report.realm.session
 import io.usys.report.realm.sessionSports
-import io.usys.report.ui.ysr.sport.containsItem
+import io.usys.report.ui.ludi.sport.containsItem
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty
 

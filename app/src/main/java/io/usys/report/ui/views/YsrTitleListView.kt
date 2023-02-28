@@ -11,11 +11,11 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.Sport
-import io.usys.report.ui.ysr.organization.setupOrganizationList
-import io.usys.report.ui.ysr.player.setupPlayerListFromSession
-import io.usys.report.ui.ysr.service.setupServiceList
-import io.usys.report.ui.ysr.sport.setupSportList
-import io.usys.report.ui.ysr.team.setupTeamListFromSession
+import io.usys.report.ui.ludi.organization.setupOrganizationList
+import io.usys.report.ui.ludi.player.setupPlayerListFromSession
+import io.usys.report.ui.ludi.service.setupServiceList
+import io.usys.report.ui.ludi.sport.setupSportList
+import io.usys.report.ui.ludi.team.setupTeamListFromSession
 import io.usys.report.utils.*
 
 class YsrTitleListView(context: Context) : CardView(context) {
