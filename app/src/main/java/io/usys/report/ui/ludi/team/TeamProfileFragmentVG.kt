@@ -18,10 +18,9 @@ import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.chat.ChatFragment
-import io.usys.report.utils.YsrMode
-import io.usys.report.utils.hideLudiNavView
-import io.usys.report.utils.log
-import io.usys.report.utils.popAskUserPickImageGallery
+import io.usys.report.utils.*
+import io.usys.report.utils.views.getDrawable
+import io.usys.report.utils.views.loadUriIntoImgView
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -113,9 +112,13 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     }
 
     private fun setupHeader() {
+        requireActivity().ludiActionBar()?.title = teamRef?.name
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = teamRef?.name
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = teamRef?.headCoachName
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = teamRef?.ageGroup + teamRef?.year
+        teamRef?.imgUrl?.let {
+            _binding?.includeTeamProfileCard?.cardTeamMediumImgMainIcon?.loadUriIntoImgView(it)
+        }
     }
 
     override fun setupOnClickListeners() {

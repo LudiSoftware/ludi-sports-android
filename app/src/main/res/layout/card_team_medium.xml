@@ -61,7 +61,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardTeamMediumImgIconTwo"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cardTeamMediumImgMainIcon"
             android:layout_width="84dp"
             android:layout_height="94dp"

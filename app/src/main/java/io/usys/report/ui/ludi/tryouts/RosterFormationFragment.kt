@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.realm.findByField
+import io.usys.report.realm.gridLayoutManager
 import io.usys.report.realm.linearLayoutManager
 import io.usys.report.realm.model.*
-import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.LudiStringIdFragment
-import io.usys.report.ui.fragments.YsrMiddleFragment
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
@@ -91,7 +90,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
             }
 
             adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
-            rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext())
+            rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
             rosterListRecyclerView?.adapter = adapter
             val itemTouchHelperCallback = RosterFormationTouchHelperCallback(adapter!!)
             val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -133,7 +132,6 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 DragEvent.ACTION_DROP -> {
                     val clipData = event.clipData
                     if (clipData != null && clipData.itemCount > 0) {
-                        //TODO: Fix this to get the correct realm object
                         val playerId = clipData.getItemAt(0).text.toString()
                         adapter?.removePlayer(playerId)
                         var tempPlayer = PlayerRef()
@@ -151,12 +149,13 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         layoutParams.width = 300
                         layoutParams.height = 75
                         tempView.layoutParams = layoutParams
-                        playerIcon.setImageDrawable(getDrawable(context, R.drawable.usysr_logo))
-//                        tempView.enablePinchToZoom()
+                        tempPlayer.imgUrl?.let {
+                            playerIcon.loadUriIntoImgView(it)
+                        }
                         val onTap: () -> Unit = {
                             popPlayerProfileDialog(requireActivity(), playerId).show()
                         }
-                        tempView.onMoveListenerRosterFormation2(width = 300, height = 75, onSingleTapUp = onTap)
+                        tempView.onGestureDetectorRosterFormation(width = 300, height = 75, onSingleTapUp = onTap)
 
                         soccerFieldLayout?.addView(tempView)
                     }
@@ -191,6 +190,9 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
         val playerId = itemList[position].id ?: "unknown"
         holder.textView.text = itemList[position].name
+        itemList[position].imgUrl?.let {
+            holder.imageView.loadUriIntoImgView(it)
+        }
         // On Click
         holder.itemView.setOnClickListener {
             popPlayerProfileDialog(activity, playerId).show()
@@ -231,6 +233,7 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
 
     inner class RosterFormationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.bind(R.id.cardPlayerTinyTxtName)
+        val imageView: ImageView = itemView.bind(R.id.cardPlayerTinyImgProfile)
     }
 }
 

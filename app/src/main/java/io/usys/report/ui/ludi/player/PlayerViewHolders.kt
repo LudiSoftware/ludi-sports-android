@@ -10,6 +10,7 @@ import io.usys.report.realm.loadInRealmListGridArrangable
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.getPlayerRefsByTeamId
 import io.usys.report.utils.*
+import io.usys.report.utils.views.loadUriIntoImgView
 
 /**
  * SPORT LIST VIEW CONTROLS
@@ -32,7 +33,9 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         player?.let {
             txtItemPlayerName?.text = it.name
             txtItemPlayerRank?.text = position.toString()
-
+            it.imgUrl?.let { url ->
+                imgPlayerProfile.loadUriIntoImgView(url)
+            }
         }
     }
 }

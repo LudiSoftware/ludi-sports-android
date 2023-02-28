@@ -19,9 +19,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardPlayerTinyMainLayout"
         android:layout_width="wrap_content"
-        android:layout_height="22dp"
-        android:minWidth="100dp"
-        android:minHeight="22dp">
+        android:layout_height="30dp"
+        android:minWidth="125dp"
+        android:minHeight="30dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cardPlayerTinyImgProfile"
@@ -41,7 +41,7 @@
             android:layout_marginStart="3dp"
             android:drawablePadding="25dp"
             android:text="Player Name"
-            android:textSize="9sp"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardPlayerTinyImgProfile"
             app:layout_constraintTop_toTopOf="parent"
