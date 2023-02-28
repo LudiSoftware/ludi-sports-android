@@ -11,12 +11,10 @@ import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.FireTypes
-import io.usys.report.realm.findByField
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
-import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragmentWithRealmObject
@@ -76,7 +74,6 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onStart() {
         super.onStart()
         setupSportsList()
-//        setupTeamList()
     }
 
     override fun onStop() {

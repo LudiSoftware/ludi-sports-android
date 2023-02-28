@@ -29,6 +29,7 @@ open class Parent : RealmObject() {
 
     @PrimaryKey
     var id: String = ""
+    var userId: String? = "unassigned"
     var hasPlayer: Boolean = false
     var players: RealmList<PlayerRef>? = null
     var team: Boolean = false

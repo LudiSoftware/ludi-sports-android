@@ -32,6 +32,7 @@ open class Player : RealmObject() {
 
     @PrimaryKey
     var id: String = newUUID()
+    var userId: String? = "unassigned"
     var team: TeamRef? = TeamRef()
     var rank: Int = 0
     var number: Int = 0

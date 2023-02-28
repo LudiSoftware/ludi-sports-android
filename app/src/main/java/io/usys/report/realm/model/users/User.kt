@@ -122,6 +122,9 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
     return user
 }
 
+/**
+ * Key User Functions
+ */
 inline fun Realm.safeUser(block: (User) -> Unit) {
     val user = realmUser()
     user?.let {
@@ -129,28 +132,24 @@ inline fun Realm.safeUser(block: (User) -> Unit) {
         block(it)
     }
 }
+inline fun Realm.safeUserId(crossinline block: (String) -> Unit) {
+    realmUser()?.id?.let { itId ->
+        block(itId)
+    }
+}
+// -> Base Functions
 fun Realm.realmUser(): User? {
     val uid = coreFirebaseUserUid() ?: return null
     return getRealmUserById(uid)
 }
-fun executeGetRealmUserById(id:String) : User? {
-    var user: User? = null
-    try {
-        writeToRealm { user = queryForUser(id) }
-        return user
-    } catch (e: Exception) { e.printStackTrace() }
-    return user
-}
+
 fun Realm.getRealmUserById(id:String) : User? {
     var user: User? = null
     try {
-        user = queryForUserById(id)
+        user = this.queryForUserById(id)
         return user
     } catch (e: Exception) { e.printStackTrace() }
     return user
-}
-fun queryForUser(userId:String): User? {
-    return realm().where(User::class.java).equalTo("id", userId).findFirst()
 }
 
 fun Realm.queryForUserById(userId:String): User? {
@@ -161,13 +160,6 @@ fun executeCreateUserObject(userId:String) {
         itRealm.createObject(User::class.java, userId)
     }
 }
-
-inline fun Realm.safeUserId(crossinline block: (String) -> Unit) {
-    realmUser()?.id?.let { itId ->
-        block(itId)
-    }
-}
-
 fun Realm.getUserId(): String? {
     return realmUser()?.id
 }

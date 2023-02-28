@@ -21,7 +21,7 @@ inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: 
 }
 fun Realm.findCoachBySafeId(): Coach? {
     var temp: Coach? = null
-    safeUserId {
+    this.safeUserId {
         temp = this.where(Coach::class.java).equalTo("id", it).findFirst()
     }
     return temp
