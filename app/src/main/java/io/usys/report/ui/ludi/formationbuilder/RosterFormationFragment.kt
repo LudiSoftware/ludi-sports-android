@@ -1,12 +1,10 @@
-package io.usys.report.ui.ludi.tryouts
+package io.usys.report.ui.ludi.formationbuilder
 
-import android.app.Activity
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RawRes
@@ -44,7 +42,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
     // List of players
     var rosterList = mutableListOf<PlayerRef>()
     // Player Icons on the field
-    var formationList = mutableListOf<PlayerRef>()
+    var formationPlayerList = mutableListOf<PlayerRef>()
+    var formationViewList = mutableListOf<View>()
+    var formationLayouts = mutableListOf(R.drawable.soccer_field)
 
     var dragListener: View.OnDragListener? = null
     var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
@@ -93,8 +93,8 @@ class RosterFormationFragment : LudiStringIdFragment() {
         roster?.players?.forEach { rosterList.add(it) }
     }
 
-    private fun resetFormation() {
-
+    private fun resetFormationLayout() {
+        formationLayout?.removeAllViews()
     }
 
     private fun getBackgroundDrawable(@RawRes drawableReference: Int): Drawable? {
@@ -110,6 +110,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         setupFloatingActionMenu()
         activity?.window?.let {
             formationLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
+
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
 
             onItemDragged = { start, end ->
@@ -186,10 +187,10 @@ class RosterFormationFragment : LudiStringIdFragment() {
         fabMenu.setOnTouchListener(gestureDetector)
     }
 
+    /**
+     * Drag Listener for when a player is dragged onto the soccer field
+     */
     private fun createOnDragListener() {
-        /**
-         * Drag Listener for when a player is dragged onto the soccer field
-         */
         dragListener = View.OnDragListener { v, event ->
             when (event.action) {
                 DragEvent.ACTION_DRAG_STARTED -> {
@@ -220,7 +221,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         var tempPlayer = PlayerRef()
                         team?.getPlayerFromRosterNoThread(playerId)?.let {
                             tempPlayer = it
-                            formationList.add(it)
+                            formationPlayerList.add(it)
                         }
 
                         val layoutParams = getRelativeLayoutParams()
@@ -245,6 +246,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         // Gestures
                         tempView.onGestureDetectorRosterFormation(width = 300, height = 75, onSingleTapUp = onTap)
                         // Add to FormationLayout
+                        formationViewList.add(tempView)
                         formationLayout?.addView(tempView)
                     }
                     true
@@ -262,93 +264,3 @@ class RosterFormationFragment : LudiStringIdFragment() {
 
 }
 
-/**
- * RecyclerView Adapter
- */
-class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
-                                 private val onItemMoved: (start: Int, end: Int) -> Unit,
-                                 private val activity: Activity)
-    : RecyclerView.Adapter<RosterFormationListAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
-        val view = parent.inflateLayout(R.layout.card_player_tiny)
-        return RosterFormationViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
-        val playerId = itemList[position].id ?: "unknown"
-        holder.textView.text = itemList[position].name
-        itemList[position].imgUrl?.let {
-            holder.imageView.loadUriIntoImgView(it)
-        }
-        // On Click
-        holder.itemView.setOnClickListener {
-            popPlayerProfileDialog(activity, playerId).show()
-        }
-        // On Long Click
-        holder.itemView.setOnLongClickListener {
-            val tempID = itemList[position].id
-            holder.startClipDataDragAndDrop(tempID ?: "Unknown")
-        }
-    }
-
-    fun removePlayer(playerId: String) {
-        val player = itemList.find { it.id == playerId }
-        player?.let {
-            val index = itemList.indexOf(it)
-            itemList.removeAt(index)
-            notifyItemRemoved(index)
-            this.notifyDataSetChanged()
-        }
-    }
-
-    fun addPlayer(player: PlayerRef) {
-        itemList.add(player)
-        notifyItemInserted(itemList.size - 1)
-    }
-
-    override fun getItemCount() = itemList.size
-
-    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        // This is for movements within the recyclerView. Not for dragging to the soccer field.
-        return true
-    }
-
-    override fun onItemDismiss(position: Int) {
-        itemList.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    inner class RosterFormationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.bind(R.id.cardPlayerTinyTxtName)
-        val imageView: ImageView = itemView.bind(R.id.cardPlayerTinyImgProfile)
-    }
-}
-
-
-/**
- * ItemTouchHelperCallback
- * -> This is for movements within the recyclerView. Not for dragging to the soccer field.
- */
-interface ItemTouchHelperAdapter {
-    fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
-    fun onItemDismiss(position: Int)
-}
-
-class RosterFormationTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
-
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        return makeMovementFlags(dragFlags, swipeFlags)
-    }
-
-    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
-        return true
-    }
-
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        mAdapter.onItemDismiss(viewHolder.adapterPosition)
-    }
-}

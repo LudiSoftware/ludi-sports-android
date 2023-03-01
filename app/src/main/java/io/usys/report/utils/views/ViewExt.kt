@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -26,12 +27,12 @@ fun inflateView(context: Context, @LayoutRes layoutRes: Int, attachToRoot: Boole
 fun ViewGroup?.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(this?.context).inflate(layoutRes, this, attachToRoot)
 }
-fun RelativeLayout.takeScreenshot(): Bitmap {
-    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(bitmap)
-    draw(canvas)
-    return bitmap
+
+
+fun View.setBackgroundImage(@DrawableRes drawableRes: Int) {
+    this.background = ContextCompat.getDrawable(context, drawableRes)
 }
+
 
 fun View.enablePinchToZoom() {
     val scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {

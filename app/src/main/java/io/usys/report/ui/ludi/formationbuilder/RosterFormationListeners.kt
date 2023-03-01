@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.tryouts
+package io.usys.report.ui.ludi.formationbuilder
 
 import android.view.GestureDetector
 import android.view.MotionEvent
