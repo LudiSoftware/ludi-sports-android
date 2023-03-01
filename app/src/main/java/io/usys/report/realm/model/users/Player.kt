@@ -25,6 +25,9 @@ open class PlayerRef : RealmObject(), Serializable {
     var imgUrl: String? = "null"
     var pointX: Int? = 0
     var pointY: Int? = 0
+    //todo:
+//    var color: String? = "unassigned"
+//    var listPosition: Int? = 0
 
 }
 

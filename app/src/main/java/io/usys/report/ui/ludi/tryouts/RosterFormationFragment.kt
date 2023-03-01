@@ -2,25 +2,25 @@ package io.usys.report.ui.ludi.tryouts
 
 import android.app.Activity
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RawRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.usys.report.R
 import io.usys.report.realm.findByField
 import io.usys.report.realm.gridLayoutManager
-import io.usys.report.realm.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdFragment
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
-import io.usys.report.ui.views.LudiFreeFormGestureDetector
+import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
@@ -38,10 +38,12 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     var adapter: RosterFormationListAdapter? = null
-    var soccerFieldLayout: RelativeLayout? = null
+    var formationLayout: RelativeLayout? = null
     var rosterListRecyclerView: RecyclerView? = null
 
+    // List of players
     var rosterList = mutableListOf<PlayerRef>()
+    // Player Icons on the field
     var formationList = mutableListOf<PlayerRef>()
 
     var dragListener: View.OnDragListener? = null
@@ -60,8 +62,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         this.inflater = inflater
         this.container = container
+        //Base Team Data
         teamId = realmIdArg
-        team = realmInstance?.findByField("id", teamId!!)
+        loadTeamFromRealm()
         //Hiding the action bar
         hideLudiActionBar()
         //Hiding the bottom navigation bar
@@ -77,11 +80,36 @@ class RosterFormationFragment : LudiStringIdFragment() {
         return rootView
     }
 
+    /**
+     * Base Functions
+     *
+     */
+    private fun loadTeamFromRealm() {
+        team = realmInstance?.findByField("id", teamId!!)
+    }
+
+    private fun reloadRoster() {
+        val roster = team?.roster
+        roster?.players?.forEach { rosterList.add(it) }
+    }
+
+    private fun resetFormation() {
+
+    }
+
+    private fun getBackgroundDrawable(@RawRes drawableReference: Int): Drawable? {
+        return getDrawable(requireContext(), drawableReference)
+    }
+
+    /**
+     * Display Functions
+     *
+     */
     private fun setupDisplay() {
 
         setupFloatingActionMenu()
         activity?.window?.let {
-            soccerFieldLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
+            formationLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
 
             onItemDragged = { start, end ->
@@ -90,24 +118,26 @@ class RosterFormationFragment : LudiStringIdFragment() {
 //                formationList.add(end, item)
             }
 
-            val roster = team?.roster
-            roster?.players?.forEach {
-                val test = it.name
-                log("Player: $test")
-                rosterList.add(it)
-            }
+            reloadRoster()
 
             adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
             rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
             rosterListRecyclerView?.adapter = adapter
-            val itemTouchHelperCallback = RosterFormationTouchHelperCallback(adapter!!)
-            val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-            itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
-            createOnDragListener()
+
+            adapter?.let { itAdapter ->
+                val itemTouchHelperCallback = RosterFormationTouchHelperCallback(itAdapter)
+                val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+                itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
+                createOnDragListener()
+            }
+
         }
 
     }
 
+    /**
+     * Orientation Change Functions
+     */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -119,20 +149,36 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
     }
 
+    /**
+     * Floating Action Menu Functions
+     *
+     */
     private fun setupFloatingActionMenu() {
         val fabMenu = rootView.findViewById<FloatingActionButton>(R.id.tryoutFormationFloatingActionButton)
-        val popupMenu = PopupMenu(requireContext(), fabMenu)
-        popupMenu.inflate(R.menu.general_top_menu)
-        popupMenu.setOnMenuItemClickListener { menuItem ->
+        val popupMenu = fabMenu.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem ->
             // Handle menu item click events
+            // todo: events to handle:
+            //  - save formation -> order and (x,y) coordinates
+            //  - if in tryout mode, submit formation as roster.
+            //  - Change background image.
+            //  - Reset Formation.
             when (menuItem.itemId) {
-                R.id.menu_logout -> {
+                R.id.menu_save_formation -> {
                     // Do something
-                    true
+                    log("Save Formation")
                 }
-                else -> false
+                R.id.menu_submit_roster -> {
+                    // Do something
+                }
+                R.id.menu_reset -> {
+                    // Do something
+                }
+                else -> {
+                    log("Unknown Touch")
+                }
             }
         }
+
         val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { view, event ->
             // Show the PopupMenu when the FloatingActionButton is single-tapped
             popupMenu.show()
@@ -159,6 +205,14 @@ class RosterFormationFragment : LudiStringIdFragment() {
                     true
                 }
                 DragEvent.ACTION_DROP -> {
+                    /**
+                     * TODO:
+                     *      - add long press listener for a player specific menu
+                     *          - menu options: remove player.
+                     *
+                     *     - show:
+                     *          - player name, tryout tag, position number.
+                     */
                     val clipData = event.clipData
                     if (clipData != null && clipData.itemCount > 0) {
                         val playerId = clipData.getItemAt(0).text.toString()
@@ -168,25 +222,30 @@ class RosterFormationFragment : LudiStringIdFragment() {
                             tempPlayer = it
                             formationList.add(it)
                         }
+
                         val layoutParams = getRelativeLayoutParams()
                         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-                        val tempView = inflateView(requireContext(), R.layout.card_player_tiny)
-                        tempView.tag = tempPlayer.id
-                        val playerName = tempView.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
-                        val playerIcon = tempView.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
-                        playerName.text = tempPlayer.name
                         layoutParams.width = 300
                         layoutParams.height = 75
+
+                        val tempView = inflateView(requireContext(), R.layout.card_player_tiny)
+                        val playerName = tempView.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
+                        val playerIcon = tempView.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
                         tempView.layoutParams = layoutParams
+                        tempView.tag = tempPlayer.id
+                        // Bind Data
+                        playerName.text = tempPlayer.name
                         tempPlayer.imgUrl?.let {
                             playerIcon.loadUriIntoImgView(it)
                         }
+                        //On Click
                         val onTap: () -> Unit = {
                             popPlayerProfileDialog(requireActivity(), playerId).show()
                         }
+                        // Gestures
                         tempView.onGestureDetectorRosterFormation(width = 300, height = 75, onSingleTapUp = onTap)
-
-                        soccerFieldLayout?.addView(tempView)
+                        // Add to FormationLayout
+                        formationLayout?.addView(tempView)
                     }
                     true
                 }
@@ -197,7 +256,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 else -> false
             }
         }
-        soccerFieldLayout?.setOnDragListener(dragListener)
+        formationLayout?.setOnDragListener(dragListener)
     }
 
 

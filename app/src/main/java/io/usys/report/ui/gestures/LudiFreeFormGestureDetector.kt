@@ -1,4 +1,4 @@
-package io.usys.report.ui.views
+package io.usys.report.ui.gestures
 
 import android.content.Context
 import android.view.GestureDetector
@@ -42,7 +42,6 @@ class LudiFreeFormGestureDetector(context: Context, private val actionCallback: 
 
         // Pass the event to the GestureDetector for handling other gestures
         gestureDetector.onTouchEvent(event)
-
         return true
     }
 
