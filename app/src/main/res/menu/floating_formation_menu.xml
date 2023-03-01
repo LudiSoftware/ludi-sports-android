@@ -5,6 +5,9 @@
         android:id="@+id/menu_save_formation"
         android:title="Save Formation" />
     <item
+        android:id="@+id/menu_add_note"
+        android:title="Add Note" />
+    <item
         android:id="@+id/menu_submit_roster"
         android:title="Submit Roster" />
     <item

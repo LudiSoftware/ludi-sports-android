@@ -25,14 +25,31 @@ open class Note : RealmObject(), Serializable {
      */
     @PrimaryKey
     var id: String = newUUID()
-    var ownerId: String? = null
-    var ownerName: String? = null
-    var coachId: String? = null
+    var ownerId: String? = "null"
+    var ownerName: String? = "null"
+    var coachId: String? = "null"
     var dateCreated: String = getTimeStamp()
     var dateUpdated: String = getTimeStamp()
-    var aboutTeamId: String? = null
-    var aboutPlayerId: String? = null
-    var message: String? = null
+    var aboutTeamId: String? = "null"
+    var aboutPlayerId: String? = "null"
+    var aboutCoachId: String? = "null"
+    var sport: String? = "null"
+    var type: String? = "null"
+    var subtype: String? = "null"
+    var message: String? = "null"
+}
+
+enum class NoteTypes(val type: String) {
+    PLAYER("player"),
+    TEAM("team"),
+    TRYOUT("tryout"),
+    GAME("game"),
+    PRACTICE("practice"),
+    PRIVATE("private"),
+    EVENT("event"),
+    ORGANIZATION("organization"),
+    COACH("coach"),
+    PARENT("parent")
 }
 
 fun Realm.getPlayerNotes(playerId:String, onClick: ((DataSnapshot?) -> Unit)?) {

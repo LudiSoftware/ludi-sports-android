@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reviewRootCard"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
     app:cardBackgroundColor="@color/ysrWindowBackground"
     app:cardCornerRadius="10dp"
@@ -12,65 +12,95 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/reviewMainLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#00FFFFFF">
+
+            <!-- Tryout Tag -->
+
+            <!-- Jersey Number -->
 
             <include
                 android:id="@+id/includePlayerProfileHeader"
                 layout="@layout/card_user_header_template_basic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogTryOutTag" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btnPlayerDialogCreateEval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="102dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="12dp"
                 android:text="Create Evaluation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader" />
+                tools:layout_editor_absoluteX="214dp"
+                tools:layout_editor_absoluteY="214dp" />
 
             <Button
                 android:id="@+id/btnPlayerDialogSendOffer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="Send Offer"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader" />
+                app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogTryOutTag" />
 
             <TextView
                 android:id="@+id/txtPlayerDialogTryOutTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:text="Try-Out Tag:"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogRank" />
+
+            <!-- Position -->
+
+            <TextView
+                android:id="@+id/editPlayerDialogTryOutTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="1234123412341"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPlayerDialogTryOutTag"
+                app:layout_constraintStart_toEndOf="@+id/txtPlayerDialogTryOutTag"
+                app:layout_constraintTop_toTopOf="@+id/txtPlayerDialogTryOutTag"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/txtPlayerDialogJerseyNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:text="Jersey Number:"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogAge"
                 app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogAge" />
+
+            <TextView
+                android:id="@+id/editPlayerDialogJerseyNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="23"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPlayerDialogJerseyNumber"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtPlayerDialogJerseyNumber"
+                app:layout_constraintTop_toTopOf="@+id/txtPlayerDialogJerseyNumber"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/txtPlayerDialogPosition"
@@ -78,8 +108,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:text="Position:"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
                 app:layout_constraintTop_toTopOf="@+id/includePlayerProfileHeader" />
+
+            <!-- DOB -->
+
+            <TextView
+                android:id="@+id/editPlayerDialogPosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:text="10 - Forward"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPlayerDialogPosition"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtPlayerDialogPosition"
+                app:layout_constraintTop_toTopOf="@+id/txtPlayerDialogPosition"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <!-- Age -->
 
             <TextView
                 android:id="@+id/txtPlayerDialogDOB"
@@ -87,40 +136,113 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Date Of Birth:"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogPosition"
                 app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogPosition" />
+
+            <TextView
+                android:id="@+id/editPlayerDialogDOB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:text="11/09/1999"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPlayerDialogDOB"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtPlayerDialogDOB"
+                app:layout_constraintTop_toTopOf="@+id/txtPlayerDialogDOB"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <!-- Rank -->
 
             <TextView
                 android:id="@+id/txtPlayerDialogAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:text="Age:"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/txtPlayerDialogDOB"
                 app:layout_constraintTop_toBottomOf="@+id/txtPlayerDialogDOB" />
+
+            <TextView
+                android:id="@+id/editPlayerDialogAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="92dp"
+                android:text="17"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPlayerDialogAge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtPlayerDialogAge"
+                app:layout_constraintTop_toTopOf="@+id/txtPlayerDialogAge"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/txtPlayerDialogRank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Rank:"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader" />
+
+            <TextView
+                android:id="@+id/editPlayerDialogRank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="12"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPlayerDialogRank"
+                app:layout_constraintEnd_toEndOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintStart_toEndOf="@+id/txtPlayerDialogRank"
+                app:layout_constraintTop_toTopOf="@+id/txtPlayerDialogRank"
+                app:layout_constraintVertical_bias="1.0" />
 
             <include
                 android:id="@+id/includeYsrListViewNotes"
                 layout="@layout/ysr_title_create_list_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogCreateEval"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogSendOffer" />
+
+            <ImageButton
+                android:id="@+id/btnEditModeProfileDialog"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00FFFFFF"
+                app:layout_constraintStart_toStartOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintTop_toTopOf="@+id/includePlayerProfileHeader"
+                app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+            <ImageButton
+                android:id="@+id/btnUploadImageProfileDialog"
+                android:layout_width="69dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="52dp"
+                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="16dp"
+                android:background="#00FFFFFF"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintEnd_toEndOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintStart_toStartOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintTop_toTopOf="@+id/includePlayerProfileHeader"
+                app:srcCompat="@drawable/add_light" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
