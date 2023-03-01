@@ -180,7 +180,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
             }
         }
 
-        val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { view, event ->
+        val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { event ->
             // Show the PopupMenu when the FloatingActionButton is single-tapped
             popupMenu.show()
         }

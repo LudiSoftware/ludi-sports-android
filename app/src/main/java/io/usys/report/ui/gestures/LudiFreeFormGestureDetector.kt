@@ -5,8 +5,16 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlin.math.log
+import kotlin.math.sqrt
 
-class LudiFreeFormGestureDetector(context: Context, private val actionCallback: (View, MotionEvent) -> Unit) :
+fun distance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+    val dx = x2 - x1
+    val dy = y2 - y1
+    return sqrt((dx * dx + dy * dy).toDouble()).toFloat()
+}
+
+class LudiFreeFormGestureDetector(context: Context, private val actionCallback: (MotionEvent?) -> Unit) :
     View.OnTouchListener {
 
     private val gestureDetector: GestureDetector = GestureDetector(context, GestureListener())
@@ -31,21 +39,17 @@ class LudiFreeFormGestureDetector(context: Context, private val actionCallback: 
                 view.layoutParams = layoutParams
                 lastAction = MotionEvent.ACTION_MOVE
             }
-            MotionEvent.ACTION_UP -> {
-                if (lastAction == MotionEvent.ACTION_DOWN) {
-                    // Perform click action by invoking the actionCallback
-                    actionCallback(view, event)
-                }
-                lastAction = MotionEvent.ACTION_UP
-            }
         }
-
         // Pass the event to the GestureDetector for handling other gestures
         gestureDetector.onTouchEvent(event)
         return true
     }
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            actionCallback(e)
+            return super.onSingleTapUp(e)
+        }
         override fun onDoubleTap(event: MotionEvent?): Boolean {
             // Handle double-tap events if needed
             return super.onDoubleTap(event)
@@ -55,6 +59,7 @@ class LudiFreeFormGestureDetector(context: Context, private val actionCallback: 
             // Handle long-press events if needed
             super.onLongPress(event)
         }
+
 
         // Implement other gesture callbacks as needed
     }
