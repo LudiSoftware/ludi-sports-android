@@ -40,14 +40,13 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
+        setupOnClickListeners()
         realmInstance?.safeUser { itUser ->
             _binding?.txtWelcomeDashboard?.text = "Welcome, ${itUser.name}"
             // Check For Coach User
             setupCoachDisplay()
         }
-
         setupRealmCoachListener()
-        setupOnClickListeners()
         return binding.root
     }
 
