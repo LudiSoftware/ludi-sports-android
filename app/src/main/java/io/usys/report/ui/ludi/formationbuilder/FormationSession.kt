@@ -22,7 +22,7 @@ open class FormationSession : RealmObject(), Serializable {
     var currentLayout: Int = 0
     var layoutList: RealmList<Int>? = RealmList()
     var formationList: RealmList<PlayerRef>? = RealmList()
-    var rosterList: RealmList<PlayerRef>? = RealmList()
+    var playerList: RealmList<PlayerRef>? = RealmList()
     var removedList: RealmList<PlayerRef>? = RealmList()
 }
 

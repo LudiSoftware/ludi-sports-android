@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
@@ -22,24 +23,16 @@ import io.usys.report.utils.views.*
 class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
     var realmInstance: Realm? = null
     var formationSessionId: String? = null
-    var playerIdList: RealmList<String>? = null
+    var onDeckPlayerIdList: RealmList<String> = RealmList()
+    var removedPlayerIdList: RealmList<String> = RealmList()
+    var onFieldPlayerIdList: RealmList<String> = RealmList()
     var onItemMoved: ((start: Int, end: Int) -> Unit)? = null
     var activity: Activity? = null
 
     constructor(realmInstance: Realm?, activity: Activity) : this() {
         this.realmInstance = realmInstance ?: realm()
-        this.playerIdList = this.loadFormationSessionData()
+        this.onDeckPlayerIdList = this.loadFormationSessionData()
         this.activity = activity
-    }
-
-    constructor(itemList: RealmList<String>, activity: Activity) : this() {
-        this.playerIdList = itemList
-        this.activity = activity
-    }
-    constructor(itemList: RealmList<String>, activity: Activity, onItemMoved: (start: Int, end: Int) -> Unit) : this() {
-        this.playerIdList = itemList
-        this.activity = activity
-        this.onItemMoved = onItemMoved
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
@@ -48,14 +41,20 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
-        val playerId = playerIdList?.get(position) ?: "unknown"
+        val playerId = onDeckPlayerIdList[position] ?: "unknown"
 
         realmInstance?.getUserFormationSession { fs ->
-            fs.rosterList?.find { it.id == playerId }?.let { player ->
+            fs.playerList?.find { it.id == playerId }?.let { player ->
                 holder.textView.text = player.name
                 player.imgUrl?.let { itImgUrl ->
                     holder.imageView.loadUriIntoImgView(itImgUrl)
                 }
+                if (player.color == "red") {
+                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedRed))
+                } else {
+                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedBlue))
+                }
+
             }
         }
 
@@ -70,43 +69,44 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         }
     }
 
-    private fun loadFormationSessionData() : RealmList<String>? {
-        val tempList: RealmList<String>? = RealmList()
+    private fun loadFormationSessionData() : RealmList<String> {
+        val tempList: RealmList<String> = RealmList()
         this.realmInstance?.getUserFormationSession { fs ->
             this.formationSessionId = fs.id
-            fs.rosterList?.let { itRosterList ->
+            fs.playerList?.let { itRosterList ->
                 for (player in itRosterList) {
-                    tempList?.add(player.id)
+                    tempList.add(player.id)
                 }
             }
         }
         return tempList
     }
+    fun movePlayerToField(playerId: String) {
+        onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
+            onDeckPlayerIdList.remove(playerId)
+            onFieldPlayerIdList.add(playerId)
+            notifyItemRemoved(itIndex)
+        }
+    }
+    fun addPlayerFromField(playerId: String) {
+        onDeckPlayerIdList.add(playerId)
+        onFieldPlayerIdList.remove(playerId)
+        notifyItemInserted(onDeckPlayerIdList.size - 1)
+    }
     fun removePlayer(playerId: String) {
-        realmInstance?.executeTransaction {
-            val player = playerIdList?.find { it == playerId }
-            player?.let {
-                val index = playerIdList?.indexOf(it)
-                if (index != null) {
-                    playerIdList?.removeAt(index)
-
-                }
-                if (index != null) {
-                    notifyItemRemoved(index)
-                }
-                this.notifyDataSetChanged()
-            }
+        onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
+            onDeckPlayerIdList.remove(playerId)
+            removedPlayerIdList.add(playerId)
+            notifyItemRemoved(itIndex)
         }
     }
 
     fun addPlayer(player: PlayerRef) {
-        realmInstance?.executeTransaction {
-            playerIdList?.add(player.id)
-        }
-        notifyItemInserted(playerIdList!!.size - 1)
+        onDeckPlayerIdList.add(player.id)
+        notifyItemInserted(onDeckPlayerIdList.size - 1)
     }
 
-    override fun getItemCount() = playerIdList?.size ?: 0
+    override fun getItemCount() = onDeckPlayerIdList.size
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         // This is for movements within the recyclerView. Not for dragging to the soccer field.
@@ -114,7 +114,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
 
     override fun onItemDismiss(position: Int) {
-        playerIdList?.removeAt(position)
+        onDeckPlayerIdList?.removeAt(position)
         notifyItemRemoved(position)
     }
 

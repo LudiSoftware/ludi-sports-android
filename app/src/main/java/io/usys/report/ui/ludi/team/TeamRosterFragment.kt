@@ -9,7 +9,7 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
-import io.usys.report.firebase.fireGetRosterForSession
+import io.usys.report.firebase.fireGetRoster
 import io.usys.report.realm.findByField
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
@@ -48,7 +48,7 @@ class TeamRosterFragment : LudiStringIdFragment() {
                     this.roster = roster
                     setupDisplay()
                 } else {
-                    fireGetRosterForSession(rosterId)
+                    fireGetRoster(rosterId)
                 }
             }
         }

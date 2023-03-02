@@ -50,7 +50,7 @@ fun fireGetTryOutProfileForSession(teamId:String) {
 /**
  * Roster
  */
-fun fireGetRosterForSession(rosterId:String) {
+fun fireGetRoster(rosterId:String) {
     firebaseDatabase {
         it.child(DatabasePaths.ROSTERS.path).orderByChild("id").equalTo(rosterId)
             .fairAddListenerForSingleValueEvent { ds ->

@@ -12,8 +12,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import io.realm.RealmList
+import io.realm.RealmChangeListener
+import io.realm.RealmResults
 import io.usys.report.R
+import io.usys.report.firebase.fireGetRoster
 import io.usys.report.realm.*
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
@@ -74,15 +76,16 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 realmInstance?.executeTransaction { itRealm ->
                     formationSession = itRealm.createObject(FormationSession::class.java, itUserId)
                     formationSession?.teamId = teamId
+                    formationSession?.currentLayout = R.drawable.soccer_field
                     formationSession?.let {
                         itRealm.insertOrUpdate(it)
                     }
                 }
             }
         }
-
+        setupRosterRealmListener()
         //Base Team Data
-        loadRoster()
+        loadRoster(reload = false)
         //Hiding the action bar
         hideLudiActionBar()
         //Hiding the bottom navigation bar
@@ -103,6 +106,20 @@ class RosterFormationFragment : LudiStringIdFragment() {
      *
      */
 
+    private fun setupRosterRealmListener() {
+        val rosterListener = RealmChangeListener<RealmResults<Roster>> { itResults ->
+            // Handle changes to the Realm data here
+            log("Roster listener called")
+            rosterId?.let { rosterId ->
+                itResults.find { it.id == rosterId }?.let { roster ->
+                    saveRosterToFormationSession(roster)
+                    setupRosterList()
+                }
+            }
+        }
+        realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
+    }
+
     private fun saveRosterIdToFormationSession(rosterId: String?) {
         if (rosterId == null) return
         formationSession?.let { formationSession ->
@@ -112,25 +129,27 @@ class RosterFormationFragment : LudiStringIdFragment() {
             }
         }
     }
-    private fun saveRosterListToFormationSession(rosterList: RealmList<PlayerRef>?) {
-        if (rosterList == null) return
+    private fun saveRosterToFormationSession(roster: Roster?) {
+        if (roster == null) return
         formationSession?.let { formationSession ->
             realmInstance?.executeTransaction {
-                formationSession.rosterList = rosterList
+                formationSession.roster = roster
+                formationSession.playerList = roster.players
                 it.insertOrUpdate(formationSession)
             }
         }
     }
+
     private fun loadRoster(reload:Boolean=false) {
 
-        val rosterList = formationSession?.rosterList
-        if (rosterList.isNullOrEmpty()) {
+        val roster = formationSession?.roster
+        if (roster.isNullOrEmpty()) {
             teamId?.let { teamId ->
-                val rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+                rosterId = realmInstance?.getRosterIdForTeamId(teamId)
                 saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
                     realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        saveRosterListToFormationSession(roster.players)
+                        saveRosterToFormationSession(roster)
                         setupRosterList()
                     }
                 }
@@ -139,11 +158,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
         if (reload) {
             teamId?.let { teamId ->
-                val rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+                rosterId = realmInstance?.getRosterIdForTeamId(teamId)
                 saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
                     realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        saveRosterListToFormationSession(roster.players)
+                        saveRosterToFormationSession(roster)
                         setupRosterList()
                     }
                 }
@@ -155,7 +174,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         realmInstance?.executeTransaction { itRealm ->
             formationSession?.let { fs ->
                 fs.formationList?.forEach { pf ->
-                    fs.rosterList?.add(pf)
+                    fs.playerList?.add(pf)
                 }
                 fs.formationList?.clear()
                 itRealm.insertOrUpdate(fs)
@@ -188,7 +207,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
             log("onItemDragged: $start, $end")
         }
         formationSession?.let {
-            it.rosterList?.let { rosterList ->
+            it.playerList?.let { rosterList ->
                 adapter = RosterFormationListAdapter(realmInstance, requireActivity())
                 rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
                 rosterListRecyclerView?.adapter = adapter
@@ -274,7 +293,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                     val clipData = event.clipData
                     if (clipData != null && clipData.itemCount > 0) {
                         val playerId = clipData.getItemAt(0).text.toString()
-                        adapter?.removePlayer(playerId)
+                        adapter?.movePlayerToField(playerId)
                         var tempPlayer = PlayerRef()
                         realmInstance?.findPlayerRefById(playerId)?.let {
                             tempPlayer = it

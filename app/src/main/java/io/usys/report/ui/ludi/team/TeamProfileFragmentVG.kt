@@ -11,7 +11,6 @@ import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
-import io.usys.report.firebase.fireGetRosterForSession
 import io.usys.report.firebase.fireGetTeamProfileForSession
 import io.usys.report.firebase.fireGetTryOutProfileForSession
 import io.usys.report.realm.findByField
