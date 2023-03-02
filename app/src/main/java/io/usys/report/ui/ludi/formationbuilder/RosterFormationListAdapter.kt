@@ -11,8 +11,7 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
-import io.usys.report.utils.views.loadUriIntoImgView
-import io.usys.report.utils.views.startClipDataDragAndDrop
+import io.usys.report.utils.views.*
 
 /**
  * RecyclerView Adapter
@@ -40,6 +39,7 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {
+            holder.itemView.wiggleLong()
             val tempID = itemList[position].id
             holder.startClipDataDragAndDrop(tempID ?: "Unknown")
         }

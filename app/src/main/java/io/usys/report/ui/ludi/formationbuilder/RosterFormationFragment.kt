@@ -204,6 +204,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
 
         val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { event ->
             // Show the PopupMenu when the FloatingActionButton is single-tapped
+            fabMenu.wiggleShort()
             popupMenu.show()
         }
         fabMenu.setOnTouchListener(gestureDetector)

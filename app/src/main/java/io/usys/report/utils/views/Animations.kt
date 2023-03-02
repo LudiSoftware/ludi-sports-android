@@ -9,12 +9,27 @@ import androidx.core.widget.NestedScrollView
 import io.usys.report.R
 
 
-
-fun Button.wiggle() {
-    val rotation = ObjectAnimator.ofFloat(this, "rotation", 0f, 10f, -10f, 6f, -6f, 3f, -3f, 0f)
-    rotation.duration = 1000
+fun View.wiggle() {
+    val wiggle = ObjectAnimator.ofFloat(this, View.ROTATION, -5f, 5f)
+    wiggle.duration = 50
+    wiggle.repeatCount = 5
+    wiggle.repeatMode = ObjectAnimator.REVERSE
+    wiggle.start()
+}
+fun View.wiggleShort() {
+    val rotation = ObjectAnimator.ofFloat(this, View.ROTATION, 0f, 10f, -10f, 6f, -6f, 3f, -3f, 0f)
+    rotation.duration = 500
     rotation.interpolator = AccelerateInterpolator()
-    rotation.repeatCount = ObjectAnimator.INFINITE
+    rotation.repeatCount = 1
+    rotation.repeatMode = ObjectAnimator.REVERSE
+    rotation.start()
+}
+fun View.wiggleLong() {
+    val rotation = ObjectAnimator.ofFloat(this, View.ROTATION, 0f, 10f, -10f, 6f, -6f, 3f, -3f, 0f)
+    rotation.duration = 500
+    rotation.interpolator = AccelerateInterpolator()
+    rotation.repeatCount = 8
+    rotation.repeatMode = ObjectAnimator.REVERSE
     rotation.start()
 }
 

@@ -3,6 +3,7 @@ package io.usys.report.utils
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Vibrator
 import android.provider.OpenableColumns
 import io.realm.RealmList
 import kotlinx.coroutines.*
@@ -15,7 +16,10 @@ import kotlin.reflect.KProperty1
  * Created by ChazzCoin : October 2022.
  */
 
-
+fun Context.vibrate() {
+    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    vibrator.vibrate(50)
+}
 inline fun tryCatch(block:() -> Unit) {
     try {
         block()
