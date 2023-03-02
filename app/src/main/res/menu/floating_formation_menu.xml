@@ -11,6 +11,9 @@
         android:id="@+id/menu_submit_roster"
         android:title="Submit Roster" />
     <item
+        android:id="@+id/menu_formation_sync"
+        android:title="Sync Team Data" />
+    <item
         android:id="@+id/menu_reset"
         android:title="Reset" />
 </menu>
