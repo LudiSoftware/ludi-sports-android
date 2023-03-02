@@ -14,15 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.RealmList
 import io.usys.report.R
-import io.usys.report.realm.findByField
-import io.usys.report.realm.getPlayersForRosterId
-import io.usys.report.realm.getRosterIdForTeamId
-import io.usys.report.realm.gridLayoutManager
+import io.usys.report.realm.*
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.ui.fragments.LudiStringIdFragment
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
-import io.usys.report.ui.gestures.LudiOnTouchListener
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
@@ -40,12 +37,14 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     var adapter: RosterFormationListAdapter? = null
-    var formationLayout: RelativeLayout? = null
+    var formationRelativeLayout: RelativeLayout? = null
     var rosterListRecyclerView: RecyclerView? = null
 
+    // Formation Session
+    var formationSession: FormationSession? = null
     // List of players
-    var players: RealmList<PlayerRef>? = null
-    var rosterList = mutableListOf<PlayerRef>()
+//    var players: RealmList<PlayerRef>? = null
+//    var rosterList = mutableListOf<PlayerRef>()
     // Player Icons on the field
     var formationPlayerList = mutableListOf<PlayerRef>()
     var formationViewList = mutableListOf<View>()
@@ -68,8 +67,21 @@ class RosterFormationFragment : LudiStringIdFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         this.inflater = inflater
         this.container = container
-        //Base Team Data
         teamId = realmIdArg
+        realmInstance?.safeUserId { itUserId ->
+            formationSession = realmInstance?.findByField("id", itUserId)
+            if (formationSession == null) {
+                realmInstance?.executeTransaction { itRealm ->
+                    formationSession = itRealm.createObject(FormationSession::class.java, itUserId)
+                    formationSession?.teamId = teamId
+                    formationSession?.let {
+                        itRealm.insertOrUpdate(it)
+                    }
+                }
+            }
+        }
+
+        //Base Team Data
         loadRoster()
         //Hiding the action bar
         hideLudiActionBar()
@@ -90,14 +102,36 @@ class RosterFormationFragment : LudiStringIdFragment() {
      * Base Functions
      *
      */
+
+    private fun saveRosterIdToFormationSession(rosterId: String?) {
+        if (rosterId == null) return
+        formationSession?.let { formationSession ->
+            realmInstance?.executeTransaction {
+                formationSession.rosterId = rosterId
+                it.insertOrUpdate(formationSession)
+            }
+        }
+    }
+    private fun saveRosterListToFormationSession(rosterList: RealmList<PlayerRef>?) {
+        if (rosterList == null) return
+        formationSession?.let { formationSession ->
+            realmInstance?.executeTransaction {
+                formationSession.rosterList = rosterList
+                it.insertOrUpdate(formationSession)
+            }
+        }
+    }
     private fun loadRoster(reload:Boolean=false) {
+
+        val rosterList = formationSession?.rosterList
         if (rosterList.isNullOrEmpty()) {
             teamId?.let { teamId ->
                 val rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+                saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
-                    players = realmInstance?.getPlayersForRosterId(rosterId)
-                    players?.let { players ->
-                        rosterList = players.toMutableList()
+                    realmInstance?.findRosterById(rosterId)?.let { roster ->
+                        saveRosterListToFormationSession(roster.players)
+                        setupRosterList()
                     }
                 }
             }
@@ -106,10 +140,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
         if (reload) {
             teamId?.let { teamId ->
                 val rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+                saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
-                    players = realmInstance?.getPlayersForRosterId(rosterId)
-                    players?.let { players ->
-                        rosterList = players.toMutableList()
+                    realmInstance?.findRosterById(rosterId)?.let { roster ->
+                        saveRosterListToFormationSession(roster.players)
+                        setupRosterList()
                     }
                 }
             }
@@ -117,7 +152,17 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     private fun resetFormationLayout() {
-        formationLayout?.removeAllViews()
+        realmInstance?.executeTransaction { itRealm ->
+            formationSession?.let { fs ->
+                fs.formationList?.forEach { pf ->
+                    fs.rosterList?.add(pf)
+                }
+                fs.formationList?.clear()
+                itRealm.insertOrUpdate(fs)
+            }
+        }
+        formationRelativeLayout?.removeAllViews()
+        adapter?.notifyDataSetChanged()
     }
 
     private fun getBackgroundDrawable(@RawRes drawableReference: Int): Drawable? {
@@ -129,33 +174,34 @@ class RosterFormationFragment : LudiStringIdFragment() {
      *
      */
     private fun setupDisplay() {
-
-        setupFloatingActionMenu()
         activity?.window?.let {
-            formationLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
-            createOnDragListener()
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
-
-            onItemDragged = { start, end ->
-//                val item = formationList[start]
-//                formationList.removeAt(start)
-//                formationList.add(end, item)
-            }
-
-            loadRoster(reload = false)
-            adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
-            rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
-            rosterListRecyclerView?.adapter = adapter
-
-            adapter?.let { itAdapter ->
-                val itemTouchHelperCallback = RosterFormationTouchHelperCallback(itAdapter)
-                val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-                itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
-
-            }
-
+            formationRelativeLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
+            setupFloatingActionMenu()
+            setupRosterList()
+            setupFormationList()
         }
-
+    }
+    private fun setupRosterList() {
+        loadRoster(reload = false)
+        onItemDragged = { start, end ->
+            log("onItemDragged: $start, $end")
+        }
+        formationSession?.let {
+            it.rosterList?.let { rosterList ->
+                adapter = RosterFormationListAdapter(rosterList.toMutableList(), onItemDragged!!, requireActivity())
+                rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
+                rosterListRecyclerView?.adapter = adapter
+            }
+        }
+    }
+    private fun setupFormationList() {
+        createOnDragListener()
+        adapter?.let { itAdapter ->
+            val itemTouchHelperCallback = RosterFormationTouchHelperCallback(itAdapter)
+            val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+            itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
+        }
     }
 
     /**
@@ -194,7 +240,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                     // Do something
                 }
                 R.id.menu_reset -> {
-                    // Do something
+                    resetFormationLayout()
                 }
                 else -> {
                     log("Unknown Touch")
@@ -264,7 +310,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         tempView.onGestureDetectorRosterFormation(width = 300, height = 75, playerId=playerId, onSingleTapUp = onTap)
                         // Add to FormationLayout
                         formationViewList.add(tempView)
-                        formationLayout?.addView(tempView)
+                        formationRelativeLayout?.addView(tempView)
                     }
                     true
                 }
@@ -273,7 +319,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 }
             }
         }
-        formationLayout?.setOnDragListener(dragListener)
+        formationRelativeLayout?.setOnDragListener(dragListener)
     }
 
 

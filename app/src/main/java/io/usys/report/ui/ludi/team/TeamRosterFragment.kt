@@ -40,7 +40,8 @@ class TeamRosterFragment : LudiStringIdFragment() {
         teamId = realmIdArg
 
         teamId?.let {
-            rosterId = realmInstance?.findTeamById(it)?.rosterId
+            val team = realmInstance?.findTeamById(it)
+            rosterId = team?.rosterId
             rosterId?.let { rosterId ->
                 val roster = realmInstance?.findRosterById(rosterId)
                 if (roster != null) {
@@ -54,7 +55,6 @@ class TeamRosterFragment : LudiStringIdFragment() {
 
         setupTeamRosterRealmListener()
         setupOnClickListeners()
-
         return rootView
     }
 
@@ -63,7 +63,7 @@ class TeamRosterFragment : LudiStringIdFragment() {
             // Handle changes to the Realm data here
             log("Roster listener called")
             rosterId?.let { rosterId ->
-                roster = realmInstance?.findByField<Roster>("id", rosterId)
+                roster = realmInstance?.findByField("id", rosterId)
             }
             if (roster != null) {
                 setupDisplay()

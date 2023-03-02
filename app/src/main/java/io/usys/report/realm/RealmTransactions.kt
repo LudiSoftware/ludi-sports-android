@@ -18,30 +18,6 @@ import io.usys.report.utils.main
 fun realm() : Realm {
     return Realm.getDefaultInstance()
 }
-//This works.
-inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String): T? {
-    return this.where(T::class.java).equalTo(field, value).findFirst()
-}
-fun Realm.findCoachBySafeId(): Coach? {
-    var temp: Coach? = null
-    this.safeUserId {
-        temp = this.where(Coach::class.java).equalTo("id", it).findFirst()
-    }
-    return temp
-}
-fun Realm.findTeamById(teamId:String): Team? {
-    return this.where(Team::class.java).equalTo("id", teamId).findFirst()
-}
-
-fun Realm.findRosterById(rosterId:String): Roster? {
-    return this.where(Roster::class.java).equalTo("id", rosterId).findFirst()
-}
-fun Realm.getRosterIdForTeamId(teamId:String): String? {
-    return this.findTeamById(teamId)?.rosterId
-}
-fun Realm.getPlayersForRosterId(rosterId:String): RealmList<PlayerRef>? {
-    return this.findRosterById(rosterId)?.players
-}
 
 inline fun writeToRealmOnMain(crossinline block: (Realm) -> Unit) {
     main {
