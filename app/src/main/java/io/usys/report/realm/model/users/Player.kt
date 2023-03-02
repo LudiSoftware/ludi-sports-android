@@ -15,19 +15,18 @@ open class PlayerRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
     var playerId: String? = newUUID()
-    var name: String? = "null"
+    var name: String? = "unassigned"
     var rank: Int? = 0
     var number: Int = 0
     var tryoutTag: String? = "unassigned"
     var position: String? = "unassigned"
-    var foot: String? = "right"
-    var dob: String? = "null"
-    var imgUrl: String? = "null"
+    var foot: String? = "unassigned"
+    var dob: String? = "unassigned"
+    var imgUrl: String? = "unassigned"
     var pointX: Int? = 0
     var pointY: Int? = 0
-    //todo:
-//    var color: String? = "unassigned"
-//    var listPosition: Int? = 0
+    var color: String? = "unassigned"
+    var listPosition: Int? = 0
 
 }
 
@@ -39,17 +38,16 @@ open class Player : RealmObject() {
     var team: TeamRef? = TeamRef()
     var rank: Int = 0
     var number: Int = 0
-    var tryoutTag: String? = null
+    var tryoutTag: String? = "unassigned"
     var notes: RealmList<Note>? = null
     var age: Int = 0
-    var dob: String? = null
-    var position: String? = null
-    var foot: String? = null
+    var dob: String? = "unassigned"
+    var position: String? = "unassigned"
+    var foot: String? = "unassigned"
     var contacts: RealmList<Contact>? = null
-    var evaluations: RealmList<PlayerEvaluationRef>? = null
     //Extras
-    var playerName: String? = null
-    var teamName: String? = null
+    var playerName: String? = "unassigned"
+    var teamName: String? = "unassigned"
     var organizations: RealmList<OrganizationRef>? = null
     var teams: RealmList<TeamRef>? = null
     var hasReview: Boolean = false
@@ -57,27 +55,23 @@ open class Player : RealmObject() {
     // base
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
-    var name: String? = null
-    var firstName: String? = null
-    var lastName: String? = null
-    var type: String? = null
-    var subType: String? = null
-    var details: String? = null
+    var name: String? = "unassigned"
+    var firstName: String? = "unassigned"
+    var lastName: String? = "unassigned"
+    var type: String? = "unassigned"
+    var subType: String? = "unassigned"
+    var details: String? = "unassigned"
     var isFree: Boolean = false
-    var status: String? = null
-    var mode: String? = null
-    var imgUrl: String? = null
-    var sport: String? = null
+    var status: String? = "unassigned"
+    var mode: String? = "unassigned"
+    var imgUrl: String? = "unassigned"
+    var sport: String? = "unassigned"
 
 }
 
 
-inline fun getPlayerRefsByTeamId(id:String, block: (Roster) -> Unit) {
-    val team = getTeamById(id)
-    team?.roster?.let { block(it) }
-}
+//inline fun getPlayerRefsByTeamId(id:String, block: (Roster) -> Unit) {
+//    val team = getTeamById(id)
+//    team?.rosterId?.let { block(it) }
+//}
 
-fun getPlayerRefsByTeamId(teamId:String, playerId:String): PlayerRef? {
-    val team = getTeamById(teamId)
-    return team?.roster?.players?.find { it.id == playerId }
-}

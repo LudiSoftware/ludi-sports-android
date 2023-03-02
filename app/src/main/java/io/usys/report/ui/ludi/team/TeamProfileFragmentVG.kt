@@ -14,13 +14,13 @@ import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.firebase.fireGetTeamProfileForSession
 import io.usys.report.firebase.fireGetTryOutProfileForSession
 import io.usys.report.realm.findByField
+import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.chat.ChatFragment
 import io.usys.report.utils.*
-import io.usys.report.utils.views.getDrawable
 import io.usys.report.utils.views.loadUriIntoImgView
 
 /**
@@ -41,6 +41,8 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     private var teamRef: TeamRef? = null
     private var team: Team? = null
     private var tryout: TryOut? = null
+    private var tryoutRoster: Roster? = null
+    private var officialRoster: Roster? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
@@ -92,10 +94,30 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
             val realmTeam = realmInstance?.findByField<Team>("id", teamId!!)
             if (realmTeam != null) {
                 team = realmTeam
+                team?.rosterId?.let {
+                    setupRosterRealmListener(it)
+                }
             }
             setupHeader()
         }
         realmInstance?.where(Team::class.java)?.findAllAsync()?.addChangeListener(teamListener)
+    }
+
+    private fun setupRosterRealmListener(rosterId:String) {
+        val rosterListener = RealmChangeListener<RealmResults<Roster>> {
+            // Handle changes to the Realm data here
+            log("Roster listener called")
+            val realmRoster = realmInstance?.findByField<Roster>("id", rosterId)
+            if (realmRoster != null) {
+                if (!realmRoster.isLocked && team?.mode == YsrMode.TRYOUTS) {
+                    tryoutRoster = realmRoster
+                } else {
+                    officialRoster = realmRoster
+                }
+            }
+
+        }
+        realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
     }
 
     private fun setupTryOutRealmListener() {

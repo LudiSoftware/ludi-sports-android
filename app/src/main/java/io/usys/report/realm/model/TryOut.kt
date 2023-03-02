@@ -22,21 +22,18 @@ open class TryOut : RealmObject(), Serializable {
     var headCoachId: String? = null
     var headCoachName: String? = null
     //TODO: ADD FIELD ABILITY!
+    var locoationId: String? = null
     var fieldNumber: String? = null
     //TODO: Create a Form Object to hold urls for images uploaded and type of form.
     var formUrls: RealmList<String>? = null
-    // Notes (1)
-    var notes: RealmList<Note>? = null
     // Master Roster for Tryouts (1)
-    var tryoutRoster: Roster? = null
-    // Each Coach gets a their own List of Rosters. (1)
-    var coachRosters: RealmList<CoachRosters>? = null
+    var rosterId: String? = null
     // References (3)
-    var coaches: RealmList<CoachRef>? = null
-    var managers: RealmList<ParentRef>? = null
-    var organizations: RealmList<OrganizationRef>? = null
+    var coachIds: RealmList<String>? = null
+    var managerIds: RealmList<String>? = null
+    var organizationIds: RealmList<String>? = null
     // Schedule (1)
-    var schedule: Schedule? = null
+//    var schedule: Schedule? = null
     // Team Attributes (3)
     var year: String? = null
     var ageGroup: String? = null

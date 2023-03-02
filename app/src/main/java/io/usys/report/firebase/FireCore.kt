@@ -29,6 +29,8 @@ enum class DatabasePaths(val path: String) {
     NOTES("notes"),
     CHAT("chat"),
     EVALUATIONS("evaluations"),
+    ROSTERS("rosters"),
+    TRYOUTS("tryouts"),
     REVIEW_TEMPLATES("review_templates")
 }
 
@@ -51,6 +53,7 @@ class FireTypes {
         const val ORGANIZATIONS: String = "organizations"
         const val TEAMS: String = "teams"
         const val TRYOUTS: String = "tryouts"
+        const val ROSTERS: String = "rosters"
         //Reviews
         const val REVIEWS: String = "reviews"
         const val REVIEW_TEMPLATES: String = "review_templates"

@@ -18,16 +18,18 @@ import java.io.Serializable
 open class TeamRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
-    var teamId: String? = null
-    var name: String? = null
+    var teamId: String? = "null"
+    var tryoutId: String? = "null"
+    var rosterId: String? = "null"
+    var name: String? = "null"
     var headCoachId: String? = "null"
     var headCoachName: String? = "null"
     var year: String? = "null"
     var ageGroup: String? = "null"
     var gender: String? = "null"
-    var sport: String? = null
-    var status: String? = null
-    var imgUrl: String? = null
+    var sport: String? = "null"
+    var status: String? = "null"
+    var imgUrl: String? = "null"
 }
 
 open class Team : RealmObject(), Serializable {
@@ -37,18 +39,18 @@ open class Team : RealmObject(), Serializable {
     var headCoachId: String? = "null"
     var headCoachName: String? = "null"
     var coaches: RealmList<CoachRef>? = RealmList()
-    var managers: RealmList<ParentRef>? = RealmList()
-    var organizations: RealmList<OrganizationRef>? = RealmList()
-    var roster: Roster? = null
-    var evaluations: RealmList<PlayerEvaluationRef>? = null
+//    var managers: RealmList<ParentRef>? = RealmList()
+//    var organizations: RealmList<OrganizationRef>? = RealmList()
+    var rosterId: String? = "null"
+    var tryoutId: String? = "null"
     var season: String? = "null"
+    var locationIds: RealmList<String>? = null
 //    var schedule: Schedule? = null
     var year: String? = "null"
     var ageGroup: String? = "null"
     var isActive: Boolean = false
     var gender: String? = "null"
     var hasReview: Boolean = false
-    var reviews: ReviewBundle? = ReviewBundle()
     // base
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
@@ -63,37 +65,23 @@ open class Team : RealmObject(), Serializable {
     var sport: String? = "null"
     var chatEnabled: Boolean = false
 
-    fun saveToRealm() {
-        writeToRealm { realm ->
-            realm.insertOrUpdate(this)
-        }
-    }
 
-    fun updateAndSave(newTeam: Team?) {
-        if (newTeam.isNullOrEmpty()) return
-//        if (this.isIdenticalCoach(newUser!!)) return
-        writeToRealm {
-            this.apply {
-                this.id = newTeam?.id ?: newUUID()
-                this.name = newTeam?.name
-                this.organizations = newTeam?.organizations
-                this.roster = newTeam?.roster
-                this.coaches = newTeam?.coaches
-            }
-        }
-        this.saveToRealm()
+}
+fun Team?.getRosterNoThread(): Roster? {
+    if (this.isNullOrEmpty()) return null
+    var roster: Roster? = null
+    this?.rosterId?.let { rosterId ->
+        roster = realm().where(Roster::class.java).equalTo("id", rosterId).findFirst()
     }
-
+    return roster
 }
 
 fun Team?.getPlayerFromRosterNoThread(playerId: String): PlayerRef? {
     if (this.isNullOrEmpty()) return null
     var player: PlayerRef? = null
-    this?.roster?.players?.forEach { itPlayerRef ->
-        if (itPlayerRef.id == playerId) {
-            player = itPlayerRef
-            return@forEach
-        }
+    val roster: Roster? = getRosterNoThread()
+    roster?.getPlayer(playerId)?.let {
+        player = it
     }
     if (player == null) {
         player = realm().where(PlayerRef::class.java).equalTo("id", playerId).findFirst()

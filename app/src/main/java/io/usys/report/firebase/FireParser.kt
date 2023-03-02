@@ -22,7 +22,9 @@ fun DataSnapshot.toHashMap(): HashMap<String, Any> {
                     val list = it.value as ArrayList<*>
                     val realmList = RealmList<Any>()
                     list.forEach { item ->
-                        realmList.add(item)
+                        if (item != null) {
+                            realmList.add(item)
+                        }
                     }
                     newValue = realmList
                 }

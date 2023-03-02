@@ -5,10 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.firebase.FireTypes
-import io.usys.report.realm.loadInRealmListGridArrangable
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.getPlayerRefsByTeamId
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -18,9 +15,9 @@ import io.usys.report.utils.views.loadUriIntoImgView
 
 fun RecyclerView?.setupPlayerListFromSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
-    getPlayerRefsByTeamId(id) {
-        rv?.loadInRealmListGridArrangable(it.players, FireTypes.PLAYERS, onClickReturnViewRealmObject)
-    }
+//    getPlayerRefsByTeamId(id) {
+//        rv?.loadInRealmListGridArrangable(it.players, FireTypes.PLAYERS, onClickReturnViewRealmObject)
+//    }
 }
 
 class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

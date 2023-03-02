@@ -15,12 +15,14 @@ import java.io.Serializable
 open class LocationRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String = newUUID()
-    var locationId: String? = ""
-    var name: String? = null
+    var locationId: String? = "unassigned"
+    var fieldName: String? = "unassigned"
+    var name: String? = "null"
 }
 
 open class Location : RealmObject(), Serializable {
 
+    //(11) 27 + 12 = 39
     @PrimaryKey
     var id: String = newUUID()
     var sports: RealmList<String>? = null
@@ -29,16 +31,31 @@ open class Location : RealmObject(), Serializable {
     var imgUris: RealmList<String>? = null
     var parkingInfo: String? = null // "Park on the third spot to the right"
     var estPeople: String? = null //Amount of expected people
-    var locationManagerRefs: RealmList<Coach>? = null //Creators Display Name
+    var managerIds: RealmList<String>? = null //Creators Display Name
     var organizationRefs: RealmList<OrganizationRef>? = null
     var hasReview: Boolean = false
     var reviewBundle: ReviewBundle? = null
-    // base
+    //Google (16)
+    var googlePlaceBusinessStatus: String? = null
+    var googlePlaceLat: String? = null
+    var googlePlaceLng: String? = null
+    var googlePlaceIcon: String? = null
+    var iconBackgroundColor: String? = null
+    var iconMaskBaseUri: String? = null
+    var googlePlaceName: String? = null
+    var googlePlacePhotos: RealmList<String>? = null
+    var googlePlaceId: String? = null
+    var googlePlaceRating: String? = null
+    var googlePlaceScope: String? = null
+    var googlePlaceTypes: RealmList<String>? = null
+    var googlePlaceUserRatingsTotal: Int? = 0
+    var googlePlaceAddress: String? = null
+    var googlePlaceCsz: String? = null
+    var googlePlaceCategory: String? = null
+    // base (12)
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
     var name: String? = null
-    var firstName: String? = null
-    var lastName: String? = null
     var type: String? = null
     var subType: String? = null
     var details: String? = null
@@ -47,6 +64,7 @@ open class Location : RealmObject(), Serializable {
     var mode: String? = null
     var imgUrl: String? = null
     var sport: String? = null
+    var chatEnabled: Boolean = false
 
 }
 

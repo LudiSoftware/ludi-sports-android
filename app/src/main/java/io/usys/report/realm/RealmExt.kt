@@ -91,14 +91,7 @@ inline fun sessionTeams(block: (RealmList<Team>) -> Unit) {
     }
 }
 
-inline fun sessionTeamRoster(teamId: String, block: (Roster) -> Unit) {
-    Session.session?.teams?.let { itList ->
-        val team = itList.find { itTeam -> itTeam.id == teamId }
-        team?.roster?.let { itRoster ->
-            block(itRoster)
-        }
-    }
-}
+
 
 inline fun sessionOrganizationList(block: (RealmList<Organization>) -> Unit) {
     Session.session?.organizations?.let { block(it) }

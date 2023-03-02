@@ -89,8 +89,8 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     private fun reloadRoster() {
-        val roster = team?.roster
-        roster?.players?.forEach { rosterList.add(it) }
+        val roster = team?.rosterId
+//        roster?.players?.forEach { rosterList.add(it) }
     }
 
     private fun resetFormationLayout() {
@@ -193,18 +193,6 @@ class RosterFormationFragment : LudiStringIdFragment() {
     private fun createOnDragListener() {
         dragListener = View.OnDragListener { v, event ->
             when (event.action) {
-                DragEvent.ACTION_DRAG_STARTED -> {
-                    // Do nothing
-                    true
-                }
-                DragEvent.ACTION_DRAG_ENTERED -> {
-                    v.background = getDrawable(requireContext(), R.drawable.soccer_field)
-                    true
-                }
-                DragEvent.ACTION_DRAG_EXITED -> {
-                    v.background = getDrawable(requireContext(), R.drawable.soccer_field)
-                    true
-                }
                 DragEvent.ACTION_DROP -> {
                     /**
                      * TODO:
@@ -228,6 +216,12 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
                         layoutParams.width = 300
                         layoutParams.height = 75
+                        if (!tempPlayer.pointX.isNullOrEmpty() || tempPlayer.pointX != 0) {
+                            layoutParams.leftMargin = tempPlayer.pointX!!
+                        }
+                        if (!tempPlayer.pointY.isNullOrEmpty() || tempPlayer.pointY != 0) {
+                            layoutParams.topMargin = tempPlayer.pointY!!
+                        }
 
                         val tempView = inflateView(requireContext(), R.layout.card_player_tiny)
                         val playerName = tempView.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
@@ -244,15 +238,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
                             popPlayerProfileDialog(requireActivity(), playerId).show()
                         }
                         // Gestures
-                        tempView.onGestureDetectorRosterFormation(width = 300, height = 75, onSingleTapUp = onTap)
+                        tempView.onGestureDetectorRosterFormation(width = 300, height = 75, playerId=playerId, onSingleTapUp = onTap)
                         // Add to FormationLayout
                         formationViewList.add(tempView)
                         formationLayout?.addView(tempView)
                     }
-                    true
-                }
-                DragEvent.ACTION_DRAG_ENDED -> {
-                    v.background = getDrawable(requireContext(), R.drawable.soccer_field)
                     true
                 }
                 else -> false

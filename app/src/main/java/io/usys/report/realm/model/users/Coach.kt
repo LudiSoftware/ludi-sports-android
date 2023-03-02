@@ -33,12 +33,11 @@ open class Coach : RealmObject() {
     var id: String = "unassigned"
     var userId: String? = "unassigned"
     var name: String = "unassigned"
-//    var organizations: RealmList<OrganizationRef>? = RealmList()
+    var title: String? = null
+//    var organizationIds: RealmList<String>? = null
     var teams: RealmList<TeamRef>? = RealmList()
-//    var evaluations: RealmList<PlayerEvaluationRef>? = RealmList()
     var hasReview: Boolean = false
-//    var reviewBundle: ReviewBundle? = null
-
+    var reviewIds: RealmList<String>? = null
     // base (12)
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
