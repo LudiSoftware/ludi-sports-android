@@ -117,7 +117,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
             log("Roster listener called")
             rosterId?.let { rosterId ->
                 itResults.find { it.id == rosterId }?.let { roster ->
-                    saveRosterToFormationSession(roster)
+                    safeUpdatePlayerList(roster)
                     setupRosterList()
                 }
             }
@@ -134,13 +134,21 @@ class RosterFormationFragment : LudiStringIdFragment() {
             }
         }
     }
-    private fun saveRosterToFormationSession(roster: Roster?) {
+
+    private fun safeUpdatePlayerList(roster: Roster?) {
         if (roster == null) return
-        formationSession?.let { formationSession ->
-            realmInstance?.executeTransaction {
-                formationSession.roster = roster
-                formationSession.playerList = roster.players
-                it.insertOrUpdate(formationSession)
+        formationSession?.let { fs ->
+            realmInstance?.executeTransaction { itRealm ->
+                fs.roster = roster
+                roster.players?.forEach { newPlayer ->
+                    if (!fs.playerList!!.contains(newPlayer)) {
+                        fs.playerList?.add(newPlayer)
+                    } else {
+                        //todo: check if the player differs. Update accordingly.
+                        log("Testing")
+                    }
+                }
+                itRealm.insertOrUpdate(fs)
             }
         }
     }
@@ -154,7 +162,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
                     realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        saveRosterToFormationSession(roster)
+                        safeUpdatePlayerList(roster)
                         setupRosterList()
                     }
                 }
@@ -167,7 +175,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
                     realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        saveRosterToFormationSession(roster)
+                        safeUpdatePlayerList(roster)
                         setupRosterList()
                     }
                 }
@@ -255,6 +263,19 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 }
                 R.id.menu_reset -> {
                     resetFormationLayout()
+                }
+                R.id.menu_formation_team_color_toggle -> {
+                    realmInstance?.executeTransaction {
+                        formationSession?.let {
+                            if (it.teamColorsAreOn) {
+                                menuItem.title = "Turn ON Team Colors"
+                                it.teamColorsAreOn = false
+                            } else {
+                                menuItem.title = "Turn OFF Team Colors"
+                                it.teamColorsAreOn = true
+                            }
+                        }
+                    }
                 }
                 else -> {
                     log("Unknown Touch")

@@ -19,6 +19,7 @@ open class FormationSession : RealmObject(), Serializable {
     var teamId: String? = "null"
     var rosterId: String? = "null"
     var roster: Roster? = null
+    var teamColorsAreOn: Boolean = true
     var currentLayout: Int = 0
     var layoutList: RealmList<Int>? = RealmList()
     var formationList: RealmList<PlayerRef>? = RealmList()

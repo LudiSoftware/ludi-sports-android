@@ -14,6 +14,9 @@
         android:id="@+id/menu_formation_sync"
         android:title="Sync Team Data" />
     <item
+        android:id="@+id/menu_formation_team_color_toggle"
+        android:title="Turn OFF Team Colors" />
+    <item
         android:id="@+id/menu_reset"
         android:title="Reset" />
 </menu>
