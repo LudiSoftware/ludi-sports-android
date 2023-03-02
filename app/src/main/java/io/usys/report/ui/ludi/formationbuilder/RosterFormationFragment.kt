@@ -189,7 +189,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
         formationSession?.let {
             it.rosterList?.let { rosterList ->
-                adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
+                adapter = RosterFormationListAdapter(realmInstance, requireActivity())
                 rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
                 rosterListRecyclerView?.adapter = adapter
             }
