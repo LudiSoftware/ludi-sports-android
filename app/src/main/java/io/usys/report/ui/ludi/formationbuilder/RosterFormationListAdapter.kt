@@ -49,11 +49,12 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
                 player.imgUrl?.let { itImgUrl ->
                     holder.imageView.loadUriIntoImgView(itImgUrl)
                 }
-                if (player.color == "red") {
-                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedRed))
-                } else {
-                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedBlue))
-                }
+                holder.itemView.setPlayerTeamBackgroundColor(player.color)
+//                if (player.color == "red") {
+//                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedRed))
+//                } else {
+//                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedBlue))
+//                }
 
             }
         }
@@ -88,7 +89,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
             notifyItemRemoved(itIndex)
         }
     }
-    fun addPlayerFromField(playerId: String) {
+    fun movePlayerToDeck(playerId: String) {
         onDeckPlayerIdList.add(playerId)
         onFieldPlayerIdList.remove(playerId)
         notifyItemInserted(onDeckPlayerIdList.size - 1)

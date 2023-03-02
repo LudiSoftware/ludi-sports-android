@@ -1,21 +1,23 @@
 package io.usys.report.ui.ludi.formationbuilder
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RawRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.firebase.fireGetRoster
 import io.usys.report.realm.*
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
@@ -43,14 +45,17 @@ class RosterFormationFragment : LudiStringIdFragment() {
     var rosterListRecyclerView: RecyclerView? = null
 
     // Formation Session
+    var floatingMenuButton: FloatingActionButton? = null
+    var floatingPopMenu: PopupMenu? = null
     var formationSession: FormationSession? = null
-    // List of players
-//    var players: RealmList<PlayerRef>? = null
-//    var rosterList = mutableListOf<PlayerRef>()
     // Player Icons on the field
     var formationPlayerList = mutableListOf<PlayerRef>()
     var formationViewList = mutableListOf<View>()
     var formationLayouts = mutableListOf(R.drawable.soccer_field)
+    // Player Formation
+    var playerPopMenuView: PopupMenu? = null
+    var onTap: (() -> Unit)? = null
+    var onLongPress: (() -> Unit)? = null
 
     var dragListener: View.OnDragListener? = null
     var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
@@ -171,17 +176,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     private fun resetFormationLayout() {
-        realmInstance?.executeTransaction { itRealm ->
-            formationSession?.let { fs ->
-                fs.formationList?.forEach { pf ->
-                    fs.playerList?.add(pf)
-                }
-                fs.formationList?.clear()
-                itRealm.insertOrUpdate(fs)
-            }
-        }
-        formationRelativeLayout?.removeAllViews()
-        adapter?.notifyDataSetChanged()
+        //todo: put this in the adapter and call it there.
     }
 
     private fun getBackgroundDrawable(@RawRes drawableReference: Int): Drawable? {
@@ -242,8 +237,8 @@ class RosterFormationFragment : LudiStringIdFragment() {
      *
      */
     private fun setupFloatingActionMenu() {
-        val fabMenu = rootView.findViewById<FloatingActionButton>(R.id.tryoutFormationFloatingActionButton)
-        val popupMenu = fabMenu.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem ->
+        floatingMenuButton = rootView.findViewById<FloatingActionButton>(R.id.tryoutFormationFloatingActionButton)
+        floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, parentView ->
             // Handle menu item click events
             // todo: events to handle:
             //  - save formation -> order and (x,y) coordinates
@@ -269,10 +264,10 @@ class RosterFormationFragment : LudiStringIdFragment() {
 
         val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { event ->
             // Show the PopupMenu when the FloatingActionButton is single-tapped
-            fabMenu.wiggleShort()
-            popupMenu.show()
+            floatingMenuButton?.wiggleShort()
+            floatingPopMenu?.show()
         }
-        fabMenu.setOnTouchListener(gestureDetector)
+        floatingMenuButton?.setOnTouchListener(gestureDetector)
     }
 
     /**
@@ -282,88 +277,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
         dragListener = View.OnDragListener { v, event ->
             when (event.action) {
                 DragEvent.ACTION_DROP -> {
-                    /**
-                     * TODO:
-                     *      - add long press listener for a player specific menu
-                     *          - menu options: remove player.
-                     *
-                     *     - show:
-                     *          - player name, tryout tag, position number.
-                     */
                     val clipData = event.clipData
                     if (clipData != null && clipData.itemCount > 0) {
                         val playerId = clipData.getItemAt(0).text.toString()
                         adapter?.movePlayerToField(playerId)
-                        var tempPlayer = PlayerRef()
-                        realmInstance?.findPlayerRefById(playerId)?.let {
-                            tempPlayer = it
-                            formationPlayerList.add(it)
-                        }
-                        val layoutParams = getRelativeLayoutParams()
-                        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-                        layoutParams.width = 300
-                        layoutParams.height = 75
-                        if (!tempPlayer.pointX.isNullOrEmpty() || tempPlayer.pointX != 0) {
-                            layoutParams.leftMargin = tempPlayer.pointX!!
-                        }
-                        if (!tempPlayer.pointY.isNullOrEmpty() || tempPlayer.pointY != 0) {
-                            layoutParams.topMargin = tempPlayer.pointY!!
-                        }
-
-                        val tempView = inflateView(requireContext(), R.layout.card_player_tiny)
-                        val playerName = tempView.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
-                        val playerIcon = tempView.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
-                        tempView.layoutParams = layoutParams
-                        tempView.tag = tempPlayer.id
-                        // Bind Data
-                        playerName.text = tempPlayer.name
-                        tempPlayer.imgUrl?.let {
-                            playerIcon.loadUriIntoImgView(it)
-                        }
-                        // PopMenu
-                        val playerPopMenu = tempView.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem ->
-                            // Handle menu item click events
-                            // todo: events to handle:
-                            //  - save formation -> order and (x,y) coordinates
-                            //  - if in tryout mode, submit formation as roster.
-                            //  - Change background image.
-                            //  - Reset Formation.
-                            when (menuItem.itemId) {
-                                R.id.menu_player_change_teams -> {
-                                    // Do something
-                                    log("menu_player_change_teams")
-                                }
-                                R.id.menu_player_add_note -> {
-                                    // Do something
-                                    log("menu_player_add_note")
-                                }
-                                else -> {
-                                    log("Unknown Touch")
-                                }
-                            }
-                        }
-                        //On Click
-                        val onTap: () -> Unit = {
-                            popPlayerProfileDialog(requireActivity(), playerId).show()
-                        }
-                        val onLongPress: () -> Unit = {
-                            log("Double Tap")
-                            tempView.wiggleOnce()
-                            playerPopMenu.show()
-                        }
-
-                        // Gestures
-                        tempView.onGestureDetectorRosterFormation(
-                            width = 300,
-                            height = 75,
-                            playerId=playerId,
-                            onSingleTapUp = onTap,
-                            onLongPress = onLongPress
-                        )
-
-                        // Add to FormationLayout
-                        formationViewList.add(tempView)
-                        formationRelativeLayout?.addView(tempView)
+                        addPlayerToFormation(playerId)
                     }
                     true
                 }
@@ -375,6 +293,136 @@ class RosterFormationFragment : LudiStringIdFragment() {
         formationRelativeLayout?.setOnDragListener(dragListener)
     }
 
+    // 1 Master
+    private fun addPlayerToFormation(playerId: String) {
+        val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_tiny)
+        val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
+        val playerIcon = playerRefViewItem.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
 
+        //Prepare PlayerView from Drag/Drop
+        safePlayerInPlayerList(playerId) { newPlayerRef ->
+            formationPlayerList.add(newPlayerRef)
+            val layoutParams = preparePlayerLayoutParamsForFormation(newPlayerRef)
+            playerRefViewItem.layoutParams = layoutParams
+            playerRefViewItem.tag = newPlayerRef.id
+            // Bind Data
+            playerName.text = newPlayerRef.name
+            newPlayerRef.imgUrl?.let {
+                playerIcon.loadUriIntoImgView(it)
+            }
+            newPlayerRef.color?.let {
+                playerRefViewItem.setPlayerTeamBackgroundColor(it)
+            }
+            playerRefViewItem.setupOnTapListeners(playerId)
+            playerRefViewItem.setupPlayerPopupMenu()
+            // Gestures
+            playerRefViewItem.onGestureDetectorRosterFormation(
+                width = 300,
+                height = 75,
+                playerId=playerId,
+                onSingleTapUp = onTap,
+                onLongPress = onLongPress
+            )
+            // Add to FormationLayout
+            formationViewList.add(playerRefViewItem)
+            formationRelativeLayout?.addView(playerRefViewItem)
+        }
+
+    }
+
+    private inline fun findPlayerViewInFormation(playerId: String, block: (View) -> Unit) {
+        formationViewList.forEach { playerView ->
+            if (playerView.tag == playerId) {
+                block(playerView)
+            }
+        }
+    }
+
+    private inline fun safePlayerInPlayerList(playerId: String, block: (PlayerRef) -> Unit) {
+        formationSession?.let {
+            it.playerList?.let { playerList ->
+                playerList.forEach { playerRef ->
+                    if (playerRef.id == playerId) {
+                        block(playerRef)
+                    }
+                }
+            }
+        }
+    }
+
+    // 1A
+    private fun preparePlayerLayoutParamsForFormation(playerRef: PlayerRef): RelativeLayout.LayoutParams {
+        val layoutParams = getRelativeLayoutParams()
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+        layoutParams.width = 300
+        layoutParams.height = 75
+        if (!playerRef.pointX.isNullOrEmpty() || playerRef.pointX != 0) {
+            layoutParams.leftMargin = playerRef.pointX!!
+        }
+        if (!playerRef.pointY.isNullOrEmpty() || playerRef.pointY != 0) {
+            layoutParams.topMargin = playerRef.pointY!!
+        }
+        return layoutParams
+    }
+
+
+    private fun View?.setupPlayerPopupMenu() {
+        playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
+            when (menuItem.itemId) {
+                R.id.menu_player_change_teams -> {
+                    // Do something
+                    val playerId = parentView.tag
+                    safePlayerInPlayerList(playerId as String) { playerRef ->
+                        when (playerRef.color) {
+                            "red" -> {
+                                realmInstance?.executeTransaction {
+                                    playerRef.color = "blue"
+                                }
+                            }
+                            "blue" -> {
+                                realmInstance?.executeTransaction {
+                                    playerRef.color = "red"
+                                }
+                            }
+                        }
+                        findPlayerViewInFormation(playerId) { playerView ->
+                            playerView.setPlayerTeamBackgroundColor(playerRef.color)
+                        }
+                    }
+
+                    log("menu_player_change_teams")
+                }
+                R.id.menu_player_add_note -> {
+                    // Do something
+                    log("menu_player_add_note")
+                }
+                else -> {
+                    log("Unknown Touch")
+                }
+            }
+        }
+    }
+    private fun View?.setupOnTapListeners(playerId: String) {
+        onTap = {
+            popPlayerProfileDialog(requireActivity(), playerId).show()
+        }
+        onLongPress = {
+            log("Double Tap")
+            this?.wiggleOnce()
+            playerPopMenuView?.show()
+        }
+    }
 }
 
+fun View.setPlayerTeamBackgroundColor(colorName: String?) {
+    val color = when (colorName) {
+        "red" -> ContextCompat.getColor(this.context, R.color.ysrFadedRed)
+        "blue" -> ContextCompat.getColor(this.context, R.color.ysrFadedBlue)
+        else -> Color.TRANSPARENT
+    }
+    setBackgroundColor(color)
+}
+
+fun String.parseColor(): Int {
+    return Color.parseColor(this)
+}

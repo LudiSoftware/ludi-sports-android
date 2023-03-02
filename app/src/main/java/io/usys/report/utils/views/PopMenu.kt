@@ -23,11 +23,11 @@ fun View.attachAndInflatePopMenu(layout: Int): PopupMenu {
     return popmenu
 }
 
-inline fun View.attachAndInflatePopMenu(layout: Int, crossinline block: (MenuItem) -> Unit): PopupMenu {
+inline fun View.attachAndInflatePopMenu(layout: Int, crossinline block: (MenuItem, View) -> Unit): PopupMenu {
     val popmenu = PopupMenu(this.context, this)
     popmenu.inflate(layout)
     popmenu.setOnMenuItemClickListener {
-        block(it)
+        block(it, this)
         false
     }
     return popmenu
