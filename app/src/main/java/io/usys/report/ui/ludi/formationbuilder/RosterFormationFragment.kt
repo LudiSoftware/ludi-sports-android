@@ -189,7 +189,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
         formationSession?.let {
             it.rosterList?.let { rosterList ->
-                adapter = RosterFormationListAdapter(rosterList.toMutableList(), onItemDragged!!, requireActivity())
+                adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
                 rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
                 rosterListRecyclerView?.adapter = adapter
             }
@@ -276,11 +276,10 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         val playerId = clipData.getItemAt(0).text.toString()
                         adapter?.removePlayer(playerId)
                         var tempPlayer = PlayerRef()
-                        team?.getPlayerFromRosterNoThread(playerId)?.let {
+                        realmInstance?.findPlayerRefById(playerId)?.let {
                             tempPlayer = it
                             formationPlayerList.add(it)
                         }
-
                         val layoutParams = getRelativeLayoutParams()
                         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
                         layoutParams.width = 300

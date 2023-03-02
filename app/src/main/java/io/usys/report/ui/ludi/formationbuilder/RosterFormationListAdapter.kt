@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.realm
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
@@ -16,7 +18,7 @@ import io.usys.report.utils.views.*
 /**
  * RecyclerView Adapter
  */
-class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
+class RosterFormationListAdapter(private val itemList: RealmList<PlayerRef>,
                                  private val onItemMoved: (start: Int, end: Int) -> Unit,
                                  private val activity: Activity
 )
@@ -28,9 +30,9 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
     }
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
-        val playerId = itemList[position].id ?: "unknown"
-        holder.textView.text = itemList[position].name
-        itemList[position].imgUrl?.let {
+        val playerId = itemList[position]?.id ?: "unknown"
+        holder.textView.text = itemList[position]?.name
+        itemList[position]?.imgUrl?.let {
             holder.imageView.loadUriIntoImgView(it)
         }
         // On Click
@@ -40,23 +42,27 @@ class RosterFormationListAdapter(private val itemList: MutableList<PlayerRef>,
         // On Long Click
         holder.itemView.setOnLongClickListener {
             holder.itemView.wiggleLong()
-            val tempID = itemList[position].id
+            val tempID = itemList[position]?.id
             holder.startClipDataDragAndDrop(tempID ?: "Unknown")
         }
     }
 
     fun removePlayer(playerId: String) {
-        val player = itemList.find { it.id == playerId }
-        player?.let {
-            val index = itemList.indexOf(it)
-            itemList.removeAt(index)
-            notifyItemRemoved(index)
-            this.notifyDataSetChanged()
+        realm().executeTransaction {
+            val player = itemList.find { it.id == playerId }
+            player?.let {
+                val index = itemList.indexOf(it)
+                itemList.removeAt(index)
+                notifyItemRemoved(index)
+                this.notifyDataSetChanged()
+            }
         }
     }
 
     fun addPlayer(player: PlayerRef) {
-        itemList.add(player)
+        realm().executeTransaction {
+            itemList.add(player)
+        }
         notifyItemInserted(itemList.size - 1)
     }
 
