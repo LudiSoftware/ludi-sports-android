@@ -11,6 +11,7 @@ import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
+import io.usys.report.firebase.fireGetRosterForSession
 import io.usys.report.firebase.fireGetTeamProfileForSession
 import io.usys.report.firebase.fireGetTryOutProfileForSession
 import io.usys.report.realm.findByField
@@ -94,31 +95,32 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
             val realmTeam = realmInstance?.findByField<Team>("id", teamId!!)
             if (realmTeam != null) {
                 team = realmTeam
-                team?.rosterId?.let {
-                    setupRosterRealmListener(it)
-                }
+//                team?.rosterId?.let {
+//                    setupRosterRealmListener(it)
+//                    fireGetRosterForSession(it)
+//                }
             }
             setupHeader()
         }
         realmInstance?.where(Team::class.java)?.findAllAsync()?.addChangeListener(teamListener)
     }
 
-    private fun setupRosterRealmListener(rosterId:String) {
-        val rosterListener = RealmChangeListener<RealmResults<Roster>> {
-            // Handle changes to the Realm data here
-            log("Roster listener called")
-            val realmRoster = realmInstance?.findByField<Roster>("id", rosterId)
-            if (realmRoster != null) {
-                if (!realmRoster.isLocked && team?.mode == YsrMode.TRYOUTS) {
-                    tryoutRoster = realmRoster
-                } else {
-                    officialRoster = realmRoster
-                }
-            }
-
-        }
-        realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
-    }
+//    private fun setupRosterRealmListener(rosterId:String) {
+//        val rosterListener = RealmChangeListener<RealmResults<Roster>> {
+//            // Handle changes to the Realm data here
+//            log("Roster listener called")
+//            val realmRoster = realmInstance?.findByField<Roster>("id", rosterId)
+//            if (realmRoster != null) {
+//                if (!realmRoster.isLocked && team?.mode == YsrMode.TRYOUTS) {
+//                    tryoutRoster = realmRoster
+//                } else {
+//                    officialRoster = realmRoster
+//                }
+//            }
+//
+//        }
+//        realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
+//    }
 
     private fun setupTryOutRealmListener() {
         val tryoutListener = RealmChangeListener<RealmResults<TryOut>> {

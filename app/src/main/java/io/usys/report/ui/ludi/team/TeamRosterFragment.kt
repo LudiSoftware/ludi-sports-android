@@ -9,7 +9,10 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
+import io.usys.report.firebase.fireGetRosterForSession
 import io.usys.report.realm.findByField
+import io.usys.report.realm.findRosterById
+import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
 import io.usys.report.utils.YsrMode
@@ -34,7 +37,20 @@ class TeamRosterFragment : LudiStringIdFragment() {
         _binding = TeamRosterFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup
-        rosterId = realmIdArg
+        teamId = realmIdArg
+
+        teamId?.let {
+            rosterId = realmInstance?.findTeamById(it)?.rosterId
+            rosterId?.let { rosterId ->
+                val roster = realmInstance?.findRosterById(rosterId)
+                if (roster != null) {
+                    this.roster = roster
+                    setupDisplay()
+                } else {
+                    fireGetRosterForSession(rosterId)
+                }
+            }
+        }
 
         setupTeamRosterRealmListener()
         setupOnClickListeners()
@@ -46,11 +62,13 @@ class TeamRosterFragment : LudiStringIdFragment() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
             log("Roster listener called")
-            val realmRoster = realmInstance?.findByField<Roster>("id", rosterId!!)
-            if (realmRoster != null) {
-                roster = realmRoster
+            rosterId?.let { rosterId ->
+                roster = realmInstance?.findByField<Roster>("id", rosterId)
             }
-            setupDisplay()
+            if (roster != null) {
+                setupDisplay()
+            }
+
         }
         realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
     }

@@ -1,8 +1,11 @@
 package io.usys.report.realm
 
 import io.realm.Realm
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.main
@@ -28,6 +31,16 @@ fun Realm.findCoachBySafeId(): Coach? {
 }
 fun Realm.findTeamById(teamId:String): Team? {
     return this.where(Team::class.java).equalTo("id", teamId).findFirst()
+}
+
+fun Realm.findRosterById(rosterId:String): Roster? {
+    return this.where(Roster::class.java).equalTo("id", rosterId).findFirst()
+}
+fun Realm.getRosterIdForTeamId(teamId:String): String? {
+    return this.findTeamById(teamId)?.rosterId
+}
+fun Realm.getPlayersForRosterId(rosterId:String): RealmList<PlayerRef>? {
+    return this.findRosterById(rosterId)?.players
 }
 
 inline fun writeToRealmOnMain(crossinline block: (Realm) -> Unit) {

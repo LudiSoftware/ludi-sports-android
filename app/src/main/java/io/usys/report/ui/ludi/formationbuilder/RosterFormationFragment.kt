@@ -12,13 +12,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.realm.findByField
+import io.usys.report.realm.getPlayersForRosterId
+import io.usys.report.realm.getRosterIdForTeamId
 import io.usys.report.realm.gridLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdFragment
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
+import io.usys.report.ui.gestures.LudiOnTouchListener
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
@@ -40,6 +44,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
     var rosterListRecyclerView: RecyclerView? = null
 
     // List of players
+    var players: RealmList<PlayerRef>? = null
     var rosterList = mutableListOf<PlayerRef>()
     // Player Icons on the field
     var formationPlayerList = mutableListOf<PlayerRef>()
@@ -50,6 +55,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
     var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
     var team: Team? = null
     var teamId: String? = null
+    var rosterId: String? = null
 
     var constraintLayout: ConstraintLayout? = null
     var container: ViewGroup? = null
@@ -64,7 +70,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         this.container = container
         //Base Team Data
         teamId = realmIdArg
-        loadTeamFromRealm()
+        loadRoster()
         //Hiding the action bar
         hideLudiActionBar()
         //Hiding the bottom navigation bar
@@ -84,13 +90,30 @@ class RosterFormationFragment : LudiStringIdFragment() {
      * Base Functions
      *
      */
-    private fun loadTeamFromRealm() {
-        team = realmInstance?.findByField("id", teamId!!)
-    }
-
-    private fun reloadRoster() {
-        val roster = team?.rosterId
-//        roster?.players?.forEach { rosterList.add(it) }
+    private fun loadRoster(reload:Boolean=false) {
+        if (rosterList.isNullOrEmpty()) {
+            teamId?.let { teamId ->
+                val rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+                rosterId?.let { rosterId ->
+                    players = realmInstance?.getPlayersForRosterId(rosterId)
+                    players?.let { players ->
+                        rosterList = players.toMutableList()
+                    }
+                }
+            }
+            return
+        }
+        if (reload) {
+            teamId?.let { teamId ->
+                val rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+                rosterId?.let { rosterId ->
+                    players = realmInstance?.getPlayersForRosterId(rosterId)
+                    players?.let { players ->
+                        rosterList = players.toMutableList()
+                    }
+                }
+            }
+        }
     }
 
     private fun resetFormationLayout() {
@@ -110,7 +133,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         setupFloatingActionMenu()
         activity?.window?.let {
             formationLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
-
+            createOnDragListener()
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
 
             onItemDragged = { start, end ->
@@ -119,8 +142,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
 //                formationList.add(end, item)
             }
 
-            reloadRoster()
-
+            loadRoster(reload = false)
             adapter = RosterFormationListAdapter(rosterList, onItemDragged!!, requireActivity())
             rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
             rosterListRecyclerView?.adapter = adapter
@@ -129,7 +151,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 val itemTouchHelperCallback = RosterFormationTouchHelperCallback(itAdapter)
                 val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
                 itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
-                createOnDragListener()
+
             }
 
         }
@@ -245,7 +267,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
                     }
                     true
                 }
-                else -> false
+                else -> {
+                    true
+                }
             }
         }
         formationLayout?.setOnDragListener(dragListener)

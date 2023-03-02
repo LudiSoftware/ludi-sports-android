@@ -64,3 +64,32 @@ class LudiFreeFormGestureDetector(context: Context, private val actionCallback: 
         // Implement other gesture callbacks as needed
     }
 }
+//private val actionCallback: (MotionEvent?) -> Unit
+class LudiOnTouchListener : View.OnTouchListener {
+
+    private var lastAction = MotionEvent.ACTION_UP
+    private var xDelta = 0f
+    private var yDelta = 0f
+
+    override fun onTouch(view: View, event: MotionEvent): Boolean {
+        val x = event.rawX
+        val y = event.rawY
+        when (event.action and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_DOWN -> {
+                val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+                xDelta = x - layoutParams.leftMargin
+                yDelta = y - layoutParams.topMargin
+                lastAction = MotionEvent.ACTION_DOWN
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.leftMargin = (x - xDelta).toInt()
+                layoutParams.topMargin = (y - yDelta).toInt()
+                view.layoutParams = layoutParams
+                lastAction = MotionEvent.ACTION_MOVE
+            }
+        }
+        return true
+    }
+
+}
