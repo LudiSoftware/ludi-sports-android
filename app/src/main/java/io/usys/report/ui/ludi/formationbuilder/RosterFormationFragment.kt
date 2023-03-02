@@ -301,12 +301,47 @@ class RosterFormationFragment : LudiStringIdFragment() {
                         tempPlayer.imgUrl?.let {
                             playerIcon.loadUriIntoImgView(it)
                         }
+                        // PopMenu
+                        val playerPopMenu = tempView.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem ->
+                            // Handle menu item click events
+                            // todo: events to handle:
+                            //  - save formation -> order and (x,y) coordinates
+                            //  - if in tryout mode, submit formation as roster.
+                            //  - Change background image.
+                            //  - Reset Formation.
+                            when (menuItem.itemId) {
+                                R.id.menu_player_change_teams -> {
+                                    // Do something
+                                    log("menu_player_change_teams")
+                                }
+                                R.id.menu_player_add_note -> {
+                                    // Do something
+                                    log("menu_player_add_note")
+                                }
+                                else -> {
+                                    log("Unknown Touch")
+                                }
+                            }
+                        }
                         //On Click
                         val onTap: () -> Unit = {
                             popPlayerProfileDialog(requireActivity(), playerId).show()
                         }
+                        val onLongPress: () -> Unit = {
+                            log("Double Tap")
+                            tempView.wiggleOnce()
+                            playerPopMenu.show()
+                        }
+
                         // Gestures
-                        tempView.onGestureDetectorRosterFormation(width = 300, height = 75, playerId=playerId, onSingleTapUp = onTap)
+                        tempView.onGestureDetectorRosterFormation(
+                            width = 300,
+                            height = 75,
+                            playerId=playerId,
+                            onSingleTapUp = onTap,
+                            onLongPress = onLongPress
+                        )
+
                         // Add to FormationLayout
                         formationViewList.add(tempView)
                         formationRelativeLayout?.addView(tempView)

@@ -11,7 +11,8 @@ import io.usys.report.utils.views.getRelativeLayoutParams
 import kotlin.math.max
 import kotlin.math.min
 
-fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, playerId:String?=null, onSingleTapUp:(() -> Unit)?=null) {
+fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, playerId:String?=null,
+                                           onSingleTapUp:(() -> Unit)?=null, onLongPress:(() -> Unit)?=null) {
     // Window Height and Width
     var lastX = 0
     var lastY = 0
@@ -54,7 +55,7 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
         }
 
         override fun onLongPress(e: MotionEvent?) {
-            super.onLongPress(e)
+            onLongPress?.invoke()
         }
 
         override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
