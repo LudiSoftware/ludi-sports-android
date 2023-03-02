@@ -22,9 +22,9 @@ open class FormationSession : RealmObject(), Serializable {
     var teamColorsAreOn: Boolean = true
     var currentLayout: Int = 0
     var layoutList: RealmList<Int>? = RealmList()
-    var formationList: RealmList<PlayerRef>? = RealmList()
-    var playerList: RealmList<PlayerRef>? = RealmList()
-    var removedList: RealmList<PlayerRef>? = RealmList()
+    var formationListIds: RealmList<String>? = RealmList()
+    var deckListIds: RealmList<String>? = RealmList()
+    var blackListIds: RealmList<String>? = RealmList()
 }
 
 fun Realm.getUserFormationSession(): FormationSession? {

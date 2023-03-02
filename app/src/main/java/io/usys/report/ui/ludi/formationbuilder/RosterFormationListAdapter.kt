@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
@@ -42,20 +41,13 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
         val playerId = onDeckPlayerIdList[position] ?: "unknown"
-
         realmInstance?.getUserFormationSession { fs ->
-            fs.playerList?.find { it.id == playerId }?.let { player ->
+            fs.roster?.players?.find { it.id == playerId }?.let { player ->
                 holder.textView.text = player.name
                 player.imgUrl?.let { itImgUrl ->
                     holder.imageView.loadUriIntoImgView(itImgUrl)
                 }
                 holder.itemView.setPlayerTeamBackgroundColor(player.color)
-//                if (player.color == "red") {
-//                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedRed))
-//                } else {
-//                    holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.imageView.context, R.color.ysrFadedBlue))
-//                }
-
             }
         }
 
@@ -74,9 +66,9 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         val tempList: RealmList<String> = RealmList()
         this.realmInstance?.getUserFormationSession { fs ->
             this.formationSessionId = fs.id
-            fs.playerList?.let { itRosterList ->
-                for (player in itRosterList) {
-                    tempList.add(player.id)
+            fs.deckListIds?.let { deckList ->
+                for (playerId in deckList) {
+                    tempList.add(playerId)
                 }
             }
         }

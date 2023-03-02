@@ -26,6 +26,15 @@ inline fun writeToRealmOnMain(crossinline block: (Realm) -> Unit) {
 }
 
 //LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
+inline fun Realm.safeWrite(crossinline block: (Realm) -> Unit) {
+    if (this.isInTransaction) {
+        this.executeTransactionAsync { block(it) }
+    } else {
+        this.executeTransaction { block(it) }
+    }
+}
+
+//LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
 inline fun writeToRealm(crossinline block: (Realm) -> Unit) {
     val realm = realm()
     if (realm.isInTransaction) {

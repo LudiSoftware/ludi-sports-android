@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.RealmChangeListener
+import io.realm.RealmList
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.realm.*
@@ -49,9 +50,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
     var floatingPopMenu: PopupMenu? = null
     var formationSession: FormationSession? = null
     // Player Icons on the field
-    var formationPlayerList = mutableListOf<PlayerRef>()
+//    var formationPlayerList = mutableListOf<PlayerRef>()
     var formationViewList = mutableListOf<View>()
-    var formationLayouts = mutableListOf(R.drawable.soccer_field)
+//    var formationLayouts = mutableListOf(R.drawable.soccer_field)
     // Player Formation
     var playerPopMenuView: PopupMenu? = null
     var onTap: (() -> Unit)? = null
@@ -82,6 +83,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
                     formationSession = itRealm.createObject(FormationSession::class.java, itUserId)
                     formationSession?.teamId = teamId
                     formationSession?.currentLayout = R.drawable.soccer_field
+                    formationSession?.layoutList = RealmList(R.drawable.soccer_field)
+                    formationSession?.deckListIds = RealmList()
+                    formationSession?.formationListIds = RealmList()
                     formationSession?.let {
                         itRealm.insertOrUpdate(it)
                     }
@@ -117,7 +121,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
             log("Roster listener called")
             rosterId?.let { rosterId ->
                 itResults.find { it.id == rosterId }?.let { roster ->
-                    safeUpdatePlayerList(roster)
+                    safeUpdateRoster(roster)
                     setupRosterList()
                 }
             }
@@ -135,26 +139,37 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
     }
 
-    private fun safeUpdatePlayerList(roster: Roster?) {
-        if (roster == null) return
+    private fun safeUpdateRoster(newRoster: Roster?) {
+        if (newRoster == null) return
         formationSession?.let { fs ->
-            realmInstance?.executeTransaction { itRealm ->
-                fs.roster = roster
-                roster.players?.forEach { newPlayer ->
-                    if (!fs.playerList!!.contains(newPlayer)) {
-                        fs.playerList?.add(newPlayer)
-                    } else {
-                        //todo: check if the player differs. Update accordingly.
-                        log("Testing")
+
+            if (fs.roster.isNullOrEmpty()) {
+                realmInstance?.executeTransaction {
+                    fs.roster = newRoster
+                    for (player in newRoster.players!!) {
+                        fs.deckListIds?.add(player.id)
                     }
                 }
-                itRealm.insertOrUpdate(fs)
+                return
+            }
+
+            newRoster.players?.forEach { newPlayer ->
+                val tempPlayers = fs.roster?.players
+                tempPlayers?.let {
+                    if (tempPlayers.contains(newPlayer)) {
+                        return@forEach
+                    }
+                    realmInstance?.safeWrite { itRealm ->
+                        tempPlayers.add(newPlayer)
+                        fs.deckListIds?.add(newPlayer.id)
+                        itRealm.insertOrUpdate(fs)
+                    }
+                }
             }
         }
     }
 
     private fun loadRoster(reload:Boolean=false) {
-
         val roster = formationSession?.roster
         if (roster.isNullOrEmpty()) {
             teamId?.let { teamId ->
@@ -162,7 +177,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
                     realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        safeUpdatePlayerList(roster)
+                        safeUpdateRoster(roster)
                         setupRosterList()
                     }
                 }
@@ -175,7 +190,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 saveRosterIdToFormationSession(rosterId)
                 rosterId?.let { rosterId ->
                     realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        safeUpdatePlayerList(roster)
+                        safeUpdateRoster(roster)
                         setupRosterList()
                     }
                 }
@@ -205,12 +220,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
     }
     private fun setupRosterList() {
-        loadRoster(reload = false)
         onItemDragged = { start, end ->
             log("onItemDragged: $start, $end")
         }
         formationSession?.let {
-            it.playerList?.let { rosterList ->
+            it.deckListIds?.let { rosterList ->
                 adapter = RosterFormationListAdapter(realmInstance, requireActivity())
                 rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
                 rosterListRecyclerView?.adapter = adapter
@@ -315,14 +329,22 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     // 1 Master
-    private fun addPlayerToFormation(playerId: String) {
+    private fun addPlayerToFormation(playerId: String, loadingFromSession: Boolean = false) {
         val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_tiny)
         val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
         val playerIcon = playerRefViewItem.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
 
         //Prepare PlayerView from Drag/Drop
-        safePlayerInPlayerList(playerId) { newPlayerRef ->
-            formationPlayerList.add(newPlayerRef)
+        safePlayerFromRoster(playerId) { newPlayerRef ->
+
+            if (!loadingFromSession) {
+                realmInstance?.safeWrite {
+                    formationSession?.let {
+                        it.formationListIds?.add(playerId)
+                    }
+                }
+            }
+
             val layoutParams = preparePlayerLayoutParamsForFormation(newPlayerRef)
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
@@ -359,10 +381,10 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
     }
 
-    private inline fun safePlayerInPlayerList(playerId: String, block: (PlayerRef) -> Unit) {
+    private inline fun safePlayerFromRoster(playerId: String, block: (PlayerRef) -> Unit) {
         formationSession?.let {
-            it.playerList?.let { playerList ->
-                playerList.forEach { playerRef ->
+            it.roster?.let { roster ->
+                roster.players?.forEach { playerRef ->
                     if (playerRef.id == playerId) {
                         block(playerRef)
                     }
@@ -393,15 +415,15 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 R.id.menu_player_change_teams -> {
                     // Do something
                     val playerId = parentView.tag
-                    safePlayerInPlayerList(playerId as String) { playerRef ->
+                    safePlayerFromRoster(playerId as String) { playerRef ->
                         when (playerRef.color) {
                             "red" -> {
-                                realmInstance?.executeTransaction {
+                                realmInstance?.safeWrite {
                                     playerRef.color = "blue"
                                 }
                             }
                             "blue" -> {
-                                realmInstance?.executeTransaction {
+                                realmInstance?.safeWrite {
                                     playerRef.color = "red"
                                 }
                             }

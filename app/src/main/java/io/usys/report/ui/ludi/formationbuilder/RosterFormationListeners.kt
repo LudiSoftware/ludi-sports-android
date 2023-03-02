@@ -6,6 +6,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.utils.views.getRelativeLayoutParams
 import kotlin.math.max
@@ -35,13 +36,16 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
             return true
         }
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            playerId?.let { itId ->
-                realm().let { itRealm ->
-                    itRealm.findByField<PlayerRef>("playerId", itId)?.let { player ->
-                        itRealm.executeTransaction {
-                            player.pointX = lastX
-                            player.pointY = lastY
-                            it.copyToRealmOrUpdate(player)
+            val tempRealm = realm()
+            tempRealm.safeUserId { itUserId ->
+                tempRealm.findByField<FormationSession>("id", itUserId)?.let { fs ->
+                    playerId?.let { itId ->
+                        fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
+                            tempRealm.executeTransaction {
+                                playerRef.pointX = lastX
+                                playerRef.pointY = lastY
+                                it.copyToRealmOrUpdate(playerRef)
+                            }
                         }
                     }
                 }
