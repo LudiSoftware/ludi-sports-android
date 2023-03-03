@@ -10,7 +10,7 @@ import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.firebase.fireGetRoster
-import io.usys.report.realm.findByField
+import io.usys.report.realm.findFirstByField
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Roster
@@ -63,7 +63,7 @@ class TeamRosterFragment : LudiStringIdFragment() {
             // Handle changes to the Realm data here
             log("Roster listener called")
             rosterId?.let { rosterId ->
-                roster = realmInstance?.findByField("id", rosterId)
+                roster = realmInstance?.findFirstByField("id", rosterId)
             }
             if (roster != null) {
                 setupDisplay()

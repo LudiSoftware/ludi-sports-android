@@ -5,9 +5,27 @@ import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.RealmResults
 import io.realm.annotations.RealmClass
 import io.usys.report.firebase.hashMapKeysMatch
 import io.usys.report.utils.tryCatch
+
+
+fun <T:Any> RealmResults<T>?.toSafeRealmList(): RealmList<T>? {
+    if (this == null) return null
+    val realmList = RealmList<T>()
+    for (item in this) {
+        realmList.safeAdd(item)
+    }
+    return realmList
+}
+
+fun <T:Any> RealmList<T>.safeAdd(item: T?): Boolean {
+    if (item == null) return false
+    if (this.contains(item)) return false
+    this.add(item)
+    return true
+}
 
 /** -> TRIED AND TRUE! <- */
 fun <T> RealmList<T>?.toMutableList() : MutableList<T> {

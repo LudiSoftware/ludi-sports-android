@@ -13,6 +13,7 @@ import io.realm.RealmObjectSchema
 import io.realm.RealmSchema
 import io.usys.report.R
 import io.usys.report.realm.*
+import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.utils.*
 import java.util.*
 
@@ -104,6 +105,15 @@ class FieldValueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (value != null) {
             txtFieldName?.text = key.capitalizeFirstChar()
             editValue.setText(value)
+        } else {
+            itemView.removeItemViewFromList()
+        }
+    }
+
+    fun bind(customAttribute: CustomAttribute?) {
+        if (customAttribute != null) {
+            txtFieldName?.text = customAttribute.key?.capitalizeFirstChar()
+            editValue.setText(customAttribute.value)
         } else {
             itemView.removeItemViewFromList()
         }

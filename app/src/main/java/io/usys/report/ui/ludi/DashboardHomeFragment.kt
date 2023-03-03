@@ -18,6 +18,7 @@ import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.YsrFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragmentWithRealmObject
+import io.usys.report.ui.ludi.evaluation.NewEvaluationDialog
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.utils.log
 
@@ -46,6 +47,8 @@ class DashboardHomeFragment : YsrFragment() {
             // Check For Coach User
             setupCoachDisplay()
         }
+
+        NewEvaluationDialog().show(childFragmentManager, "NewEvaluationDialog")
         setupRealmCoachListener()
         return binding.root
     }

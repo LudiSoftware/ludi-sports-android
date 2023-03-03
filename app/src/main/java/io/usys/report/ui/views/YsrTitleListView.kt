@@ -11,6 +11,7 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.Sport
+import io.usys.report.ui.ludi.note.setupTeamNoteList
 import io.usys.report.ui.ludi.organization.setupOrganizationList
 import io.usys.report.ui.ludi.player.setupPlayerListFromSession
 import io.usys.report.ui.ludi.service.setupServiceList
@@ -67,5 +68,8 @@ class YsrTitleListView(context: Context) : CardView(context) {
         setTitle("Roster")
         recyclerView?.setupPlayerListFromSession(id, onClickReturnViewRealmObject)
     }
-
+    fun setupTeamNotesList(teamId: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        setTitle("Team Notes")
+        recyclerView?.setupTeamNoteList(teamId, onClickReturnViewRealmObject)
+    }
 }

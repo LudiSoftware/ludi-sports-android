@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -16,8 +15,6 @@ import io.usys.report.realm.*
 import io.usys.report.realm.model.*
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
-import java.time.LocalDate
-import java.time.Period
 import kotlin.collections.isNullOrEmpty
 
 fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
@@ -49,7 +46,7 @@ fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
     // Hide unused views
 
     fun loadData() {
-        val player = realm().findByField<PlayerRef>("playerId", playerId)
+        val player = realm().findFirstByField<PlayerRef>("playerId", playerId)
         player?.let {
             playerTxtName?.text = it.name
             playerTxtRank?.text = "Rank: ${it.rank.toString()}"

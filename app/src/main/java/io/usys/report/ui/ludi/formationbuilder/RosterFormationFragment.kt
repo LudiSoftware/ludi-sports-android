@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -77,7 +76,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         this.container = container
         teamId = realmIdArg
         realmInstance?.safeUserId { itUserId ->
-            formationSession = realmInstance?.findByField("id", itUserId)
+            formationSession = realmInstance?.findFirstByField("id", itUserId)
             if (formationSession == null) {
                 realmInstance?.executeTransaction { itRealm ->
                     formationSession = itRealm.createObject(FormationSession::class.java, itUserId)

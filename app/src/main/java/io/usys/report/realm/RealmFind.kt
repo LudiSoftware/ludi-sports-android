@@ -3,6 +3,7 @@ package io.usys.report.realm
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.RealmResults
 import io.usys.report.realm.model.Coach
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
@@ -10,9 +11,14 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.users.safeUserId
 
 //This works.
-inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String): T? {
+inline fun <reified T: RealmObject> Realm.findFirstByField(field:String="id", value: String): T? {
     return this.where(T::class.java).equalTo(field, value).findFirst()
 }
+
+inline fun <reified T: RealmObject> Realm.findAllByField(field:String="id", value: String): RealmResults<T>? {
+    return this.where(T::class.java).equalTo(field, value).findAll()
+}
+
 fun Realm.findCoachBySafeId(): Coach? {
     var temp: Coach? = null
     this.safeUserId {

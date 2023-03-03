@@ -13,7 +13,7 @@ import io.usys.report.R
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.firebase.fireGetTeamProfileForSession
 import io.usys.report.firebase.fireGetTryOutProfileForSession
-import io.usys.report.realm.findByField
+import io.usys.report.realm.findFirstByField
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
@@ -77,10 +77,14 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
         viewPager.isUserInputEnabled = false
         val adapter = LudiPagerAdapter(this)
         adapter.addRealmIdArg(teamId)
-        val fragPair1 = Pair("Roster", TeamRosterFragment())
-        val fragPair2 = Pair("Chat", ChatFragment())
-        adapter.addFragment(fragPair1)
-        adapter.addFragment(fragPair2)
+        val fragPairRoster = Pair("Roster", TeamRosterFragment())
+        val fragPairNotes = Pair("Notes", TeamNotesFragment())
+//        val fragPairEvaluation = Pair("Evaluations", TeamEvaluationsFragment())
+        val fragPairChat = Pair("Chat", ChatFragment())
+        adapter.addFragment(fragPairRoster)
+        adapter.addFragment(fragPairNotes)
+//        adapter.addFragment(fragPairEvaluation)
+        adapter.addFragment(fragPairChat)
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = adapter.fragments[position].first
@@ -91,7 +95,7 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
         val teamListener = RealmChangeListener<RealmResults<Team>> {
             // Handle changes to the Realm data here
             log("Team listener called")
-            val realmTeam = realmInstance?.findByField<Team>("id", teamId!!)
+            val realmTeam = realmInstance?.findFirstByField<Team>("id", teamId!!)
             if (realmTeam != null) {
                 team = realmTeam
 //                team?.rosterId?.let {
@@ -125,7 +129,7 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
         val tryoutListener = RealmChangeListener<RealmResults<TryOut>> {
             // Handle changes to the Realm data here
             log("TryOut listener called")
-            val realmTeam = realmInstance?.findByField<TryOut>("teamId", teamId!!)
+            val realmTeam = realmInstance?.findFirstByField<TryOut>("teamId", teamId!!)
             if (realmTeam != null) {
                 tryout = realmTeam
             }

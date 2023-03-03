@@ -7,6 +7,7 @@ import io.usys.report.R
 import io.usys.report.firebase.*
 import io.usys.report.realm.model.*
 import io.usys.report.ui.ludi.coach.CoachViewHolder
+import io.usys.report.ui.ludi.note.NoteViewHolder
 import io.usys.report.ui.ludi.organization.OrgViewHolder
 import io.usys.report.ui.ludi.player.PlayerTinyViewHolder
 import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder

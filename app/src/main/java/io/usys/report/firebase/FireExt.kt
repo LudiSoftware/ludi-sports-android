@@ -15,7 +15,6 @@ inline fun firebaseDatabase(collection:String, block: (DatabaseReference) -> Uni
     block(FirebaseDatabase.getInstance().reference.child(collection))
 }
 
-
 fun <TResult> Task<TResult>.fairAddOnCompleteListener(block: (TResult) -> Unit): Task<TResult> {
     this.addOnCompleteListener {
         block(it.result)

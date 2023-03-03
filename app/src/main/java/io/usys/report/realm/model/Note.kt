@@ -57,27 +57,3 @@ fun Realm.getPlayerNotes(playerId:String, onClick: ((DataSnapshot?) -> Unit)?) {
         fireGetOrderByEqualToCallback(DatabasePaths.NOTES.path, itUserId, "aboutPlayerId", playerId, onClick)
     }
 }
-
-fun RecyclerView?.setupNoteList(realmObjectArg: RealmObject?, onClick: ((View, RealmObject) -> Unit)? ) {
-    // Load Organizations by Sport.name
-    val rv = this
-    var organizationList: RealmList<Organization>?
-    fireGetOrderByEqualToAsync(DatabasePaths.NOTES.path, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
-        organizationList = this?.toRealmList()
-        rv?.loadInRealmList(organizationList, FireTypes.ORGANIZATIONS, onClick)
-    }
-}
-
-class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    var txtNoteName = itemView.bindTextView(R.id.cardTeamSmallTxtName)
-    var txtNoteDate = itemView.bindTextView(R.id.cardNoteSmallTxtDate)
-    var txtMessage = itemView.bindTextView(R.id.cardNoteSmallTxtMessage)
-    var imgNoteProfile: ImageView = itemView.bind(R.id.cardNoteSmallImgProfile)
-
-    fun bind(note: Note?) {
-        txtNoteName?.text = note?.ownerName
-        txtNoteDate?.text = note?.dateCreated ?: "unknown"
-        txtMessage?.text = note?.message ?: "No message"
-    }
-}

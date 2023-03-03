@@ -14,7 +14,7 @@ open class PlayerEvaluationRef: RealmObject(), Serializable {
     var teamId: String? = null
 }
 
-open class PlayerEvaluation: RealmObject(), Serializable {
+open class Evaluation: RealmObject(), Serializable {
     @PrimaryKey
     var id: String = newUUID()
     var coachId: String? = null
