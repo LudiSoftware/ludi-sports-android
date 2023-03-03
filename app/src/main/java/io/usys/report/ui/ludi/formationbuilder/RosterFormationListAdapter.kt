@@ -11,6 +11,7 @@ import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
+import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
@@ -23,8 +24,6 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     var realmInstance: Realm? = null
     var formationSessionId: String? = null
     var onDeckPlayerIdList: RealmList<String> = RealmList()
-    var removedPlayerIdList: RealmList<String> = RealmList()
-    var onFieldPlayerIdList: RealmList<String> = RealmList()
     var onItemMoved: ((start: Int, end: Int) -> Unit)? = null
     var activity: Activity? = null
 
@@ -62,12 +61,32 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         }
     }
 
+    fun resetDeckToRoster() {
+        this.onDeckPlayerIdList.clear()
+        this.realmInstance?.getUserFormationSession { fs ->
+            this.formationSessionId = fs.id
+
+            this.realmInstance?.safeWrite {
+                fs.deckListIds?.clear()
+                fs.formationListIds?.clear()
+            }
+
+            fs.roster?.players?.let { rosterPlayers ->
+                for (playerId in rosterPlayers) {
+                    this.addPlayer(playerId)
+                }
+            }
+        }
+        this.notifyDataSetChanged()
+    }
+
     private fun loadFormationSessionData() : RealmList<String> {
         val tempList: RealmList<String> = RealmList()
         this.realmInstance?.getUserFormationSession { fs ->
             this.formationSessionId = fs.id
             fs.deckListIds?.let { deckList ->
                 for (playerId in deckList) {
+                    if (tempList.contains(playerId)) { continue }
                     tempList.add(playerId)
                 }
             }
@@ -76,27 +95,47 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
     fun movePlayerToField(playerId: String) {
         onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
+            this.realmInstance?.getUserFormationSession { fs ->
+                this.realmInstance?.safeWrite {
+                    fs.deckListIds?.remove(playerId)
+                    fs.formationListIds?.add(playerId)
+                }
+            }
             onDeckPlayerIdList.remove(playerId)
-            onFieldPlayerIdList.add(playerId)
             notifyItemRemoved(itIndex)
         }
     }
     fun movePlayerToDeck(playerId: String) {
+        this.realmInstance?.getUserFormationSession { fs ->
+            this.realmInstance?.safeWrite {
+                fs.deckListIds?.add(playerId)
+                fs.formationListIds?.remove(playerId)
+            }
+        }
         onDeckPlayerIdList.add(playerId)
-        onFieldPlayerIdList.remove(playerId)
         notifyItemInserted(onDeckPlayerIdList.size - 1)
     }
     fun removePlayer(playerId: String) {
         onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
+            this.realmInstance?.getUserFormationSession { fs ->
+                this.realmInstance?.safeWrite {
+                    fs.deckListIds?.remove(playerId)
+                    fs.blackListIds?.add(playerId)
+                }
+            }
             onDeckPlayerIdList.remove(playerId)
-            removedPlayerIdList.add(playerId)
             notifyItemRemoved(itIndex)
         }
     }
 
     fun addPlayer(player: PlayerRef) {
+        this.realmInstance?.getUserFormationSession { fs ->
+            this.realmInstance?.safeWrite {
+                fs.deckListIds?.add(player.id)
+            }
+        }
         onDeckPlayerIdList.add(player.id)
-        notifyItemInserted(onDeckPlayerIdList.size - 1)
+//        notifyItemInserted(onDeckPlayerIdList.size - 1)
     }
 
     override fun getItemCount() = onDeckPlayerIdList.size

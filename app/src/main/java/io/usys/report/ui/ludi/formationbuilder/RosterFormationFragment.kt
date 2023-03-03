@@ -94,7 +94,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
         setupRosterRealmListener()
         //Base Team Data
-        loadRoster(reload = false)
+        loadRoster()
         //Hiding the action bar
         hideLudiActionBar()
         //Hiding the bottom navigation bar
@@ -144,7 +144,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         formationSession?.let { fs ->
 
             if (fs.roster.isNullOrEmpty()) {
-                realmInstance?.executeTransaction {
+                realmInstance?.safeWrite {
                     fs.roster = newRoster
                     for (player in newRoster.players!!) {
                         fs.deckListIds?.add(player.id)
@@ -169,22 +169,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
         }
     }
 
-    private fun loadRoster(reload:Boolean=false) {
+    private fun loadRoster() {
         val roster = formationSession?.roster
         if (roster.isNullOrEmpty()) {
-            teamId?.let { teamId ->
-                rosterId = realmInstance?.getRosterIdForTeamId(teamId)
-                saveRosterIdToFormationSession(rosterId)
-                rosterId?.let { rosterId ->
-                    realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        safeUpdateRoster(roster)
-                        setupRosterList()
-                    }
-                }
-            }
-            return
-        }
-        if (reload) {
             teamId?.let { teamId ->
                 rosterId = realmInstance?.getRosterIdForTeamId(teamId)
                 saveRosterIdToFormationSession(rosterId)
@@ -199,7 +186,8 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     private fun resetFormationLayout() {
-        //todo: put this in the adapter and call it there.
+        adapter?.resetDeckToRoster()
+        formationRelativeLayout?.removeAllViews()
     }
 
     private fun getBackgroundDrawable(@RawRes drawableReference: Int): Drawable? {
@@ -228,6 +216,12 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 adapter = RosterFormationListAdapter(realmInstance, requireActivity())
                 rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
                 rosterListRecyclerView?.adapter = adapter
+            }
+            it.formationListIds?.let { formationList ->
+                formationRelativeLayout?.removeAllViews()
+                formationList.forEach { itPlayerId ->
+                    addPlayerToFormation(itPlayerId, loadingFromSession = true)
+                }
             }
         }
     }
@@ -259,7 +253,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
      *
      */
     private fun setupFloatingActionMenu() {
-        floatingMenuButton = rootView.findViewById<FloatingActionButton>(R.id.tryoutFormationFloatingActionButton)
+        floatingMenuButton = rootView.findViewById(R.id.tryoutFormationFloatingActionButton)
         floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, parentView ->
             // Handle menu item click events
             // todo: events to handle:
@@ -338,14 +332,28 @@ class RosterFormationFragment : LudiStringIdFragment() {
         safePlayerFromRoster(playerId) { newPlayerRef ->
 
             if (!loadingFromSession) {
-                realmInstance?.safeWrite {
-                    formationSession?.let {
-                        it.formationListIds?.add(playerId)
+                realmInstance?.safeWrite { itRealm ->
+                    formationSession?.let { fs ->
+                        fs.formationListIds?.let {
+                            if (!it.contains(playerId)) {
+                                it.add(playerId)
+                            }
+                        }
                     }
                 }
             }
 
-            val layoutParams = preparePlayerLayoutParamsForFormation(newPlayerRef)
+            formationViewList.find { it.tag == playerId }?.let {
+                return@safePlayerFromRoster
+            }
+
+            val layoutParams = preparePlayerLayoutParamsForFormation(loadingFromSession)
+            if (!newPlayerRef.pointX.isNullOrEmpty() || newPlayerRef.pointX != 0) {
+                layoutParams.topMargin = newPlayerRef.pointX ?: 0
+            }
+            if (!newPlayerRef.pointY.isNullOrEmpty() || newPlayerRef.pointY != 0) {
+                layoutParams.leftMargin = newPlayerRef.pointY ?: 0
+            }
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
             // Bind Data
@@ -394,17 +402,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
     }
 
     // 1A
-    private fun preparePlayerLayoutParamsForFormation(playerRef: PlayerRef): RelativeLayout.LayoutParams {
+    private fun preparePlayerLayoutParamsForFormation(loadingFromSession: Boolean=false): RelativeLayout.LayoutParams {
         val layoutParams = getRelativeLayoutParams()
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+        if (!loadingFromSession) layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
         layoutParams.width = 300
         layoutParams.height = 75
-        if (!playerRef.pointX.isNullOrEmpty() || playerRef.pointX != 0) {
-            layoutParams.leftMargin = playerRef.pointX!!
-        }
-        if (!playerRef.pointY.isNullOrEmpty() || playerRef.pointY != 0) {
-            layoutParams.topMargin = playerRef.pointY!!
-        }
         return layoutParams
     }
 

@@ -17,6 +17,8 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
     // Window Height and Width
     var lastX = 0
     var lastY = 0
+    var topMargin = 0
+    var leftMargin = 0
     val viewObject: View? = this
     val scaleGestureDetector = ScaleGestureDetector(this?.context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         var scaleFactor = 1.0f
@@ -36,26 +38,30 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
             return true
         }
         override fun onSingleTapUp(e: MotionEvent): Boolean {
+            return true
+        }
+
+        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            onSingleTapUp?.invoke()
+            return true
+        }
+
+        override fun onDoubleTap(e: MotionEvent?): Boolean {
             val tempRealm = realm()
             tempRealm.safeUserId { itUserId ->
                 tempRealm.findByField<FormationSession>("id", itUserId)?.let { fs ->
                     playerId?.let { itId ->
                         fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
                             tempRealm.executeTransaction {
-                                playerRef.pointX = lastX
-                                playerRef.pointY = lastY
+                                playerRef.pointX = topMargin
+                                playerRef.pointY = leftMargin
                                 it.copyToRealmOrUpdate(playerRef)
                             }
                         }
                     }
                 }
             }
-            onSingleTapUp?.invoke()
             return true
-        }
-
-        override fun onDoubleTap(e: MotionEvent?): Boolean {
-            return super.onDoubleTap(e)
         }
 
         override fun onLongPress(e: MotionEvent?) {
@@ -76,15 +82,15 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
             val dy = e2.rawY.toInt() - lastY
 
             // Calculate the new position of the child view
-            val newLeft = viewObject!!.left + dx
-            val newTop = viewObject.top + dy
+            leftMargin = viewObject!!.left + dx
+            topMargin = viewObject.top + dy
 
             // Make sure the child view doesn't go outside the bounds of the parent layout
             val lp = getRelativeLayoutParams()
             lp.width = width
             lp.height = height
-            lp.leftMargin = newLeft
-            lp.topMargin = newTop
+            lp.leftMargin = leftMargin
+            lp.topMargin = topMargin
             viewObject.layoutParams = lp
 
             // Save the last touch position
