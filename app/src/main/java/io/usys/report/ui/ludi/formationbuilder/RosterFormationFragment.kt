@@ -54,7 +54,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
     var formationViewList = mutableListOf<View>()
 //    var formationLayouts = mutableListOf(R.drawable.soccer_field)
     // Player Formation
-    var playerPopMenuView: PopupMenu? = null
+//    var playerPopMenuView: PopupMenu? = null
     var onTap: (() -> Unit)? = null
     var onLongPress: (() -> Unit)? = null
 
@@ -108,6 +108,11 @@ class RosterFormationFragment : LudiStringIdFragment() {
         constraintLayout = rootView.findViewById(R.id.TryoutTestFragment)
         setupDisplay()
         return rootView
+    }
+
+    override fun onStop() {
+        super.onStop()
+        realmInstance?.removeAllChangeListeners()
     }
 
     /**
@@ -324,9 +329,9 @@ class RosterFormationFragment : LudiStringIdFragment() {
 
     // 1 Master
     private fun addPlayerToFormation(playerId: String, loadingFromSession: Boolean = false) {
-        val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_tiny)
-        val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerTinyTxtName)
-        val playerIcon = playerRefViewItem.findViewById<ImageView>(R.id.cardPlayerTinyImgProfile)
+        val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_formation)
+        val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtName)
+        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
 
         //Prepare PlayerView from Drag/Drop
         safePlayerFromRoster(playerId) { newPlayerRef ->
@@ -358,13 +363,10 @@ class RosterFormationFragment : LudiStringIdFragment() {
             playerRefViewItem.tag = newPlayerRef.id
             // Bind Data
             playerName.text = newPlayerRef.name
-            newPlayerRef.imgUrl?.let {
-                playerIcon.loadUriIntoImgView(it)
-            }
+            playerTryOutTag.text = newPlayerRef.tryoutTag
             newPlayerRef.color?.let {
                 playerRefViewItem.setPlayerTeamBackgroundColor(it)
             }
-            playerRefViewItem.setupOnTapListeners(playerId)
             playerRefViewItem.setupPlayerPopupMenu()
             // Gestures
             playerRefViewItem.onGestureDetectorRosterFormation(
@@ -410,9 +412,8 @@ class RosterFormationFragment : LudiStringIdFragment() {
         return layoutParams
     }
 
-
     private fun View?.setupPlayerPopupMenu() {
-        playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
+        val playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
             when (menuItem.itemId) {
                 R.id.menu_player_change_teams -> {
                     // Do something
@@ -446,10 +447,8 @@ class RosterFormationFragment : LudiStringIdFragment() {
                 }
             }
         }
-    }
-    private fun View?.setupOnTapListeners(playerId: String) {
         onTap = {
-            popPlayerProfileDialog(requireActivity(), playerId).show()
+            popPlayerProfileDialog(requireActivity(), this!!.tag.toString()).show()
         }
         onLongPress = {
             log("Double Tap")

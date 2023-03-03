@@ -19,8 +19,8 @@ fun fireGetTeamProfileForSession(teamId:String) {
     firebaseDatabase {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toRealmObjectCast<Team>()
-                addObjectToSessionList(teamObject)
+                ds?.toRealmObjectCast<Team>()
+//                addObjectToSessionList(teamObject)
                 log("Team Updated")
             }
     }
