@@ -29,6 +29,13 @@ class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFr
         this.notifyDataSetChanged()
     }
 
+    fun addFragments(fragmentPairs: MutableList<Pair<String, Fragment>>) {
+        fragmentPairs.forEach {
+            fragments.add(it)
+        }
+        this.notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return fragments.size
     }

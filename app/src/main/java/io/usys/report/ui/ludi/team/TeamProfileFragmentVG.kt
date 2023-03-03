@@ -20,6 +20,7 @@ import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.chat.ChatFragment
+import io.usys.report.ui.views.LudiViewGroup
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -43,6 +44,8 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     private var tryout: TryOut? = null
     private var tryoutRoster: Roster? = null
     private var officialRoster: Roster? = null
+
+    private var ludiVG: LudiViewGroup? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
@@ -70,11 +73,11 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     }
 
     private fun setupTeamViewPager() {
-        viewPager = _binding?.teamViewPager!!
-        tabLayout = _binding?.teamTabLayout!!
-        tabLayout.isNestedScrollingEnabled = true
-        tabLayout.tabMode = TabLayout.MODE_FIXED
-        viewPager.isUserInputEnabled = false
+//        ludiVG?.setParentFragment(this)
+//        val fragmentPairs: MutableList<Pair<String, Fragment>> = mutableListOf(Pair("Roster", TeamRosterFragment()),Pair("Notes", TeamNotesFragment()), Pair("Chat", ChatFragment()))
+//        ludiVG?.setFragments(fragmentPairs)
+        viewPager = _binding?.includeLudiVG?.ludiViewPager!!
+        tabLayout = _binding?.includeLudiVG?.ludiTabLayout!!
         val adapter = LudiPagerAdapter(this)
         adapter.addRealmIdArg(teamId)
         val fragPairRoster = Pair("Roster", TeamRosterFragment())
@@ -83,7 +86,7 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
         val fragPairChat = Pair("Chat", ChatFragment())
         adapter.addFragment(fragPairRoster)
         adapter.addFragment(fragPairNotes)
-//        adapter.addFragment(fragPairEvaluation)
+////        adapter.addFragment(fragPairEvaluation)
         adapter.addFragment(fragPairChat)
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

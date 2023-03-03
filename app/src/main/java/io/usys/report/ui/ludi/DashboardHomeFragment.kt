@@ -48,7 +48,7 @@ class DashboardHomeFragment : YsrFragment() {
             setupCoachDisplay()
         }
 
-        NewEvaluationDialog().show(childFragmentManager, "NewEvaluationDialog")
+//        NewEvaluationDialog().show(childFragmentManager, "NewEvaluationDialog")
         setupRealmCoachListener()
         return binding.root
     }
