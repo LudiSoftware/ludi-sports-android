@@ -8,12 +8,14 @@ import io.usys.report.realm.findByField
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
+import io.usys.report.realm.safeWrite
 import io.usys.report.utils.views.getRelativeLayoutParams
 import kotlin.math.max
 import kotlin.math.min
 
 fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, playerId:String?=null,
                                            onSingleTapUp:(() -> Unit)?=null, onLongPress:(() -> Unit)?=null) {
+    val tempRealm = realm()
     // Window Height and Width
     var lastX = 0
     var lastY = 0
@@ -47,20 +49,7 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
         }
 
         override fun onDoubleTap(e: MotionEvent?): Boolean {
-            val tempRealm = realm()
-            tempRealm.safeUserId { itUserId ->
-                tempRealm.findByField<FormationSession>("id", itUserId)?.let { fs ->
-                    playerId?.let { itId ->
-                        fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
-                            tempRealm.executeTransaction {
-                                playerRef.pointX = topMargin
-                                playerRef.pointY = leftMargin
-                                it.copyToRealmOrUpdate(playerRef)
-                            }
-                        }
-                    }
-                }
-            }
+
             return true
         }
 
@@ -92,6 +81,20 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
             lp.leftMargin = leftMargin
             lp.topMargin = topMargin
             viewObject.layoutParams = lp
+
+            tempRealm.safeUserId { itUserId ->
+                tempRealm.findByField<FormationSession>("id", itUserId)?.let { fs ->
+                    playerId?.let { itId ->
+                        fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
+                            tempRealm.safeWrite {
+                                playerRef.pointX = topMargin
+                                playerRef.pointY = leftMargin
+                                it.copyToRealmOrUpdate(playerRef)
+                            }
+                        }
+                    }
+                }
+            }
 
             // Save the last touch position
             lastX = e2.rawX.toInt()
