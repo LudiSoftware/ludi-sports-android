@@ -25,6 +25,10 @@ import io.usys.report.utils.YsrMode
 
 class ChatFragment : LudiStringIdFragment() {
 
+    companion object {
+        const val TAB = "Chat"
+    }
+
     private var _MODE = YsrMode.TRYOUTS
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: DialogChatBinding? = null
@@ -49,7 +53,7 @@ class ChatFragment : LudiStringIdFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
+        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = DialogChatBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup

@@ -36,7 +36,7 @@ class TeamEvaluationsFragment : LudiStringIdFragment() {
      * Get all notes based on a Team from All Coaches.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
+        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamNotesFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup

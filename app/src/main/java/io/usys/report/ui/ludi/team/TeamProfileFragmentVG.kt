@@ -6,7 +6,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import io.usys.report.R
@@ -19,8 +18,8 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.chat.ChatFragment
 import io.usys.report.ui.views.LudiViewGroup
+import io.usys.report.ui.views.ludiTeamVGFragments
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -42,15 +41,10 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     private var teamRef: TeamRef? = null
     private var team: Team? = null
     private var tryout: TryOut? = null
-    private var tryoutRoster: Roster? = null
-    private var officialRoster: Roster? = null
-
-    private var ludiVG: LudiViewGroup? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
         rootView = binding.root
-
         hideLudiNavView()
         showLudiActionBar()
         //Basic Setup
@@ -73,25 +67,9 @@ class TeamProfileFragmentVG : YsrMiddleFragment() {
     }
 
     private fun setupTeamViewPager() {
-//        ludiVG?.setParentFragment(this)
-//        val fragmentPairs: MutableList<Pair<String, Fragment>> = mutableListOf(Pair("Roster", TeamRosterFragment()),Pair("Notes", TeamNotesFragment()), Pair("Chat", ChatFragment()))
-//        ludiVG?.setFragments(fragmentPairs)
-        viewPager = _binding?.includeLudiVG?.ludiViewPager!!
-        tabLayout = _binding?.includeLudiVG?.ludiTabLayout!!
-        val adapter = LudiPagerAdapter(this)
-        adapter.addRealmIdArg(teamId)
-        val fragPairRoster = Pair("Roster", TeamRosterFragment())
-        val fragPairNotes = Pair("Notes", TeamNotesFragment())
-//        val fragPairEvaluation = Pair("Evaluations", TeamEvaluationsFragment())
-        val fragPairChat = Pair("Chat", ChatFragment())
-        adapter.addFragment(fragPairRoster)
-        adapter.addFragment(fragPairNotes)
-////        adapter.addFragment(fragPairEvaluation)
-        adapter.addFragment(fragPairChat)
-        viewPager.adapter = adapter
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = adapter.fragments[position].first
-        }.attach()
+        val linearLayout = _binding?.profileTeamRosterRootLinearLayout
+        val lvg = LudiViewGroup(this, teamId, linearLayout!!)
+        lvg.setupLudiTabs(ludiTeamVGFragments())
     }
 
     private fun setupTeamRealmListener() {

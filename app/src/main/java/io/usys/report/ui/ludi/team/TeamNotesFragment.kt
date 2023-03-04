@@ -23,6 +23,10 @@ import io.usys.report.utils.log
 
 class TeamNotesFragment : LudiStringIdFragment() {
 
+    companion object {
+        const val TAB = "Notes"
+    }
+
     private var _MODE = YsrMode.TRYOUTS
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamNotesFragmentBinding? = null
@@ -35,7 +39,7 @@ class TeamNotesFragment : LudiStringIdFragment() {
      * Get all notes based on a Team from All Coaches.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
+        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamNotesFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup

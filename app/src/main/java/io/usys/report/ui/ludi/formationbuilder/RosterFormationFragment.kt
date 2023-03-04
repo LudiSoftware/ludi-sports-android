@@ -99,7 +99,7 @@ class RosterFormationFragment : LudiStringIdFragment() {
         //Hiding the bottom navigation bar
         hideLudiNavView()
         if (container == null) {
-            val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
+            val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
             rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait)!!
         } else {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)!!

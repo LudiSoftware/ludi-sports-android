@@ -24,6 +24,10 @@ import io.usys.report.utils.log
 
 class TeamRosterFragment : LudiStringIdFragment() {
 
+    companion object {
+        const val TAB = "Roster"
+    }
+
     private var _MODE = YsrMode.TRYOUTS
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamRosterFragmentBinding? = null
@@ -33,7 +37,7 @@ class TeamRosterFragment : LudiStringIdFragment() {
     private var rosterId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.teamViewPager)
+        val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamRosterFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup

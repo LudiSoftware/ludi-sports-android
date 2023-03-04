@@ -28,11 +28,9 @@ fun ViewGroup?.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = 
     return LayoutInflater.from(this?.context).inflate(layoutRes, this, attachToRoot)
 }
 
-
 fun View.setBackgroundImage(@DrawableRes drawableRes: Int) {
     this.background = ContextCompat.getDrawable(context, drawableRes)
 }
-
 
 fun View.enablePinchToZoom() {
     val scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
