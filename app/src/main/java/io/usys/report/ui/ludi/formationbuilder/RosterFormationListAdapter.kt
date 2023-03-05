@@ -69,12 +69,10 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         this.onDeckPlayerIdList.clear()
         this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
             this.formationSessionId = fs.id
-
             this.realmInstance?.safeWrite {
                 fs.deckListIds?.clear()
                 fs.formationListIds?.clear()
             }
-
             fs.roster?.players?.let { rosterPlayers ->
                 for (playerId in rosterPlayers) {
                     this.addPlayer(playerId)
@@ -99,8 +97,8 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
     fun movePlayerToField(playerId: String) {
         onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
-            this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
-                this.realmInstance?.safeWrite {
+            this.realmInstance?.safeWrite {
+                it.teamSessionByTeamId(teamId!!) { fs ->
                     fs.deckListIds?.remove(playerId)
                     fs.formationListIds?.safeAdd(playerId)
                 }

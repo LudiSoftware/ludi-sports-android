@@ -21,6 +21,7 @@ import io.usys.report.realm.realm
 
 class MasterUserActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

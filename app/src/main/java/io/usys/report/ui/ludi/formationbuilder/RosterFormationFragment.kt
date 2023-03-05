@@ -74,7 +74,7 @@ class RosterFormationFragment : LudiTeamFragment() {
         }
 //        setupRosterRealmListener()
         //Base Team Data
-        loadRoster()
+//        setupRosterList()
         //Hiding the action bar
         hideLudiActionBar()
         //Hiding the bottom navigation bar
@@ -103,58 +103,69 @@ class RosterFormationFragment : LudiTeamFragment() {
     private fun saveRosterIdToFormationSession(rosterId: String?) {
         if (rosterId == null) return
         teamSession?.let { formationSession ->
-            realmInstance?.safeWrite {
-                formationSession.rosterId = rosterId
-                it.insertOrUpdate(formationSession)
-            }
+            formationSession.rosterId = rosterId
+//            it.insertOrUpdate(formationSession)
         }
     }
 
-    private fun safeUpdateRoster(newRoster: Roster?) {
-        if (newRoster == null) return
-        teamSession?.let { fs ->
+//    private fun safeUpdateRoster(newRoster: Roster?) {
+//        if (newRoster == null) return
+//        teamSession?.let { fs ->
+//
+//            if (fs.roster.isNullOrEmpty()) {
+//                realmInstance?.safeWrite {
+//                    fs.roster = newRoster
+//                    for (player in newRoster.players!!) {
+//                        fs.deckListIds?.safeAdd(player.id)
+//                    }
+//                }
+//                return
+//            }
+//
+//            newRoster.players?.forEach { newPlayer ->
+//                val tempPlayers = fs.roster?.players
+//                tempPlayers?.let {
+//                    if (tempPlayers.contains(newPlayer)) {
+//                        return@forEach
+//                    }
+//                    realmInstance?.safeWrite { itRealm ->
+//                        tempPlayers.safeAdd(newPlayer)
+//                        fs.deckListIds?.safeAdd(newPlayer.id)
+//                        itRealm.insertOrUpdate(fs)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-            if (fs.roster.isNullOrEmpty()) {
-                realmInstance?.safeWrite {
-                    fs.roster = newRoster
-                    for (player in newRoster.players!!) {
-                        fs.deckListIds?.safeAdd(player.id)
-                    }
-                }
-                return
-            }
-
-            newRoster.players?.forEach { newPlayer ->
-                val tempPlayers = fs.roster?.players
-                tempPlayers?.let {
-                    if (tempPlayers.contains(newPlayer)) {
-                        return@forEach
-                    }
-                    realmInstance?.safeWrite { itRealm ->
-                        tempPlayers.safeAdd(newPlayer)
-                        fs.deckListIds?.safeAdd(newPlayer.id)
-                        itRealm.insertOrUpdate(fs)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun loadRoster() {
-        val roster = teamSession?.roster
-        if (roster.isNullOrEmpty()) {
-            teamId?.let { teamId ->
-                rosterId = realmInstance?.getRosterIdForTeamId(teamId)
-                saveRosterIdToFormationSession(rosterId)
-                rosterId?.let { rosterId ->
-                    realmInstance?.findRosterById(rosterId)?.let { roster ->
-                        safeUpdateRoster(roster)
-                        setupRosterList()
-                    }
-                }
-            }
-        }
-    }
+//    private fun loadRoster() {
+//        val roster = teamSession?.roster
+//
+//        realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
+//            setupRosterList()
+//        }
+//        if (roster.isNullOrEmpty()) {
+//            teamId?.let { teamId ->
+//                rosterId = realmInstance?.getRosterIdForTeamId(teamId)
+//                rosterId?.let { rosterId ->
+//                    realmInstance?.findRosterById(rosterId)?.let { roster ->
+//                        safeUpdateRoster(roster)
+//                        setupRosterList()
+//                    }
+//                }
+//            }
+//        } else {
+//            rosterId = roster?.id
+//            rosterId?.let { rosterId ->
+//                realmInstance?.safeWrite {
+//                    it.findRosterById(rosterId)?.let { roster ->
+//                        safeUpdateRoster(roster)
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun resetFormationLayout() {
         adapter?.resetDeckToRoster()
@@ -183,17 +194,11 @@ class RosterFormationFragment : LudiTeamFragment() {
         onItemDragged = { start, end ->
             log("onItemDragged: $start, $end")
         }
-        teamSession?.let { ts ->
+        realmInstance?.teamSessionByTeamId(teamId) { ts ->
             if (!ts.deckListIds.isNullOrEmpty()) {
                 adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity())
                 rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
                 rosterListRecyclerView?.adapter = adapter
-            } else {
-                realmInstance?.safeWrite {
-                    ts.playerIds?.forEach {
-                        ts.deckListIds?.safeAdd(it)
-                    }
-                }
             }
             ts.formationListIds?.let { formationList ->
                 formationRelativeLayout?.removeAllViews()
@@ -297,7 +302,9 @@ class RosterFormationFragment : LudiTeamFragment() {
                 }
             }
         }
-        formationRelativeLayout?.setOnDragListener(dragListener)
+        tryCatch {
+            formationRelativeLayout?.setOnDragListener(dragListener)
+        }
     }
 
     // 1 Master

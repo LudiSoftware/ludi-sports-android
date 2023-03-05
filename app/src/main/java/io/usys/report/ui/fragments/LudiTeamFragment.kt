@@ -130,6 +130,9 @@ abstract class LudiTeamFragment : Fragment() {
                             fs.playerIds?.clear()
                             roster.players?.forEach {
                                 fs.playerIds?.safeAdd(it.id)
+                                if (fs.deckListIds.isNullOrEmpty()) {
+                                    fs.deckListIds?.safeAdd(it.id)
+                                }
                             }
                         }
                     }
