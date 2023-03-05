@@ -1,43 +1,25 @@
 package io.usys.report.firebase
 
-import io.realm.RealmList
-import io.usys.report.firebase.FireTypes.Companion.TRYOUTS
+import io.realm.Realm
 import io.usys.report.realm.model.*
-import io.usys.report.realm.model.Session.Companion.addCoachToSession
-import io.usys.report.realm.toRealmList
-import io.usys.report.realm.writeToRealm
-import io.usys.report.utils.YsrMode.Companion.TRYOUTS
 import io.usys.report.utils.log
 
 /** Teams Profiles */
-fun fireGetTeamsProfiles(teamIds: RealmList<String>) {
-    for (id in teamIds) {
-        fireGetTeamProfileForSession(id)
-    }
-}
-fun fireGetTeamProfileForSession(teamId:String) {
+fun Realm.fireGetTeamProfileInBackground(teamId:String) {
     firebaseDatabase {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toRealmObjectCast<Team>()
-//                addObjectToSessionList(teamObject)
+                ds?.toRealmObjectCast<Team>(this)
                 log("Team Updated")
             }
     }
 }
-inline fun fireGetTeamProfile(teamId:String, crossinline block: (Team?) -> Unit) {
-    firebaseDatabase {
-        it.child(FireTypes.TEAMS).child(teamId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                val teamObject = ds?.toRealmObjectCast<Team>()
-                block(teamObject as? Team)
-            }
-    }
-}
+
 /**
  * TryOuts
  */
-fun fireGetTryOutProfileForSession(teamId:String) {
+fun fireGetTryOutProfileIntoRealm(teamId:String?) {
+    if (teamId == null) return
     firebaseDatabase {
         it.child(DatabasePaths.TRYOUTS.path).orderByChild("teamId").equalTo(teamId)
             .fairAddListenerForSingleValueEvent { ds ->

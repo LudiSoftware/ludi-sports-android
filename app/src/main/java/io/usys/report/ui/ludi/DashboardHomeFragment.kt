@@ -15,9 +15,7 @@ import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
-import io.usys.report.ui.fragments.YsrFragment
-import io.usys.report.ui.fragments.bundleRealmObject
-import io.usys.report.ui.fragments.toFragmentWithRealmObject
+import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.evaluation.NewEvaluationDialog
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.utils.log
@@ -102,7 +100,9 @@ class DashboardHomeFragment : YsrFragment() {
             toFragmentWithRealmObject(R.id.navigation_org_list, bundleRealmObject(obj))
         }
         itemOnClickTeamList = { view, obj ->
-            toFragmentWithRealmObject(R.id.navigation_team_profile, bundleRealmObject(obj))
+            val teamRef = obj as TeamRef
+            val id = teamRef.id ?: "unknown"
+            toFragmentWithRealmObject(R.id.navigation_team_profile, bundleStringId(id))
         }
 //        itemOnClickServiceList = { _, obj ->
 //            toFragment(R.id.navigation_service_details, bundleRealmObject(obj))

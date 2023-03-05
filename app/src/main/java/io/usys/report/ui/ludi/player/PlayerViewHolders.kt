@@ -6,10 +6,12 @@ import de.hdodenhof.circleimageview.CircleImageView
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
+import io.usys.report.realm.findByField
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.loadInRealmListGridArrangable
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
+import io.usys.report.ui.ludi.formationbuilder.TeamSession
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -17,10 +19,19 @@ import io.usys.report.utils.views.loadUriIntoImgView
  * SPORT LIST VIEW CONTROLS
  */
 
-fun RecyclerView?.setupPlayerListFromSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+fun RecyclerView?.setupPlayerListFromRealm(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
     val roster = realm().findRosterById(id)
     val players = roster?.players
+    players?.let {
+        rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject)
+    }
+}
+
+fun RecyclerView?.setupPlayerListFromTeamSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+    val rv = this
+    val ts = realm().findByField<TeamSession>(field = "teamId", value = id)
+    val players = ts?.roster?.players
     players?.let {
         rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject)
     }

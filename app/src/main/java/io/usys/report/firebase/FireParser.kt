@@ -1,6 +1,7 @@
 package io.usys.report.firebase
 
 import com.google.firebase.database.DataSnapshot
+import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.realm.mapHashMapToRealmObject
@@ -49,15 +50,7 @@ inline fun <reified T : Any> DataSnapshot?.toObject(): T? {
  * 1. Master Parsing Function Part 1
  *    - From Firebase Object to Realm Object
  */
-fun DataSnapshot?.toRealmObject(): RealmObject? {
-    this?.let {
-        var temp: RealmObject? = null
-        val hashmap = it.toHashMap()
-        temp = hashmap.mapHashMapToRealmObject() as? RealmObject
-        return temp
-    }
-    return null
-}
+
 inline fun <reified T:RealmObject> DataSnapshot?.toRealmObjectCast(): RealmObject? {
     this?.let {
         var temp: RealmObject? = null
@@ -67,6 +60,17 @@ inline fun <reified T:RealmObject> DataSnapshot?.toRealmObjectCast(): RealmObjec
     }
     return null
 }
+
+inline fun <reified T:RealmObject> DataSnapshot?.toRealmObjectCast(realm: Realm): RealmObject? {
+    this?.let {
+        var temp: RealmObject? = null
+        val hashmap = it.toHashMap()
+        temp = hashmap.toRealmObject<T>(realm)
+        return temp
+    }
+    return null
+}
+
 inline fun <reified T:RealmObject> DataSnapshot?.toRealmObjects(): RealmList<T>? {
     this?.let {
         val realmList = RealmList<T>()

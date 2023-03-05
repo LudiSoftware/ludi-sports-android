@@ -6,8 +6,6 @@ import android.view.MotionEvent
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
-import io.usys.report.ui.fragments.LudiStringIdFragment.Companion.ARG
 
 
 class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {

@@ -4,21 +4,28 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
+import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.TeamRef
+import io.usys.report.realm.model.TryOut
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
 
-open class FormationSession : RealmObject(), Serializable {
+open class TeamSession : RealmObject(), Serializable {
     @PrimaryKey
-    var id: String? = newUUID()
+    var id: String = newUUID()
     var dateCreated: String = getTimeStamp()
     var teamId: String? = "null"
+    var teamRef: TeamRef? = null
+    var team: Team? = null
     var rosterId: String? = "null"
     var roster: Roster? = null
+    var tryout: TryOut? = null
+    var playerIds: RealmList<String>? = RealmList()
+    //formation
     var teamColorsAreOn: Boolean = true
     var currentLayout: Int = 0
     var layoutList: RealmList<Int>? = RealmList()
@@ -27,23 +34,17 @@ open class FormationSession : RealmObject(), Serializable {
     var blackListIds: RealmList<String>? = RealmList()
 }
 
-fun Realm.getUserFormationSession(): FormationSession? {
-    var fs: FormationSession? = null
-    this.safeUserId {
-        fs = this.where(FormationSession::class.java).equalTo("id", it).findFirst()
+inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSession) -> Unit) {
+    this.where(TeamSession::class.java).equalTo("teamId", teamId).findFirst()?.let {
+        block(it)
     }
-    return fs
 }
 
-inline fun Realm.getUserFormationSession(crossinline block: (FormationSession) -> Unit) {
+inline fun Realm.getUserFormationSession(crossinline block: (TeamSession) -> Unit) {
     this.safeUserId { itUserId ->
-        this.where(FormationSession::class.java).equalTo("id", itUserId).findFirst()?.let {
+        this.where(TeamSession::class.java).equalTo("id", itUserId).findFirst()?.let {
             block(it)
         }
     }
-}
-
-fun Realm.getFormationSessionById(id: String): FormationSession? {
-    return this.where(FormationSession::class.java).equalTo("id", id).findFirst()
 }
 

@@ -4,7 +4,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import io.usys.report.realm.findFirstByField
+import io.usys.report.realm.findByField
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
@@ -12,7 +12,7 @@ import io.usys.report.utils.views.getRelativeLayoutParams
 import kotlin.math.max
 import kotlin.math.min
 
-fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, playerId:String?=null,
+fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId:String, playerId:String?=null,
                                            onSingleTapUp:(() -> Unit)?=null, onLongPress:(() -> Unit)?=null) {
     val tempRealm = realm()
     // Window Height and Width
@@ -81,15 +81,13 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, player
             lp.topMargin = topMargin
             viewObject.layoutParams = lp
 
-            tempRealm.safeUserId { itUserId ->
-                tempRealm.findFirstByField<FormationSession>("id", itUserId)?.let { fs ->
-                    playerId?.let { itId ->
-                        fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
-                            tempRealm.safeWrite {
-                                playerRef.pointX = topMargin
-                                playerRef.pointY = leftMargin
-                                it.copyToRealmOrUpdate(playerRef)
-                            }
+            tempRealm.teamSessionByTeamId(teamId) { fs ->
+                playerId?.let { itId ->
+                    fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
+                        tempRealm.safeWrite {
+                            playerRef.pointX = topMargin
+                            playerRef.pointY = leftMargin
+                            it.copyToRealmOrUpdate(playerRef)
                         }
                     }
                 }

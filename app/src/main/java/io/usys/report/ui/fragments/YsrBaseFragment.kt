@@ -132,6 +132,13 @@ fun Fragment.unbundleStringId(): String? {
     return arguments?.getString(ARG)
 }
 
+fun bundleTeamId(obj: String): Bundle {
+    return bundleOf("teamId" to obj)
+}
+fun Fragment.unbundleTeamId(): String? {
+    return arguments?.getString("teamId")
+}
+
 fun bundleRealmObject(obj: RealmObject): Bundle {
     return bundleOf(ARG to obj)
 }

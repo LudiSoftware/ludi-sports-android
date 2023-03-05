@@ -18,18 +18,18 @@ import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.utils.YsrMode
+import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class ChatFragment : LudiStringIdFragment() {
+class ChatFragment : LudiTeamFragment() {
 
     companion object {
         const val TAB = "Chat"
     }
 
-    private var _MODE = YsrMode.TRYOUTS
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: DialogChatBinding? = null
     private val binding get() = _binding!!
@@ -48,6 +48,7 @@ class ChatFragment : LudiStringIdFragment() {
     var chatId: String? = null
     private var userId: String? = null
     private var userName: String = ""
+
     override fun setupOnClickListeners() {
         TODO("Not yet implemented")
     }
@@ -57,14 +58,18 @@ class ChatFragment : LudiStringIdFragment() {
         _binding = DialogChatBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup
-        chatId = realmIdArg
+        chatId = teamId
 
         realmInstance?.safeUser { user ->
             userId = user.id
             userName = user.name ?: "Anonymous"
             sender = user.name ?: "Anonymous"
         }
-        database = getFireDBChat().child(chatId!!)
+        chatId?.let {
+            database = getFireDBChat().child(chatId!!)
+        } ?: run {
+            Toast.makeText(context, "ChatId is null", Toast.LENGTH_SHORT).show()
+        }
 
         chatMessages = mutableListOf()
         chatAdapter = ChatAdapter()

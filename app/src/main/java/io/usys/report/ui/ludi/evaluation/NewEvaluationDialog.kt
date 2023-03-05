@@ -19,6 +19,7 @@ import io.usys.report.realm.linearLayoutManager
 import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.realm.model.Evaluation
 import io.usys.report.realm.realm
+import io.usys.report.realm.safeWrite
 import io.usys.report.ui.views.FieldValueViewHolder
 import io.usys.report.utils.inflateView
 
@@ -95,7 +96,7 @@ class NewEvaluationDialog : DialogFragment() {
                     versatility = versatilityEditText.text.toString()
                     versatility_score = versatilityScoreEditText.text.toString().toIntOrNull()
                 }
-                realm().executeTransaction {
+                realm().safeWrite {
                     it.insertOrUpdate(evaluation)
                 }
             }

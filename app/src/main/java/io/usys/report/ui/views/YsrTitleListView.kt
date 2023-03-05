@@ -13,7 +13,8 @@ import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.Sport
 import io.usys.report.ui.ludi.note.setupTeamNoteList
 import io.usys.report.ui.ludi.organization.setupOrganizationList
-import io.usys.report.ui.ludi.player.setupPlayerListFromSession
+import io.usys.report.ui.ludi.player.setupPlayerListFromRealm
+import io.usys.report.ui.ludi.player.setupPlayerListFromTeamSession
 import io.usys.report.ui.ludi.service.setupServiceList
 import io.usys.report.ui.ludi.sport.setupSportList
 import io.usys.report.ui.ludi.team.setupTeamListFromSession
@@ -64,11 +65,23 @@ class YsrTitleListView(context: Context) : CardView(context) {
         recyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject, isRef)
     }
 
-    fun setupPlayerList(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-        setTitle("Roster")
-        recyclerView?.setupPlayerListFromSession(id, onClickReturnViewRealmObject)
+    fun setupPlayerListOfficialRoster(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        setTitle("Official Roster")
+        recyclerView?.setupPlayerListFromRealm(id, onClickReturnViewRealmObject)
     }
-    fun setupTeamNotesList(teamId: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+    fun setupPlayerListTeamSession(id:String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        if (id == null) {
+            setTitle("Uh Oh! No Data Found.")
+            return
+        }
+        setTitle("Session Roster")
+        recyclerView?.setupPlayerListFromTeamSession(id, onClickReturnViewRealmObject)
+    }
+    fun setupTeamNotesList(teamId: String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        if (teamId == null) {
+            setTitle("Uh Oh! No Data Found.")
+            return
+        }
         setTitle("Team Notes")
         recyclerView?.setupTeamNoteList(teamId, onClickReturnViewRealmObject)
     }

@@ -12,7 +12,6 @@ import io.usys.report.R
 import io.usys.report.databinding.TeamNotesFragmentBinding
 import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
 import io.usys.report.realm.model.Evaluation
-import io.usys.report.realm.model.Note
 import io.usys.report.realm.safeAdd
 import io.usys.report.ui.fragments.*
 import io.usys.report.utils.YsrMode
@@ -22,26 +21,25 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class TeamEvaluationsFragment : LudiStringIdFragment() {
+class TeamEvaluationsFragment : LudiTeamFragment() {
 
-    private var _MODE = YsrMode.TRYOUTS
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamNotesFragmentBinding? = null
     private val binding get() = _binding!!
-    private var teamId: String? = null
 
     private var teamEvaluations: RealmList<Evaluation>? = RealmList()
-
+//    var teamId: String? = null
+//    var rosterId: String? = null
     /**
      * Get all notes based on a Team from All Coaches.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        if (teamId == null) teamId = unbundleTeamId()
+        log("TeamId: $teamId")
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamNotesFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup
-        teamId = realmIdArg
-
         fireGetTeamNotesInBackground(teamId)
         setupDisplay()
         setupTeamEvalRealmListener()

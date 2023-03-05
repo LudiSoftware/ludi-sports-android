@@ -1,6 +1,8 @@
 package io.usys.report.firebase
 
+import io.usys.report.realm.findByField
 import io.usys.report.realm.model.users.User
+import io.usys.report.realm.realm
 import io.usys.report.realm.updateFieldsAndSave
 
 
@@ -15,22 +17,22 @@ import io.usys.report.realm.updateFieldsAndSave
  */
 
 inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User?) -> Unit) {
+    val tempRealm = realm()
     firebaseDatabase { itFB ->
         itFB.child(FireTypes.USERS).child(coreFireUser.id).fairAddListenerForSingleValueEvent { itDb ->
             var userProfile = itDb?.toObject<User>()
             userProfile?.let { itUpdatedUser ->
                 // DOES EXIST: Firebase User Was Found
-                coreFireUser.updateFieldsAndSave(itUpdatedUser)
+                coreFireUser.updateFieldsAndSave(itUpdatedUser, tempRealm)
                 // Check if is Coach.
                 if (coreFireUser.coach && coreFireUser.coachUser == null) {
-                    fireGetCoachProfileForSession(coreFireUser.id)
+                    tempRealm.fireGetCoachProfileInBackground(coreFireUser.id)
                 }
                 block(coreFireUser)
                 return@fairAddListenerForSingleValueEvent
             }
             // DOES NOT EXIST: Firebase User Was Not Found
             userProfile = coreFireUser
-//            userProfile.saveToRealm()
             userProfile.saveToFirebase()
             block(userProfile)
             return@fairAddListenerForSingleValueEvent

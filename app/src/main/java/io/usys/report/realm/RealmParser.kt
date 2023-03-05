@@ -103,6 +103,15 @@ inline fun <reified T:RealmObject> HashMap<String, Any>.toRealmObject(): T? {
     return result as? T
 }
 
+inline fun <reified T:RealmObject> HashMap<String, Any>.toRealmObject(realm: Realm): T? {
+    val jsonString = Gson().toJson(this)
+    var result: Any? = null
+    realm.safeWrite {
+        result = realm.createOrUpdateObjectFromJson(T::class.java, jsonString)
+    }
+    return result as? T
+}
+
 /**
  * 2. Master Parsing Function Part 2
  *    - From HashMap<String,Any> to Realm Object

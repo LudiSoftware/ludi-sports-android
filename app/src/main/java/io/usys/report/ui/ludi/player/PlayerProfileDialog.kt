@@ -46,7 +46,7 @@ fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
     // Hide unused views
 
     fun loadData() {
-        val player = realm().findFirstByField<PlayerRef>("playerId", playerId)
+        val player = realm().findByField<PlayerRef>("playerId", playerId)
         player?.let {
             playerTxtName?.text = it.name
             playerTxtRank?.text = "Rank: ${it.rank.toString()}"

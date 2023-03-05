@@ -11,7 +11,7 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.users.safeUserId
 
 //This works.
-inline fun <reified T: RealmObject> Realm.findFirstByField(field:String="id", value: String): T? {
+inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String): T? {
     return this.where(T::class.java).equalTo(field, value).findFirst()
 }
 

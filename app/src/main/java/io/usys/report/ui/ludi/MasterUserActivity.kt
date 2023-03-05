@@ -1,8 +1,6 @@
 package io.usys.report.ui.ludi
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -12,7 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
 import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
-import io.usys.report.firebase.fireGetCoachProfileForSession
+import io.usys.report.firebase.fireGetCoachProfileInBackground
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
 
@@ -37,7 +35,7 @@ class MasterUserActivity : AppCompatActivity() {
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()
         realm().safeUser {
-            fireGetCoachProfileForSession(it.id)
+            fireGetCoachProfileInBackground(it.id)
         }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

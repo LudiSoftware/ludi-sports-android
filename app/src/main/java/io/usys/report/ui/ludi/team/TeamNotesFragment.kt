@@ -21,30 +21,23 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class TeamNotesFragment : LudiStringIdFragment() {
+class TeamNotesFragment : LudiTeamFragment() {
 
     companion object {
         const val TAB = "Notes"
     }
 
-    private var _MODE = YsrMode.TRYOUTS
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamNotesFragmentBinding? = null
     private val binding get() = _binding!!
-    private var teamId: String? = null
 
     private var teamNotes: RealmList<Note>? = RealmList()
 
-    /**
-     * Get all notes based on a Team from All Coaches.
-     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamNotesFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup
-        teamId = realmIdArg
-
         fireGetTeamNotesInBackground(teamId)
         setupDisplay()
         setupTeamNoteRealmListener()
@@ -60,7 +53,7 @@ class TeamNotesFragment : LudiStringIdFragment() {
                 log("Note: ${note}")
                 teamNotes?.safeAdd(note)
             }
-            setupDisplay()
+            if (!teamNotes.isNullOrEmpty()) setupDisplay()
         }
         realmInstance?.where(Note::class.java)?.findAllAsync()?.addChangeListener(noteListener)
     }
@@ -74,7 +67,7 @@ class TeamNotesFragment : LudiStringIdFragment() {
         onClickReturnViewRealmObject = { view, realmObject ->
             log("Clicked on player: ${realmObject}")
         }
-        _binding?.includeTeamNoteLudiListView?.root?.setupTeamNotesList(teamId!!, onClickReturnViewRealmObject)
+        _binding?.includeTeamNoteLudiListView?.root?.setupTeamNotesList(teamId, onClickReturnViewRealmObject)
     }
 
     override fun setupOnClickListeners() {

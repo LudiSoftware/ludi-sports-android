@@ -13,8 +13,8 @@ import io.usys.report.utils.isNullOrEmpty
  * Created by ChazzCoin : December 2019.
  */
 
-fun RealmObject.updateFieldsAndSave(newObject: RealmObject) {
-    writeToRealm {
+fun RealmObject.updateFieldsAndSave(newObject: RealmObject, realm: Realm) {
+    realm.safeWrite {
         val fields = this.javaClass.declaredFields
         for (field in fields) {
             field.isAccessible = true

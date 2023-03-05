@@ -22,6 +22,13 @@ fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
     }
 }
 
+fun ludiNotesAndEvalsVGFragments(): MutableList<Pair<String, Fragment>> {
+    return mutableListOf<Pair<String, Fragment>>().apply {
+        add(Pair("Roster", TeamRosterFragment()))
+        add(Pair("Notes", TeamNotesFragment()))
+    }
+}
+
 class LudiViewGroup(parentFragment: Fragment, teamId: String?, rootView: LinearLayout) {
 
     var inflater: LayoutInflater? = null

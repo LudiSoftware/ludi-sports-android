@@ -9,6 +9,7 @@ import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.main
+import io.usys.report.utils.tryCatch
 
 /**
  * Realm Rules
@@ -33,13 +34,37 @@ inline fun Realm.safeWrite(crossinline block: (Realm) -> Unit) {
         this.executeTransaction { block(it) }
     }
 }
+fun Realm.safeTransaction(transaction: (realm: Realm) -> Unit) {
+    try {
+        this.safeWrite {
+            transaction(it)
+        }
+    } catch (e: Exception) {
+        cancelTransaction()
+        throw e
+    }
+}
 
-//LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
+////LAMBA FUNCTION -> Shortcut for realm().executeTransaction{ }
 inline fun writeToRealm(crossinline block: (Realm) -> Unit) {
     val realm = realm()
-    if (realm.isInTransaction) {
-        realm.executeTransactionAsync { block(it) }
-    } else {
-        realm.executeTransaction { block(it) }
+    tryCatch {
+        if (realm.isInTransaction) {
+            realm.executeTransactionAsync { block(it) }
+        } else {
+            realm.executeTransaction { block(it) }
+        }
+    }
+}
+
+inline fun Realm.safeCommit(crossinline block: (Realm) -> Unit) {
+    tryCatch {
+        if (this.isInTransaction) {
+            this.commitTransaction()
+            this.executeTransactionAsync { block(it) }
+        } else {
+            this.executeTransaction { block(it) }
+
+        }
     }
 }
