@@ -128,9 +128,10 @@ abstract class LudiTeamFragment : Fragment() {
                         this.realmInstance?.safeWrite { itRealm ->
                             fs.roster = roster
                             fs.playerIds?.clear()
+                            val loadDeck = fs.deckListIds.isNullOrEmpty()
                             roster.players?.forEach {
                                 fs.playerIds?.safeAdd(it.id)
-                                if (fs.deckListIds.isNullOrEmpty()) {
+                                if (loadDeck) {
                                     fs.deckListIds?.safeAdd(it.id)
                                 }
                             }

@@ -72,7 +72,7 @@ class RosterFormationFragment : LudiTeamFragment() {
             this.teamSession = teamSession
             rosterId = teamSession.rosterId
         }
-//        setupRosterRealmListener()
+        setupRosterRealmListener()
         //Base Team Data
 //        setupRosterList()
         //Hiding the action bar
@@ -108,64 +108,6 @@ class RosterFormationFragment : LudiTeamFragment() {
         }
     }
 
-//    private fun safeUpdateRoster(newRoster: Roster?) {
-//        if (newRoster == null) return
-//        teamSession?.let { fs ->
-//
-//            if (fs.roster.isNullOrEmpty()) {
-//                realmInstance?.safeWrite {
-//                    fs.roster = newRoster
-//                    for (player in newRoster.players!!) {
-//                        fs.deckListIds?.safeAdd(player.id)
-//                    }
-//                }
-//                return
-//            }
-//
-//            newRoster.players?.forEach { newPlayer ->
-//                val tempPlayers = fs.roster?.players
-//                tempPlayers?.let {
-//                    if (tempPlayers.contains(newPlayer)) {
-//                        return@forEach
-//                    }
-//                    realmInstance?.safeWrite { itRealm ->
-//                        tempPlayers.safeAdd(newPlayer)
-//                        fs.deckListIds?.safeAdd(newPlayer.id)
-//                        itRealm.insertOrUpdate(fs)
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    private fun loadRoster() {
-//        val roster = teamSession?.roster
-//
-//        realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
-//            setupRosterList()
-//        }
-//        if (roster.isNullOrEmpty()) {
-//            teamId?.let { teamId ->
-//                rosterId = realmInstance?.getRosterIdForTeamId(teamId)
-//                rosterId?.let { rosterId ->
-//                    realmInstance?.findRosterById(rosterId)?.let { roster ->
-//                        safeUpdateRoster(roster)
-//                        setupRosterList()
-//                    }
-//                }
-//            }
-//        } else {
-//            rosterId = roster?.id
-//            rosterId?.let { rosterId ->
-//                realmInstance?.safeWrite {
-//                    it.findRosterById(rosterId)?.let { roster ->
-//                        safeUpdateRoster(roster)
-//
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     private fun resetFormationLayout() {
         adapter?.resetDeckToRoster()
@@ -214,6 +156,13 @@ class RosterFormationFragment : LudiTeamFragment() {
             val itemTouchHelperCallback = RosterFormationTouchHelperCallback(itAdapter)
             val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
             itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
+        }
+    }
+
+    fun setupRosterRealmListener() {
+        realmRosterCallBack = {
+            log("Roster Realm Listener")
+            setupDisplay()
         }
     }
 
