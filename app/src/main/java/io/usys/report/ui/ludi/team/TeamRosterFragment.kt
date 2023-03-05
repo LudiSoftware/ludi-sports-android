@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
-import io.usys.report.firebase.fireGetRoster
+import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Roster
@@ -27,27 +27,15 @@ class TeamRosterFragment : LudiTeamFragment() {
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamRosterFragmentBinding? = null
     private val binding get() = _binding!!
-    private var roster: Roster? = null
-//    var teamId: String? = null
-//    var rosterId: String? = null
+
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamRosterFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
 
-        teamId?.let {
-            val team = realmInstance?.findTeamById(it)
-            rosterId = team?.rosterId
-            rosterId?.let { rosterId ->
-                val roster = realmInstance?.findRosterById(rosterId)
-                if (roster != null) {
-                    this.roster = roster
-                    setupDisplay()
-                } else {
-                    fireGetRoster(rosterId)
-                }
-            }
-        }
+        setupDisplay()
 
         setupTeamRosterRealmCallBack()
         setupOnClickListeners()

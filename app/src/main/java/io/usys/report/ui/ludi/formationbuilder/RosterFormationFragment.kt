@@ -72,9 +72,8 @@ class RosterFormationFragment : LudiTeamFragment() {
             this.teamSession = teamSession
             rosterId = teamSession.rosterId
         }
-        setupRosterRealmListener()
+//        setupRosterRealmListener()
         //Base Team Data
-//        setupRosterList()
         //Hiding the action bar
         hideLudiActionBar()
         //Hiding the bottom navigation bar
@@ -99,15 +98,6 @@ class RosterFormationFragment : LudiTeamFragment() {
      * Base Functions
      *
      */
-
-    private fun saveRosterIdToFormationSession(rosterId: String?) {
-        if (rosterId == null) return
-        teamSession?.let { formationSession ->
-            formationSession.rosterId = rosterId
-//            it.insertOrUpdate(formationSession)
-        }
-    }
-
 
     private fun resetFormationLayout() {
         adapter?.resetDeckToRoster()
@@ -144,6 +134,7 @@ class RosterFormationFragment : LudiTeamFragment() {
             }
             ts.formationListIds?.let { formationList ->
                 formationRelativeLayout?.removeAllViews()
+                formationViewList.clear()
                 formationList.forEach { itPlayerId ->
                     addPlayerToFormation(itPlayerId, loadingFromSession = true)
                 }
@@ -159,7 +150,7 @@ class RosterFormationFragment : LudiTeamFragment() {
         }
     }
 
-    fun setupRosterRealmListener() {
+    private fun setupRosterRealmListener() {
         realmRosterCallBack = {
             log("Roster Realm Listener")
             setupDisplay()
@@ -267,8 +258,8 @@ class RosterFormationFragment : LudiTeamFragment() {
 
             if (!loadingFromSession) {
                 realmInstance?.safeWrite { itRealm ->
-                    teamSession?.let { fs ->
-                        fs.formationListIds?.let {
+                    itRealm.teamSessionByTeamId(teamId) { ts ->
+                        ts.formationListIds?.let {
                             if (!it.contains(playerId)) {
                                 it.add(playerId)
                             }

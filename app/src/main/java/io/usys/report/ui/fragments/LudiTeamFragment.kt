@@ -47,6 +47,7 @@ abstract class LudiTeamFragment : Fragment() {
     var teamSession: TeamSession? = null
     var teamId: String? = null
     var rosterId: String? = null
+    var roster: Roster? = null
 
     abstract fun setupOnClickListeners()
 
@@ -88,8 +89,8 @@ abstract class LudiTeamFragment : Fragment() {
             }
         }
     }
-//
-    fun setupTeamRealmListener() {
+
+    private fun setupTeamRealmListener() {
         val teamListener = RealmChangeListener<RealmResults<Team>> {
             // Handle changes to the Realm data here
             log("Team listener called")
@@ -103,9 +104,8 @@ abstract class LudiTeamFragment : Fragment() {
         }
         realmInstance?.where(Team::class.java)?.findAllAsync()?.addChangeListener(teamListener)
     }
-//
-//
-    fun setupTryOutRealmListener() {
+
+    private fun setupTryOutRealmListener() {
         val tryoutListener = RealmChangeListener<RealmResults<TryOut>> {
             // Handle changes to the Realm data here
             log("TryOut listener called")
@@ -117,8 +117,8 @@ abstract class LudiTeamFragment : Fragment() {
         }
         realmInstance?.where(TryOut::class.java)?.findAllAsync()?.addChangeListener(tryoutListener)
     }
-//
-    fun setupTeamRosterRealmListener() {
+
+    private fun setupTeamRosterRealmListener() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
             log("Roster listener called")

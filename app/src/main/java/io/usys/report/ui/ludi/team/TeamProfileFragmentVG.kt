@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import io.usys.report.databinding.ProfileTeamBinding
+import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.firebase.fireGetTryOutProfileIntoRealm
+import io.usys.report.realm.findRosterById
+import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.views.LudiViewGroup
@@ -23,6 +26,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     private var _binding: ProfileTeamBinding? = null
     private val binding get() = _binding!!
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
         linearLayout = _binding?.profileTeamRosterRootLinearLayout
@@ -38,6 +42,16 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         //Basic Setup
         teamId?.let {
             realmInstance?.fireGetTeamProfileInBackground(it)
+            val team = realmInstance?.findTeamById(it)
+            rosterId = team?.rosterId
+            rosterId?.let { rosterId ->
+                val roster = realmInstance?.findRosterById(rosterId)
+                if (roster != null) {
+                    this.roster = roster
+                } else {
+                    fireGetRosterInBackground(rosterId)
+                }
+            }
             if (_MODE == YsrMode.TRYOUTS) {
                 fireGetTryOutProfileIntoRealm(it)
             }

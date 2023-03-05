@@ -32,7 +32,7 @@ fun fireGetTryOutProfileIntoRealm(teamId:String?) {
 /**
  * Roster
  */
-fun fireGetRoster(rosterId:String) {
+fun fireGetRosterInBackground(rosterId:String) {
     firebaseDatabase {
         it.child(DatabasePaths.ROSTERS.path).orderByChild("id").equalTo(rosterId)
             .fairAddListenerForSingleValueEvent { ds ->
