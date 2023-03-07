@@ -10,6 +10,7 @@ import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
+import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
 import io.usys.report.utils.log
@@ -18,7 +19,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class TeamRosterFragment : LudiTeamFragment() {
+class ViewTeamRosterFragment : LudiTeamFragment() {
 
     companion object {
         const val TAB = "Roster"
@@ -56,6 +57,7 @@ class TeamRosterFragment : LudiTeamFragment() {
     private fun setupDisplay() {
         onClickReturnViewRealmObject = { view, realmObject ->
             log("Clicked on player: ${realmObject}")
+            toFragmentWithId(R.id.navigation_player_profile, (realmObject as PlayerRef).id ?: "unknown")
         }
         _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle("Roster")
         _binding?.includeTeamRosterLudiListViewTeams?.root?.setupPlayerListTeamSession(teamId, onClickReturnViewRealmObject)

@@ -17,7 +17,7 @@ import io.usys.report.utils.popAskUserPickImageGallery
  * * Make sure to add any new fragments to Navigation XML! * *
  */
 
-abstract class YsrMiddleFragment : Fragment() {
+abstract class LudiMiddleFragment : Fragment() {
 
     companion object {
         val ARG = "realmObj"

@@ -17,7 +17,7 @@ import io.usys.report.ui.ludi.player.setupPlayerListFromRealm
 import io.usys.report.ui.ludi.player.setupPlayerListFromTeamSession
 import io.usys.report.ui.ludi.service.setupServiceList
 import io.usys.report.ui.ludi.sport.setupSportList
-import io.usys.report.ui.ludi.team.setupTeamListFromSession
+import io.usys.report.ui.ludi.team.viewholders.setupTeamListFromSession
 import io.usys.report.utils.*
 
 class YsrTitleListView(context: Context) : CardView(context) {

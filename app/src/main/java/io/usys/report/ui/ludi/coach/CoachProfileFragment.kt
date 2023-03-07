@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import io.usys.report.R
 import io.usys.report.databinding.ProfileCoachBinding
 import io.usys.report.realm.model.Coach
-import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.fragments.LudiMiddleFragment
 import io.usys.report.ui.ludi.review.coach.ReviewDialogFragment
 import io.usys.report.utils.cast
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -18,7 +18,7 @@ import io.usys.report.utils.views.loadUriIntoImgView
  * Created by ChazzCoin : 2020.
  */
 
-class CoachProfileFragment : YsrMiddleFragment() {
+class CoachProfileFragment : LudiMiddleFragment() {
 
     val _SAVE = 0
     val _DISPLAY = 1

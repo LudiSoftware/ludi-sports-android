@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmObjectSchema
 import io.realm.RealmSchema
@@ -95,7 +96,26 @@ open class YsrFieldValueListAdapter<T: RealmObject>(var realmObject: T?, var typ
 
 }
 
+class CustomAttributesListAdapter(private val attributes: RealmList<CustomAttribute>?) :
+    RecyclerView.Adapter<FieldValueViewHolder>() {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FieldValueViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ysr_item_attribute, parent, false)
+        return FieldValueViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: FieldValueViewHolder, position: Int) {
+        attributes?.let { attrs ->
+            val attribute = attrs[position]
+            holder.bind(attribute)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return attributes?.size ?: 0
+    }
+
+}
 
 class FieldValueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtFieldName = itemView.bindTextView(R.id.ysrTxtItemFieldName)

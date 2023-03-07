@@ -10,11 +10,7 @@
     android:id="@+id/navigation_master"
     app:startDestination="@+id/navigation_dashboard">
 
-    <fragment
-        android:id="@+id/navigation_management"
-        android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
-        android:label="@string/title_calendar"
-        tools:layout="@layout/spot_calendar_fragment" />
+
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
@@ -31,11 +27,7 @@
             app:popUpToInclusive="true">
         </action>
     </fragment>
-    <fragment
-        android:id="@+id/navigation_cart"
-        android:name="io.usys.report.ui.calendar.FoodCalendarFragment"
-        android:label="@string/title_orgs"
-        tools:layout="@layout/fragment_cart" />
+
 
     <!-- ORGANIZATION LIST PAGE -->
     <fragment
@@ -74,6 +66,20 @@
         android:name="io.usys.report.ui.ludi.user.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_user" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_player_profile"
+        android:name="io.usys.report.ui.ludi.player.PlayerProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/profile_user" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_create_note"
+        android:name="io.usys.report.ui.ludi.note.CreateNoteFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/dialog_create_note_layout" >
     </fragment>
 
     <!-- COACH PROFILE PAGE -->

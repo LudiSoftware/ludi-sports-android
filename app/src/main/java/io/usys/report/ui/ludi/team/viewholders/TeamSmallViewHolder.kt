@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.team
+package io.usys.report.ui.ludi.team.viewholders
 
 
 import android.view.View

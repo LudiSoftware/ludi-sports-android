@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import io.usys.report.databinding.DetailsServiceBinding
 import io.usys.report.realm.model.Service
-import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.fragments.LudiMiddleFragment
 import io.usys.report.utils.cast
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class ServiceDetailsFragment : YsrMiddleFragment() {
+class ServiceDetailsFragment : LudiMiddleFragment() {
 
     private var _binding: DetailsServiceBinding? = null
     private val binding get() = _binding!!

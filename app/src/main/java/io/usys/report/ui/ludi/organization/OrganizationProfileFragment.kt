@@ -8,7 +8,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import io.usys.report.R
 import io.usys.report.databinding.ProfileOrganizationBinding
 import io.usys.report.realm.model.Organization
-import io.usys.report.ui.fragments.YsrMiddleFragment
+import io.usys.report.ui.fragments.LudiMiddleFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.ludi.review.organization.createOrgReviewDialog
 import io.usys.report.ui.fragments.toFragmentWithRealmObject
@@ -19,7 +19,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class OrganizationProfileFragment : YsrMiddleFragment() {
+class OrganizationProfileFragment : LudiMiddleFragment() {
 
     private var _binding: ProfileOrganizationBinding? = null
     private val binding get() = _binding!!

@@ -9,7 +9,7 @@
     <EditText
         android:id="@+id/ysrEditTxtFieldAttribute"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:background="@null"
         android:gravity="bottom"
@@ -23,7 +23,7 @@
     <EditText
         android:id="@+id/ysrEditTxtValueAttribute"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="35dp"
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:ems="10"

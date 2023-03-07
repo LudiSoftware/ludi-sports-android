@@ -14,13 +14,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import io.realm.RealmChangeListener
-import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.realm.*
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiTeamFragment
-import io.usys.report.ui.fragments.unbundleTeamId
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.utils.*

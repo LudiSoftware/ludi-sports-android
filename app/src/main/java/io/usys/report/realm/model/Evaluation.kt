@@ -6,12 +6,14 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
-open class PlayerEvaluationRef: RealmObject(), Serializable {
+open class PEval: RealmObject(), Serializable {
     @PrimaryKey
     var evalId: String = newUUID()
     var coachId: String? = null
     var playerId: String? = null
     var teamId: String? = null
+    var technical_skills: String? = null
+    var technical_skills_score: Int? = null
 }
 
 open class Evaluation: RealmObject(), Serializable {

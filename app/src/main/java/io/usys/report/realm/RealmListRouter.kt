@@ -14,7 +14,7 @@ import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ludi.review.organization.OrgReviewCommentViewHolder
 import io.usys.report.ui.ludi.service.ServiceViewHolder
 import io.usys.report.ui.ludi.sport.SportViewHolder
-import io.usys.report.ui.ludi.team.TeamSmallViewHolder
+import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
 
 /**
  * This Class will 'route' the RecyclerView to the correct ViewHolder based on its realm 'type'.

@@ -10,22 +10,24 @@ import com.google.android.material.tabs.TabLayoutMediator
 import io.usys.report.R
 import io.usys.report.ui.fragments.LudiPagerAdapter
 import io.usys.report.ui.ludi.chat.ChatFragment
-import io.usys.report.ui.ludi.team.TeamNotesFragment
-import io.usys.report.ui.ludi.team.TeamRosterFragment
+import io.usys.report.ui.ludi.evaluation.CreateEvaluationFragment
+import io.usys.report.ui.ludi.note.CreateNoteFragment
+import io.usys.report.ui.ludi.team.ViewTeamNotesFragment
+import io.usys.report.ui.ludi.team.ViewTeamRosterFragment
 import io.usys.report.utils.log
 
 fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
-        add(Pair("Roster", TeamRosterFragment()))
-        add(Pair("Notes", TeamNotesFragment()))
+        add(Pair("Roster", ViewTeamRosterFragment()))
+        add(Pair("Notes", ViewTeamNotesFragment()))
         add(Pair("Chat", ChatFragment()))
     }
 }
 
 fun ludiNotesAndEvalsVGFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
-        add(Pair("Roster", TeamRosterFragment()))
-        add(Pair("Notes", TeamNotesFragment()))
+        add(Pair("Evaluation", CreateEvaluationFragment()))
+        add(Pair("Notes", CreateNoteFragment()))
     }
 }
 
