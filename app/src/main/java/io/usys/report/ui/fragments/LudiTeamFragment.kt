@@ -31,9 +31,6 @@ import io.usys.report.utils.log
 
 abstract class LudiTeamFragment : Fragment() {
 
-    companion object {
-        const val TEAMID = "teamId"
-    }
     var _MODE = YsrMode.TRYOUTS
     lateinit var rootView : View
     var menu: TeamMenuProvider? = null
@@ -47,7 +44,7 @@ abstract class LudiTeamFragment : Fragment() {
     var teamSession: TeamSession? = null
     var teamId: String? = null
     var rosterId: String? = null
-    var roster: Roster? = null
+
 
     abstract fun setupOnClickListeners()
 
@@ -118,25 +115,28 @@ abstract class LudiTeamFragment : Fragment() {
         realmInstance?.where(TryOut::class.java)?.findAllAsync()?.addChangeListener(tryoutListener)
     }
 
+    fun updateTeamSession(roster: Roster) {
+        this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
+            this.realmInstance?.safeWrite { itRealm ->
+                fs.roster = roster
+                fs.playerIds?.clear()
+                val loadDeck = fs.deckListIds.isNullOrEmpty()
+                roster.players?.forEach {
+                    fs.playerIds?.safeAdd(it.id)
+                    if (loadDeck) {
+                        fs.deckListIds?.safeAdd(it.id)
+                    }
+                }
+            }
+        }
+    }
     private fun setupTeamRosterRealmListener() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
             log("Roster listener called")
             rosterId?.let { rosterId ->
                 it.find { it.id == rosterId }?.let { roster ->
-                    this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
-                        this.realmInstance?.safeWrite { itRealm ->
-                            fs.roster = roster
-                            fs.playerIds?.clear()
-                            val loadDeck = fs.deckListIds.isNullOrEmpty()
-                            roster.players?.forEach {
-                                fs.playerIds?.safeAdd(it.id)
-                                if (loadDeck) {
-                                    fs.deckListIds?.safeAdd(it.id)
-                                }
-                            }
-                        }
-                    }
+                    updateTeamSession(roster)
                     realmRosterCallBack?.invoke(roster)
                 }
 

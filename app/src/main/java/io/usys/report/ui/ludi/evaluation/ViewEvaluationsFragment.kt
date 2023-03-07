@@ -23,7 +23,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class ViewEvaluationsFragment : LudiTeamFragment() {
+class ViewEvaluationsFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAB = "Evaluations"
@@ -32,7 +32,6 @@ class ViewEvaluationsFragment : LudiTeamFragment() {
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: CreatePlayerEvalBinding? = null
     private val binding get() = _binding!!
-
 
     private var evalType: String? = null
     private var evaluations: RealmList<PEval>? = RealmList()
@@ -43,19 +42,12 @@ class ViewEvaluationsFragment : LudiTeamFragment() {
         rootView = binding.root
         //Basic Setup
         setupDisplay()
-        setupOnClickListeners()
         return rootView
     }
 
     private fun setupDisplay() {
         onClickReturnViewRealmObject = { view, realmObject ->
             log("Clicked on player: ${realmObject}")
-        }
-    }
-
-    override fun setupOnClickListeners() {
-        itemOnClick = { _,obj ->
-//            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
         }
     }
 

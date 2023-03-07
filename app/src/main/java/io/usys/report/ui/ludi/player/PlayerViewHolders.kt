@@ -19,7 +19,7 @@ import io.usys.report.utils.views.loadUriIntoImgView
  * SPORT LIST VIEW CONTROLS
  */
 
-fun RecyclerView?.setupPlayerListFromRealm(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+fun RecyclerView?.setupPlayerListFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
     val roster = realm().findRosterById(id)
     val players = roster?.players

@@ -42,16 +42,13 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         showLudiActionBar()
         //Basic Setup
         teamId?.let {
+            // 1. Get Team Profile from Firebase
             realmInstance?.fireGetTeamProfileInBackground(it)
             val team = realmInstance?.findTeamById(it)
             rosterId = team?.rosterId
-            rosterId?.let { rosterId ->
-                val roster = realmInstance?.findRosterById(rosterId)
-                if (roster != null) {
-                    this.roster = roster
-                } else {
-                    fireGetRosterInBackground(rosterId)
-                }
+            val tempRoster = realmInstance?.findRosterById(rosterId)
+            if (tempRoster == null && rosterId != null) {
+                fireGetRosterInBackground(rosterId!!)
             }
             if (_MODE == YsrMode.TRYOUTS) {
                 fireGetTryOutProfileIntoRealm(it)
@@ -70,13 +67,14 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     private fun setupTeamViewPager() {
         linearLayout?.let {
             val lvg = LudiViewGroup(this, it, teamId)
-//            lvg.setupLudiTabs(ludiTeamVGFragments())
-            lvg.setupLudiTabs(ludiNotesAndEvalsVGFragments())
+            lvg.setupLudiTabs(ludiTeamVGFragments())
+//            lvg.setupLudiTabs(ludiNotesAndEvalsVGFragments())
         }
     }
 
     private fun setupCallBacks() {
         realmTeamCallBack = {
+            rosterId = it.rosterId
             setupHeader(it)
         }
     }

@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.usys.report.R
 import io.usys.report.realm.*
 import io.usys.report.realm.model.*
+import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.LudiTeamFragment
 import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
@@ -27,7 +28,7 @@ import io.usys.report.utils.views.*
  * Created by ChazzCoin : October 2022.
  */
 
-class RosterFormationFragment : LudiTeamFragment() {
+class RosterFormationFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAG = "Formation"
@@ -58,16 +59,15 @@ class RosterFormationFragment : LudiTeamFragment() {
     var container: ViewGroup? = null
     var inflater: LayoutInflater? = null
 
-    override fun setupOnClickListeners() {
-        TODO("Not yet implemented")
-    }
+    var teamSession: TeamSession? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         this.inflater = inflater
         this.container = container
         realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
             this.teamSession = teamSession
-            rosterId = teamSession.rosterId
+//            rosterId = teamSession.rosterId
         }
 //        setupRosterRealmListener()
         //Base Team Data
@@ -147,12 +147,12 @@ class RosterFormationFragment : LudiTeamFragment() {
         }
     }
 
-    private fun setupRosterRealmListener() {
-        realmRosterCallBack = {
-            log("Roster Realm Listener")
-            setupDisplay()
-        }
-    }
+//    private fun setupRosterRealmListener() {
+//        realmRosterCallBack = {
+//            log("Roster Realm Listener")
+//            setupDisplay()
+//        }
+//    }
 
     /**
      * Orientation Change Functions

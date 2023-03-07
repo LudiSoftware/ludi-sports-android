@@ -11,11 +11,11 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.users.safeUserId
 
 //This works.
-inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String): T? {
+inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: String?): T? {
     return this.where(T::class.java).equalTo(field, value).findFirst()
 }
 
-inline fun <reified T: RealmObject> Realm.findAllByField(field:String="id", value: String): RealmResults<T>? {
+inline fun <reified T: RealmObject> Realm.findAllByField(field:String="id", value: String?): RealmResults<T>? {
     return this.where(T::class.java).equalTo(field, value).findAll()
 }
 
@@ -26,19 +26,19 @@ fun Realm.findCoachBySafeId(): Coach? {
     }
     return temp
 }
-fun Realm.findTeamById(teamId:String): Team? {
+fun Realm.findTeamById(teamId:String?): Team? {
     return this.where(Team::class.java).equalTo("id", teamId).findFirst()
 }
 
-fun Realm.findRosterById(rosterId:String): Roster? {
+fun Realm.findRosterById(rosterId:String?): Roster? {
     return this.where(Roster::class.java).equalTo("id", rosterId).findFirst()
 }
-fun Realm.findPlayerRefById(playerId:String): PlayerRef? {
+fun Realm.findPlayerRefById(playerId:String?): PlayerRef? {
     return this.where(PlayerRef::class.java).equalTo("playerId", playerId).findFirst()
 }
-fun Realm.getRosterIdForTeamId(teamId:String): String? {
+fun Realm.getRosterIdForTeamId(teamId:String?): String? {
     return this.findTeamById(teamId)?.rosterId
 }
-fun Realm.getPlayersForRosterId(rosterId:String): RealmList<PlayerRef>? {
+fun Realm.getPlayersForRosterId(rosterId:String?): RealmList<PlayerRef>? {
     return this.findRosterById(rosterId)?.players
 }

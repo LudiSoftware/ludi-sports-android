@@ -24,7 +24,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class ChatFragment : LudiTeamFragment() {
+class ChatFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAB = "Chat"
@@ -48,10 +48,6 @@ class ChatFragment : LudiTeamFragment() {
     var chatId: String? = null
     private var userId: String? = null
     private var userName: String = ""
-
-    override fun setupOnClickListeners() {
-        TODO("Not yet implemented")
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)

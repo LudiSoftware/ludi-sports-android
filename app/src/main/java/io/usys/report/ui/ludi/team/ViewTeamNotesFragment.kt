@@ -21,7 +21,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class ViewTeamNotesFragment : LudiTeamFragment() {
+class ViewTeamNotesFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAB = "Notes"
@@ -41,7 +41,6 @@ class ViewTeamNotesFragment : LudiTeamFragment() {
         fireGetTeamNotesInBackground(teamId)
         setupDisplay()
         setupTeamNoteRealmListener()
-        setupOnClickListeners()
         return rootView
     }
 
@@ -70,10 +69,5 @@ class ViewTeamNotesFragment : LudiTeamFragment() {
         _binding?.includeTeamNoteLudiListView?.root?.setupTeamNotesList(teamId, onClickReturnViewRealmObject)
     }
 
-    override fun setupOnClickListeners() {
-        itemOnClick = { _,obj ->
-//            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
-        }
-    }
 
 }
