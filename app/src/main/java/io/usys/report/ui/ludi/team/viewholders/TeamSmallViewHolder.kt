@@ -18,9 +18,9 @@ import io.usys.report.utils.views.loadUriIntoImgView
  */
 
 
-fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View, Team) -> Unit)?, isRef:Boolean = false) {
+fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View, Team) -> Unit)?, size:String = "small") {
     sessionTeams {
-        this?.loadInRealmList(it, FireTypes.TEAMS, onClickReturnViewRealmObject, isRef)
+        this?.loadInRealmList(it, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
     }
 }
 
@@ -40,7 +40,7 @@ class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             imgTeamProfile.loadUriIntoImgView(url)
         }
     }
-    fun bindRef(team: TeamRef?) {
+    fun bind(team: TeamRef?) {
         team?.let {
             txtItemTeamName?.text = it.name
             txtItemTeamOrg?.text = it.headCoachName
@@ -68,7 +68,7 @@ class TeamLargeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    fun bindRef(team: TeamRef?) {
+    fun bind(team: TeamRef?) {
         team?.let {
             txtItemTeamName?.text = it.name
             txtItemTeamOrg?.text = it.headCoachName

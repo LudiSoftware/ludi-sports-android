@@ -9,17 +9,19 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.ludi.coach.CoachViewHolder
 import io.usys.report.ui.ludi.note.NoteViewHolder
 import io.usys.report.ui.ludi.organization.OrgViewHolder
+import io.usys.report.ui.ludi.player.PlayerMediumViewHolder
 import io.usys.report.ui.ludi.player.PlayerTinyViewHolder
 import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ludi.review.organization.OrgReviewCommentViewHolder
 import io.usys.report.ui.ludi.service.ServiceViewHolder
 import io.usys.report.ui.ludi.sport.SportViewHolder
+import io.usys.report.ui.ludi.team.viewholders.TeamLargeViewHolder
 import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
 
 /**
  * This Class will 'route' the RecyclerView to the correct ViewHolder based on its realm 'type'.
  */
-class RouterViewHolder(itemView: View, var type:String, var updateCallback:((String, String) -> Unit)?=null, var isRef:Boolean=false) : RecyclerView.ViewHolder(itemView) {
+class RouterViewHolder(itemView: View, var type:String, var updateCallback:((String, String) -> Unit)?=null, var size:String="small") : RecyclerView.ViewHolder(itemView) {
 
     /**     Router / RecyclerView Checklist.
      * 1. Realm Model of FireType
@@ -35,10 +37,17 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
 //            FireTypes.PARENTS -> return CoachViewHolder(itemView).bind(obj as? Parent)
-            FireTypes.PLAYERS -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef, position=position)
+            FireTypes.PLAYERS -> {
+                when (size) {
+                    "tiny" -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef, position=position)
+                    "medium" -> return PlayerMediumViewHolder(itemView).bind(obj as? PlayerRef, position=position)
+                }
+            }
             FireTypes.TEAMS -> {
-                if (isRef) return TeamSmallViewHolder(itemView).bindRef(obj as? TeamRef)
-                else return TeamSmallViewHolder(itemView).bind(obj as? Team)
+                when (size) {
+                    "small" -> return TeamSmallViewHolder(itemView).bind(obj as? TeamRef)
+                    "large" -> return TeamLargeViewHolder(itemView).bind(obj as? TeamRef)
+                }
             }
             FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)
             FireTypes.REVIEWS -> return OrgReviewCommentViewHolder(itemView).bind(obj as? Review)
@@ -48,15 +57,27 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
     }
 
     companion object {
-        fun getLayout(type: String): Int {
+        fun getLayout(type: String, size:String): Int {
             return when (type) {
                 FireTypes.ORGANIZATIONS -> R.layout.card_organization_medium2
                 FireTypes.SPORTS -> R.layout.card_sport_small
                 FireTypes.REVIEWS -> R.layout.card_review_comment
                 FireTypes.USERS -> R.layout.card_sport_small
                 FireTypes.COACHES -> R.layout.card_coach_small
-                FireTypes.PLAYERS -> R.layout.card_player_tiny
-                FireTypes.TEAMS -> R.layout.card_team_small
+                FireTypes.PLAYERS -> {
+                    when (size) {
+                        "tiny" -> R.layout.card_player_tiny
+                        "medium" -> R.layout.card_player_medium
+                        else -> R.layout.card_player_tiny
+                    }
+                }
+                FireTypes.TEAMS -> {
+                    when (size) {
+                        "small" -> R.layout.card_team_small
+                        "large" -> R.layout.card_team_medium
+                        else -> R.layout.card_team_small
+                    }
+                }
                 FireTypes.NOTES -> R.layout.card_note_small
                 FireTypes.SERVICES -> R.layout.card_service_square
                 FireTypes.REVIEW_TEMPLATES -> R.layout.card_review_question_full

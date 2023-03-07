@@ -41,8 +41,8 @@ class YsrTitleListView(context: Context) : CardView(context) {
         txtTitle?.text = title
     }
 
-    fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, isRef: Boolean = false) {
-        recyclerView?.loadInRealmList(realmObjectList, type, onClickReturnViewRealmObject, isRef)
+    fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, size: String = "string") {
+        recyclerView?.loadInRealmList(realmObjectList, type, onClickReturnViewRealmObject, size)
     }
 
     fun setupSportList(onClickReturnViewRealmObject: ((View, Sport) -> Unit)?) {
@@ -60,9 +60,9 @@ class YsrTitleListView(context: Context) : CardView(context) {
         recyclerView?.setupOrganizationList(context, realmObjectArg, onClickReturnViewRealmObject)
     }
 
-    fun setupTeamRefListFromSession(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, isRef:Boolean = false) {
+    fun setupTeamRefListFromSession(onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, size:String = "small") {
         setTitle("Teams")
-        recyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject, isRef)
+        recyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject, size)
     }
 
     fun setupPlayerListOfficialRoster(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {

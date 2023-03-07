@@ -6,11 +6,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
-import io.usys.report.realm.findByField
-import io.usys.report.realm.findRosterById
-import io.usys.report.realm.loadInRealmListGridArrangable
+import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.realm
 import io.usys.report.ui.ludi.formationbuilder.TeamSession
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -24,7 +21,7 @@ fun RecyclerView?.setupPlayerListFromRosterId(id: String, onClickReturnViewRealm
     val roster = realm().findRosterById(id)
     val players = roster?.players
     players?.let {
-        rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject)
+        rv?.loadInRealmList(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium")
     }
 }
 
@@ -42,6 +39,23 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerTinyImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
     var txtItemPlayerRank = itemView.bindTextView(R.id.cardPlayerTinyTxtRank)
+
+    fun bind(player: PlayerRef?, position: Int?= null) {
+        player?.let {
+            txtItemPlayerName?.text = it.name
+            txtItemPlayerRank?.text = position.toString()
+            it.imgUrl?.let { url ->
+                imgPlayerProfile.loadUriIntoImgView(url)
+            }
+        }
+    }
+}
+
+class PlayerMediumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerSmallImgProfile)
+    var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerSmallTxtName)
+    var txtItemPlayerRank = itemView.bindTextView(R.id.cardPlayerSmallTxtOne)
 
     fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let {

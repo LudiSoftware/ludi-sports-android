@@ -92,7 +92,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     private fun setupTeamList() {
         _binding?.includeYsrListViewTeams?.root?.setTitle("Teams")
-        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmList(teamRefList, FireTypes.TEAMS, itemOnClickTeamList, true)
+        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmList(teamRefList, FireTypes.TEAMS, itemOnClickTeamList, "small")
     }
 
     override fun setupOnClickListeners() {
