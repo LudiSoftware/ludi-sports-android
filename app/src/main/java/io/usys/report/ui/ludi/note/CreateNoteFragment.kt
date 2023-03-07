@@ -9,26 +9,16 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
-import io.realm.RealmChangeListener
-import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.databinding.CreatePlayerEvalBinding
 import io.usys.report.databinding.DialogCreateNoteLayoutBinding
-import io.usys.report.databinding.TeamNotesFragmentBinding
-import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
 import io.usys.report.realm.model.Note
-import io.usys.report.realm.safeAdd
 import io.usys.report.ui.fragments.*
-import io.usys.report.utils.YsrMode
-import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
  */
 
-class CreateNoteFragment : LudiStringIdFragment() {
+class CreateNoteFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAB = "Notes"
@@ -44,8 +34,6 @@ class CreateNoteFragment : LudiStringIdFragment() {
     private var cancelButton: Button? = null
 
     private var caochId: String? = null
-    private var teamId: String? = null
-    private var playerId: String? = null
     private var newNode: Note? = Note()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -56,7 +44,6 @@ class CreateNoteFragment : LudiStringIdFragment() {
         spinnerSubtype = _binding?.subtypeSpinner
         //Basic Setup
         setupDisplay()
-        setupOnClickListeners()
         return rootView
     }
 
@@ -68,12 +55,6 @@ class CreateNoteFragment : LudiStringIdFragment() {
         val adapter2 = CustomSpinnerAdapter(requireContext(), items)
         spinnerSubtype?.adapter = adapter2
 
-    }
-
-    override fun setupOnClickListeners() {
-        itemOnClick = { _,obj ->
-//            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
-        }
     }
 
 }

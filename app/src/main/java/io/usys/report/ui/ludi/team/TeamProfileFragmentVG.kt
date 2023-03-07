@@ -69,7 +69,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 
     private fun setupTeamViewPager() {
         linearLayout?.let {
-            val lvg = LudiViewGroup(this, teamId, it)
+            val lvg = LudiViewGroup(this, it, teamId)
 //            lvg.setupLudiTabs(ludiTeamVGFragments())
             lvg.setupLudiTabs(ludiNotesAndEvalsVGFragments())
         }

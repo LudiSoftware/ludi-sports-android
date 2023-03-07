@@ -28,6 +28,9 @@ import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
+import io.usys.report.ui.fragments.YsrFragment.Companion.ORG_ID
+import io.usys.report.ui.fragments.YsrFragment.Companion.PLAYER_ID
+import io.usys.report.ui.fragments.YsrFragment.Companion.TEAM_ID
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +45,10 @@ abstract class YsrFragment : Fragment() {
 
     companion object {
         const val ARG = "realmObj"
+        const val TEAM_ID = "teamId"
+        const val PLAYER_ID = "playerId"
+        const val ORG_ID = "orgId"
+
     }
 
     lateinit var rootView : View
@@ -136,10 +143,27 @@ fun Fragment.unbundleStringId(): String? {
     return arguments?.getString(ARG)
 }
 
+fun Fragment.unbundleTeamId(): String? {
+    return arguments?.getString(TEAM_ID)
+}
+
+fun Fragment.unbundlePlayerId(): String? {
+    return arguments?.getString(PLAYER_ID)
+}
+
+fun Fragment.unbundleOrgId(): String? {
+    return arguments?.getString(ORG_ID)
+}
+
 fun bundleRealmObject(obj: RealmObject): Bundle {
     return bundleOf(ARG to obj)
 }
 
 fun bundleStringId(obj: String): Bundle {
     return bundleOf(ARG to obj)
+}
+
+fun bundleStringIds(teamId: String?=null, playerId: String?=null, orgId: String?=null): Bundle {
+    //teamId, playerId, orgId
+    return bundleOf(TEAM_ID to teamId, PLAYER_ID to playerId, ORG_ID to orgId)
 }

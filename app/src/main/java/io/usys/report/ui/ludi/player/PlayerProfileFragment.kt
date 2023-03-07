@@ -4,10 +4,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
@@ -15,12 +13,12 @@ import io.usys.report.databinding.DialogPlayerProfileLayoutBinding
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.ui.fragments.LudiStringIdFragment
+import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
 import io.usys.report.utils.log
 import io.usys.report.utils.views.loadUriIntoImgView
 
-class PlayerProfileFragment : LudiStringIdFragment() {
+class PlayerProfileFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAB = "Notes"
@@ -30,7 +28,6 @@ class PlayerProfileFragment : LudiStringIdFragment() {
     private var _binding: DialogPlayerProfileLayoutBinding? = null
     private val binding get() = _binding!!
 
-    private var playerId: String? = null
     private var playerNotes: RealmList<Note>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -40,11 +37,8 @@ class PlayerProfileFragment : LudiStringIdFragment() {
 
         requireActivity().window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
         //Basic Setup
-        playerId = realmStringId
         setupDisplay()
-        setupOnClickListeners()
         return rootView
     }
 
@@ -88,12 +82,6 @@ class PlayerProfileFragment : LudiStringIdFragment() {
             }
         }
 
-    }
-
-    override fun setupOnClickListeners() {
-        itemOnClick = { _,obj ->
-//            popPlayerProfileDialog(requireActivity(), (obj as PlayerRef)).show()
-        }
     }
 
 }

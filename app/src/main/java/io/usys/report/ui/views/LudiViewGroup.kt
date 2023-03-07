@@ -31,7 +31,7 @@ fun ludiNotesAndEvalsVGFragments(): MutableList<Pair<String, Fragment>> {
     }
 }
 
-class LudiViewGroup(parentFragment: Fragment, teamId: String?, rootView: LinearLayout) {
+class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
 
     var inflater: LayoutInflater? = null
     var rootView: LinearLayout? = null
@@ -39,6 +39,8 @@ class LudiViewGroup(parentFragment: Fragment, teamId: String?, rootView: LinearL
     var viewPager: ViewPager2? = null
 
     var teamId: String? = null
+    var playerId: String? = null
+    var orgId: String? = null
     var ludiPagerAdapter: LudiPagerAdapter? = null
     var mview: View? = null
 
@@ -52,6 +54,12 @@ class LudiViewGroup(parentFragment: Fragment, teamId: String?, rootView: LinearL
         log("LudiViewGroup: init")
     }
 
+    constructor(parentFragment: Fragment, rootView: LinearLayout, teamId: String?, playerId:String?=null, orgId:String?=null) : this(parentFragment, rootView) {
+        this.teamId = teamId
+        this.playerId = playerId
+        this.orgId = orgId
+    }
+
     fun setupLudiTabs(fragmentPairs: MutableList<Pair<String, Fragment>>) {
         tabLayout = mview?.findViewById(R.id.ludiTabLayout)
         viewPager = mview?.findViewById(R.id.ludiViewPager)
@@ -63,7 +71,7 @@ class LudiViewGroup(parentFragment: Fragment, teamId: String?, rootView: LinearL
 
     private fun setupLudiPagerAdapter(fragmentPairs: MutableList<Pair<String, Fragment>>) {
         ludiPagerAdapter?.addFragments(fragmentPairs)
-        ludiPagerAdapter?.addRealmIdArg(teamId)
+        ludiPagerAdapter?.addStringIdArgs(teamId, playerId, orgId)
         viewPager?.adapter = ludiPagerAdapter!!
         TabLayoutMediator(tabLayout!!, viewPager!!) { tab, position ->
             tab.text = ludiPagerAdapter?.fragments?.get(position)?.first

@@ -14,23 +14,27 @@ import io.usys.report.realm.realm
  * * Make sure to add any new fragments to Navigation XML! * *
  */
 
-abstract class LudiStringIdFragment : Fragment() {
+abstract class LudiStringIdsFragment : Fragment() {
 
     lateinit var rootView : View
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
 
     var user: User? = null
 
+    var teamId: String? = null
+    var playerId: String? = null
+    var orgId: String? = null
+
     var realmInstance: Realm? = null
     var realmStringId: String? = null
-
-    abstract fun setupOnClickListeners()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realmInstance = realm()
         realmInstance?.userOrLogout(requireActivity()) { user = it }
-        realmStringId = unbundleStringId()
+        teamId = unbundleTeamId()
+        playerId = unbundlePlayerId()
+        orgId = unbundleOrgId()
     }
 
 }
