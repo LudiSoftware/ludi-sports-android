@@ -16,7 +16,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.onClickReturnEmpty
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.realm.loadInRealmListCallback
+import io.usys.report.ui.views.listAdapters.loadInRealmListCallback
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.realm.toRealmList

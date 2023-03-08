@@ -16,7 +16,6 @@ import io.usys.report.realm.model.Note
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
-import io.usys.report.ui.views.loadInCustomAttributes
 import io.usys.report.utils.log
 import io.usys.report.utils.safe
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -70,7 +69,8 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
             tca.addAttribute("dominate foot", it.foot.safe("No Dominate Foot"))
             tca.addAttribute("jersey number", it.number.toString())
             tca.addAttribute("rank", it.rank.toString().safe("No Rank"))
-            _binding?.includeYsrListViewNotes?.ysrRecyclerAddAttribute?.loadInCustomAttributes(tca)
+            _binding?.includeYsrListViewNotes?.loadInRealmList(tca)
+//            _binding?.includeYsrListViewNotes?.ysrRecyclerAddAttribute?.loadInCustomAttributes(tca)
             playerTxtName?.text = it.name
             it.imgUrl?.let { imgUrl ->
                 playerImage?.loadUriIntoImgView(imgUrl)

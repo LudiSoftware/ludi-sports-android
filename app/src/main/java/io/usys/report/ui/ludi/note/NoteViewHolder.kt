@@ -8,6 +8,7 @@ import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Note
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 

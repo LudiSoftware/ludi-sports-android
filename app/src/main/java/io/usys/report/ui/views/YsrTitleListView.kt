@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.realm.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.realm.model.Sport
 import io.usys.report.ui.ludi.note.setupTeamNoteList
 import io.usys.report.ui.ludi.organization.setupOrganizationList
-import io.usys.report.ui.ludi.player.setupPlayerListFromRosterId
 import io.usys.report.ui.ludi.player.setupPlayerListFromTeamSession
 import io.usys.report.ui.ludi.player.setupPlayerListGridFromRosterId
 import io.usys.report.ui.ludi.service.setupServiceList

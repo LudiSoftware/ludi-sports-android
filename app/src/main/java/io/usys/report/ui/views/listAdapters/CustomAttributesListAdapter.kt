@@ -1,46 +1,20 @@
-package io.usys.report.ui.views
+package io.usys.report.ui.views.listAdapters
 
-import android.content.Context
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
-import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.realm.linearLayoutManager
-import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.ui.setOnDoubleClickListener
 import io.usys.report.utils.*
+import kotlin.collections.isNullOrEmpty
 
-class YsrAddAttributesList(context: Context) : CardView(context) {
-    constructor(context: Context, attrs: AttributeSet) : this(context)
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : this(context)
-
-    var attributeList: RealmList<CustomAttribute>? = null
-
-    var recyclerView: RecyclerView? = null
-
-    override fun onViewAdded(child: View?) {
-        bindChildren()
-    }
-
-    private fun bindChildren() {
-        recyclerView = this.rootView.bind(R.id.ysrRecyclerAddAttribute)
-    }
-
-    fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-        recyclerView?.loadInRealmList(realmObjectList, type, onClickReturnViewRealmObject)
-    }
-
-}
 
 fun RecyclerView.loadInCustomAttributes(realmList: RealmList<CustomAttribute>?) : CustomAttributesListAdapter? {
     if (realmList.isNullOrEmpty()) return null
@@ -50,14 +24,14 @@ fun RecyclerView.loadInCustomAttributes(realmList: RealmList<CustomAttribute>?) 
     return adapter
 }
 
-class CustomAttributesListAdapter(private val attributes: RealmList<CustomAttribute>?) : RecyclerView.Adapter<FieldValueViewHolder>() {
+class CustomAttributesListAdapter(private val attributes: RealmList<CustomAttribute>?) : RecyclerView.Adapter<CustomAttributeViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FieldValueViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAttributeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.ysr_item_field_value, parent, false)
-        return FieldValueViewHolder(view)
+        return CustomAttributeViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: FieldValueViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomAttributeViewHolder, position: Int) {
         attributes?.let { attrs ->
             val attribute = attrs[position]
             holder.bind(attribute)
@@ -70,7 +44,7 @@ class CustomAttributesListAdapter(private val attributes: RealmList<CustomAttrib
 
 }
 
-class FieldValueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class CustomAttributeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtFieldName = itemView.bindTextView(R.id.ysrTxtItemFieldName)
     var editValue = itemView.bind<EditText>(R.id.ysrEditItemFieldValue)
 
@@ -117,7 +91,6 @@ fun EditText.setEditable(isEditable: Boolean) {
     this.isEnabled = true
     this.isClickable = true
 }
-
 
 fun View.removeItemViewFromList() {
     // Set the height of the view holder to 0

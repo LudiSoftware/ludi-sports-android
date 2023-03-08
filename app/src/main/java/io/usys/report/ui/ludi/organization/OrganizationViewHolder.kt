@@ -14,7 +14,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Sport
-import io.usys.report.realm.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.cast

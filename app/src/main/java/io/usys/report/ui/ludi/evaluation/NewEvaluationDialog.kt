@@ -4,24 +4,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.RatingBar
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.RecyclerView
-import io.realm.RealmList
 import io.usys.report.R
-import io.usys.report.realm.linearLayoutManager
-import io.usys.report.realm.model.CustomAttribute
-import io.usys.report.realm.model.Evaluation
 import io.usys.report.realm.model.PEval
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.views.FieldValueViewHolder
 import io.usys.report.utils.inflateView
 
 class NewEvaluationDialog : DialogFragment() {

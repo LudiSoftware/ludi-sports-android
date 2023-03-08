@@ -1,21 +1,11 @@
 package io.usys.report.realm.model
 
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import io.realm.Realm
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.R
 import io.usys.report.firebase.*
-import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.users.safeUserId
-import io.usys.report.realm.toRealmList
 import io.usys.report.utils.*
 import java.io.Serializable
 

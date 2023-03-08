@@ -13,12 +13,10 @@ import com.google.firebase.database.DatabaseReference
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DialogChatBinding
-import io.usys.report.realm.linearLayoutManager
+import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
-import io.usys.report.utils.YsrMode
-import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.

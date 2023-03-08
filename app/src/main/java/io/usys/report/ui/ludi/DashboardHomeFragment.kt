@@ -12,12 +12,11 @@ import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findCoachBySafeId
-import io.usys.report.realm.loadInRealmList
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.evaluation.NewEvaluationDialog
 import io.usys.report.ui.onClickReturnViewRealmObject
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.log
 
 

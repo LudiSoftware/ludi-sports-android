@@ -1,8 +1,9 @@
-package io.usys.report.realm
+package io.usys.report.ui.views.touchAdapters
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
+import io.usys.report.ui.views.listAdapters.RealmListAdapter
+import io.usys.report.ui.views.listAdapters.swapRealmObjects
 
 /**
  * Ability to Re-Arrange Items in RecyclerView

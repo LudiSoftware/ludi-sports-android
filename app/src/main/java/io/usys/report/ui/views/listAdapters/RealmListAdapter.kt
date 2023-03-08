@@ -1,4 +1,4 @@
-package io.usys.report.realm
+package io.usys.report.ui.views.listAdapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,8 +12,10 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
+import io.usys.report.realm.writeToRealmOnMain
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
+import io.usys.report.ui.views.touchAdapters.RealmListTouchAdapter
 import io.usys.report.utils.getObjectType
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log

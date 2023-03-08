@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.realm.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.*
 
 class YsrCreateListView(context: Context) : CardView(context) {
