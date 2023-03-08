@@ -1,9 +1,13 @@
 package io.usys.report.utils.views
 
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.os.Handler
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import io.usys.report.R
@@ -31,6 +35,45 @@ fun View.wiggleLong() {
     rotation.repeatMode = ObjectAnimator.REVERSE
     rotation.start()
 }
+
+inline fun ImageButton.animateOnClickListener(crossinline onClick: (View) -> Unit) {
+    val anim = ObjectAnimator.ofPropertyValuesHolder(
+        this,
+        PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+        PropertyValuesHolder.ofFloat("scaleY", 1.2f)
+    )
+
+    anim.duration = 100
+    anim.repeatCount = 1
+    anim.repeatMode = ObjectAnimator.REVERSE
+
+    this.setOnClickListener {
+        anim.start()
+        this.isClickable = false
+        this.postDelayed({ this.isClickable = true }, anim.duration)
+        onClick(it)
+    }
+}
+
+inline fun ImageView.animateOnClickListener(crossinline onClick: (View) -> Unit) {
+    val anim = ObjectAnimator.ofPropertyValuesHolder(
+        this,
+        PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+        PropertyValuesHolder.ofFloat("scaleY", 1.2f)
+    )
+
+    anim.duration = 100
+    anim.repeatCount = 1
+    anim.repeatMode = ObjectAnimator.REVERSE
+
+    this.setOnClickListener {
+        anim.start()
+        this.isClickable = false
+        this.postDelayed({ this.isClickable = true }, anim.duration)
+        onClick(it)
+    }
+}
+
 
 fun View.fadeInOut(otherView: View, duration: Long) {
     animate().alpha(0f).setDuration(duration).withEndAction {

@@ -19,6 +19,8 @@ import io.usys.report.realm.model.toCustomAttributesList
 import io.usys.report.ui.views.listAdapters.CustomAttributesListAdapter
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
+import io.usys.report.utils.views.animateOnClickListener
+
 class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
                                                          attrs: AttributeSet? = null,
                                                          defStyleAttr: Int = 0) : CardView(context, attrs, defStyleAttr) {
@@ -48,9 +50,8 @@ class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
     }
 
     private fun setupOnClickListeners() {
-        btnAdd?.setOnClickListener {
+        btnAdd?.animateOnClickListener {
             log("Add button clicked")
-
         }
         btnSave?.setOnClickListener {
             log("Save button clicked")

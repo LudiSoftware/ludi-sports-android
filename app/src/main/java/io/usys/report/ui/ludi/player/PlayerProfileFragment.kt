@@ -18,6 +18,7 @@ import io.usys.report.ui.fragments.goBack
 import io.usys.report.ui.views.addAttribute
 import io.usys.report.utils.log
 import io.usys.report.utils.safe
+import io.usys.report.utils.views.animateOnClickListener
 import io.usys.report.utils.views.loadUriIntoImgView
 
 class PlayerProfileFragment : LudiStringIdsFragment() {
@@ -56,8 +57,10 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         }
         // Includes
         val playerProfile = _binding?.includePlayerProfileHeader
-        val playerTxtName = playerProfile?.cardUserHeaderBasicTxtProfileName
         val playerImage = playerProfile?.cardUserHeaderBasicImgProfile
+        playerImage?.animateOnClickListener {
+            log("Upload Image")
+        }
         // Hide unused views
         val player = realmInstance?.findByField<PlayerRef>("playerId", playerId!!)
         player?.let {
