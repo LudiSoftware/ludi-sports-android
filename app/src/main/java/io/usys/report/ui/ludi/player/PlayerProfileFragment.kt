@@ -20,9 +20,6 @@ import io.usys.report.utils.views.loadUriIntoImgView
 
 class PlayerProfileFragment : LudiStringIdsFragment() {
 
-    companion object {
-        const val TAB = "Notes"
-    }
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: DialogPlayerProfileLayoutBinding? = null
@@ -32,7 +29,12 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, teamContainer, false)
+        if (container == null) {
+            _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, teamContainer, false)
+        } else {
+            _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, container, false)
+        }
+
         rootView = binding.root
 
         requireActivity().window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

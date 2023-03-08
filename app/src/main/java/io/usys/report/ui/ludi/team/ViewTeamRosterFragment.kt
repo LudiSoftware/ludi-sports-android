@@ -58,7 +58,7 @@ class ViewTeamRosterFragment : LudiStringIdsFragment() {
     private fun setupDisplay() {
         onClickReturnViewRealmObject = { view, realmObject ->
             log("Clicked on player: ${realmObject}")
-            toFragmentWithId(R.id.navigation_player_profile, (realmObject as PlayerRef).id ?: "unknown")
+            toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
         _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle("Roster")
         rosterId?.let {

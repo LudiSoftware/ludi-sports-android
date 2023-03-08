@@ -1,6 +1,5 @@
 package io.usys.report.ui.views
 
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.View
@@ -49,7 +48,6 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
     init {
         inflater = LayoutInflater.from(parentFragment.requireContext())
         this.rootView = rootView
-        this.teamId = teamId
         mview = inflater?.inflate(R.layout.ludi_view_group, rootView, false)
         rootView.addView(mview)
         ludiPagerAdapter = LudiPagerAdapter(parentFragment)
