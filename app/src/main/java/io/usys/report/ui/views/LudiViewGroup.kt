@@ -1,5 +1,7 @@
 package io.usys.report.ui.views
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -73,9 +75,31 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
         ludiPagerAdapter?.addFragments(fragmentPairs)
         ludiPagerAdapter?.addStringIdArgs(teamId, playerId, orgId)
         viewPager?.adapter = ludiPagerAdapter!!
-        TabLayoutMediator(tabLayout!!, viewPager!!) { tab, position ->
+
+        val tlm = TabLayoutMediator(tabLayout!!, viewPager!!) { tab, position ->
             tab.text = ludiPagerAdapter?.fragments?.get(position)?.first
-        }.attach()
+        }
+
+
+        viewPager?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                // Animate the tab at the given position
+                val tabView = tabLayout?.getTabAt(position)?.view
+                tabView?.let {
+                    ObjectAnimator.ofFloat(it, "scaleX", 1.0f, 1.2f, 1.0f).apply {
+                        duration = 500
+                        start()
+                    }
+                    ObjectAnimator.ofFloat(it, "scaleY", 1.0f, 1.2f, 1.0f).apply {
+                        duration = 500
+                        start()
+                    }
+                }
+            }
+        })
+
+        tlm.attach()
+
     }
 
 }

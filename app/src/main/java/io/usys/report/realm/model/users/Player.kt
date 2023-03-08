@@ -5,6 +5,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
+import io.usys.report.utils.splitFullName
 import java.io.Serializable
 
 /**
@@ -30,6 +31,14 @@ open class PlayerRef : RealmObject(), Serializable {
 
 }
 
+fun RealmList<PlayerRef>.sortByName(): RealmList<PlayerRef> {
+    return this.sortedBy { it.name?.splitFullName()?.second ?: it.name }.toRealmList()
+}
+fun <T> List<T>.toRealmList(): RealmList<T> {
+    val realmList = RealmList<T>()
+    realmList.addAll(this)
+    return realmList
+}
 open class Player : RealmObject() {
 
     @PrimaryKey

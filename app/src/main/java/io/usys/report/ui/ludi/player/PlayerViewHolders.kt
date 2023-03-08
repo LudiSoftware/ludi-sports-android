@@ -3,12 +3,14 @@ package io.usys.report.ui.ludi.player
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.sortByName
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -27,8 +29,8 @@ fun RecyclerView?.setupPlayerListFromRosterId(id: String, onClickReturnViewRealm
 fun RecyclerView?.setupPlayerListGridFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
     val roster = realm().findRosterById(id)
-    val players = roster?.players
-    players?.let {
+    val players: RealmList<PlayerRef> = roster?.players?.sortByName() ?: RealmList()
+    players.let {
         rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium_grid")
     }
 }
