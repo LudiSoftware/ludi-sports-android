@@ -11,15 +11,17 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DialogPlayerProfileLayoutBinding
 import io.usys.report.realm.findByField
+import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
+import io.usys.report.ui.views.loadInCustomAttributes
 import io.usys.report.utils.log
+import io.usys.report.utils.safe
 import io.usys.report.utils.views.loadUriIntoImgView
 
 class PlayerProfileFragment : LudiStringIdsFragment() {
-
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: DialogPlayerProfileLayoutBinding? = null
@@ -56,36 +58,32 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         // Includes
         val playerProfile = _binding?.includePlayerProfileHeader
         val playerTxtName = playerProfile?.cardUserHeaderBasicTxtProfileName
-        val playerTxtRank = _binding?.txtPlayerDialogRank
         val playerImage = playerProfile?.cardUserHeaderBasicImgProfile
-        val playerTxtTryoutTag = _binding?.txtPlayerDialogTryOutTag
-        val playerTxtPosition = _binding?.txtPlayerDialogPosition
-        // date of birth
-        val playerTxtDOB = _binding?.txtPlayerDialogDOB
-        // age
-        val playerTxtAge = _binding?.txtPlayerDialogAge
-        // jersey number
-        val playerTxtJerseyNumber = _binding?.txtPlayerDialogJerseyNumber
-        val includeNotes = _binding?.includeYsrListViewNotes
-        val includeNotesRecyclerView = includeNotes?.ysrCreateListRecycler
-        val includeNotesTitle = includeNotes?.ysrCreateListTxtTitle
         // Hide unused views
         val player = realmInstance?.findByField<PlayerRef>("playerId", playerId!!)
         player?.let {
+            val tca = RealmList<CustomAttribute>()
+            tca.addAttribute("name", it.name.safe("No Name"))
+            tca.addAttribute("position", it.position.safe("No Position"))
+            tca.addAttribute("tryout tag", it.tryoutTag.safe("No Tryout Tag"))
+            tca.addAttribute("dob", it.dob.safe("No DOB"))
+            tca.addAttribute("dominate foot", it.foot.safe("No Dominate Foot"))
+            tca.addAttribute("jersey number", it.number.toString())
+            tca.addAttribute("rank", it.rank.toString().safe("No Rank"))
+            _binding?.includeYsrListViewNotes?.ysrRecyclerAddAttribute?.loadInCustomAttributes(tca)
             playerTxtName?.text = it.name
-            playerTxtRank?.text = "Rank: ${it.rank.toString()}"
-            playerTxtPosition?.text = "Position: ${it.position}"
-            playerTxtTryoutTag?.text = "Tryout Tag: ${it.tryoutTag}"
-            playerTxtDOB?.text = "DOB: ${it.dob}"
-            playerTxtAge?.text = "Dominate Foot: ${it.foot}"
-            playerTxtJerseyNumber?.text = "Jersey Number: ${it.number}"
             it.imgUrl?.let { imgUrl ->
                 playerImage?.loadUriIntoImgView(imgUrl)
             }
         }
-
     }
 
+}
+
+fun RealmList<CustomAttribute>.addAttribute(key:String, value:String) {
+    this.add(CustomAttribute().apply {
+        add(key, value)
+    })
 }
 
 private fun isInsideView(view: View, x: Float, y: Float): Boolean {

@@ -15,3 +15,7 @@ fun String.splitFullName(): Pair<String, String> {
     val lastName = names.drop(1).joinToString(" ")
     return Pair(firstName, lastName)
 }
+
+fun String?.safe(default:String=""): String {
+    return this ?: default
+}

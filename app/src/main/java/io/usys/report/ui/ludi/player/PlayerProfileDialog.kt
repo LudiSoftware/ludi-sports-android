@@ -30,16 +30,16 @@ fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
     // Includes
     val playerProfile = dialog.bind<View>(R.id.includePlayerProfileHeader)
     val playerTxtName = playerProfile.rootView?.findViewById<TextView>(R.id.cardUserHeaderBasicTxtProfileName)
-    val playerTxtRank = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogRank)
+//    val playerTxtRank = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogRank)
     val playerImage = playerProfile.rootView?.findViewById<ImageView>(R.id.cardUserHeaderBasicImgProfile)
-    val playerTxtTryoutTag = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogTryOutTag)
-    val playerTxtPosition = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogPosition)
+//    val playerTxtTryoutTag = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogTryOutTag)
+//    val playerTxtPosition = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogPosition)
     // date of birth
-    val playerTxtDOB = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogDOB)
+//    val playerTxtDOB = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogDOB)
     // age
-    val playerTxtAge = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogAge)
+//    val playerTxtAge = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogAge)
     // jersey number
-    val playerTxtJerseyNumber = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogJerseyNumber)
+//    val playerTxtJerseyNumber = playerProfile.rootView?.findViewById<TextView>(R.id.txtPlayerDialogJerseyNumber)
     val includeNotes = playerProfile.rootView?.findViewById<View>(R.id.includeYsrListViewNotes)
     val includeNotesRecyclerView = includeNotes?.rootView?.findViewById<RecyclerView>(R.id.ysrCreateListRecycler)
     val includeNotesTitle = includeNotes?.rootView?.findViewById<TextView>(R.id.ysrCreateListTxtTitle)
@@ -49,12 +49,6 @@ fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
         val player = realm().findByField<PlayerRef>("playerId", playerId)
         player?.let {
             playerTxtName?.text = it.name
-            playerTxtRank?.text = "Rank: ${it.rank.toString()}"
-            playerTxtPosition?.text = "Position: ${it.position}"
-            playerTxtTryoutTag?.text = "Tryout Tag: ${it.tryoutTag}"
-            playerTxtDOB?.text = "DOB: ${it.dob}"
-            playerTxtAge?.text = "Dominate Foot: ${it.foot}"
-            playerTxtJerseyNumber?.text = "Jersey Number: ${it.number}"
             it.imgUrl?.let { imgUrl ->
                 playerImage?.loadUriIntoImgView(imgUrl)
             }

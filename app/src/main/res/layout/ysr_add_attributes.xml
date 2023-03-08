@@ -7,12 +7,14 @@
     android:id="@+id/ysrAddAttributeListView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#00000000"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ysrMainLayoutAddAttributeListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#00000000">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ysrRecyclerAddAttribute"
@@ -20,15 +22,44 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#00000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.157"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.038"
+            app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="2"
-            tools:listitem="@layout/ysr_item_attribute">
+            tools:listitem="@layout/ysr_item_field_value">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/ysrLinearLayoutSaveCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ysrRecyclerAddAttribute"
+            app:layout_constraintVertical_bias="0.0">
+
+            <Button
+                android:id="@+id/btnAddAttributeSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/btnAddAttributeCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Cancel" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

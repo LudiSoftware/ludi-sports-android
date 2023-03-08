@@ -24,6 +24,19 @@ fun <T> onClickReturnViewT(): ((View, T) -> Unit)? { return null }
 fun onClickDataSnapShot(): ((dataSnapshot: DataSnapshot?) -> Unit)? { return null }
 //fun onClickReturnStringString(): ((String, String) -> Unit)? { return null }
 
+
+inline fun View.setOnDoubleClickListener(crossinline onDoubleClick: () -> Unit) {
+    val DOUBLE_CLICK_TIME_DELTA = 300 // milliseconds
+    var lastClickTime = 0L
+    setOnClickListener {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+            onDoubleClick()
+        }
+        lastClickTime = currentTime
+    }
+}
+
 fun View.ysrOnLongClickListener() {
     setOnLongClickListener { v ->
         // Create a new ClipData.

@@ -21,6 +21,18 @@
         <item name="android:background">@color/transparent</item>
         <item name="enforceTextAppearance">false</item>
     </style>
+
+    <style name="LudiTextViewField" parent="Widget.AppCompat.TextView">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/ysrDarkBlue</item>
+        <item name="android:autoSizeMaxTextSize">20sp</item>
+        <item name="android:autoSizeMinTextSize">10sp</item>
+        <item name="android:autoSizePresetSizes">15sp</item>
+    </style>
+
+
+
+
     <!-- Base application theme. -->
     <style name="YSR" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->

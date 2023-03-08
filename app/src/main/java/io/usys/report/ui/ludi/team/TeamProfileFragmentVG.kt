@@ -27,6 +27,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     private var _binding: ProfileTeamBinding? = null
     private val binding get() = _binding!!
 
+    private var team: Team? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
@@ -62,6 +63,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         setupCallBacks()
         setupOnClickListeners()
         setupTeamViewPager()
+        setupHeader(refresh = true)
     }
 
     private fun setupTeamViewPager() {
@@ -79,14 +81,23 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         }
     }
 
-    private fun setupHeader(team: Team) {
-        tryCatch {
-            requireActivity().ludiActionBar()?.title = team.name
+    private fun setupHeader(team:Team?=null, refresh:Boolean=false) {
+
+        if (refresh) {
+            realmInstance?.findTeamById(teamId)?.let {
+                this.team = it
+            }
+        } else {
+            this.team = team
         }
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = team.name
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = team.headCoachName
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = team.ageGroup + team.year
-        team.imgUrl?.let {
+
+        tryCatch {
+            requireActivity().ludiActionBar()?.title = this.team?.name
+        }
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = this.team?.headCoachName
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = this.team?.ageGroup + this.team?.year
+        this.team?.imgUrl?.let {
             _binding?.includeTeamProfileCard?.cardTeamMediumImgMainIcon?.loadUriIntoImgView(it)
         }
     }
