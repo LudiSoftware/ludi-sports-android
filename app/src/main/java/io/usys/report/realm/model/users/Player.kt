@@ -28,7 +28,6 @@ open class PlayerRef : RealmObject(), Serializable {
     var pointY: Int? = 0
     var color: String? = "unassigned"
     var listPosition: Int? = 0
-
 }
 
 fun RealmList<PlayerRef>.sortByName(): RealmList<PlayerRef> {

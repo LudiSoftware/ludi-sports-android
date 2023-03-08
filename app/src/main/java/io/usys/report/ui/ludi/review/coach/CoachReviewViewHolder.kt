@@ -12,7 +12,7 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.model.Question
 import io.usys.report.realm.model.getQuestionScore
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.A
 import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.B
 import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.C
@@ -29,7 +29,7 @@ import io.usys.report.utils.log
 fun RecyclerView?.setupReviewQuestionsList(context: Context, questionList: RealmList<Question>?, itemOnClick: ((View, RealmObject) -> Unit)?) {
     // Load Reviews by Receiver.id
     val rv = this
-    rv?.loadInRealmList(questionList, context, FireTypes.REVIEW_TEMPLATES, itemOnClick)
+    rv?.loadInCustomAttributes(questionList, context, FireTypes.REVIEW_TEMPLATES, itemOnClick)
 }
 
 class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

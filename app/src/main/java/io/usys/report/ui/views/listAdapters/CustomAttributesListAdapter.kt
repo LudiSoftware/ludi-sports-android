@@ -12,6 +12,7 @@ import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.ui.setOnDoubleClickListener
+import io.usys.report.ui.views.addAttribute
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty
 
@@ -24,7 +25,8 @@ fun RecyclerView.loadInCustomAttributes(realmList: RealmList<CustomAttribute>?) 
     return adapter
 }
 
-class CustomAttributesListAdapter(private val attributes: RealmList<CustomAttribute>?) : RecyclerView.Adapter<CustomAttributeViewHolder>() {
+class CustomAttributesListAdapter(var attributes: RealmList<CustomAttribute>? = null) : RecyclerView.Adapter<CustomAttributeViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAttributeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.ysr_item_field_value, parent, false)
@@ -40,6 +42,17 @@ class CustomAttributesListAdapter(private val attributes: RealmList<CustomAttrib
 
     override fun getItemCount(): Int {
         return attributes?.size ?: 0
+    }
+
+    fun setAttributeList(attributes: RealmList<CustomAttribute>) {
+        this.attributes?.clear()
+        this.attributes = attributes
+        this.notifyDataSetChanged()
+    }
+
+    fun addAttribute(key:String, value:String) {
+        attributes?.addAttribute(key, value)
+        this.notifyItemInserted(attributes?.size?: 0)
     }
 
 }
@@ -59,6 +72,14 @@ class CustomAttributeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
     fun bind(customAttribute: CustomAttribute?) {
         if (customAttribute != null) {
+            if (customAttribute.key!!.contains("id", true)) {
+                itemView.removeItemViewFromList()
+                return
+            }
+            if (customAttribute.key!!.contains("imgUrl", false)) {
+                itemView.removeItemViewFromList()
+                return
+            }
             txtFieldName?.text = customAttribute.key?.capitalizeFirstChar()
             editValue.setText(customAttribute.value)
             editValue.setOnDoubleClickListener {

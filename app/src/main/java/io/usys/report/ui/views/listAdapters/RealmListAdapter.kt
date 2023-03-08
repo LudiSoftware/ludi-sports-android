@@ -36,10 +36,10 @@ inline fun <reified T> RecyclerView.loadInRealmListCallback(realmList: RealmList
     return adapter
 }
 
-inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
-                                                    context: Context,
-                                                    type: String,
-                                                    noinline itemOnClick: ((View, T) -> Unit)?
+inline fun <reified T> RecyclerView.loadInCustomAttributes(realmList: RealmList<T>?,
+                                                           context: Context,
+                                                           type: String,
+                                                           noinline itemOnClick: ((View, T) -> Unit)?
 ) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick)
@@ -48,10 +48,10 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
     return adapter
 }
 
-inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
-                                                    type: String,
-                                                    noinline itemOnClick: ((View, T) -> Unit)?,
-                                                    size:String = "small"
+inline fun <reified T> RecyclerView.loadInCustomAttributes(realmList: RealmList<T>?,
+                                                           type: String,
+                                                           noinline itemOnClick: ((View, T) -> Unit)?,
+                                                           size:String = "small"
 ) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick, size)

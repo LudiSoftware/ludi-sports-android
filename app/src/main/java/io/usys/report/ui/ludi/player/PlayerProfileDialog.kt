@@ -13,7 +13,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.toRealmObjects
 import io.usys.report.realm.*
 import io.usys.report.realm.model.*
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 import kotlin.collections.isNullOrEmpty
@@ -62,7 +62,7 @@ fun popPlayerProfileDialog(activity: Activity, playerId: String) : Dialog {
         if (!notes.isNullOrEmpty() && notes.size > 0) {
             includeNotes?.makeVisible()
             includeNotesTitle?.text = "Notes (${notes?.size})"
-            includeNotesRecyclerView?.loadInRealmList(notes, FireTypes.NOTES, null)
+            includeNotesRecyclerView?.loadInCustomAttributes(notes, FireTypes.NOTES, null)
         }
     }
 

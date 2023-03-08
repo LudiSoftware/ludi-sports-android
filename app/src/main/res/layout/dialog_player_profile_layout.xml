@@ -46,25 +46,14 @@
                 android:id="@+id/btnPlayerDialogCreateEval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="4dp"
                 android:text="Create Evaluation"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.245"
+                app:layout_constraintHorizontal_bias="0.859"
                 app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
                 app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogSendOffer" />
 
-            <Button
-                android:id="@+id/btnPlayerDialogSendOffer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:text="Send Offer"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditModePlayerProfile"
-                app:layout_constraintHorizontal_bias="0.241"
-                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintTop_toTopOf="parent" />
-
-<!--            <include-->
+            <!--            <include-->
 <!--                android:id="@+id/includeYsrListViewNotes"-->
 <!--                layout="@layout/ysr_add_attributes"-->
 <!--                android:layout_width="0dp"-->
@@ -76,6 +65,17 @@
 <!--                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader"-->
 <!--                app:layout_constraintVertical_bias="0.0" />-->
 
+
+            <Button
+                android:id="@+id/btnPlayerDialogSendOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Send Offer"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditModePlayerProfile"
+                app:layout_constraintHorizontal_bias="0.844"
+                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <io.usys.report.ui.views.LudiCustomAttributesList
                 android:id="@+id/includeYsrListViewNotes"
@@ -105,18 +105,15 @@
                 android:id="@+id/btnUploadImagePlayerProfile"
                 android:layout_width="69dp"
                 android:layout_height="55dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="52dp"
-                android:layout_marginEnd="17dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="12dp"
                 android:background="#00FFFFFF"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintEnd_toEndOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/includePlayerProfileHeader"
+                app:layout_constraintEnd_toStartOf="@+id/btnPlayerDialogCreateEval"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
                 app:layout_constraintTop_toTopOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintVertical_bias="0.311"
                 app:srcCompat="@drawable/add_light" />
 
 

@@ -46,6 +46,17 @@
             app:layout_constraintTop_toBottomOf="@+id/ysrRecyclerAddAttribute"
             app:layout_constraintVertical_bias="0.0">
 
+            <ImageButton
+                android:id="@+id/btnAddAttributeNew"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:background="#00FFFFFF"
+                android:scaleType="fitCenter"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                app:srcCompat="@drawable/add_light" />
+
             <Button
                 android:id="@+id/btnAddAttributeSave"
                 android:layout_width="wrap_content"
@@ -59,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Cancel" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

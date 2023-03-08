@@ -8,7 +8,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetBaseYsrObjects
 import io.usys.report.realm.model.Sport
 import io.usys.report.realm.model.addToSession
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.realm.sessionSports
@@ -52,14 +52,14 @@ fun RecyclerView?.setupSportList(onClickReturnViewRealmObject: ((View, Sport) ->
     // Load Organizations by Sport
     val rv = this
     sessionSports {
-        rv?.loadInRealmList(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInCustomAttributes(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
         return
     }
     var sportList: RealmList<Sport>? = RealmList()
     fireGetBaseYsrObjects<Sport>(FireTypes.SPORTS) {
         sportList = this ?: RealmList()
         sportList.addToSession()
-        rv?.loadInRealmList(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInCustomAttributes(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
     }
 }
 

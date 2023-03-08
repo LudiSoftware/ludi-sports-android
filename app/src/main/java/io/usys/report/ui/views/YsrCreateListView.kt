@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.*
 
 class YsrCreateListView(context: Context) : CardView(context) {
@@ -53,7 +53,7 @@ class YsrCreateListView(context: Context) : CardView(context) {
     }
 
     fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-        recyclerView?.loadInRealmList(realmObjectList, type, onClickReturnViewRealmObject)
+        recyclerView?.loadInCustomAttributes(realmObjectList, type, onClickReturnViewRealmObject)
     }
 
 

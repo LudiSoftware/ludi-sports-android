@@ -14,7 +14,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Sport
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.cast
@@ -30,7 +30,7 @@ fun RecyclerView?.setupOrganizationList(context: Context, realmObjectArg: RealmO
     var organizationList: RealmList<Organization>?
     fireGetOrderByEqualToAsync(FireTypes.ORGANIZATIONS, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
         organizationList = this?.toRealmList()
-        rv?.loadInRealmList(organizationList, context, FireTypes.ORGANIZATIONS, onClick)
+        rv?.loadInCustomAttributes(organizationList, context, FireTypes.ORGANIZATIONS, onClick)
     }
 }
 

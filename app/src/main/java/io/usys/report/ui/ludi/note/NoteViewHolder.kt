@@ -8,7 +8,7 @@ import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Note
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 
@@ -17,7 +17,7 @@ fun RecyclerView?.setupTeamNoteList(teamId: String, onClick: ((View, RealmObject
     // Load Organizations by Sport.name
     val rv = this
     realm().findAllByField<Note>("aboutTeamId", teamId)?.let { notes ->
-        rv?.loadInRealmList(notes.toSafeRealmList(), DatabasePaths.NOTES.path, onClick)
+        rv?.loadInCustomAttributes(notes.toSafeRealmList(), DatabasePaths.NOTES.path, onClick)
     }
 }
 

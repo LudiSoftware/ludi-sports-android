@@ -11,7 +11,7 @@ import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.sortByName
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.ui.views.listAdapters.loadInRealmListGridArrangable
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -25,7 +25,7 @@ fun RecyclerView?.setupPlayerListFromRosterId(id: String, onClickReturnViewRealm
     val roster = realm().findRosterById(id)
     val players = roster?.players
     players?.let {
-        rv?.loadInRealmList(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium")
+        rv?.loadInCustomAttributes(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium")
     }
 }
 fun RecyclerView?.setupPlayerListGridFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {

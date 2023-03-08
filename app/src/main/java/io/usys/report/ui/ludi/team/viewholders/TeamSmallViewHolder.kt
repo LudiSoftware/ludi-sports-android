@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.sessionTeams
@@ -20,7 +20,7 @@ import io.usys.report.utils.views.loadUriIntoImgView
 
 fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View, Team) -> Unit)?, size:String = "small") {
     sessionTeams {
-        this?.loadInRealmList(it, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
+        this?.loadInCustomAttributes(it, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
     }
 }
 

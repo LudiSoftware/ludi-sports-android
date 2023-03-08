@@ -1,35 +1,35 @@
 package io.usys.report.ui.views
 
 import android.content.Context
-import android.graphics.Color
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
-import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.ui.views.listAdapters.linearLayoutManager
-import io.usys.report.ui.views.listAdapters.loadInRealmList
-import io.usys.report.realm.model.CustomAttribute
-import io.usys.report.ui.setOnDoubleClickListener
-import io.usys.report.ui.views.listAdapters.CustomAttributesListAdapter
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
+import io.usys.report.realm.model.CustomAttribute
+import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.toCustomAttributesList
+import io.usys.report.ui.views.listAdapters.CustomAttributesListAdapter
+import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
                                                          attrs: AttributeSet? = null,
                                                          defStyleAttr: Int = 0) : CardView(context, attrs, defStyleAttr) {
-
-
+    var type: String = "normal"
+    val customAttributesList = RealmList<CustomAttribute>()
+    var adapter: CustomAttributesListAdapter? = null
+    var btnAdd: ImageButton? = null
+    var btnSave: Button? = null
+    var btnCancel: Button? = null
     var recyclerView: RecyclerView? = null
-    var mview: View? = null
+
     init {
         LayoutInflater.from(context).inflate(R.layout.ysr_add_attributes, this.rootView as ViewGroup)
     }
@@ -37,14 +37,51 @@ class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
     // add any custom methods or properties here
     override fun onViewAdded(child: View?) {
         bindChildren()
+        setupOnClickListeners()
     }
 
     private fun bindChildren() {
         recyclerView = this.rootView?.bind(R.id.ysrRecyclerAddAttribute)
+        btnSave = this.rootView?.bind(R.id.btnAddAttributeSave)
+        btnCancel = this.rootView?.bind(R.id.btnAddAttributeCancel)
+        btnAdd = this.rootView?.bind(R.id.btnAddAttributeNew)
     }
 
-    fun loadInRealmList(realmObjectList: RealmList<CustomAttribute>) {
+    private fun setupOnClickListeners() {
+        btnAdd?.setOnClickListener {
+            log("Add button clicked")
+
+        }
+        btnSave?.setOnClickListener {
+            log("Save button clicked")
+        }
+        btnCancel?.setOnClickListener {
+            log("Cancel button clicked")
+        }
+    }
+
+    fun addAttribute(key:String, value:String) {
+        adapter?.addAttribute(key, value)
+    }
+
+    fun loadInPlayerRef(playerRef: PlayerRef) {
+        this.type = "player"
+        recyclerView?.loadInCustomAttributes(playerRef.toCustomAttributesList())
+    }
+
+    fun loadInCustomAttributes(realmObjectList: RealmList<CustomAttribute>) {
         recyclerView?.loadInCustomAttributes(realmObjectList)
     }
 
+    fun setupAttributesList() {
+        adapter = CustomAttributesListAdapter(customAttributesList)
+        recyclerView?.layoutManager = linearLayoutManager(this.context)
+        recyclerView?.adapter = adapter
+    }
+}
+
+fun RealmList<CustomAttribute>.addAttribute(key:String, value:String) {
+    this.add(CustomAttribute().apply {
+        add(key, value)
+    })
 }

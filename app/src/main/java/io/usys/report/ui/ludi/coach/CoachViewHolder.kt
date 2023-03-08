@@ -11,7 +11,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
 import io.usys.report.realm.model.Coach
 import io.usys.report.realm.model.Organization
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.toRealmList
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -26,7 +26,7 @@ fun RecyclerView?.setupCoachList(context: Context, realmObjectArg: RealmObject?,
     var coachesList: RealmList<Coach>?
     fireGetOrderByEqualToAsync(FireTypes.COACHES, Coach.ORDER_BY_ORGANIZATION, realmObjectArg?.cast<Organization>()?.id ?: return) {
         coachesList = this?.toRealmList()
-        rv?.loadInRealmList(coachesList, context, FireTypes.COACHES, onClick)
+        rv?.loadInCustomAttributes(coachesList, context, FireTypes.COACHES, onClick)
     }
 }
 

@@ -16,7 +16,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.log
 
 
@@ -91,7 +91,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     private fun setupTeamList() {
         _binding?.includeYsrListViewTeams?.root?.setTitle("Teams")
-        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmList(teamRefList, FireTypes.TEAMS, itemOnClickTeamList, "small")
+        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInCustomAttributes(teamRefList, FireTypes.TEAMS, itemOnClickTeamList, "small")
     }
 
     override fun setupOnClickListeners() {

@@ -9,7 +9,7 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetReviewsByReceiverIdToCallback
 import io.usys.report.realm.model.Review
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.bindTextView
 import io.usys.report.realm.toRealmList
 
@@ -22,7 +22,7 @@ fun RecyclerView?.setupOrgReviewCommentList(context: Context, receiverId:String,
     val rv = this
     val callBack : ((DataSnapshot?) -> Unit) = { ds ->
         val reviewList = ds?.toRealmList<Review>()
-        rv?.loadInRealmList(reviewList, context, FireTypes.REVIEWS, itemOnClick)
+        rv?.loadInCustomAttributes(reviewList, context, FireTypes.REVIEWS, itemOnClick)
     }
     fireGetReviewsByReceiverIdToCallback(receiverId, callBack)
 }

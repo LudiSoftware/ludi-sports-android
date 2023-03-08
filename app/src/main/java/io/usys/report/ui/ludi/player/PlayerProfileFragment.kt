@@ -11,11 +11,11 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DialogPlayerProfileLayoutBinding
 import io.usys.report.realm.findByField
-import io.usys.report.realm.model.CustomAttribute
-import io.usys.report.realm.model.Note
-import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.*
+import io.usys.report.realm.toHashMap
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
+import io.usys.report.ui.views.addAttribute
 import io.usys.report.utils.log
 import io.usys.report.utils.safe
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -61,17 +61,7 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         // Hide unused views
         val player = realmInstance?.findByField<PlayerRef>("playerId", playerId!!)
         player?.let {
-            val tca = RealmList<CustomAttribute>()
-            tca.addAttribute("name", it.name.safe("No Name"))
-            tca.addAttribute("position", it.position.safe("No Position"))
-            tca.addAttribute("tryout tag", it.tryoutTag.safe("No Tryout Tag"))
-            tca.addAttribute("dob", it.dob.safe("No DOB"))
-            tca.addAttribute("dominate foot", it.foot.safe("No Dominate Foot"))
-            tca.addAttribute("jersey number", it.number.toString())
-            tca.addAttribute("rank", it.rank.toString().safe("No Rank"))
-            _binding?.includeYsrListViewNotes?.loadInRealmList(tca)
-//            _binding?.includeYsrListViewNotes?.ysrRecyclerAddAttribute?.loadInCustomAttributes(tca)
-            playerTxtName?.text = it.name
+            _binding?.includeYsrListViewNotes?.loadInPlayerRef(it)
             it.imgUrl?.let { imgUrl ->
                 playerImage?.loadUriIntoImgView(imgUrl)
             }
@@ -80,11 +70,7 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
 
 }
 
-fun RealmList<CustomAttribute>.addAttribute(key:String, value:String) {
-    this.add(CustomAttribute().apply {
-        add(key, value)
-    })
-}
+
 
 private fun isInsideView(view: View, x: Float, y: Float): Boolean {
     val location = IntArray(2)

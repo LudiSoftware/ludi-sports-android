@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.model.Sport
 import io.usys.report.ui.ludi.note.setupTeamNoteList
 import io.usys.report.ui.ludi.organization.setupOrganizationList
@@ -42,7 +42,7 @@ class YsrTitleListView(context: Context) : CardView(context) {
     }
 
     fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, size: String = "string") {
-        recyclerView?.loadInRealmList(realmObjectList, type, onClickReturnViewRealmObject, size)
+        recyclerView?.loadInCustomAttributes(realmObjectList, type, onClickReturnViewRealmObject, size)
     }
 
     fun setupSportList(onClickReturnViewRealmObject: ((View, Sport) -> Unit)?) {
