@@ -24,6 +24,14 @@ fun RecyclerView?.setupPlayerListFromRosterId(id: String, onClickReturnViewRealm
         rv?.loadInRealmList(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium")
     }
 }
+fun RecyclerView?.setupPlayerListGridFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+    val rv = this
+    val roster = realm().findRosterById(id)
+    val players = roster?.players
+    players?.let {
+        rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium_grid")
+    }
+}
 
 fun RecyclerView?.setupPlayerListFromTeamSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
@@ -61,6 +69,25 @@ class PlayerMediumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         player?.let {
             txtItemPlayerName?.text = it.name
             txtItemPlayerRank?.text = position.toString()
+            it.imgUrl?.let { url ->
+                imgPlayerProfile.loadUriIntoImgView(url)
+            }
+        }
+    }
+}
+
+class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
+    var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
+    var txtItemPlayerOne = itemView.bindTextView(R.id.cardPlayerMediumGridTxtOne)
+    var txtItemPlayerTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTxtTwo)
+
+    fun bind(player: PlayerRef?, position: Int?= null) {
+        player?.let {
+            txtItemPlayerName?.text = it.name
+            txtItemPlayerOne?.text = "Position: ${position.toString()}"
+            txtItemPlayerTwo?.text = it.tryoutTag
             it.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }

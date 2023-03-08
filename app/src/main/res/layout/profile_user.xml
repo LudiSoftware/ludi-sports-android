@@ -71,7 +71,7 @@
 
         <include
             android:id="@+id/includeUserProfileHeader"
-            layout="@layout/card_user_header_template"
+            layout="@layout/card_user_header_with_ratingbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

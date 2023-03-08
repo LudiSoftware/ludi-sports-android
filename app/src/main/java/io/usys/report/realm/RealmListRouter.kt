@@ -9,6 +9,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.ludi.coach.CoachViewHolder
 import io.usys.report.ui.ludi.note.NoteViewHolder
 import io.usys.report.ui.ludi.organization.OrgViewHolder
+import io.usys.report.ui.ludi.player.PlayerMediumGridViewHolder
 import io.usys.report.ui.ludi.player.PlayerMediumViewHolder
 import io.usys.report.ui.ludi.player.PlayerTinyViewHolder
 import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
@@ -36,11 +37,11 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.SPORTS -> return SportViewHolder(itemView).bind(obj as? Sport)
             FireTypes.ORGANIZATIONS -> return OrgViewHolder(itemView).bind(obj as? Organization)
             FireTypes.COACHES -> return CoachViewHolder(itemView).bind(obj as? Coach)
-//            FireTypes.PARENTS -> return CoachViewHolder(itemView).bind(obj as? Parent)
             FireTypes.PLAYERS -> {
                 when (size) {
                     "tiny" -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                     "medium" -> return PlayerMediumViewHolder(itemView).bind(obj as? PlayerRef, position=position)
+                    "medium_grid" -> return PlayerMediumGridViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                 }
             }
             FireTypes.TEAMS -> {
@@ -68,6 +69,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                     when (size) {
                         "tiny" -> R.layout.card_player_tiny
                         "medium" -> R.layout.card_player_medium
+                        "medium_grid" -> R.layout.card_player_medium_grid
                         else -> R.layout.card_player_tiny
                     }
                 }
