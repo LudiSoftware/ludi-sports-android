@@ -7,8 +7,8 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.realm.*
+import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.ui.ludi.formationbuilder.TeamSession
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 

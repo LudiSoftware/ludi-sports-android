@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.formationbuilder
+package io.usys.report.realm.local
 
 import io.realm.Realm
 import io.realm.RealmList
@@ -40,11 +40,5 @@ inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSes
     }
 }
 
-inline fun Realm.getUserFormationSession(crossinline block: (TeamSession) -> Unit) {
-    this.safeUserId { itUserId ->
-        this.where(TeamSession::class.java).equalTo("id", itUserId).findFirst()?.let {
-            block(it)
-        }
-    }
-}
+
 

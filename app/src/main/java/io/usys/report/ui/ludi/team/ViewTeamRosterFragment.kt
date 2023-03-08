@@ -13,9 +13,7 @@ import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.formationbuilder.teamSessionByTeamId
 import io.usys.report.utils.log
 
 /**

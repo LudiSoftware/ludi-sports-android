@@ -11,6 +11,8 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.realm.findByField
+import io.usys.report.realm.local.TeamSession
+import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
@@ -19,8 +21,6 @@ import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.ludi.formationbuilder.TeamSession
-import io.usys.report.ui.ludi.formationbuilder.teamSessionByTeamId
 import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
 
@@ -115,7 +115,7 @@ abstract class LudiTeamFragment : Fragment() {
         realmInstance?.where(TryOut::class.java)?.findAllAsync()?.addChangeListener(tryoutListener)
     }
 
-    fun updateTeamSession(roster: Roster) {
+    private fun updateTeamSession(roster: Roster) {
         this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
             this.realmInstance?.safeWrite { itRealm ->
                 fs.roster = roster
@@ -153,7 +153,7 @@ class TeamMenuProvider(val fragment:Fragment, val teamId: String) : MenuProvider
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menuitem_formation -> {
-                fragment.toFragmentWithId(R.id.navigation_tryout_frag, teamId)
+                fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
                 return true
             }
             else -> {}

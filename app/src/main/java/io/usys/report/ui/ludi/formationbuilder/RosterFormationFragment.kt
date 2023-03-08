@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.usys.report.R
 import io.usys.report.realm.*
+import io.usys.report.realm.local.TeamSession
+import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.LudiTeamFragment
@@ -310,8 +312,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 
     private inline fun safePlayerFromRoster(playerId: String, block: (PlayerRef) -> Unit) {
-        teamSession?.let {
-            it.roster?.let { roster ->
+        teamSession?.let { ts ->
+            ts.roster?.let { roster ->
                 roster.players?.forEach { playerRef ->
                     if (playerRef.id == playerId) {
                         block(playerRef)

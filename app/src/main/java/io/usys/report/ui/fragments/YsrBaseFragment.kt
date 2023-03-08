@@ -131,6 +131,10 @@ fun Fragment.toFragmentWithId(fragId: Int, stringId: String) {
     this.findNavController().navigate(fragId, bundleStringId(stringId))
 }
 
+fun Fragment.toFragmentWithIds(fragId: Int, teamId:String?=null, playerId:String?=null, orgId:String?=null) {
+    this.findNavController().navigate(fragId, bundleStringIds(teamId, playerId, orgId))
+}
+
 fun Fragment.goBack() {
     this.findNavController().navigateUp()
 }

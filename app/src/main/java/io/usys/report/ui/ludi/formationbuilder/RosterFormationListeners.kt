@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import io.usys.report.realm.findByField
+import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
