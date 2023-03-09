@@ -13,6 +13,7 @@ import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.views.LudiViewGroup
 import io.usys.report.ui.views.ludiNotesAndEvalsVGFragments
+import io.usys.report.ui.views.ludiPlayerProfileFragments
 import io.usys.report.ui.views.ludiTeamVGFragments
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -68,8 +69,9 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 
     private fun setupTeamViewPager() {
         linearLayout?.let {
-            val lvg = LudiViewGroup(this, it, teamId)
-            lvg.setupLudiTabs(ludiTeamVGFragments())
+            val lvg = LudiViewGroup(this, it, teamId, "9a979280-b886-11ed-a1e2-86f7c4c00ee1")
+//            lvg.setupLudiTabs(ludiTeamVGFragments())
+            lvg.setupLudiTabs(ludiPlayerProfileFragments())
 //            lvg.setupLudiTabs(ludiNotesAndEvalsVGFragments())
         }
     }

@@ -67,7 +67,8 @@ class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
 
     fun loadInPlayerRef(playerRef: PlayerRef) {
         this.type = "player"
-        recyclerView?.loadInCustomAttributes(playerRef.toCustomAttributesList())
+        val temp = playerRef.toCustomAttributesList()
+        recyclerView?.loadInCustomAttributes(temp)
     }
 
     fun loadInCustomAttributes(realmObjectList: RealmList<CustomAttribute>) {

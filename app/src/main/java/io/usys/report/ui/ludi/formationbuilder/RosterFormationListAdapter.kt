@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
-import io.usys.report.realm.findByField
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
 import io.usys.report.utils.views.*
@@ -57,7 +55,10 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
         // On Click
         holder.itemView.setOnClickListener {
-            activity?.let { it1 -> popPlayerProfileDialog(it1, playerId).show() }
+            activity?.let { it1 ->
+                //todo: use profile fragment now.
+//                popPlayerProfileDialog(it1, playerId).show()
+            }
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {

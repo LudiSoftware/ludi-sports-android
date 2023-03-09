@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reviewRootCard"
@@ -11,100 +12,66 @@
     app:cardElevation="10dp">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/playerProfileNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/reviewMainLayout"
+        <LinearLayout
+            android:id="@+id/playerProfileLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#00FFFFFF">
+            android:orientation="vertical">
 
-            <!-- Tryout Tag -->
-
-            <!-- Jersey Number -->
-
-            <include
-                android:id="@+id/includePlayerProfileHeader"
-                layout="@layout/card_user_header_without_ratingbar"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/reviewMainLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="#00FFFFFF">
 
-            <!-- Position -->
+                <include
+                    android:id="@+id/includePlayerProfileHeader"
+                    layout="@layout/card_user_header_without_ratingbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- DOB -->
+                <Button
+                    android:id="@+id/btnPlayerDialogCreateEval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Create Evaluation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.859"
+                    app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogSendOffer" />
 
-            <!-- Age -->
+                <Button
+                    android:id="@+id/btnPlayerDialogSendOffer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Send Offer"
+                    app:layout_constraintEnd_toStartOf="@+id/btnEditModePlayerProfile"
+                    app:layout_constraintHorizontal_bias="0.844"
+                    app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Rank -->
+                <ImageButton
+                    android:id="@+id/btnEditModePlayerProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#00FFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/ic_menu_preferences" />
 
-            <Button
-                android:id="@+id/btnPlayerDialogCreateEval"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Create Evaluation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.859"
-                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintTop_toBottomOf="@+id/btnPlayerDialogSendOffer" />
-
-            <!--            <include-->
-            <!--                android:id="@+id/includeYsrListViewNotes"-->
-            <!--                layout="@layout/ysr_add_attributes"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintHorizontal_bias="0.0"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader"-->
-            <!--                app:layout_constraintVertical_bias="0.0" />-->
-
-
-            <Button
-                android:id="@+id/btnPlayerDialogSendOffer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Send Offer"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditModePlayerProfile"
-                app:layout_constraintHorizontal_bias="0.844"
-                app:layout_constraintStart_toEndOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <io.usys.report.ui.views.LudiCustomAttributesList
-                android:id="@+id/includeYsrListViewNotes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/includePlayerProfileHeader"
-                app:layout_constraintVertical_bias="0.0">
-
-            </io.usys.report.ui.views.LudiCustomAttributesList>
-
-            <ImageButton
-                android:id="@+id/btnEditModePlayerProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:background="#00FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_preferences" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </androidx.cardview.widget.CardView>

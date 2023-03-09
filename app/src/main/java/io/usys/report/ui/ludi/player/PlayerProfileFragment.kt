@@ -12,16 +12,21 @@ import io.usys.report.R
 import io.usys.report.databinding.DialogPlayerProfileLayoutBinding
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.*
-import io.usys.report.realm.toHashMap
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
-import io.usys.report.ui.views.addAttribute
+import io.usys.report.ui.views.LudiViewGroup
+import io.usys.report.ui.views.ludiPlayerProfileFragments
 import io.usys.report.utils.log
-import io.usys.report.utils.safe
 import io.usys.report.utils.views.animateOnClickListener
-import io.usys.report.utils.views.loadUriIntoImgView
 
 class PlayerProfileFragment : LudiStringIdsFragment() {
+
+    companion object {
+        const val DISPLAY_MODE = "display_mode"
+        const val EDIT_MODE = "edit_mode"
+    }
+
+    var _MODE = DISPLAY_MODE
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: DialogPlayerProfileLayoutBinding? = null
@@ -55,6 +60,18 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         _binding?.btnPlayerDialogSendOffer?.setOnClickListener {
             log("Send Offer")
         }
+        _binding?.btnEditModePlayerProfile?.animateOnClickListener {
+            log("Edit Mode")
+            if (_MODE == DISPLAY_MODE) {
+                _MODE = EDIT_MODE
+            } else {
+                _MODE = DISPLAY_MODE
+            }
+        }
+
+        val ll = _binding?.playerProfileLinearLayout
+        val lvg = LudiViewGroup(requireParentFragment(), ll!!, teamId, playerId = playerId)
+        lvg.setupLudiTabs(ludiPlayerProfileFragments())
         // Includes
         val playerProfile = _binding?.includePlayerProfileHeader
         val playerImage = playerProfile?.cardUserHeaderBasicImgProfile
@@ -64,10 +81,10 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         // Hide unused views
         val player = realmInstance?.findByField<PlayerRef>("playerId", playerId!!)
         player?.let {
-            _binding?.includeYsrListViewNotes?.loadInPlayerRef(it)
-            it.imgUrl?.let { imgUrl ->
-                playerImage?.loadUriIntoImgView(imgUrl)
-            }
+//            _binding?.includeYsrListViewNotes?.loadInPlayerRef(it)
+//            it.imgUrl?.let { imgUrl ->
+//                playerImage?.loadUriIntoImgView(imgUrl)
+//            }
         }
     }
 

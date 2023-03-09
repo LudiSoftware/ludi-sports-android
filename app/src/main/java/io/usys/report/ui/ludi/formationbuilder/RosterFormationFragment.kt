@@ -20,7 +20,6 @@ import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
-import io.usys.report.ui.ludi.player.popPlayerProfileDialog
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.gridLayoutManager
 import io.usys.report.utils.*
@@ -368,7 +367,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
         }
         onTap = {
-            popPlayerProfileDialog(requireActivity(), this!!.tag.toString()).show()
+            //todo: use profile fragment now.
+//            popPlayerProfileDialog(requireActivity(), this!!.tag.toString()).show()
         }
         onLongPress = {
             log("Double Tap")

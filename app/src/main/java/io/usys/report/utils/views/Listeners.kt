@@ -1,16 +1,9 @@
 package io.usys.report.utils.views
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.AttributeSet
 import android.view.*
 import android.widget.RelativeLayout
-import androidx.appcompat.widget.AppCompatImageView
 import com.afollestad.materialdialogs.utils.MDUtil.getWidthAndHeight
-import io.usys.report.ui.ludi.player.popPlayerProfileDialog
-import io.usys.report.utils.log
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Ability to Drag and Drop ImageViews freely
