@@ -71,8 +71,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         linearLayout?.let {
             val lvg = LudiViewGroup(this, it, teamId, "9a979280-b886-11ed-a1e2-86f7c4c00ee1")
             lvg.setupLudiTabs(ludiTeamVGFragments())
-//            lvg.setupLudiTabs(ludiPlayerProfileFragments())
-//            lvg.setupLudiTabs(ludiNotesAndEvalsVGFragments())
         }
     }
 

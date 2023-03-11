@@ -18,6 +18,7 @@ import io.usys.report.ui.views.LudiViewGroup
 import io.usys.report.ui.views.ludiPlayerProfileFragments
 import io.usys.report.utils.log
 import io.usys.report.utils.views.animateOnClickListener
+import io.usys.report.utils.views.loadUriIntoImgView
 
 class PlayerProfileFragment : LudiStringIdsFragment() {
 
@@ -82,9 +83,9 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         val player = realmInstance?.findByField<PlayerRef>("playerId", playerId!!)
         player?.let {
 //            _binding?.includeYsrListViewNotes?.loadInPlayerRef(it)
-//            it.imgUrl?.let { imgUrl ->
-//                playerImage?.loadUriIntoImgView(imgUrl)
-//            }
+            it.imgUrl?.let { imgUrl ->
+                playerImage?.loadUriIntoImgView(imgUrl)
+            }
         }
     }
 

@@ -45,7 +45,6 @@ class ViewTeamRosterFragment : LudiStringIdsFragment() {
         }
 
         setupDisplay()
-//        setupTeamRosterRealmCallBack()
         setupTeamRosterRealmListener()
         return rootView
     }

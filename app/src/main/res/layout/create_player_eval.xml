@@ -140,7 +140,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/attributesRecyclerView"
-            tools:listitem="@layout/ysr_item_field_value"
+            tools:listitem="@layout/ysr_item_add_attributes"
             tools:itemCount="3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

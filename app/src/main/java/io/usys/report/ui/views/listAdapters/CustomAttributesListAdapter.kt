@@ -29,7 +29,7 @@ class CustomAttributesListAdapter(var attributes: RealmList<CustomAttribute>? = 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAttributeViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ysr_item_field_value, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ysr_item_add_attributes, parent, false)
         return CustomAttributeViewHolder(view)
     }
 

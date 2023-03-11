@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/includeCardCoach"
-            layout="@layout/card_coach_small"
+            layout="@layout/card_coach_medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

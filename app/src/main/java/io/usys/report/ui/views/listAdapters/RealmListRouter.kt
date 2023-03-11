@@ -64,7 +64,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                 FireTypes.SPORTS -> R.layout.card_sport_small
                 FireTypes.REVIEWS -> R.layout.card_review_comment
                 FireTypes.USERS -> R.layout.card_sport_small
-                FireTypes.COACHES -> R.layout.card_coach_small
+                FireTypes.COACHES -> R.layout.card_coach_medium
                 FireTypes.PLAYERS -> {
                     when (size) {
                         "tiny" -> R.layout.card_player_tiny
