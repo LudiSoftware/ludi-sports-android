@@ -87,7 +87,6 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
             tab.text = ludiPagerAdapter?.fragments?.get(position)?.first
         }
 
-
         viewPager?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 // Animate the tab at the given position

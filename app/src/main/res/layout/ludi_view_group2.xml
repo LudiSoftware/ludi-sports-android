@@ -3,12 +3,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ludiConstraintLayout"
+    android:id="@+id/ludiConstraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/ludiTabLayout"
+        android:id="@+id/ludiTabLayout2"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@color/colorPrimary"
@@ -20,19 +20,20 @@
         app:tabMode="fixed" />
 
     <LinearLayout
-        android:id="@+id/ludiViewPagerLinearLayout"
+        android:id="@+id/ludiViewPagerLinearLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ludiTabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/ludiTabLayout2">
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/ludiViewPager"
+            android:id="@+id/ludiViewPager2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
