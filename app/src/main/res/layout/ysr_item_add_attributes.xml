@@ -32,7 +32,7 @@
         android:singleLine="false"
         android:text="Value"
         android:textAllCaps="false"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ysrTxtItemFieldName"

@@ -49,6 +49,9 @@ class CreateNoteFragment : LudiStringIdsFragment() {
 
     private fun setupDisplay() {
 
+
+        _binding?.createNoteRootCard?.cardElevation = 0F
+
         val items = listOf("Player", "Team", "TryOut")
         val adapter = CustomSpinnerAdapter(requireContext(), items)
         spinnerType?.adapter = adapter

@@ -1,6 +1,7 @@
 package io.usys.report.ui.ludi.player
 
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,9 +17,11 @@ import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
 import io.usys.report.ui.views.LudiViewGroup
 import io.usys.report.ui.views.ludiPlayerProfileFragments
+import io.usys.report.utils.hideLudiActionBar
 import io.usys.report.utils.log
 import io.usys.report.utils.views.animateOnClickListener
 import io.usys.report.utils.views.loadUriIntoImgView
+
 
 class PlayerProfileFragment : LudiStringIdsFragment() {
 
@@ -45,6 +48,7 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
 
         rootView = binding.root
 
+        hideLudiActionBar()
         requireActivity().window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         //Basic Setup
@@ -71,8 +75,29 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         }
 
         val ll = _binding?.playerProfileLinearLayout
+//        val rl = _binding?.reviewRootCard
         val lvg = LudiViewGroup(requireParentFragment(), ll!!, teamId, playerId = playerId)
         lvg.setupLudiTabs(ludiPlayerProfileFragments())
+
+        // Add an OnGlobalLayoutListener to the LinearLayout's view tree observer
+//        rl?.viewTreeObserver?.addOnGlobalLayoutListener {
+//            // Get the height of the root view
+//            val height: Int = requireActivity().window.decorView.rootView.height
+//            // Get the height of the visible portion of the root view
+//            val rect = Rect()
+//            requireActivity().window.decorView.getWindowVisibleDisplayFrame(rect)
+//            val visibleHeight: Int = rect.height()
+//            // Calculate the size of the keyboard
+//            val keyboardHeight = height - visibleHeight
+//            // If the keyboard is visible, move the LinearLayout up
+//            if (keyboardHeight > 0) {
+//                rl.translationY = (-keyboardHeight).toFloat()
+//            } else {
+//                // If the keyboard is hidden, move the LinearLayout back down
+//                rl.translationY = 0F
+//            }
+//        }
+
         // Includes
         val playerProfile = _binding?.includePlayerProfileHeader
         val playerImage = playerProfile?.cardUserHeaderBasicImgProfile
@@ -82,7 +107,6 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         // Hide unused views
         val player = realmInstance?.findByField<PlayerRef>("playerId", playerId!!)
         player?.let {
-//            _binding?.includeYsrListViewNotes?.loadInPlayerRef(it)
             it.imgUrl?.let { imgUrl ->
                 playerImage?.loadUriIntoImgView(imgUrl)
             }

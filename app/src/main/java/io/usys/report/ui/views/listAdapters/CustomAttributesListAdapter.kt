@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.realm.model.CustomAttribute
+import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.toCustomAttributesList
 import io.usys.report.ui.setOnDoubleClickListener
 import io.usys.report.ui.views.addAttribute
 import io.usys.report.utils.*
@@ -25,8 +27,23 @@ fun RecyclerView.loadInCustomAttributes(realmList: RealmList<CustomAttribute>?) 
     return adapter
 }
 
-class CustomAttributesListAdapter(var attributes: RealmList<CustomAttribute>? = null) : RecyclerView.Adapter<CustomAttributeViewHolder>() {
+class CustomAttributesListAdapter() : RecyclerView.Adapter<CustomAttributeViewHolder>() {
 
+    var _MODE = 2
+    var EDIT = 1
+    var DISPLAY = 2
+    var id: String? = null
+    var type: String? = null
+    var attributes: RealmList<CustomAttribute>? = null
+
+    constructor(attributes: RealmList<CustomAttribute>? = null) : this() {
+        this.attributes = attributes
+    }
+    constructor(playerRef: PlayerRef) : this() {
+        this.id = playerRef.id
+        this.type = "player"
+        this.attributes = playerRef.toCustomAttributesList()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAttributeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.ysr_item_add_attributes, parent, false)
@@ -42,12 +59,6 @@ class CustomAttributesListAdapter(var attributes: RealmList<CustomAttribute>? = 
 
     override fun getItemCount(): Int {
         return attributes?.size ?: 0
-    }
-
-    fun setAttributeList(attributes: RealmList<CustomAttribute>) {
-        this.attributes?.clear()
-        this.attributes = attributes
-        this.notifyDataSetChanged()
     }
 
     fun addAttribute(key:String, value:String) {

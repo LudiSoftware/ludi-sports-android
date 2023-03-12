@@ -16,8 +16,6 @@
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
         android:theme="@style/YSR">
-<!--        <activity android:name="io.usys.report.admin.AdminActivity"></activity>-->
-<!--        <activity android:name="io.usys.report.ui.ysr.user.ProfileFragment" />-->
         <activity
             android:name="io.usys.report.ui.AuthControllerActivity"
             android:exported="true">
@@ -31,18 +29,10 @@
             android:name="io.usys.report.ui.login.ProviderLoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name="io.usys.report.ui.MainAdminActivity"
-            android:label="Main Admin Activity" />
-        <activity
-            android:name="io.usys.report.ui.MainPendingActivity"
-            android:label="Main Pending Activity" />
-        <activity
-            android:name="io.usys.report.coachUser.MainLocationManagerActivity"
-            android:label="Main Location Manager Activity" />
-        <activity
             android:name="io.usys.report.ui.ludi.MasterUserActivity"
             android:label="Main Food Truck Activity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -53,12 +43,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.usys.report.ui.ludi.MasterUserActivity" />
         </activity>
-<!--        <activity-->
-<!--            android:name="io.usys.report.ui.calendar.FoodCalendarFragment"-->
-<!--            android:label="@string/title_activity_calendar_view" />-->
-        <activity
-            android:name="io.usys.report.coachUser.CreateOrganizationActivity"
-            android:label="Create Spot" />
     </application>
 
 </manifest>
