@@ -13,6 +13,7 @@ import io.usys.report.R
 import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.toCustomAttributesList
+import io.usys.report.realm.model.toPlayerRef
 import io.usys.report.ui.setOnDoubleClickListener
 import io.usys.report.ui.views.addAttribute
 import io.usys.report.utils.*
@@ -35,6 +36,8 @@ class CustomAttributesListAdapter() : RecyclerView.Adapter<CustomAttributeViewHo
     var id: String? = null
     var type: String? = null
     var attributes: RealmList<CustomAttribute>? = null
+    var editTexts = mutableListOf<EditText>()
+    var fieldTexts = mutableListOf<EditText>()
 
     constructor(attributes: RealmList<CustomAttribute>? = null) : this() {
         this.attributes = attributes
@@ -52,8 +55,66 @@ class CustomAttributesListAdapter() : RecyclerView.Adapter<CustomAttributeViewHo
 
     override fun onBindViewHolder(holder: CustomAttributeViewHolder, position: Int) {
         attributes?.let { attrs ->
-            val attribute = attrs[position]
-            holder.bind(attribute)
+            val customAttribute = attrs[position]
+
+            if (customAttribute?.key!!.contains("id", true)) {
+                holder.itemView.removeItemViewFromList()
+                return
+            }
+            if (customAttribute.key!!.contains("imgUrl", false)) {
+                holder.itemView.removeItemViewFromList()
+                return
+            }
+
+            // Field Name Setup
+            if (customAttribute.key!! == "Field Name") {
+                fieldTexts.add(holder.txtFieldName)
+                holder.txtFieldName.setText(customAttribute.key)
+                holder.txtFieldName.setOnDoubleClickListener {
+                    holder.txtFieldName.setEditable(true)
+                }
+                holder.txtFieldName.setEditable(false)
+            } else {
+                holder.txtFieldName.setText(customAttribute.key?.capitalizeFirstChar())
+                holder.txtFieldName.setEditable(false)
+            }
+
+            // Value Setup
+            this.editTexts.add(holder.editValue)
+            holder.editValue.setText(customAttribute.value)
+            holder.editValue.setOnDoubleClickListener {
+                changeModeToEdit()
+                holder.editValue.onTextChangeWatcher {
+                    log("onTextChanged: $it")
+                }
+            }
+            holder.editValue.setEditable(false)
+        } ?: run {
+            holder.itemView.removeItemViewFromList()
+        }
+    }
+
+    fun changeModeToEdit() {
+        _MODE = EDIT
+        for (et in editTexts) {
+            et.setEditable(true)
+            et.setTextColor(Color.BLUE)
+        }
+        for (et in fieldTexts) {
+            et.setEditable(true)
+            et.setTextColor(Color.BLUE)
+        }
+    }
+
+    fun changeModeToDisplay() {
+        _MODE = DISPLAY
+        for (et in editTexts) {
+            et.setEditable(false)
+            et.setTextColor(Color.BLACK)
+        }
+        for (et in fieldTexts) {
+            et.setEditable(false)
+            et.setTextColor(Color.BLACK)
         }
     }
 
@@ -61,59 +122,40 @@ class CustomAttributesListAdapter() : RecyclerView.Adapter<CustomAttributeViewHo
         return attributes?.size ?: 0
     }
 
+    fun addEmptyAttribute() {
+        attributes?.addAttribute("Field Name", "Add Input Here.")
+        this.notifyItemInserted(attributes?.size?: 0)
+    }
     fun addAttribute(key:String, value:String) {
         attributes?.addAttribute(key, value)
         this.notifyItemInserted(attributes?.size?: 0)
     }
 
+    fun exportPlayerRef(): PlayerRef? {
+        return attributes?.toPlayerRef()
+    }
+    // todo: Evals
+
 }
 
+inline fun EditText.onTextChangeWatcher(crossinline onTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // Not needed for this example
+        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            onTextChanged(s.toString())
+        }
+        override fun afterTextChanged(s: Editable?) {
+            // Not needed for this example
+        }
+    })
+}
+
+
 class CustomAttributeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var txtFieldName = itemView.bindTextView(R.id.ysrTxtItemFieldName)
+    var txtFieldName = itemView.bind<EditText>(R.id.ysrTxtItemFieldName)
     var editValue = itemView.bind<EditText>(R.id.ysrEditItemFieldValue)
-
-    fun bind(key: String, value: String?) {
-        if (value != null) {
-            txtFieldName?.text = key.capitalizeFirstChar()
-            editValue.setText(value)
-        } else {
-            itemView.removeItemViewFromList()
-        }
-    }
-
-    fun bind(customAttribute: CustomAttribute?) {
-        if (customAttribute != null) {
-            if (customAttribute.key!!.contains("id", true)) {
-                itemView.removeItemViewFromList()
-                return
-            }
-            if (customAttribute.key!!.contains("imgUrl", false)) {
-                itemView.removeItemViewFromList()
-                return
-            }
-            txtFieldName?.text = customAttribute.key?.capitalizeFirstChar()
-            editValue.setText(customAttribute.value)
-            editValue.setOnDoubleClickListener {
-                editValue.setEditable(true)
-                editValue.setTextColor(Color.BLUE)
-                editValue.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        log("onTextChanged: $s")
-                    }
-
-                    override fun afterTextChanged(s: Editable?) { log("afterTextChanged: $s")
-                    }
-                })
-                true
-            }
-            editValue.setEditable(false)
-
-        } else {
-            itemView.removeItemViewFromList()
-        }
-    }
 }
 
 fun EditText.setEditable(isEditable: Boolean) {

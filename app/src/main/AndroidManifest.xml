@@ -30,7 +30,7 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name="io.usys.report.ui.ludi.MasterUserActivity"
-            android:label="Main Food Truck Activity"
+            android:label="Main Ludi Activity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
