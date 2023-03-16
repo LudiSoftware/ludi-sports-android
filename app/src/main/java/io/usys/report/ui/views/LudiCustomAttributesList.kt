@@ -84,8 +84,6 @@ class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
 
 }
 
-
-
 fun RealmList<CustomAttribute>.addAttribute(key:String, value:String) {
     this.add(CustomAttribute().apply {
         add(key, value)

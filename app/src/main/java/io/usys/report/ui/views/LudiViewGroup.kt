@@ -12,9 +12,8 @@ import io.usys.report.R
 import io.usys.report.ui.fragments.LudiPagerAdapter
 import io.usys.report.ui.ludi.chat.ChatFragment
 import io.usys.report.ui.ludi.evaluation.CreateEvaluationFragment
-import io.usys.report.ui.ludi.note.CreateNoteFragment
+import io.usys.report.ui.ludi.note.DualNotesFragment
 import io.usys.report.ui.ludi.player.DetailsListFragment
-import io.usys.report.ui.ludi.player.PlayerProfileFragment
 import io.usys.report.ui.ludi.team.ViewTeamNotesFragment
 import io.usys.report.ui.ludi.team.ViewTeamRosterFragment
 import io.usys.report.utils.log
@@ -30,14 +29,14 @@ fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
 fun ludiNotesAndEvalsVGFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
         add(Pair("Evaluation", CreateEvaluationFragment()))
-        add(Pair("Notes", CreateNoteFragment()))
+        add(Pair("Notes", DualNotesFragment()))
     }
 }
 
 fun ludiPlayerProfileFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
         add(Pair("Details", DetailsListFragment()))
-        add(Pair("Notes", CreateNoteFragment()))
+        add(Pair("Notes", DualNotesFragment()))
     }
 }
 

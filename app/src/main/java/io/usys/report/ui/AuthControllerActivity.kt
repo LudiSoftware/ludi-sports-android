@@ -31,8 +31,6 @@ class AuthControllerActivity : AppCompatActivity()  {
 
     companion object {
         var HAS_INITIALIZED = false
-        private val singleThreadExecutor: ExecutorService = Executors.newSingleThreadExecutor()
-        val realmThread = CoroutineScope(singleThreadExecutor.asCoroutineDispatcher())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +50,6 @@ class AuthControllerActivity : AppCompatActivity()  {
         if (HAS_INITIALIZED) return
         //Init Firebase Instance
         FirebaseApp.initializeApp(this)
-        //Init Calendar
-//        AndroidThreeTen.init(this)
         //Init Realm DB
         Realm.init(this)
         val realmConfiguration = RealmConfiguration.Builder()

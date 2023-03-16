@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.usys.report.R
