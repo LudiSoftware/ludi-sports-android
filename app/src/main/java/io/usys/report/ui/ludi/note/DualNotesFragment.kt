@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -15,11 +16,14 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.databinding.DialogCreateNoteLayoutBinding
+import io.usys.report.databinding.DualNoteFragmentBinding
+import io.usys.report.firebase.fireAddUpdateCoachReviewDBAsync
+import io.usys.report.firebase.fireludi.fireAddNote
 import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.safeAdd
 import io.usys.report.ui.fragments.*
+import io.usys.report.utils.isKeyboardVisible
 import io.usys.report.utils.log
 
 /**
@@ -32,8 +36,9 @@ class DualNotesFragment : LudiStringIdsFragment() {
         const val TAB = "Notes"
     }
 
+    var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: DialogCreateNoteLayoutBinding? = null
+    private var _binding: DualNoteFragmentBinding? = null
     private val binding get() = _binding!!
     var spinnerType: Spinner? = null
     var spinnerSubtype: Spinner? = null
@@ -55,7 +60,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = DialogCreateNoteLayoutBinding.inflate(inflater, teamContainer, false)
+        _binding = DualNoteFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         spinnerType = _binding?.typeSpinner
         spinnerSubtype = _binding?.subtypeSpinner
@@ -68,6 +73,18 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     private fun setupDisplay() {
 
+        globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            val isKeyboardVisible = requireActivity().isKeyboardVisible()
+
+            if (isKeyboardVisible) {
+                // Adjust layout when the keyboard is shown.
+                moveLayoutUpwards()
+            } else {
+                // Reset layout when the keyboard is hidden.
+                resetLayoutPosition()
+            }
+        }
+        _binding?.createNoteMainLayout?.viewTreeObserver?.addOnGlobalLayoutListener(globalLayoutListener)
         _binding?.createNoteRootCard?.cardElevation = 0F
         switch = _binding?.noteSwitch
 
@@ -88,6 +105,39 @@ class DualNotesFragment : LudiStringIdsFragment() {
                 toggleViewMode()
             }
         }
+
+
+        _binding?.createNoteBtnSubmit?.setOnClickListener {
+            // Submit Note
+            addNoteToFirebase()
+        }
+
+
+    }
+
+    private fun moveLayoutUpwards() {
+        // Adjust the layout as needed when the keyboard is shown.
+        val translateY = -resources.getDimensionPixelSize(R.dimen.translate_y_value)
+        _binding?.createNoteMainLayout?.animate()?.translationY(translateY.toFloat())?.setDuration(250)?.start()
+    }
+
+    private fun resetLayoutPosition() {
+        // Reset the layout position when the keyboard is hidden.
+        _binding?.createNoteMainLayout?.animate()?.translationY(0f)?.setDuration(250)?.start()
+    }
+
+    private fun addNoteToFirebase() {
+        val noteMessage = _binding?.createNoteEditComment?.text.toString()
+        val type = spinnerType?.selectedItem.toString()
+        val subtype = spinnerSubtype?.selectedItem.toString()
+        val noteObject = Note()
+        noteObject.type = type
+        noteObject.subtype = subtype
+        noteObject.aboutTeamId = teamId
+        noteObject.coachId = user?.id
+        noteObject.message = noteMessage
+        fireAddNote(noteObject)
+        toggleViewMode()
     }
 
     private fun toggleCreateMode() {
@@ -95,6 +145,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
         _binding?.includeNoteList?.root?.visibility = View.GONE
     }
     private fun toggleViewMode() {
+        switch?.isChecked = false
         _binding?.createNoteMainLayout?.visibility = View.GONE
         _binding?.includeNoteList?.root?.visibility = View.VISIBLE
 
@@ -115,7 +166,12 @@ class DualNotesFragment : LudiStringIdsFragment() {
         realmInstance?.where(Note::class.java)?.findAllAsync()?.addChangeListener(noteListener)
     }
 
+    override fun onPause() {
+        super.onPause()
+        _binding?.createNoteMainLayout?.viewTreeObserver?.removeOnGlobalLayoutListener(globalLayoutListener)
+    }
 }
+
 
 
 class CustomSpinnerAdapter(context: Context, private val items: List<String>) : ArrayAdapter<String>(context, 0, items) {

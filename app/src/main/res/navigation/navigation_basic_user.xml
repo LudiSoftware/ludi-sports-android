@@ -79,7 +79,7 @@
         android:id="@+id/navigation_create_note"
         android:name="io.usys.report.ui.ludi.note.DualNotesFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/dialog_create_note_layout" >
+        tools:layout="@layout/dual_note_fragment" >
     </fragment>
 
     <!-- COACH PROFILE PAGE -->

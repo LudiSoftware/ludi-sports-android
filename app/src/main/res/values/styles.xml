@@ -30,7 +30,22 @@
         <item name="android:autoSizePresetSizes">15sp</item>
     </style>
 
+    <!-- Custom TabLayout style -->
+    <style name="YSR.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabBackground">@color/tabBackground</item>
+        <item name="tabTextColor">@color/tabUnselectedTextColor</item>
+        <item name="tabSelectedTextColor">@color/tabSelectedTextColor</item>
+        <item name="tabIndicatorColor">@color/tabIndicatorColor</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/YSR.TabLayout.Text</item>
+    </style>
 
+    <!-- Custom TabLayout text style -->
+    <style name="YSR.TabLayout.Text" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:textSize">@dimen/tabTextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 
 
     <!-- Base application theme. -->

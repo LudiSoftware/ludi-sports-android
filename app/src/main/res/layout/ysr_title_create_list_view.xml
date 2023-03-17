@@ -15,7 +15,7 @@
 
         <include
             android:id="@+id/includeYsrCreateListCreateNote"
-            layout="@layout/dialog_create_note_layout"
+            layout="@layout/dual_note_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"

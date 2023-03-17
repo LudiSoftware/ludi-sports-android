@@ -11,13 +11,12 @@
         android:id="@+id/ludiTabLayout"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        app:tabTextColor="#3F51B5" />
 
     <LinearLayout
         android:id="@+id/ludiViewPagerLinearLayout"

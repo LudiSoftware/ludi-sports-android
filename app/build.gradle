@@ -68,6 +68,8 @@ dependencies {
     implementation "org.jetbrains.anko:anko-design:0.10.8"
 
     implementation "com.github.skydoves:powermenu:2.2.2"
+//    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.mikepenz:materialdrawer:8.3.1'
 
     // Needed by Firebase Observable
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"

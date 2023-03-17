@@ -3,6 +3,7 @@ package io.usys.report.utils
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -35,6 +36,16 @@ inline fun Fragment.fairPickImageFromGallery(crossinline block: (Uri?) -> Unit) 
     }
     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 //        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.SingleMimeType("image/gif")))
+}
+
+fun Activity.isKeyboardVisible(): Boolean {
+    val rootView = this.window.decorView.rootView
+    val visibleBounds = Rect()
+    rootView.getWindowVisibleDisplayFrame(visibleBounds)
+
+    val heightDiff = rootView.height - visibleBounds.height()
+    val marginOfError = resources.getDimensionPixelSize(R.dimen.keyboard_visibility_margin)
+    return heightDiff > marginOfError
 }
 
 inline fun <reified T> isFragmentOrActivity() = when (T::class) {

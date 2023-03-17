@@ -9,12 +9,12 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.databinding.TeamNotesFragmentBinding
+import io.usys.report.databinding.DualNoteFragmentBinding
 import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.safeAdd
 import io.usys.report.ui.fragments.*
-import io.usys.report.utils.YsrMode
+import io.usys.report.ui.ludi.note.DualNotesFragment
 import io.usys.report.utils.log
 
 /**
@@ -28,14 +28,14 @@ class ViewTeamNotesFragment : LudiStringIdsFragment() {
     }
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: TeamNotesFragmentBinding? = null
+    private var _binding: DualNoteFragmentBinding? = null
     private val binding get() = _binding!!
 
     private var teamNotes: RealmList<Note>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = TeamNotesFragmentBinding.inflate(inflater, teamContainer, false)
+        _binding = DualNoteFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup
         fireGetTeamNotesInBackground(teamId)
@@ -66,7 +66,7 @@ class ViewTeamNotesFragment : LudiStringIdsFragment() {
         onClickReturnViewRealmObject = { view, realmObject ->
             log("Clicked on player: ${realmObject}")
         }
-        _binding?.includeTeamNoteLudiListView?.root?.setupTeamNotesList(teamId, onClickReturnViewRealmObject)
+//        _binding?.includeTeamNoteLudiListView?.root?.setupTeamNotesList(teamId, onClickReturnViewRealmObject)
     }
 
 

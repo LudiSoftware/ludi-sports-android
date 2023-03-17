@@ -4,18 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.CreatePlayerEvalBinding
-import io.usys.report.databinding.TeamNotesFragmentBinding
-import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
 import io.usys.report.realm.model.Note
-import io.usys.report.realm.safeAdd
 import io.usys.report.ui.fragments.*
-import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
 
 /**

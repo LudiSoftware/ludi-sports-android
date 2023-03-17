@@ -21,6 +21,12 @@ fun fireGetTeamNotesInBackground(teamId:String?) {
     }
 }
 
+fun fireAddNote(note:Note) {
+    firebaseDatabase {
+        it.child(DatabasePaths.NOTES.path).child(note.id).setValue(note)
+    }
+}
+
 fun fireGetPlayerNotesInBackground(playerId:String?) {
     if (playerId == null) return
     firebaseDatabase {

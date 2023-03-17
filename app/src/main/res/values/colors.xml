@@ -24,6 +24,12 @@
     <color name="colorTextAccent">@color/black</color>
     <color name="colorWindowBackground">@color/white</color>
 
+    <!-- Tab colors -->
+    <color name="tabBackground">#FFFFFF</color>
+    <color name="tabSelectedTextColor">#3F51B5</color>
+    <color name="tabUnselectedTextColor">#A1A1A1</color>
+    <color name="tabIndicatorColor">#3F51B5</color>
+
     <color name="fLightBlue">#bed2ff</color>
 <!--    <color name="ysrDarkBlue">#004088</color>-->
     <color name="fOrangeOne">#f9b48b</color>

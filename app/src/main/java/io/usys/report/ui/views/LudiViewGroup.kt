@@ -14,14 +14,13 @@ import io.usys.report.ui.ludi.chat.ChatFragment
 import io.usys.report.ui.ludi.evaluation.CreateEvaluationFragment
 import io.usys.report.ui.ludi.note.DualNotesFragment
 import io.usys.report.ui.ludi.player.DetailsListFragment
-import io.usys.report.ui.ludi.team.ViewTeamNotesFragment
 import io.usys.report.ui.ludi.team.ViewTeamRosterFragment
 import io.usys.report.utils.log
 
 fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
         add(Pair("Roster", ViewTeamRosterFragment()))
-        add(Pair("Notes", ViewTeamNotesFragment()))
+        add(Pair("Notes", DualNotesFragment()))
         add(Pair("Chat", ChatFragment()))
     }
 }
