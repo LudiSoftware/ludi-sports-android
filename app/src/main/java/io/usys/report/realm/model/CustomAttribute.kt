@@ -36,6 +36,25 @@ fun PlayerRef.toCustomAttributesList(): RealmList<CustomAttribute> {
     customAttributes.addAttribute("dob", this.dob ?: "0")
     customAttributes.addAttribute("imgUrl", this.imgUrl ?: "0")
     customAttributes.addAttribute("color", this.color ?: "0")
+    // PlayMetrics attributes
+    customAttributes.addAttribute("team", this.team ?: "unassigned")
+    customAttributes.addAttribute("season", this.season ?: "unassigned")
+    customAttributes.addAttribute("player_first_name", this.player_first_name ?: "unassigned")
+    customAttributes.addAttribute("player_last_name", this.player_last_name ?: "unassigned")
+    customAttributes.addAttribute("gender", this.gender ?: "unassigned")
+    customAttributes.addAttribute("birth_date", this.birth_date ?: "unassigned")
+    customAttributes.addAttribute("parent1_email", this.parent1_email ?: "unassigned")
+    customAttributes.addAttribute("parent1_first_name", this.parent1_first_name ?: "unassigned")
+    customAttributes.addAttribute("parent1_last_name", this.parent1_last_name ?: "unassigned")
+    customAttributes.addAttribute("parent1_mobile_number", this.parent1_mobile_number ?: "unassigned")
+    customAttributes.addAttribute("parent2_email", this.parent2_email ?: "unassigned")
+    customAttributes.addAttribute("parent2_first_name", this.parent2_first_name ?: "unassigned")
+    customAttributes.addAttribute("parent2_last_name", this.parent2_last_name ?: "unassigned")
+    customAttributes.addAttribute("parent2_mobile_number", this.parent2_mobile_number ?: "unassigned")
+    customAttributes.addAttribute("street", this.street ?: "unassigned")
+    customAttributes.addAttribute("city", this.city ?: "unassigned")
+    customAttributes.addAttribute("state", this.state ?: "unassigned")
+    customAttributes.addAttribute("zip", this.zip ?: "unassigned")
     return customAttributes
 }
 
@@ -54,6 +73,25 @@ fun RealmList<CustomAttribute>.toPlayerRef(): PlayerRef {
             "dob" -> playerRef.dob = attribute.value
             "imgUrl" -> playerRef.imgUrl = attribute.value
             "color" -> playerRef.color = attribute.value
+            // PlayMetrics attributes
+            "team" -> playerRef.team = attribute.value
+            "season" -> playerRef.season = attribute.value
+            "player_first_name" -> playerRef.player_first_name = attribute.value
+            "player_last_name" -> playerRef.player_last_name = attribute.value
+            "gender" -> playerRef.gender = attribute.value
+            "birth_date" -> playerRef.birth_date = attribute.value
+            "parent1_email" -> playerRef.parent1_email = attribute.value
+            "parent1_first_name" -> playerRef.parent1_first_name = attribute.value
+            "parent1_last_name" -> playerRef.parent1_last_name = attribute.value
+            "parent1_mobile_number" -> playerRef.parent1_mobile_number = attribute.value
+            "parent2_email" -> playerRef.parent2_email = attribute.value
+            "parent2_first_name" -> playerRef.parent2_first_name = attribute.value
+            "parent2_last_name" -> playerRef.parent2_last_name = attribute.value
+            "parent2_mobile_number" -> playerRef.parent2_mobile_number = attribute.value
+            "street" -> playerRef.street = attribute.value
+            "city" -> playerRef.city = attribute.value
+            "state" -> playerRef.state = attribute.value
+            "zip" -> playerRef.zip = attribute.value
         }
     }
     return playerRef

@@ -75,28 +75,8 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         }
 
         val ll = _binding?.playerProfileLinearLayout
-//        val rl = _binding?.reviewRootCard
         val lvg = LudiViewGroup(requireParentFragment(), ll!!, teamId, playerId = playerId)
         lvg.setupLudiTabs(ludiPlayerProfileFragments())
-
-        // Add an OnGlobalLayoutListener to the LinearLayout's view tree observer
-//        rl?.viewTreeObserver?.addOnGlobalLayoutListener {
-//            // Get the height of the root view
-//            val height: Int = requireActivity().window.decorView.rootView.height
-//            // Get the height of the visible portion of the root view
-//            val rect = Rect()
-//            requireActivity().window.decorView.getWindowVisibleDisplayFrame(rect)
-//            val visibleHeight: Int = rect.height()
-//            // Calculate the size of the keyboard
-//            val keyboardHeight = height - visibleHeight
-//            // If the keyboard is visible, move the LinearLayout up
-//            if (keyboardHeight > 0) {
-//                rl.translationY = (-keyboardHeight).toFloat()
-//            } else {
-//                // If the keyboard is hidden, move the LinearLayout back down
-//                rl.translationY = 0F
-//            }
-//        }
 
         // Includes
         val playerProfile = _binding?.includePlayerProfileHeader

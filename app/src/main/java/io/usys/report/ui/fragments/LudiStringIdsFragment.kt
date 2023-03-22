@@ -21,12 +21,12 @@ abstract class LudiStringIdsFragment : Fragment() {
 
     var user: User? = null
 
-    var teamId: String? = null
-    var playerId: String? = null
-    var orgId: String? = null
+    var teamId: String? = "unassigned"
+    var playerId: String? = "unassigned"
+    var orgId: String? = "unassigned"
 
     var realmInstance: Realm? = null
-    var realmStringId: String? = null
+    var realmStringId: String? = "unassigned"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

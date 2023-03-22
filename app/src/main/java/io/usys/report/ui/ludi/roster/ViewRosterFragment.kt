@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.team
+package io.usys.report.ui.ludi.roster
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class ViewTeamRosterFragment : LudiStringIdsFragment() {
+class ViewRosterFragment : LudiStringIdsFragment() {
 
     companion object {
         const val TAB = "Roster"

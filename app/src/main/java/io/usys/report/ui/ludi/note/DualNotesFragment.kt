@@ -133,8 +133,12 @@ class DualNotesFragment : LudiStringIdsFragment() {
         val noteObject = Note()
         noteObject.type = type
         noteObject.subtype = subtype
-        noteObject.aboutTeamId = teamId
         noteObject.coachId = user?.id
+        noteObject.ownerId = user?.id
+        noteObject.ownerName = user?.name
+        noteObject.aboutTeamId = teamId
+        noteObject.aboutCoachId = "unassigned"
+        noteObject.aboutPlayerId = playerId
         noteObject.message = noteMessage
         fireAddNote(noteObject)
         toggleViewMode()

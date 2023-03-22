@@ -28,6 +28,25 @@ open class PlayerRef : RealmObject(), Serializable {
     var pointY: Int? = 0
     var color: String? = "unassigned"
     var listPosition: Int? = 0
+    // play metrics
+    var team: String? = "unassigned"
+    var season: String? = "unassigned"
+    var player_first_name: String? = "unassigned"
+    var player_last_name: String? = "unassigned"
+    var gender: String? = "unassigned"
+    var birth_date: String? = "unassigned"
+    var parent1_email: String? = "unassigned"
+    var parent1_first_name: String? = "unassigned"
+    var parent1_last_name: String? = "unassigned"
+    var parent1_mobile_number: String? = "unassigned"
+    var parent2_email: String? = "unassigned"
+    var parent2_first_name: String? = "unassigned"
+    var parent2_last_name: String? = "unassigned"
+    var parent2_mobile_number: String? = "unassigned"
+    var street: String? = "unassigned"
+    var city: String? = "unassigned"
+    var state: String? = "unassigned"
+    var zip: String? = "unassigned"
 }
 
 fun RealmList<PlayerRef>.sortByName(): RealmList<PlayerRef> {
