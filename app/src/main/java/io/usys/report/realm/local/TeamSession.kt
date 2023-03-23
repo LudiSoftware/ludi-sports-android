@@ -4,6 +4,7 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.firebase.fireUpdateRoster
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
@@ -40,5 +41,13 @@ inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSes
     }
 }
 
+
+fun TeamSession?.saveRosterToFirebase() {
+    this?.let { ts ->
+        ts.roster?.let { roster: Roster ->
+            roster.fireUpdateRoster()
+        }
+    }
+}
 
 

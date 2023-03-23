@@ -1,5 +1,6 @@
 package io.usys.report.ui.ludi.formationbuilder
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -15,11 +16,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.usys.report.R
+import io.usys.report.firebase.fireUpdateRoster
 import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
+import io.usys.report.realm.local.saveRosterToFirebase
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
+import io.usys.report.ui.fragments.toFragmentWithIds
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.gridLayoutManager
 import io.usys.report.utils.*
@@ -50,7 +54,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var formationViewList = mutableListOf<View>()
 //    var formationLayouts = mutableListOf(R.drawable.soccer_field)
     // Player Formation
-    var onTap: (() -> Unit)? = null
+    var onTap: ((String) -> Unit)? = null
     var onLongPress: (() -> Unit)? = null
 
     var dragListener: View.OnDragListener? = null
@@ -68,9 +72,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         this.container = container
         realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
             this.teamSession = teamSession
-//            rosterId = teamSession.rosterId
         }
-//        setupRosterRealmListener()
         //Base Team Data
         //Hiding the action bar
         hideLudiActionBar()
@@ -80,7 +82,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
             rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait)!!
         } else {
-            rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)!!
+            rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
         }
         constraintLayout = rootView.findViewById(R.id.TryoutTestFragment)
         setupDisplay()
@@ -170,9 +172,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 
     /**
-     * Floating Action Menu Functions
+     * Global Floating Action Menu Functions
      *
      */
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupFloatingActionMenu() {
         floatingMenuButton = rootView.findViewById(R.id.tryoutFormationFloatingActionButton)
         floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, parentView ->
@@ -189,6 +192,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 }
                 R.id.menu_submit_roster -> {
                     // Do something
+                    realmInstance?.teamSessionByTeamId(teamId) { ts ->
+                        ts.saveRosterToFirebase()
+                    }
                 }
                 R.id.menu_reset -> {
                     resetFormationLayout()
@@ -262,6 +268,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                                 it.add(playerId)
                             }
                         }
+                        ts.roster.setPlayerAsAccepted(playerId)
                     }
                 }
             }
@@ -333,10 +340,19 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     private fun View?.setupPlayerPopupMenu() {
         val playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
+            val playerId = parentView.tag
             when (menuItem.itemId) {
+                R.id.menu_player_accept -> {
+                    // Do something
+                    log("menu_player_accept")
+                    safePlayerFromRoster(playerId as String) { playerRef ->
+                        realmInstance?.safeWrite {
+                            playerRef.status = PLAYER_STATUS_ACCEPTED
+                        }
+                    }
+                }
                 R.id.menu_player_change_teams -> {
                     // Do something
-                    val playerId = parentView.tag
                     safePlayerFromRoster(playerId as String) { playerRef ->
                         when (playerRef.color) {
                             "red" -> {
@@ -366,9 +382,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 }
             }
         }
-        onTap = {
+        onTap = { playerId ->
             //todo: use profile fragment now.
-//            popPlayerProfileDialog(requireActivity(), this!!.tag.toString()).show()
+            toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
         }
         onLongPress = {
             log("Double Tap")

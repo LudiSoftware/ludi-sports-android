@@ -12,6 +12,11 @@ import java.io.Serializable
  * Created by ChazzCoin : November 2022.
  */
 
+const val PLAYER_STATUS_OPEN = "open"
+const val PLAYER_STATUS_CLOSED = "closed"
+const val PLAYER_STATUS_OFFERED = "offered"
+const val PLAYER_STATUS_ACCEPTED = "accepted"
+const val PLAYER_STATUS_REJECTED = "rejected"
 open class PlayerRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
@@ -28,6 +33,9 @@ open class PlayerRef : RealmObject(), Serializable {
     var pointY: Int? = 0
     var color: String? = "unassigned"
     var listPosition: Int? = 0
+    var status: String? = "unassigned"
+    var userId: String? = "unassigned"
+    var parentId: String? = "unassigned"
     // play metrics
     var team: String? = "unassigned"
     var season: String? = "unassigned"

@@ -14,7 +14,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId:String, playerId:String?=null,
-                                           onSingleTapUp:(() -> Unit)?=null, onLongPress:(() -> Unit)?=null) {
+                                           onSingleTapUp:((String) -> Unit)?=null, onLongPress:(() -> Unit)?=null) {
     val tempRealm = realm()
     // Window Height and Width
     var lastX = 0
@@ -44,7 +44,9 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId
         }
 
         override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-            onSingleTapUp?.invoke()
+            if (playerId != null) {
+                onSingleTapUp?.invoke(playerId)
+            }
             return true
         }
 

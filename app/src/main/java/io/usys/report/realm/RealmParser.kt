@@ -2,10 +2,7 @@ package io.usys.report.realm
 
 import com.google.firebase.database.DataSnapshot
 import com.google.gson.Gson
-import io.realm.Realm
-import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.RealmResults
+import io.realm.*
 import io.realm.annotations.RealmClass
 import io.usys.report.firebase.hashMapKeysMatch
 import io.usys.report.utils.tryCatch
@@ -182,6 +179,37 @@ fun RealmObject.toHashMap(): HashMap<String, Any> {
     }
 
     return hashMap
+}
+
+
+fun convertRealmObjectToMap(realmObject: RealmObject): HashMap<String, Any> {
+    val resultMap = HashMap<String, Any>()
+
+    realmObject.javaClass.declaredFields.forEach { field ->
+        field.isAccessible = true
+        val fieldValue = field.get(realmObject)
+
+        resultMap[field.name] = when (fieldValue) {
+            is RealmList<*> -> convertRealmListToList(fieldValue as RealmList<out RealmModel>)
+            else -> fieldValue
+        }
+    }
+
+    return resultMap
+}
+
+fun convertRealmListToList(realmList: RealmList<out RealmModel>): List<Any> {
+    val resultList = mutableListOf<Any>()
+
+    realmList.forEach { realmObject ->
+        if (realmObject is RealmObject) {
+            resultList.add(convertRealmObjectToMap(realmObject))
+        } else {
+            resultList.add(realmObject)
+        }
+    }
+
+    return resultList
 }
 
 //This does work.

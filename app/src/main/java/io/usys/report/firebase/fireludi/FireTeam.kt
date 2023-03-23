@@ -29,15 +29,3 @@ fun fireGetTryOutProfileIntoRealm(teamId:String?) {
     }
 }
 
-/**
- * Roster
- */
-fun fireGetRosterInBackground(rosterId:String) {
-    firebaseDatabase {
-        it.child(DatabasePaths.ROSTERS.path).orderByChild("id").equalTo(rosterId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toRealmObjects<Roster>()
-                log("Roster Updated")
-            }
-    }
-}

@@ -32,7 +32,7 @@ inline fun <T : RealmModel> T.applyAndFireSave(block: (T) -> Unit) {
     }
     this.cast<T>()?.let { itObj ->
         this.getRealmId<T>()?.let { itId ->
-            fireAddUpdateDBAsync(itObj.fireForceGetNameOfRealmObject(), itId, itObj)
+            fireAddUpdateDBAsync(itObj.fireForceGetNameOfRealmObject(), itId, itObj as RealmObject)
         }
     }
 }
