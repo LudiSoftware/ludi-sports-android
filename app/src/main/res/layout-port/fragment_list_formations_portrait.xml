@@ -38,8 +38,15 @@
         app:layout_constraintTop_toTopOf="parent">
     </RelativeLayout>
 
-
     <!-- The Roster List -->
+    <ImageButton
+        android:id="@+id/formationBtnRosterToggle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/add_light" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ysrTORecycler"
         android:layout_width="match_parent"

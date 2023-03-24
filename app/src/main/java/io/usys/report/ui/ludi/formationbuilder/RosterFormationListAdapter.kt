@@ -62,7 +62,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         }
         // On Long Click
         holder.itemView.setOnLongClickListener {
-            holder.itemView.wiggleLong()
+            holder.itemView.wiggleOnce()
             holder.startClipDataDragAndDrop(playerId)
         }
     }
