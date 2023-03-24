@@ -85,6 +85,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
         }
         constraintLayout = rootView.findViewById(R.id.TryoutTestFragment)
+        constraintLayout?.startViewTransition(rootView.findViewById(R.id.ysrTORecycler))
+        constraintLayout?.endViewTransition(rootView.findViewById(R.id.ysrTORecycler))
         setupDisplay()
         return rootView
     }

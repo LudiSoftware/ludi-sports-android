@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/TryoutTestFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layoutDescription="@xml/motion_scene_drawer"
     tools:ignore="MissingDefaultResource">
 
-    <!--    <include-->
-    <!--        android:id="@+id/includeYsrListViewRosterFormation"-->
-    <!--        layout="@layout/ysr_title_list_view"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.0" />-->
-
+    <!-- Global Soccer Ball Menu -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/tryoutFormationFloatingActionButton"
         android:layout_width="50dp"
@@ -32,30 +25,31 @@
         app:maxImageSize="45dp"
         app:rippleColor="@color/transparent" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ysrTORecycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"
-        tools:itemCount="2"
-        tools:listitem="@layout/card_player_tiny" />
-
+    <!-- The Soccer Field -->
     <RelativeLayout
         android:id="@+id/tryoutsRootViewRosterFormation"
         android:layout_width="0dp"
-        android:layout_height="512dp"
+        android:layout_height="0dp"
         android:background="@drawable/soccer_field"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- The Roster List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ysrTORecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:itemCount="2"
+        tools:listitem="@layout/card_player_tiny"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"/>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

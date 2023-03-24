@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+        <!-- Define the constraints for the starting state of the View -->
+        <Constraint
+            android:id="@+id/drawer"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            motion:layout_constraintTop_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/ysrTORecycler"
+            motion:layout_constraintWidth="match_parent"
+            motion:layout_constraintHeight="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation" />
+
+<!--        <Constraint-->
+<!--            android:id="@+id/tryoutsRootViewRosterFormation"-->
+<!--            motion:layout_editor_absoluteX="138dp"-->
+<!--            motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation" />-->
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <!-- Define the constraints for the ending state of the View -->
+        <Constraint
+            android:id="@+id/drawer"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            motion:layout_constraintBottom_toTopOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/ysrTORecycler"
+            motion:layout_editor_absoluteX="138dp"
+            motion:layout_constraintWidth="match_parent"
+            motion:layout_constraintHeight="25dp"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"/>
+
+    </ConstraintSet>
+
+    <!-- Define the transition between the start and end states -->
+    <Transition
+        motion:constraintSetEnd="@id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="500">
+
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@id/drawer"
+            motion:touchAnchorSide="top" />
+    </Transition>
+
+</MotionScene>
