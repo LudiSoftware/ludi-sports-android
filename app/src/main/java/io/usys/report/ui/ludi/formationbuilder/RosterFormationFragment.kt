@@ -6,17 +6,18 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RawRes
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.usys.report.R
-import io.usys.report.firebase.fireUpdateRoster
 import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.local.saveRosterToFirebase
@@ -60,7 +61,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var dragListener: View.OnDragListener? = null
     var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
 
-    var constraintLayout: ConstraintLayout? = null
+    var motionConstraintLayout: MotionLayout? = null
+    var motionIsUp: Boolean = false
+    var soccerFieldImageView: ImageFilterView? = null
     var container: ViewGroup? = null
     var inflater: LayoutInflater? = null
 
@@ -84,13 +87,37 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         } else {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
         }
-        constraintLayout = rootView.findViewById(R.id.TryoutTestFragment)
-        constraintLayout?.startViewTransition(rootView.findViewById(R.id.ysrTORecycler))
-        constraintLayout?.endViewTransition(rootView.findViewById(R.id.ysrTORecycler))
+
+        soccerFieldImageView = rootView.findViewById(R.id.soccerfield)
+        setSoccerFieldLight()
+        motionConstraintLayout = rootView.findViewById(R.id.formationMotionRootLayout)
+
+        motionConstraintLayout?.addTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+
+            }
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+
+            }
+            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+                motionIsUp = !motionIsUp
+            }
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+            }
+        })
         setupDisplay()
         return rootView
     }
 
+    fun setSoccerFieldLight(){
+        soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(R.drawable.soccer_field))
+        soccerFieldImageView?.scaleType = ImageView.ScaleType.CENTER_CROP
+    }
+
+    fun setSoccerFieldDark(){
+        soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(R.drawable.dark_soccer_field))
+        soccerFieldImageView?.scaleType = ImageView.ScaleType.FIT_XY
+    }
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
@@ -107,7 +134,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         formationRelativeLayout?.removeAllViews()
     }
 
-    private fun getBackgroundDrawable(@RawRes drawableReference: Int): Drawable? {
+    fun getBackgroundDrawable(drawableReference: Int): Drawable? {
         return getDrawable(requireContext(), drawableReference)
     }
 
