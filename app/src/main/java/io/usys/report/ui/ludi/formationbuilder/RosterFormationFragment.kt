@@ -159,7 +159,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
             if (!ts.deckListIds.isNullOrEmpty()) {
-                adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity(), getFootFilter("right"))
+                adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity(), mutableMapOf("foot" to "right"), rosterListRecyclerView!!)
                 rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
                 rosterListRecyclerView?.adapter = adapter
             }

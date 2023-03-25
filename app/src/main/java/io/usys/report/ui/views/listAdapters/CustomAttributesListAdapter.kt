@@ -174,3 +174,11 @@ fun View.removeItemViewFromList() {
     val marginLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
     marginLayoutParams.setMargins(0, 0, 0, 0)
 }
+
+fun View.removeItemViewFromListWrapContent() {
+    // Set the height of the view holder to 0
+    this.layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, 0)
+    // Set the margin of the view holder to 0
+    val marginLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    marginLayoutParams.setMargins(0, 0, 0, 0)
+}
