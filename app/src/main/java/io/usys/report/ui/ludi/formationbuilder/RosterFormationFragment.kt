@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.annotation.RawRes
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.content.ContextCompat
@@ -26,7 +25,6 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.toFragmentWithIds
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
-import io.usys.report.ui.views.listAdapters.gridLayoutManager
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
@@ -159,7 +157,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
             if (!ts.deckListIds.isNullOrEmpty()) {
-                adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity(), mutableMapOf("foot" to "right"), rosterListRecyclerView!!)
+                adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity())
                 rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
                 rosterListRecyclerView?.adapter = adapter
             }
@@ -267,7 +265,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                     val clipData = event.clipData
                     if (clipData != null && clipData.itemCount > 0) {
                         val playerId = clipData.getItemAt(0).text.toString()
-                        adapter?.movePlayerToField(playerId)
+                        adapter?.movePlayerToFormation(playerId)
                         addPlayerToFormation(playerId)
                     }
                     true

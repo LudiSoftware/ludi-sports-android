@@ -16,7 +16,6 @@ import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
-import io.usys.report.utils.makeGone
 import io.usys.report.utils.views.*
 import java.util.*
 
@@ -32,19 +31,14 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     var teamId: String? = null
     var realmInstance: Realm? = null
     var formationSessionId: String? = null
-    // 1. Original Full Roster of Players
-    var fullRosterIds: RealmList<String> = RealmList()
     // 2. OnDeck Players List (Players Not Saved to the Formation Screen)
     var onDeckPlayerIdList: RealmList<String> = RealmList()
     // 3/4. Filtered Players List (Players WHO DO match filters BUT NOT in the Formation Screen)
-    var filteredPlayerIds: RealmList<String> = RealmList()
-    var filters: MutableMap<String, String>? = null
+    private var filteredPlayerIds: RealmList<String> = RealmList()
+    private var filters: MutableMap<String, String>? = null
     //
     var onItemMoved: ((start: Int, end: Int) -> Unit)? = null
     var activity: Activity? = null
-    var recyclerView: RecyclerView? = null
-
-
 
     constructor(teamId: String, realmInstance: Realm?, activity: Activity) : this() {
         this.teamId = teamId
@@ -60,13 +54,10 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
         this.activity = activity
     }
-    constructor(teamId: String, realmInstance: Realm?, activity: Activity, filters:MutableMap<String,String>, recyclerView: RecyclerView) : this() {
-        this.teamId = teamId
-        this.realmInstance = realmInstance ?: realm()
+
+    fun reload(filters:MutableMap<String,String>?= null) {
         this.filters = filters
         this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
-        this.activity = activity
-        this.recyclerView = recyclerView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
@@ -76,7 +67,6 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
         val playerId = onDeckPlayerIdList[position] ?: "unknown"
-        var isNotFiltered = true
         realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
             // Filtering System
             fs.roster?.players?.find { it.id == playerId }?.let { player ->
@@ -101,27 +91,8 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         }
     }
 
-    /** Reset OnDeck to Original Roster **/
-    fun resetDeckToRoster() {
-        this.onDeckPlayerIdList.clear()
-        this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
-            this.formationSessionId = fs.id
-            this.realmInstance?.safeWrite {
-                fs.deckListIds?.clear()
-                fs.formationListIds?.clear()
-            }
-            fs.roster?.players?.let { rosterPlayers ->
-                for (playerId in rosterPlayers) {
-                    this.addPlayer(playerId)
-                }
-            }
-        }
-        this.notifyDataSetChanged()
-    }
-
     /** 1. Load in Roster
      *      - ALWAYS filter out players that are in the formation list.
-     *      -
      * **/
     private fun loadFormationSessionOnDeckList() : RealmList<String> {
         val tempList: RealmList<String> = RealmList()
@@ -145,9 +116,8 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         return tempList
     }
 
-
     /** HELPER: Move Player  **/
-    fun movePlayerToField(playerId: String) {
+    fun movePlayerToFormation(playerId: String) {
         onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
             this.realmInstance?.safeWrite {
                 it.teamSessionByTeamId(teamId!!) { fs ->
@@ -159,29 +129,31 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
             notifyItemRemoved(itIndex)
         }
     }
-    fun movePlayerToDeck(playerId: String) {
+
+    /** Reset OnDeck to Original Roster **/
+    fun resetDeckToRoster() {
+        this.onDeckPlayerIdList.clear()
         this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
+            this.formationSessionId = fs.id
             this.realmInstance?.safeWrite {
-                fs.deckListIds?.safeAdd(playerId)
-                fs.formationListIds?.remove(playerId)
+                fs.deckListIds?.clear()
+                fs.formationListIds?.clear()
+            }
+            fs.roster?.players?.let { rosterPlayers ->
+                for (playerId in rosterPlayers) {
+                    this.addPlayer(playerId)
+                }
             }
         }
-        onDeckPlayerIdList.add(playerId)
-        notifyItemInserted(onDeckPlayerIdList.size - 1)
+        this.notifyDataSetChanged()
     }
-    fun addPlayer(player: PlayerRef) {
+    private fun addPlayer(player: PlayerRef) {
         this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
             this.realmInstance?.safeWrite {
                 fs.deckListIds?.safeAdd(player.id)
             }
         }
         onDeckPlayerIdList.add(player.id)
-//        notifyItemInserted(onDeckPlayerIdList.size - 1)
-    }
-
-    fun hideItem(position: Int) {
-        val viewHolder = recyclerView?.findViewHolderForAdapterPosition(position) as? RosterFormationViewHolder
-        viewHolder?.itemView?.visibility = View.GONE
     }
 
     override fun getItemCount() = onDeckPlayerIdList.size
@@ -231,7 +203,6 @@ fun PlayerRef.isFiltered(filterKey:String, filterValue:String): Boolean {
                 return true
             }
         }
-        // Add more attributes to filter here
     }
     return false
 }
