@@ -43,8 +43,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 
     var adapter: RosterFormationListAdapter? = null
+    var adapterFiltered: RosterFormationListAdapter? = null
     var formationRelativeLayout: RelativeLayout? = null
     var rosterListRecyclerView: RecyclerView? = null
+    var filteredPlayerListRecyclerView: RecyclerView? = null
 
     // Formation Session
     var floatingMenuButton: FloatingActionButton? = null
@@ -145,9 +147,11 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun setupDisplay() {
         activity?.window?.let {
             rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
+            filteredPlayerListRecyclerView = rootView.findViewById(R.id.ysrTORecyclerTwo)
             formationRelativeLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
             setupFloatingActionMenu()
             setupRosterList()
+            setupFilteredList()
             setupFormationList()
         }
     }
@@ -168,6 +172,17 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                     addPlayerToFormation(itPlayerId, loadingFromSession = true)
                 }
             }
+        }
+    }
+
+    private fun setupFilteredList() {
+        onItemDragged = { start, end ->
+            log("onItemDragged: $start, $end")
+        }
+        realmInstance?.teamSessionByTeamId(teamId) { ts ->
+            adapterFiltered = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity(), mutableMapOf("foot" to "left"))
+            filteredPlayerListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
+            filteredPlayerListRecyclerView?.adapter = adapterFiltered
         }
     }
     private fun setupFormationList() {

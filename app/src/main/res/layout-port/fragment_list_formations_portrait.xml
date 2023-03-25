@@ -77,13 +77,32 @@
             android:visibility="visible"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Roster">
+            android:text="On Deck">
         </TextView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ysrTORecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:visibility="visible"
+            tools:itemCount="2"
+            tools:listitem="@layout/card_player_tiny_horizontal" />
+
+        <TextView
+            android:id="@+id/formationRosterTitleTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Players Right Footed">
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ysrTORecyclerTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:visibility="visible"
             tools:itemCount="2"
