@@ -11,6 +11,7 @@ import io.usys.report.ui.ludi.note.NoteViewHolder
 import io.usys.report.ui.ludi.organization.OrgViewHolder
 import io.usys.report.ui.ludi.player.PlayerMediumGridViewHolder
 import io.usys.report.ui.ludi.player.PlayerMediumViewHolder
+import io.usys.report.ui.ludi.player.PlayerTinyHorizontalViewHolder
 import io.usys.report.ui.ludi.player.PlayerTinyViewHolder
 import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ludi.review.organization.OrgReviewCommentViewHolder
@@ -40,6 +41,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             FireTypes.PLAYERS -> {
                 when (size) {
                     "tiny" -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef, position=position)
+                    "tiny_horizontal" -> return PlayerTinyHorizontalViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                     "medium" -> return PlayerMediumViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                     "medium_grid" -> return PlayerMediumGridViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                 }

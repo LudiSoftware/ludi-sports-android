@@ -13,6 +13,7 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.sortByName
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.ui.views.listAdapters.loadInRealmListGridArrangable
+import io.usys.report.ui.views.listAdapters.loadInRealmListHorizontal
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -34,6 +35,16 @@ fun RecyclerView?.setupPlayerListGridFromRosterId(id: String, onClickReturnViewR
     val players: RealmList<PlayerRef> = roster?.players?.sortByName() ?: RealmList()
     players.let {
         rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium_grid")
+    }
+}
+
+
+fun RecyclerView?.setupPlayerListHorizontalFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+    val rv = this
+    val roster = realm().findRosterById(id)
+    val players: RealmList<PlayerRef> = roster?.players?.sortByName() ?: RealmList()
+    players.let {
+        rv?.loadInRealmListHorizontal(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "tiny_horizontal")
     }
 }
 
@@ -92,6 +103,21 @@ class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
             txtItemPlayerName?.text = it.name
             txtItemPlayerOne?.text = "Position: ${position.toString()}"
             txtItemPlayerTwo?.text = it.tryoutTag
+            it.imgUrl?.let { url ->
+                imgPlayerProfile.loadUriIntoImgView(url)
+            }
+        }
+    }
+}
+
+class PlayerTinyHorizontalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerTinyHorizontalImgProfile)
+    var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyHorizontalTxtName)
+
+    fun bind(player: PlayerRef?, position: Int?= null) {
+        player?.let {
+            txtItemPlayerName?.text = it.name
             it.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }

@@ -27,6 +27,7 @@ import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.toFragmentWithIds
 import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.gridLayoutManager
+import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
 
@@ -101,6 +102,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
                 motionIsUp = !motionIsUp
+                adapter?.notifyDataSetChanged()
             }
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
             }
@@ -158,7 +160,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
             if (!ts.deckListIds.isNullOrEmpty()) {
                 adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity())
-                rosterListRecyclerView?.layoutManager = gridLayoutManager(requireContext())
+                rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
                 rosterListRecyclerView?.adapter = adapter
             }
             ts.formationListIds?.let { formationList ->

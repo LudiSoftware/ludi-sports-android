@@ -9,13 +9,13 @@
         motion:duration="600">
         <OnSwipe
             motion:dragDirection="dragUp"
-            motion:touchAnchorId="@id/ysrTORecycler"
+            motion:touchAnchorId="@id/formationRosterListsLinearLayout"
             motion:touchAnchorSide="top" />
 
         <OnClick
             motion:targetId="@id/formationBtnRosterToggle"
             motion:dragDirection="dragUp"
-            motion:touchAnchorId="@id/ysrTORecycler"
+            motion:touchAnchorId="@id/formationRosterListsLinearLayout"
             motion:touchAnchorSide="top" />
 
         <KeyFrameSet>
@@ -28,14 +28,19 @@
     <ConstraintSet android:id="@+id/start">
         <!-- Define the constraints for the ending state of the View -->
         <Constraint
-            android:id="@+id/ysrTORecycler"
+            android:id="@+id/formationRosterListsLinearLayout"
             motion:layout_editor_absoluteX="138dp"
             motion:layout_constraintWidth="match_parent"
             motion:layout_constraintHeight="25dp"
+            android:layout_margin="10dp"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"/>
+
+        <Constraint
+            android:id="@+id/formationRosterTitleOne"
+            android:visibility="visible"/>
 
         <Constraint
             android:id="@+id/formationBtnRosterToggle"
@@ -66,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="visible"
-            motion:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent">
@@ -77,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="visible"
-            motion:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent">
@@ -90,20 +95,25 @@
             android:id="@+id/formationBtnRosterToggle"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            motion:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintLeft_toLeftOf="parent"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
         <!-- Define the constraints for the starting state of the View -->
         <Constraint
-            android:id="@+id/ysrTORecycler"
+            android:id="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintWidth="match_parent"
             motion:layout_constraintHeight="750dp"
+            android:layout_margin="10dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation" />
+
+        <Constraint
+            android:id="@+id/formationRosterTitleOne"
+            android:visibility="gone"/>
 
         <Constraint
             android:id="@+id/formationBtnRosterToggle">
@@ -158,7 +168,7 @@
             android:id="@+id/formationBtnRosterToggle"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            motion:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintLeft_toLeftOf="parent" />
     </ConstraintSet>
 

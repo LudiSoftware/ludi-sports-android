@@ -90,12 +90,12 @@ inline fun <reified T> RecyclerView.loadInRealmListArrangable(realmList: RealmLi
 
 
 inline fun <reified T> RecyclerView.loadInRealmListHorizontal(realmList: RealmList<T>?,
-                                                              context: Context,
                                                               type: String,
-                                                    noinline itemOnClick: ((View, T) -> Unit)?) : RealmListAdapter<T>? {
+                                                    noinline itemOnClick: ((View, T) -> Unit)?,
+                                                              size:String="medium_grid") : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
-    val adapter = RealmListAdapter(realmList, type, itemOnClick)
-    this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    val adapter = RealmListAdapter(realmList, type, itemOnClick, size)
+    this.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
     this.adapter = adapter
     return adapter
 }

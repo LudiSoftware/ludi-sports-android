@@ -24,7 +24,7 @@ fun RecyclerView?.setupServiceList(context: Context, onClickReturnViewRealmObjec
     // Load Cached Services from Session
     val rv = this
     sessionServices {
-        rv?.loadInRealmListHorizontal(it, context, FireTypes.SERVICES, onClickReturnViewRealmObject)
+        rv?.loadInRealmListHorizontal(it, FireTypes.SERVICES, onClickReturnViewRealmObject)
         return
     }
 

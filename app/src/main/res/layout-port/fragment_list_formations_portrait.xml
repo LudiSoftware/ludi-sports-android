@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+        app:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -42,7 +42,7 @@
         android:layout_height="0dp"
         android:background="@color/transparent"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+        app:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,21 +53,43 @@
         android:id="@+id/formationBtnRosterToggle"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/ysrTORecycler"
+        app:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         android:src="@drawable/add_light"
         app:altSrc="@drawable/add_light" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ysrTORecycler"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/formationRosterListsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        tools:itemCount="2"
-        tools:listitem="@layout/card_player_tiny"
+        android:background="@drawable/border_shadow_white"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"/>
+        app:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation">
+
+        <TextView
+            android:id="@+id/formationRosterTitleOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Roster">
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ysrTORecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:visibility="visible"
+            tools:itemCount="2"
+            tools:listitem="@layout/card_player_tiny_horizontal" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

@@ -37,7 +37,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
-        val view = parent.inflateLayout(R.layout.card_player_tiny)
+        val view = parent.inflateLayout(R.layout.card_player_tiny_horizontal)
         return RosterFormationViewHolder(view)
     }
 
@@ -150,12 +150,12 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
 
     override fun onItemDismiss(position: Int) {
-        onDeckPlayerIdList?.removeAt(position)
+        onDeckPlayerIdList.removeAt(position)
         notifyItemRemoved(position)
     }
 
     inner class RosterFormationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.bind(R.id.cardPlayerTinyTxtName)
-        val imageView: ImageView = itemView.bind(R.id.cardPlayerTinyImgProfile)
+        val textView: TextView = itemView.bind(R.id.cardPlayerTinyHorizontalTxtName)
+        val imageView: ImageView = itemView.bind(R.id.cardPlayerTinyHorizontalImgProfile)
     }
 }
