@@ -7,6 +7,7 @@ import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import io.usys.report.utils.splitFullName
 import java.io.Serializable
+import java.util.*
 
 /**
  * Created by ChazzCoin : November 2022.
@@ -105,8 +106,5 @@ open class Player : RealmObject() {
 }
 
 
-//inline fun getPlayerRefsByTeamId(id:String, block: (Roster) -> Unit) {
-//    val team = getTeamById(id)
-//    team?.rosterId?.let { block(it) }
-//}
+
 

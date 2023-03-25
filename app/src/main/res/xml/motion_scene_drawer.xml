@@ -98,7 +98,7 @@
             motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintLeft_toLeftOf="parent"/>
     </ConstraintSet>
-
+x
     <ConstraintSet android:id="@+id/end">
         <!-- Define the constraints for the starting state of the View -->
         <Constraint
