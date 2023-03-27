@@ -69,7 +69,7 @@ inline fun View.onDownUpListener(crossinline onDown: () -> Unit, crossinline onS
     })
 
     var downTime = 0L
-    val downTimeLimit = 300L
+    val downTimeLimit = 450L
     var shouldTrigger = false
     var job: Job? = null
 
