@@ -61,12 +61,12 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerTinyImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerTinyTxtName)
-    var txtItemPlayerRank = itemView.bindTextView(R.id.cardPlayerTinyTxtRank)
+//    var txtItemPlayerRank = itemView.bindTextView(R.id.cardPlayerTinyTxtRank)
 
     fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let {
             txtItemPlayerName?.text = it.name
-            txtItemPlayerRank?.text = position.toString()
+//            txtItemPlayerRank?.text = position.toString()
             it.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }

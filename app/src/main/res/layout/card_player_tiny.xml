@@ -1,64 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginBottom="3dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
+    android:layout_width="100dp"
+    android:layout_height="75dp"
+    android:background="@drawable/formation_badge_trans"
+    app:cardBackgroundColor="#00FFFFFF"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
     app:cardMaxElevation="5dp">
 
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/formation_badge_trans" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardPlayerTinyMainLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:minWidth="125dp"
-        android:minHeight="30dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="#40FFFFFF"
+        android:visibility="visible">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cardPlayerTinyImgProfile"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="4dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/ysr_empty_profile_icon_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/cardPlayerTinyTxtName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="59dp"
+            android:layout_height="15dp"
             android:layout_gravity="center"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
             android:drawablePadding="25dp"
             android:text="Player Name"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardPlayerTinyImgProfile"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardPlayerTinyImgProfile"
             app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/cardPlayerTinyTxtRank"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="3dp"
-            android:gravity="center"
-            android:text="1"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardPlayerTinyTxtName"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

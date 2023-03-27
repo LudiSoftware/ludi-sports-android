@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -161,7 +162,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
             if (!ts.deckListIds.isNullOrEmpty()) {
-                adapter = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity())
+                adapter = RosterFormationListAdapter(teamId!!, realmInstance, findNavController())
                 rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
                 rosterListRecyclerView?.adapter = adapter
             }
@@ -180,7 +181,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             log("onItemDragged: $start, $end")
         }
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
-            adapterFiltered = RosterFormationListAdapter(teamId!!, realmInstance, requireActivity(), mutableMapOf("foot" to "left"))
+            adapterFiltered = RosterFormationListAdapter(teamId!!, realmInstance, findNavController(), mutableMapOf("foot" to "left"))
             filteredPlayerListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
             filteredPlayerListRecyclerView?.adapter = adapterFiltered
         }
@@ -193,13 +194,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
         }
     }
-
-//    private fun setupRosterRealmListener() {
-//        realmRosterCallBack = {
-//            log("Roster Realm Listener")
-//            setupDisplay()
-//        }
-//    }
 
     /**
      * Orientation Change Functions
@@ -315,6 +309,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                         ts.roster.setPlayerAsAccepted(playerId)
                     }
                 }
+                adapterFiltered?.reload()
             }
 
             formationViewList.find { it.tag == playerId }?.let {

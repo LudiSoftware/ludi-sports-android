@@ -1,6 +1,7 @@
 package io.usys.report.ui.fragments
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -10,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage

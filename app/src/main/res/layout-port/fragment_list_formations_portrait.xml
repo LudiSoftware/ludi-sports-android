@@ -77,7 +77,7 @@
             android:visibility="visible"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="On Deck">
+            android:text="Substitutions">
         </TextView>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -96,7 +96,7 @@
             android:visibility="visible"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Players Right Footed">
+            android:text="Filtered">
         </TextView>
 
         <androidx.recyclerview.widget.RecyclerView

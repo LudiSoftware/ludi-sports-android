@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
@@ -14,6 +15,9 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
+import io.usys.report.ui.fragments.bundleStringIds
+import io.usys.report.ui.fragments.toFragmentWithIds
+import io.usys.report.ui.gestures.onDownUpListener
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
 import io.usys.report.utils.views.*
@@ -34,29 +38,32 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     // 2. OnDeck Players List (Players Not Saved to the Formation Screen)
     var onDeckPlayerIdList: RealmList<String> = RealmList()
     // 3/4. Filtered Players List (Players WHO DO match filters BUT NOT in the Formation Screen)
-    private var filteredPlayerIds: RealmList<String> = RealmList()
+    private var filteredOutPlayerIds: RealmList<String> = RealmList()
     private var filters: MutableMap<String, String>? = null
     //
     var onItemMoved: ((start: Int, end: Int) -> Unit)? = null
-    var activity: Activity? = null
+    var navController: NavController? = null
 
-    constructor(teamId: String, realmInstance: Realm?, activity: Activity) : this() {
+    constructor(teamId: String, realmInstance: Realm?, navController: NavController) : this() {
         this.teamId = teamId
         this.realmInstance = realmInstance ?: realm()
         this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
-        this.activity = activity
+        this.navController = navController
     }
 
-    constructor(teamId: String, realmInstance: Realm?, activity: Activity, filters:MutableMap<String,String>) : this() {
+    constructor(teamId: String, realmInstance: Realm?,  navController: NavController, filters:MutableMap<String,String>) : this() {
         this.teamId = teamId
         this.realmInstance = realmInstance ?: realm()
         this.filters = filters
         this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
-        this.activity = activity
+        this.navController = navController
     }
+
 
     fun reload(filters:MutableMap<String,String>?= null) {
-        this.filters = filters
+        if (filters != null) {
+            this.filters = filters
+        }
         this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
     }
 
@@ -75,18 +82,20 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
                 player.imgUrl?.let { itImgUrl ->
                     holder.imageView.loadUriIntoImgView(itImgUrl)
                 }
-                holder.itemView.setPlayerTeamBackgroundColor(player.color)
+//                holder.itemView.setPlayerTeamBackgroundColor(player.color)
                 // On Click
                 holder.itemView.setOnClickListener {
-                    activity?.let { _ ->
-                        //todo: use profile fragment now.
-                    }
+
                 }
-                // On Long Click
-                holder.itemView.setOnLongClickListener {
+
+                holder.itemView.onDownUpListener({
+                    println("onDown")
                     holder.itemView.wiggleOnce()
                     holder.startClipDataDragAndDrop(playerId)
-                }
+                }, {
+                    println("onSingleTapUp")
+                    navController?.navigate(R.id.navigation_player_profile, bundleStringIds(teamId, playerId, null))
+                })
             }
         }
     }
@@ -96,16 +105,18 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
      * **/
     private fun loadFormationSessionOnDeckList() : RealmList<String> {
         val tempList: RealmList<String> = RealmList()
+        this.filteredOutPlayerIds.clear()
+        this.onDeckPlayerIdList.clear()
         this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
             this.formationSessionId = fs.id
-            fs.formationListIds?.let { this.filteredPlayerIds.addAll(it) }
+            fs.formationListIds?.let { this.filteredOutPlayerIds.addAll(it) }
             //load from full roster
             fs.roster?.players?.let { rosterPlayers ->
                 for (player in rosterPlayers) {
-                    if (this.filteredPlayerIds.contains(player.id)) { continue }
+                    if (this.filteredOutPlayerIds.contains(player.id)) { continue }
                     if (filters != null) {
-                        if (player.isFiltered(filters!!)) {
-                            this.filteredPlayerIds.safeAdd(player.id)
+                        if (!player.matchesFilter(filters!!)) {
+                            this.filteredOutPlayerIds.safeAdd(player.id)
                             continue
                         }
                     }
@@ -177,16 +188,16 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
 
 
-fun PlayerRef.isFiltered(filters: MutableMap<String,String>): Boolean {
+fun PlayerRef.matchesFilter(filters: MutableMap<String,String>): Boolean {
     for (filter in filters) {
-        if (this.isFiltered(filter.key, filter.value)) {
+        if (this.matchesFilter(filter.key, filter.value)) {
             return true
         }
     }
     return false
 }
 
-fun PlayerRef.isFiltered(filterKey:String, filterValue:String): Boolean {
+fun PlayerRef.matchesFilter(filterKey:String, filterValue:String): Boolean {
     when (filterKey.toLowerCase(Locale.getDefault())) {
         "status" -> {
             if (this.status.equals(filterValue, ignoreCase = true)) {
