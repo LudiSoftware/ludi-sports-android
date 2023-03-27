@@ -1,9 +1,11 @@
 package io.usys.report.ui.ludi.formationbuilder
 
+import android.app.ActionBar
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.widget.RelativeLayout
 import io.usys.report.realm.findByField
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.users.safeUserId
@@ -78,8 +80,8 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId
 
             // Make sure the child view doesn't go outside the bounds of the parent layout
             val lp = getRelativeLayoutParams()
-            lp.width = width
-            lp.height = height
+            lp.width = RelativeLayout.LayoutParams.WRAP_CONTENT
+            lp.height = RelativeLayout.LayoutParams.WRAP_CONTENT
             lp.leftMargin = leftMargin
             lp.topMargin = topMargin
             viewObject.layoutParams = lp

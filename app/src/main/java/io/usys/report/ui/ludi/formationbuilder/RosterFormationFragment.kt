@@ -1,6 +1,7 @@
 package io.usys.report.ui.ludi.formationbuilder
 
 import android.annotation.SuppressLint
+import android.app.ActionBar.LayoutParams
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.content.ContextCompat
@@ -29,6 +31,7 @@ import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
+import org.jetbrains.anko.backgroundColor
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -55,6 +58,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     // Player Icons on the field
     var formationViewList = mutableListOf<View>()
+    var formationCardViews = mutableListOf<CardView>()
 //    var formationLayouts = mutableListOf(R.drawable.soccer_field)
     // Player Formation
     var onTap: ((String) -> Unit)? = null
@@ -103,6 +107,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
                 motionIsUp = !motionIsUp
+
+                if (motionIsUp) {
+                    formationRelativeLayout?.setOnClickListener {
+                        motionConstraintLayout?.transitionToStart()
+                    }
+                }
                 adapter?.notifyDataSetChanged()
             }
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
@@ -293,7 +303,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun addPlayerToFormation(playerId: String, loadingFromSession: Boolean = false) {
         val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_formation)
         val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtName)
-        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
+        val playerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
+//        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
 
         //Prepare PlayerView from Drag/Drop
         safePlayerFromRoster(playerId) { newPlayerRef ->
@@ -325,11 +336,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
+            playerCircleLayout.tag = newPlayerRef.id
             // Bind Data
             playerName.text = newPlayerRef.name
-            playerTryOutTag.text = newPlayerRef.tryoutTag
+//            playerTryOutTag.text = newPlayerRef.tryoutTag
             newPlayerRef.color?.let {
-                playerRefViewItem.setPlayerTeamBackgroundColor(it)
+                playerCircleLayout.setPlayerFormationBackgroundColor(it)
             }
             playerRefViewItem.setupPlayerPopupMenu()
             // Gestures
@@ -343,13 +355,14 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             )
             // Add to FormationLayout
             formationViewList.add(playerRefViewItem)
+            formationCardViews.add(playerCircleLayout)
             formationRelativeLayout?.addView(playerRefViewItem)
         }
 
     }
 
-    private inline fun findPlayerViewInFormation(playerId: String, block: (View) -> Unit) {
-        formationViewList.forEach { playerView ->
+    private inline fun findPlayerViewInFormation(playerId: String, block: (CardView) -> Unit) {
+        formationCardViews.forEach { playerView ->
             if (playerView.tag == playerId) {
                 block(playerView)
             }
@@ -372,8 +385,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun preparePlayerLayoutParamsForFormation(loadingFromSession: Boolean=false): RelativeLayout.LayoutParams {
         val layoutParams = getRelativeLayoutParams()
         if (!loadingFromSession) layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-        layoutParams.width = 300
-        layoutParams.height = 75
+        layoutParams.width = LayoutParams.WRAP_CONTENT
+        layoutParams.height = LayoutParams.WRAP_CONTENT
         return layoutParams
     }
 
@@ -406,7 +419,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                             }
                         }
                         findPlayerViewInFormation(playerId) { playerView ->
-                            playerView.setPlayerTeamBackgroundColor(playerRef.color)
+                            playerView.setPlayerFormationBackgroundColor(playerRef.color)
                         }
                     }
 
@@ -433,13 +446,21 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 }
 
+fun CardView.setPlayerFormationBackgroundColor(colorName: String?) {
+    val color = when (colorName) {
+        "red" -> ContextCompat.getColor(this.context, R.color.ysrFadedRed)
+        "blue" -> ContextCompat.getColor(this.context, R.color.ysrFadedBlue)
+        else -> Color.TRANSPARENT
+    }
+    this.setCardBackgroundColor(color)
+}
 fun View.setPlayerTeamBackgroundColor(colorName: String?) {
     val color = when (colorName) {
         "red" -> ContextCompat.getColor(this.context, R.color.ysrFadedRed)
         "blue" -> ContextCompat.getColor(this.context, R.color.ysrFadedBlue)
         else -> Color.TRANSPARENT
     }
-    setBackgroundColor(color)
+    backgroundColor = color
 }
 
 fun String.parseColor(): Int {
