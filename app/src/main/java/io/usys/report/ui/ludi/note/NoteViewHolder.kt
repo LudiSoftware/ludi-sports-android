@@ -21,6 +21,14 @@ fun RecyclerView?.setupTeamNoteList(teamId: String, onClick: ((View, RealmObject
     }
 }
 
+fun RecyclerView?.setupPlayerNoteList(playerId: String, onClick: ((View, RealmObject) -> Unit)? ) {
+    // Load Organizations by Sport.name
+    val rv = this
+    realm().findAllByField<Note>("aboutPlayerId", playerId)?.let { notes ->
+        rv?.loadInCustomAttributes(notes.toSafeRealmList(), DatabasePaths.NOTES.path, onClick)
+    }
+}
+
 class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var txtNoteName = itemView.bindTextView(R.id.cardNoteSmallTxtUserName)

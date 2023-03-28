@@ -11,6 +11,7 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.model.Sport
+import io.usys.report.ui.ludi.note.setupPlayerNoteList
 import io.usys.report.ui.ludi.note.setupTeamNoteList
 import io.usys.report.ui.ludi.organization.setupOrganizationList
 import io.usys.report.ui.ludi.player.setupPlayerListFromTeamSession
@@ -84,5 +85,14 @@ class YsrTitleListView(context: Context) : CardView(context) {
         }
         setTitle("Team Notes")
         recyclerView?.setupTeamNoteList(teamId, onClickReturnViewRealmObject)
+    }
+
+    fun setupPlayerNotesList(playerId: String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        if (playerId == null) {
+            setTitle("Uh Oh! No Data Found.")
+            return
+        }
+        setTitle("Player Notes")
+        recyclerView?.setupPlayerNoteList(playerId, onClickReturnViewRealmObject)
     }
 }

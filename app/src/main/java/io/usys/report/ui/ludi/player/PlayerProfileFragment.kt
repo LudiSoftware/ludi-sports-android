@@ -75,8 +75,10 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
         }
 
         val ll = _binding?.playerProfileLinearLayout
-        val lvg = LudiViewGroup(requireParentFragment(), ll!!, teamId, playerId = playerId)
-        lvg.setupLudiTabs(ludiPlayerProfileFragments())
+        val lvg = ll?.let {
+            LudiViewGroup(requireParentFragment(), it, teamId, playerId = playerId)
+        }
+        lvg?.setupLudiTabs(ludiPlayerProfileFragments())
 
         // Includes
         val playerProfile = _binding?.includePlayerProfileHeader

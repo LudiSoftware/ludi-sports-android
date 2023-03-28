@@ -21,19 +21,19 @@ fun fireGetTeamNotesInBackground(teamId:String?) {
     }
 }
 
-fun fireAddNote(note:Note) {
+fun fireGetPlayerNotesInBackground(teamId:String?) {
+    if (teamId == null) return
     firebaseDatabase {
-        it.child(DatabasePaths.NOTES.path).child(note.id).setValue(note)
-    }
-}
-
-fun fireGetPlayerNotesInBackground(playerId:String?) {
-    if (playerId == null) return
-    firebaseDatabase {
-        it.child(DatabasePaths.NOTES.path).orderByChild("playerId").equalTo(playerId)
+        it.child(DatabasePaths.NOTES.path).orderByChild("aboutPlayerId").equalTo(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
                 ds?.toRealmObjects<Note>()
                 log("Notes Updated")
             }
+    }
+}
+
+fun fireAddNote(note:Note) {
+    firebaseDatabase {
+        it.child(DatabasePaths.NOTES.path).child(note.id).setValue(note)
     }
 }
