@@ -1,20 +1,14 @@
 package io.usys.report.ui.ludi.formationbuilder
 
 import android.annotation.SuppressLint
-import android.app.ActionBar.LayoutParams
 import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.ImageFilterView
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +25,6 @@ import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*
-import org.jetbrains.anko.backgroundColor
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -46,26 +39,24 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
     }
 
-    var adapter: RosterFormationListAdapter? = null
+    var adapterSubstitutes: RosterFormationListAdapter? = null
     var adapterFiltered: RosterFormationListAdapter? = null
     var formationRelativeLayout: RelativeLayout? = null
-    var rosterListRecyclerView: RecyclerView? = null
-    var filteredPlayerListRecyclerView: RecyclerView? = null
+    var deckLinearLayout: LinearLayoutCompat? = null
+    var deckSubsRecyclerView: RecyclerView? = null
+    var deckFilteredRecyclerView: RecyclerView? = null
 
     // Formation Session
     var floatingMenuButton: FloatingActionButton? = null
     var floatingPopMenu: PopupMenu? = null
+    private var playerPopMenuView: PopupMenu? = null
 
     // Player Icons on the field
     var formationViewList = mutableListOf<View>()
     var formationCardViews = mutableListOf<CardView>()
-//    var formationLayouts = mutableListOf(R.drawable.soccer_field)
     // Player Formation
     var onTap: ((String) -> Unit)? = null
     var onLongPress: (() -> Unit)? = null
-
-    var dragListener: View.OnDragListener? = null
-    var onItemDragged: ((start: Int, end: Int) -> Unit)? = null
 
     var motionConstraintLayout: MotionLayout? = null
     var motionIsUp: Boolean = false
@@ -109,10 +100,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** GLOBAL/FRAGMENT DISPLAY SETUP - onCreate process function **/
     private fun bindViews() {
+        floatingMenuButton = rootView.findViewById(R.id.tryoutFormationFloatingActionButton)
         soccerFieldImageView = rootView.findViewById(R.id.soccerfield)
         motionConstraintLayout = rootView.findViewById(R.id.formationMotionRootLayout)
-        rosterListRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
-        filteredPlayerListRecyclerView = rootView.findViewById(R.id.ysrTORecyclerTwo)
+        deckLinearLayout = rootView.findViewById(R.id.formationRosterListsLinearLayout)
+        deckSubsRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
+        deckFilteredRecyclerView = rootView.findViewById(R.id.ysrTORecyclerTwo)
         formationRelativeLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
     }
 
@@ -133,7 +126,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                         motionConstraintLayout?.transitionToStart()
                     }
                 }
-                adapter?.notifyDataSetChanged()
+                adapterSubstitutes?.notifyDataSetChanged()
             }
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
             }
@@ -147,12 +140,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 
     private fun setSoccerFieldLight(){
-        soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(R.drawable.soccer_field))
+        soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(requireContext(), R.drawable.soccer_field))
         soccerFieldImageView?.scaleType = ImageView.ScaleType.CENTER_CROP
     }
 
     fun setSoccerFieldDark(){
-        soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(R.drawable.dark_soccer_field))
+        soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(requireContext(), R.drawable.dark_soccer_field))
         soccerFieldImageView?.scaleType = ImageView.ScaleType.FIT_XY
     }
 
@@ -160,14 +153,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
      * FORMATION HELPERS: Functions
      */
     private fun resetFormationLayout() {
-        adapter?.resetDeckToRoster()
+        adapterSubstitutes?.resetDeckToRoster()
         formationViewList.clear()
         formationRelativeLayout?.removeAllViews()
     }
 
-    private fun getBackgroundDrawable(drawableReference: Int): Drawable? {
-        return getDrawable(requireContext(), drawableReference)
-    }
+
 
     /** GLOBAL/FRAGMENT DISPLAY ORDER/PROCESS HANDLING
      *      Display Process Functions
@@ -183,19 +174,15 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** GLOBAL/FRAGMENT DISPLAY SETUP - display process function **/
     private fun setupFullDisplay() {
-        //todo:
-        onItemDragged = { start, end ->
-            log("onItemDragged: $start, $end")
-        }
-
         // We want to do this all in one instance of getting the session from realm.
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
 
             // -> Setup Substitution List
             if (!ts.deckListIds.isNullOrEmpty()) {
-                adapter = RosterFormationListAdapter(teamId!!, realmInstance, findNavController())
-                rosterListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
-                rosterListRecyclerView?.adapter = adapter
+                adapterSubstitutes = RosterFormationListAdapter(teamId!!, realmInstance, findNavController())
+                deckSubsRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
+                deckSubsRecyclerView?.adapter = adapterSubstitutes
+                createDeckDragListener()
             }
 
             // -> Setup Formation Of Players
@@ -211,27 +198,25 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** ON-DECK LAYOUT: SETUP A FILTERED LIST OF PLAYERS ON-DECK - display process function **/
     private fun setupFilteredList() {
-        onItemDragged = { start, end ->
-            log("onItemDragged: $start, $end")
-        }
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
             adapterFiltered = RosterFormationListAdapter(teamId!!, realmInstance, findNavController(), mutableMapOf("foot" to "left"))
-            filteredPlayerListRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
-            filteredPlayerListRecyclerView?.adapter = adapterFiltered
+            deckFilteredRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
+            deckFilteredRecyclerView?.adapter = adapterFiltered
         }
     }
 
     /** FORMATION LAYOUT: SETUP LIST OF PLAYERS ON SOCCER FIELD - display process function **/
     private fun setupFormationList() {
-        createOnDragListener()
-        adapter?.let { itAdapter ->
+        createFormationDragListener()
+        adapterSubstitutes?.let { itAdapter ->
             val itemTouchHelperCallback = RosterFormationTouchHelperCallback(itAdapter)
             val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-            itemTouchHelper.attachToRecyclerView(rosterListRecyclerView)
+            itemTouchHelper.attachToRecyclerView(deckSubsRecyclerView)
         }
     }
 
     /**
+     * todo:
      * LIFECYCLE: Orientation Change Functions
      */
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -250,7 +235,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
      */
     @SuppressLint("ClickableViewAccessibility")
     private fun setupFloatingActionMenu() {
-        floatingMenuButton = rootView.findViewById(R.id.tryoutFormationFloatingActionButton)
         floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, parentView ->
             // Handle menu item click events
             // todo: events to handle:
@@ -300,31 +284,26 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     /**
      * FORMATION LAYOUT: DRAG LISTENER for when a player is dragged onto the soccer field
      */
-    private fun createOnDragListener() {
-        dragListener = View.OnDragListener { v, event ->
-            when (event.action) {
-                DragEvent.ACTION_DROP -> {
-                    val clipData = event.clipData
-                    if (clipData != null && clipData.itemCount > 0) {
-                        val playerId = clipData.getItemAt(0).text.toString()
-                        adapter?.movePlayerToFormation(playerId)
-                        addPlayerToFormation(playerId)
-                    }
-                    true
-                }
-                else -> {
-                    true
-                }
+    private fun createFormationDragListener() {
+        tryCatch {
+            formationRelativeLayout?.setFormationDropListener { itPlayerId, x, y ->
+                adapterSubstitutes?.movePlayerToFormation(itPlayerId)
+                addPlayerToFormation(itPlayerId, x = x, y = y)
             }
         }
-        tryCatch {
-            formationRelativeLayout?.setOnDragListener(dragListener)
-        }
+    }
+    /**
+     * ON-DECK LAYOUT: DRAG LISTENER for when a player is dragged off the deck.
+     */
+    private fun createDeckDragListener() {
+        formationRelativeLayout?.let { deckSubsRecyclerView?.setDeckDragListener(it) }
     }
 
     /** FORMATION LAYOUT: SETTING UP A PLAYER ON THE SOCCER FIELD **/
-    private fun addPlayerToFormation(playerId: String, loadingFromSession: Boolean = false) {
+    private fun addPlayerToFormation(playerId: String, x:Float?=null, y:Float?=null, loadingFromSession: Boolean = false) {
+        // Create New PlayerView for Formation
         val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_formation)
+        // Bind PlayerView's
         val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtName)
         val playerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
 //        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
@@ -351,12 +330,35 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
 
             val layoutParams = preparePlayerLayoutParamsForFormation(loadingFromSession)
-            if (!newPlayerRef.pointX.isNullOrEmpty() || newPlayerRef.pointX != 0) {
+            // X
+            if (x != null) {
+                log("X: $x")
+                layoutParams.leftMargin =  x.toInt() - 75
+            } else if (!newPlayerRef.pointX.isNullOrEmpty() || newPlayerRef.pointX != 0) {
                 layoutParams.topMargin = newPlayerRef.pointX ?: 0
             }
-            if (!newPlayerRef.pointY.isNullOrEmpty() || newPlayerRef.pointY != 0) {
+//            // Y
+            if (y != null) {
+                log("Y: $y")
+                layoutParams.topMargin = y.toInt() - 75
+            } else if (!newPlayerRef.pointY.isNullOrEmpty() || newPlayerRef.pointY != 0) {
                 layoutParams.leftMargin = newPlayerRef.pointY ?: 0
             }
+
+            if (x != null && y != null) {
+                realmInstance?.teamSessionByTeamId(teamId) { fs ->
+                    playerId.let { itId ->
+                        fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
+                            realmInstance?.safeWrite {
+                                playerRef.pointX = y.toInt() - 75
+                                playerRef.pointY = x.toInt() - 75
+                                it.copyToRealmOrUpdate(playerRef)
+                            }
+                        }
+                    }
+                }
+            }
+
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
             playerCircleLayout.tag = newPlayerRef.id
@@ -367,6 +369,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 playerCircleLayout.setPlayerFormationBackgroundColor(it)
             }
             playerRefViewItem.setupPlayerPopupMenu()
+
+
             // Gestures
             playerRefViewItem.onGestureDetectorRosterFormation(
                 width = 300,
@@ -376,6 +380,16 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 onSingleTapUp = onTap,
                 onLongPress = onLongPress
             )
+            // Single Tap
+            onTap = { playerId ->
+                toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
+            }
+            // Long Press
+            onLongPress = {
+                log("Double Tap")
+                playerRefViewItem.wiggleOnce()
+                playerPopMenuView?.show()
+            }
             // Add to FormationLayout
             formationViewList.add(playerRefViewItem)
             formationCardViews.add(playerCircleLayout)
@@ -383,20 +397,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
 
     }
-    /** FORMATION LAYOUT: Layout Params **/
-    private fun preparePlayerLayoutParamsForFormation(loadingFromSession: Boolean=false): RelativeLayout.LayoutParams {
-        val layoutParams = getRelativeLayoutParams()
-        if (!loadingFromSession) layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-        layoutParams.width = LayoutParams.WRAP_CONTENT
-        layoutParams.height = LayoutParams.WRAP_CONTENT
-        return layoutParams
-    }
-
-
 
     /** FORMATION LAYOUT: PLAYER POPUP MENU **/
     private fun View?.setupPlayerPopupMenu() {
-        val playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
+        playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
             val playerId = parentView.tag
             when (menuItem.itemId) {
                 R.id.menu_player_accept -> {
@@ -439,15 +443,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 }
             }
         }
-        onTap = { playerId ->
-            //todo: use profile fragment now.
-            toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
-        }
-        onLongPress = {
-            log("Double Tap")
-            this?.wiggleOnce()
-            playerPopMenuView?.show()
-        }
     }
     /** FORMATION LAYOUT: Class Helpers Below **/
     private inline fun findPlayerViewInFormation(playerId: String, block: (CardView) -> Unit) {
@@ -471,24 +466,5 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 }
 
-/** FORMATION LAYOUT: Extension Helpers Below **/
-fun CardView.setPlayerFormationBackgroundColor(colorName: String?) {
-    val color = when (colorName) {
-        "red" -> ContextCompat.getColor(this.context, R.color.ysrFadedRed)
-        "blue" -> ContextCompat.getColor(this.context, R.color.ysrFadedBlue)
-        else -> Color.TRANSPARENT
-    }
-    this.setCardBackgroundColor(color)
-}
-fun View.setPlayerTeamBackgroundColor(colorName: String?) {
-    val color = when (colorName) {
-        "red" -> ContextCompat.getColor(this.context, R.color.ysrFadedRed)
-        "blue" -> ContextCompat.getColor(this.context, R.color.ysrFadedBlue)
-        else -> Color.TRANSPARENT
-    }
-    backgroundColor = color
-}
 
-fun String.parseColor(): Int {
-    return Color.parseColor(this)
-}
+
