@@ -41,7 +41,7 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         if (container == null) {
-            _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, teamContainer, false)
+            _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, teamContainer, true)
         } else {
             _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, container, false)
         }

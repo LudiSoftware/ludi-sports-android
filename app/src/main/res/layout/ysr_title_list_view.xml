@@ -6,12 +6,14 @@
     android:id="@+id/ysrTitleListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ysrMainLayoutTitleListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
 
         <TextView
             android:id="@+id/ysrTxtTitle"
@@ -31,19 +33,19 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ysrRecycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="24dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="24dp"
+            android:background="@color/transparent"
             android:paddingBottom="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ysrTxtTitle"
             app:layout_constraintVertical_bias="0.0"
-            tools:itemCount="2"
+            tools:itemCount="10"
             tools:listitem="@layout/card_note_small">
 
         </androidx.recyclerview.widget.RecyclerView>
