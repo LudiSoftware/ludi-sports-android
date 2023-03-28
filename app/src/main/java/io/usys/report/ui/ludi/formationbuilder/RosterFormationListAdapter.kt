@@ -1,6 +1,5 @@
 package io.usys.report.ui.ludi.formationbuilder
 
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,7 +15,6 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.bundleStringIds
-import io.usys.report.ui.fragments.toFragmentWithIds
 import io.usys.report.ui.gestures.onDownUpListener
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
@@ -68,7 +66,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
-        val view = parent.inflateLayout(R.layout.card_player_tiny_horizontal)
+        val view = parent.inflateLayout(R.layout.card_player_tiny_horizontal2)
         return RosterFormationViewHolder(view)
     }
 
@@ -78,15 +76,16 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
             // Filtering System
             fs.roster?.players?.find { it.id == playerId }?.let { player ->
                 //Normal Display Setup
-                holder.textView.text = player.foot
+                holder.textView.text = player.name
+                filters?.let {
+                    holder.filterTextView.text = player.foot
+                } ?: run {
+                    holder.filterTextView.visibility = View.INVISIBLE
+                }
                 player.imgUrl?.let { itImgUrl ->
-                    holder.imageView.loadUriIntoImgView(itImgUrl)
+                    holder.profileImageView.loadUriIntoImgView(itImgUrl)
                 }
-//                holder.itemView.setPlayerTeamBackgroundColor(player.color)
-                // On Click
-                holder.itemView.setOnClickListener {
-
-                }
+                holder.bannerNameImageView.setPlayerTeamBackgroundBanner(player.color)
 
                 holder.itemView.onDownUpListener({
                     println("onDown")
@@ -181,8 +180,11 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
     /** ViewHolder **/
     inner class RosterFormationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.bind(R.id.cardPlayerTinyHorizontalTxtName)
-        val imageView: ImageView = itemView.bind(R.id.cardPlayerTinyHorizontalImgProfile)
+        val textView: TextView = itemView.bind(R.id.cardPlayerHor2TxtName)
+        val filterTextView: TextView = itemView.bind(R.id.cardPlayerHor2TxtFilter)
+        val profileImageView: ImageView = itemView.bind(R.id.cardPlayerHor2ImgProfile)
+        val badgeImageView: ImageView = itemView.bind(R.id.cardPlayerHor2ImgBadge)
+        val bannerNameImageView: ImageView = itemView.bind(R.id.cardPlayerHor2TxtImageBanner)
     }
 }
 

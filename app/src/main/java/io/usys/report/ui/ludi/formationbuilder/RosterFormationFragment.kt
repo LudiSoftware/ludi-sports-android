@@ -56,7 +56,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var formationCardViews = mutableListOf<CardView>()
     // Player Formation
     var onTap: ((String) -> Unit)? = null
-    var onLongPress: (() -> Unit)? = null
+    var onLongPress: ((String) -> Unit)? = null
 
     var motionConstraintLayout: MotionLayout? = null
     var motionIsUp: Boolean = false
@@ -308,6 +308,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         val playerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
 //        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
 
+
+
         //Prepare PlayerView from Drag/Drop
         safePlayerFromRoster(playerId) { newPlayerRef ->
 
@@ -380,16 +382,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 onSingleTapUp = onTap,
                 onLongPress = onLongPress
             )
-            // Single Tap
-            onTap = { playerId ->
-                toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
-            }
-            // Long Press
-            onLongPress = {
-                log("Double Tap")
-                playerRefViewItem.wiggleOnce()
-                playerPopMenuView?.show()
-            }
+
             // Add to FormationLayout
             formationViewList.add(playerRefViewItem)
             formationCardViews.add(playerCircleLayout)
@@ -400,7 +393,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** FORMATION LAYOUT: PLAYER POPUP MENU **/
     private fun View?.setupPlayerPopupMenu() {
-        playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
+        val playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
             val playerId = parentView.tag
             when (menuItem.itemId) {
                 R.id.menu_player_accept -> {
@@ -442,6 +435,15 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                     log("Unknown Touch")
                 }
             }
+        }
+        onTap = { playerId ->
+            //todo: use profile fragment now.
+            toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
+        }
+        onLongPress = {
+            log("Double Tap")
+            this?.wiggleOnce()
+            playerPopMenuView?.show()
         }
     }
     /** FORMATION LAYOUT: Class Helpers Below **/

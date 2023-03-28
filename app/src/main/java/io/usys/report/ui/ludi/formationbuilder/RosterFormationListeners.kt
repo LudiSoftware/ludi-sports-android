@@ -1,14 +1,11 @@
 package io.usys.report.ui.ludi.formationbuilder
 
-import android.app.ActionBar
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.RelativeLayout
-import io.usys.report.realm.findByField
 import io.usys.report.realm.local.teamSessionByTeamId
-import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.views.getRelativeLayoutParams
@@ -16,7 +13,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId:String, playerId:String?=null,
-                                           onSingleTapUp:((String) -> Unit)?=null, onLongPress:(() -> Unit)?=null) {
+                                           onSingleTapUp:((String) -> Unit)?=null, onLongPress:((String) -> Unit)?=null) {
     val tempRealm = realm()
     // Window Height and Width
     var lastX = 0
@@ -58,7 +55,9 @@ fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId
         }
 
         override fun onLongPress(e: MotionEvent?) {
-            onLongPress?.invoke()
+            if (playerId != null) {
+                onLongPress?.invoke(playerId)
+            }
         }
 
         override fun onDoubleTapEvent(e: MotionEvent?): Boolean {

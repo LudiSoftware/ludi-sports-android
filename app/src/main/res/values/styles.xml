@@ -30,6 +30,7 @@
         <item name="android:autoSizePresetSizes">15sp</item>
     </style>
 
+
     <!-- Custom TabLayout style -->
     <style name="YSR.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabBackground">@color/tabBackground</item>
@@ -49,7 +50,7 @@
 
 
     <!-- Base application theme. -->
-    <style name="YSR" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="YSR" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ysrFadedWhite</item>
         <item name="colorPrimaryDark">@color/ysrRed</item>
@@ -61,7 +62,7 @@
     </style>
 
     <!-- Global PopUp/Dialog/UIAlertView Theme -->
-    <style name="YSR.DialogTheme" parent="Theme.AppCompat.Light">
+    <style name="YSR.DialogTheme" parent="Theme.MaterialComponents.Light">
         <item name="android:buttonStyle">@style/YSR</item>
     </style>
 

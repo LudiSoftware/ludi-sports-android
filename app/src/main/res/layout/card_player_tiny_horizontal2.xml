@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardPlayerHor2MainLayout"
+    android:layout_width="100dp"
+    android:layout_height="75dp"
+    android:visibility="visible">
+
+    <ImageView
+        android:id="@+id/cardPlayerHor2ImgBadge"
+        android:layout_width="55dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/formation_badge_trans" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/cardPlayerHor2ImgProfile"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ysr_empty_profile_icon_blue"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cardPlayerHor2TxtImageBanner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardPlayerHor2TxtName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardPlayerHor2TxtName"
+        app:srcCompat="@drawable/player_name_banner_red" />
+
+    <TextView
+        android:id="@+id/cardPlayerHor2TxtName"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:text="Player Name"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardPlayerHor2TxtImageBanner"
+        app:layout_constraintStart_toStartOf="@+id/cardPlayerHor2TxtImageBanner"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/cardPlayerHor2TxtFilter"
+        android:layout_width="59dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:drawablePadding="25dp"
+        android:text="Filter Attribute"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardPlayerHor2TxtImageBanner"
+        app:layout_constraintEnd_toEndOf="@+id/cardPlayerHor2TxtImageBanner"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cardPlayerHor2TxtImageBanner"
+        app:layout_constraintTop_toBottomOf="@+id/cardPlayerHor2ImgProfile"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
