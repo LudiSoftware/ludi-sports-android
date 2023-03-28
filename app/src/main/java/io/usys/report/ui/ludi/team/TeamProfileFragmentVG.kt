@@ -95,8 +95,10 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
             requireActivity().ludiActionBar()?.title = this.team?.name
         }
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = this.team?.headCoachName
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = this.team?.ageGroup + this.team?.year
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtCoachesName?.text = this.team?.headCoachName
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtAgeGroup?.text = "${this.team?.year} - ${this.team?.ageGroup}"
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = this.team?.gender
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = this.team?.mode
         this.team?.imgUrl?.let {
             _binding?.includeTeamProfileCard?.cardTeamMediumImgMainIcon?.loadUriIntoImgView(it)
         }

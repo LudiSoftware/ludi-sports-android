@@ -60,6 +60,18 @@ inline fun <reified T> RecyclerView.loadInCustomAttributes(realmList: RealmList<
     return adapter
 }
 
+inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
+                                                           type: String,
+                                                           noinline itemOnClick: ((View, T) -> Unit)?,
+                                                           size:String = "small"
+) : RealmListAdapter<T>? {
+    if (realmList.isNullOrEmpty()) return null
+    val adapter = RealmListAdapter(realmList, type, itemOnClick, size)
+    this.layoutManager = linearLayoutManager(this.context)
+    this.adapter = adapter
+    return adapter
+}
+
 inline fun <reified T> RecyclerView.loadInRealmListGridArrangable(realmList: RealmList<T>?,
                                                                   type: String,
                                                                   noinline itemOnClick: ((View, T) -> Unit)?,

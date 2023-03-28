@@ -19,6 +19,7 @@ import io.usys.report.ui.ludi.player.setupPlayerListGridFromRosterId
 import io.usys.report.ui.ludi.service.setupServiceList
 import io.usys.report.ui.ludi.sport.setupSportList
 import io.usys.report.ui.ludi.team.viewholders.setupTeamListFromSession
+import io.usys.report.ui.views.listAdapters.loadInRealmListArrangable
 import io.usys.report.utils.*
 
 class YsrTitleListView(context: Context) : CardView(context) {
@@ -43,7 +44,7 @@ class YsrTitleListView(context: Context) : CardView(context) {
     }
 
     fun loadInRealmList(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, size: String = "string") {
-        recyclerView?.loadInCustomAttributes(realmObjectList, type, onClickReturnViewRealmObject, size)
+        recyclerView?.loadInRealmListArrangable(realmObjectList, type, onClickReturnViewRealmObject)
     }
 
     fun setupSportList(onClickReturnViewRealmObject: ((View, Sport) -> Unit)?) {

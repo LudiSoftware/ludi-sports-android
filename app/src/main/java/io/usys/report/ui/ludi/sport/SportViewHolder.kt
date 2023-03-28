@@ -12,6 +12,7 @@ import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.realm.sessionSports
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 
 /**
  * SPORT LIST VIEW CONTROLS
@@ -52,14 +53,14 @@ fun RecyclerView?.setupSportList(onClickReturnViewRealmObject: ((View, Sport) ->
     // Load Organizations by Sport
     val rv = this
     sessionSports {
-        rv?.loadInCustomAttributes(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInRealmList(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
         return
     }
     var sportList: RealmList<Sport>? = RealmList()
     fireGetBaseYsrObjects<Sport>(FireTypes.SPORTS) {
         sportList = this ?: RealmList()
         sportList.addToSession()
-        rv?.loadInCustomAttributes(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInRealmList(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
     }
 }
 

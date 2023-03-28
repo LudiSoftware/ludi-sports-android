@@ -84,6 +84,31 @@
             app:srcCompat="@drawable/ysr_world_icon_red" />
 
         <ImageView
+            android:id="@+id/cardTeamMediumImgIconTwo2"
+            android:layout_width="15dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardTeamMediumImgIconTwo"
+            app:layout_constraintEnd_toStartOf="@+id/cardTeamMediumTxtAgeGroup"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamMediumImgMainIcon"
+            app:srcCompat="@drawable/ysr_world_icon_red" />
+
+        <ImageView
+            android:id="@+id/cardTeamMediumImgIconTwo3"
+            android:layout_width="15dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardTeamMediumImgIconTwo2"
+            app:layout_constraintEnd_toStartOf="@+id/cardTeamMediumTxtCoachesName"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamMediumImgMainIcon"
+            app:layout_constraintTop_toTopOf="@+id/cardTeamMediumImgMainIcon"
+            app:srcCompat="@drawable/ysr_world_icon_red" />
+
+        <ImageView
             android:id="@+id/cardTeamMediumImgIconOne"
             android:layout_width="15dp"
             android:layout_height="19dp"
@@ -92,6 +117,28 @@
             app:layout_constraintEnd_toEndOf="@+id/cardTeamMediumImgIconTwo"
             app:layout_constraintStart_toEndOf="@+id/cardTeamMediumImgMainIcon"
             app:srcCompat="@drawable/ysr_location_icon_red" />
+
+        <TextView
+            android:id="@+id/cardTeamMediumTxtCoachesName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:text="Coaches Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardTeamMediumImgMainIcon"
+            app:layout_constraintTop_toTopOf="@+id/cardTeamMediumImgMainIcon" />
+
+        <TextView
+            android:id="@+id/cardTeamMediumTxtAgeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="2010 - U13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/cardTeamMediumTxtCoachesName"
+            app:layout_constraintTop_toBottomOf="@+id/cardTeamMediumTxtCoachesName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

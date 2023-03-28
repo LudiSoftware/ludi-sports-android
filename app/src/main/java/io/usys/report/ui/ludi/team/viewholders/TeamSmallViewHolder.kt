@@ -10,6 +10,7 @@ import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.sessionTeams
+import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -20,7 +21,7 @@ import io.usys.report.utils.views.loadUriIntoImgView
 
 fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View, Team) -> Unit)?, size:String = "small") {
     sessionTeams {
-        this?.loadInCustomAttributes(it, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
+        this?.loadInRealmList(it, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
     }
 }
 

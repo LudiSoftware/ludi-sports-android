@@ -4,10 +4,7 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
-import io.usys.report.realm.model.Coach
-import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.Team
+import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
 
 //This works.
@@ -41,4 +38,11 @@ fun Realm.getRosterIdForTeamId(teamId:String?): String? {
 }
 fun Realm.getPlayersForRosterId(rosterId:String?): RealmList<PlayerRef>? {
     return this.findRosterById(rosterId)?.players
+}
+
+fun Realm.getAllSports(): RealmResults<Sport>? {
+    return this.where(Sport::class.java).findAll()
+}
+fun Realm.findSportByName(name:String): Sport? {
+    return this.where(Sport::class.java).equalTo("name", name).findFirst()
 }

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<io.usys.report.ui.views.YsrTitleListView xmlns:android="http://schemas.android.com/apk/res/android"
+<io.usys.report.ui.views.YsrTitleListView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ysrTitleListView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ysrMainLayoutTitleListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/transparent">
 
         <TextView
@@ -20,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="24dp"
             android:text="Ysr Title"
             android:textSize="20sp"
@@ -33,19 +34,17 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ysrRecycler"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="24dp"
-            android:background="@color/transparent"
-            android:paddingBottom="25dp"
+            android:paddingBottom="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ysrTxtTitle"
             app:layout_constraintVertical_bias="0.0"
-            tools:itemCount="10"
+            tools:itemCount="2"
             tools:listitem="@layout/card_note_small">
 
         </androidx.recyclerview.widget.RecyclerView>
