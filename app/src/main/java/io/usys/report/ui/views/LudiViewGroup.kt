@@ -70,9 +70,9 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
     fun setupLudiTabs(fragmentPairs: MutableList<Pair<String, Fragment>>) {
         tabLayout = mview?.findViewById(R.id.ludiTabLayout)
         viewPager = mview?.findViewById(R.id.ludiViewPager)
-        tabLayout?.isNestedScrollingEnabled = true
+        tabLayout?.isNestedScrollingEnabled = false
         tabLayout?.tabMode = TabLayout.MODE_FIXED
-        viewPager?.isUserInputEnabled = true
+        viewPager?.isUserInputEnabled = false
         setupLudiPagerAdapter(fragmentPairs)
     }
 
