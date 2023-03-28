@@ -375,8 +375,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
             // Gestures
             playerRefViewItem.onGestureDetectorRosterFormation(
-                width = 300,
-                height = 75,
                 teamId= teamId!!,
                 playerId=playerId,
                 onSingleTapUp = onTap,
@@ -437,7 +435,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
         }
         onTap = { playerId ->
-            //todo: use profile fragment now.
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
         }
         onLongPress = {

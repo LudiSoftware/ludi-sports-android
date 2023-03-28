@@ -12,7 +12,7 @@ import io.usys.report.utils.views.getRelativeLayoutParams
 import kotlin.math.max
 import kotlin.math.min
 
-fun View?.onGestureDetectorRosterFormation(height:Int=200, width:Int=200, teamId:String, playerId:String?=null,
+fun View?.onGestureDetectorRosterFormation(teamId:String, playerId:String?=null,
                                            onSingleTapUp:((String) -> Unit)?=null, onLongPress:((String) -> Unit)?=null) {
     val tempRealm = realm()
     // Window Height and Width
