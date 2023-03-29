@@ -67,20 +67,6 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             log("Roster type: $rosterType")
         }
 
-//        if (type == RosterType.TRYOUT.value) {
-//            realmInstance?.findTryOutIdByTeamId(teamId) { tryoutId ->
-//                realmInstance?.findTryOutById(tryoutId)?.let { tryout ->
-//                    this.title = "TryOut Roster"
-//                    rosterId = tryout.rosterId
-//                }
-//            }
-//        } else {
-//            realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
-//                this.title = "Official Roster"
-//                this.rosterId = rosterId
-//            }
-//        }
-
         setupDisplay()
         setupTeamRosterRealmListener()
         return rootView
@@ -96,9 +82,9 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             log("Clicked on player: ${realmObject}")
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
-        _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle(title)
+//        _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle(title)
         rosterId?.let {
-            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupPlayerListOfficialRoster(it, onClickReturnViewRealmObject)
+            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, title, onClickReturnViewRealmObject)
         }
     }
 

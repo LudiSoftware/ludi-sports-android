@@ -142,7 +142,7 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
         viewPager?.adapter = ludiRosterPagerAdapter!!
 
         val tlm = TabLayoutMediator(tabLayout!!, viewPager!!) { tab, position ->
-            tab.text = "Test"
+            tab.text = ludiRosterPagerAdapter?.fragmentPairs?.get(position)?.first
         }
 
         viewPager?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

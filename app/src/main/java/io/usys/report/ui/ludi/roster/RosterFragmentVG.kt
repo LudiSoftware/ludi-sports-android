@@ -54,14 +54,13 @@ class RosterFragmentVG : LudiStringIdsFragment() {
             }
         }
 
-        _binding?.ludiRosterVGLinearLayout.addLudiRosterViewGroup(this, teamId!!)
-
         rosterIds.forEach { currentRosterId ->
             realmInstance?.ifObjectDoesNotExist<Roster>(currentRosterId) {
                 fireGetRosterInBackground(it)
             }
         }
 
+        _binding?.ludiRosterVGLinearLayout.addLudiRosterViewGroup(this, teamId!!)
         return rootView
     }
 

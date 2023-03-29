@@ -71,6 +71,10 @@ class LudiRecyclerCardView(context: Context) : CardView(context) {
         setTitle("Official Roster")
         recyclerView?.setupPlayerListGridFromRosterId(id, onClickReturnViewRealmObject)
     }
+    fun setupRoster(rosterId:String, rosterTitle:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        setTitle(rosterTitle)
+        recyclerView?.setupPlayerListGridFromRosterId(rosterId, onClickReturnViewRealmObject)
+    }
     fun setupPlayerListTeamSession(id:String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         if (id == null) {
             setTitle("Uh Oh! No Data Found.")

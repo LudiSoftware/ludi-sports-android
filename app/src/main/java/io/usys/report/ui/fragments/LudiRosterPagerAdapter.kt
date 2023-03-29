@@ -9,8 +9,9 @@ import io.usys.report.ui.ludi.roster.ViewRosterFragment
 
 class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
 
+    var fragmentPairs: MutableList<Pair<String, Fragment>> = mutableListOf()
+
     var realmInstance: Realm? = null
-    var fragments: MutableList<Fragment> = mutableListOf()
     var teamId: String? = null
     var tryoutId: String? = null
 
@@ -21,31 +22,27 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
     }
 
     private fun setupRosterFragments() {
-
-        val ids = mutableMapOf<String,String>()
+        // Official Roster
+        realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
+            fragmentPairs.add(Pair("Official Roster", ViewRosterFragment.newRoster(rosterId, "Official Roster", teamId!!)))
+        }
+        // TryOut Roster
         realmInstance?.findTryOutIdByTeamId(teamId) { tryoutId ->
             realmInstance?.findTryOutById(tryoutId)?.let { to ->
                 to.rosterId?.let {
-                    ids["TryOut"] = it
+                    fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(it, "TryOut", teamId!!)))
                 }
                 this.tryoutId = tryoutId
             }
         }
-        realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
-            ids["Official"] = rosterId
-        }
-
-        ids.forEach { (title, id) ->
-            fragments.add(ViewRosterFragment.newRoster(id, title, teamId!!))
-        }
     }
 
     override fun getItemCount(): Int {
-        return fragments.size
+        return fragmentPairs.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragments[position]
+        return fragmentPairs[position].second
     }
 
 }
