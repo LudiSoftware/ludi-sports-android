@@ -77,9 +77,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
         }
 
+        bindViews()
         configureDisplay()
         setupTeamSession()
-        bindViews()
         setSoccerFieldLight()
         setupMotionLayoutListener()
         setupDisplay()
@@ -157,7 +157,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         formationViewList.clear()
         formationRelativeLayout?.removeAllViews()
     }
-
 
 
     /** GLOBAL/FRAGMENT DISPLAY ORDER/PROCESS HANDLING
@@ -308,8 +307,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         val playerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
 //        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
 
-
-
         //Prepare PlayerView from Drag/Drop
         safePlayerFromRoster(playerId) { newPlayerRef ->
 
@@ -339,14 +336,14 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             } else if (!newPlayerRef.pointX.isNullOrEmpty() || newPlayerRef.pointX != 0) {
                 layoutParams.topMargin = newPlayerRef.pointX ?: 0
             }
-//            // Y
+            // Y
             if (y != null) {
                 log("Y: $y")
                 layoutParams.topMargin = y.toInt() - 75
             } else if (!newPlayerRef.pointY.isNullOrEmpty() || newPlayerRef.pointY != 0) {
                 layoutParams.leftMargin = newPlayerRef.pointY ?: 0
             }
-
+            // Save New X,Y Position in Formation
             if (x != null && y != null) {
                 realmInstance?.teamSessionByTeamId(teamId) { fs ->
                     playerId.let { itId ->
@@ -360,7 +357,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                     }
                 }
             }
-
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
             playerCircleLayout.tag = newPlayerRef.id
@@ -371,8 +367,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 playerCircleLayout.setPlayerFormationBackgroundColor(it)
             }
             playerRefViewItem.setupPlayerPopupMenu()
-
-
             // Gestures
             playerRefViewItem.onGestureDetectorRosterFormation(
                 teamId= teamId!!,
@@ -380,7 +374,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 onSingleTapUp = onTap,
                 onLongPress = onLongPress
             )
-
             // Add to FormationLayout
             formationViewList.add(playerRefViewItem)
             formationCardViews.add(playerCircleLayout)
@@ -394,6 +387,17 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         val playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
             val playerId = parentView.tag
             when (menuItem.itemId) {
+                R.id.menu_player_profile -> {
+                    // Do something
+                    log("menu_player_profile")
+                    toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId.toString())
+                }
+                R.id.menu_player_make_sub -> {
+                    // Do something
+                    log("menu_player_make_sub")
+                    //todo: move player back to subsitutues
+                    //      remove player from formation
+                }
                 R.id.menu_player_accept -> {
                     // Do something
                     log("menu_player_accept")
@@ -435,7 +439,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
         }
         onTap = { playerId ->
-            toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
+            log("Double Tap")
+            this?.wiggleOnce()
+            playerPopMenuView?.show()
         }
         onLongPress = {
             log("Double Tap")

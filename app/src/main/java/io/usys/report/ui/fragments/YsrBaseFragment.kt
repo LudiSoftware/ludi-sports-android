@@ -33,6 +33,7 @@ import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
 import io.usys.report.ui.fragments.YsrFragment.Companion.ORG_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.PLAYER_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TEAM_ID
+import io.usys.report.ui.fragments.YsrFragment.Companion.TYPE
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,7 @@ abstract class YsrFragment : Fragment() {
 
     companion object {
         const val ARG = "realmObj"
+        const val TYPE = "type"
         const val TEAM_ID = "teamId"
         const val PLAYER_ID = "playerId"
         const val ORG_ID = "orgId"
@@ -133,10 +135,13 @@ fun Fragment.toFragmentWithId(fragId: Int, stringId: String) {
     this.findNavController().navigate(fragId, bundleStringId(stringId))
 }
 
-fun Fragment.toFragmentWithIds(fragId: Int, teamId:String?=null, playerId:String?=null, orgId:String?=null) {
-    this.findNavController().navigate(fragId, bundleStringIds(teamId, playerId, orgId))
+fun Fragment.toFragmentWithIds(fragId: Int, teamId:String?=null, playerId:String?=null, orgId:String?=null, type:String?=null) {
+    this.findNavController().navigate(fragId, bundleStringIds(teamId, playerId, orgId, type))
 }
 
+fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null) {
+    toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
+}
 fun Fragment.goBack() {
     this.findNavController().navigateUp()
 }
@@ -152,7 +157,9 @@ fun Fragment.unbundleStringId(): String? {
 fun Fragment.unbundleTeamId(): String? {
     return arguments?.getString(TEAM_ID)
 }
-
+fun Fragment.unbundleType(): String? {
+    return arguments?.getString(TYPE)
+}
 fun Fragment.unbundlePlayerId(): String? {
     return arguments?.getString(PLAYER_ID)
 }
@@ -169,7 +176,7 @@ fun bundleStringId(obj: String): Bundle {
     return bundleOf(ARG to obj)
 }
 
-fun bundleStringIds(teamId: String?=null, playerId: String?=null, orgId: String?=null): Bundle {
+fun bundleStringIds(teamId: String?=null, playerId: String?=null, orgId: String?=null, type: String?=null): Bundle {
     //teamId, playerId, orgId
-    return bundleOf(TEAM_ID to teamId, PLAYER_ID to playerId, ORG_ID to orgId)
+    return bundleOf(TEAM_ID to teamId, PLAYER_ID to playerId, ORG_ID to orgId, TYPE to type)
 }

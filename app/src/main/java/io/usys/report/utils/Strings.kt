@@ -19,3 +19,17 @@ fun String.splitFullName(): Pair<String, String> {
 fun String?.safe(default:String=""): String {
     return this ?: default
 }
+
+fun String?.isNBE(): Boolean {
+    if (this != null) {
+        if (this == "") return true
+    }
+    return this == null || this.isBlank()
+}
+
+fun String?.isNotNBE(): Boolean {
+    if (this != null) {
+        if (this == "") return false
+    }
+    return this != null && this.isNotBlank()
+}

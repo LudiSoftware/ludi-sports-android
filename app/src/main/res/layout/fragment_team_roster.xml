@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/includeYsrListViewTeamRoster"
-        layout="@layout/ysr_title_list_view"
+        layout="@layout/ludi_recycler_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHeight_min="200dp"

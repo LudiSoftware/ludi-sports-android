@@ -2,7 +2,8 @@
 
 <!-- Created by ChazzCoin : November 2022 -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,7 +22,7 @@
 
     <include
         android:id="@+id/includeYsrListViewSports"
-        layout="@layout/ysr_title_list_view"
+        layout="@layout/ludi_recycler_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +32,7 @@
 
     <include
         android:id="@+id/includeYsrListViewTeams"
-        layout="@layout/ysr_title_list_view"
+        layout="@layout/ludi_recycler_card_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

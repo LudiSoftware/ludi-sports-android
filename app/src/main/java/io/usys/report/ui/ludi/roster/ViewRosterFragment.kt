@@ -9,10 +9,10 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
-import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
+import io.usys.report.realm.model.RosterType
 import io.usys.report.ui.fragments.*
 import io.usys.report.utils.log
 
@@ -23,26 +23,63 @@ import io.usys.report.utils.log
 class ViewRosterFragment : LudiStringIdsFragment() {
 
     companion object {
-        const val TAB = "Roster"
+        private const val ARG_ROSTER_TYPE = "roster_type"
+        private const val ARG_ROSTER_ID = "roster_id"
+        private const val ARG_ROSTER_TITLE = "roster_title"
+        private const val ARG_ROSTER_TEAM_ID = "roster_team_id"
+
+        fun newRoster(rosterType: String): ViewRosterFragment {
+            val fragment = ViewRosterFragment()
+            val args = Bundle()
+            args.putString(ARG_ROSTER_TYPE, rosterType)
+            fragment.arguments = args
+            return fragment
+        }
+
+        fun newRoster(rosterId: String, title:String, teamId:String): ViewRosterFragment {
+            val fragment = ViewRosterFragment()
+            val args = Bundle()
+            args.putString(ARG_ROSTER_ID, rosterId)
+            args.putString(ARG_ROSTER_TITLE, title)
+            args.putString(ARG_ROSTER_TEAM_ID, teamId)
+            fragment.arguments = args
+            return fragment
+        }
     }
-//    var realmRosterCallBack: ((Roster) -> Unit)? = null
+
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamRosterFragmentBinding? = null
     private val binding get() = _binding!!
 
+    var rosterType: String = "null"
+    var title: String = "No Roster Found!"
     var rosterId: String? = null
-    var roster: Roster? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamRosterFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
 
-        rosterId = realmInstance?.getRosterIdForTeamId(teamId)
-        roster = realmInstance?.findRosterById(rosterId)
-        if (roster == null && rosterId != null) {
-            fireGetRosterInBackground(rosterId!!)
+        arguments?.let {
+            rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"
+            rosterId = it.getString(ARG_ROSTER_ID) ?: "unknown"
+            title = it.getString(ARG_ROSTER_TITLE) ?: "No Roster Found!"
+            log("Roster type: $rosterType")
         }
+
+//        if (type == RosterType.TRYOUT.value) {
+//            realmInstance?.findTryOutIdByTeamId(teamId) { tryoutId ->
+//                realmInstance?.findTryOutById(tryoutId)?.let { tryout ->
+//                    this.title = "TryOut Roster"
+//                    rosterId = tryout.rosterId
+//                }
+//            }
+//        } else {
+//            realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
+//                this.title = "Official Roster"
+//                this.rosterId = rosterId
+//            }
+//        }
 
         setupDisplay()
         setupTeamRosterRealmListener()
@@ -59,25 +96,23 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             log("Clicked on player: ${realmObject}")
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
-        _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle("Roster")
+        _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle(title)
         rosterId?.let {
-            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupPlayerListOfficialRoster(
-                it, onClickReturnViewRealmObject)
+            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupPlayerListOfficialRoster(it, onClickReturnViewRealmObject)
         }
     }
-
 
     private fun setupTeamRosterRealmListener() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
             log("Roster listener called")
             rosterId?.let { rosterId ->
-                it.find { it.id == rosterId }?.let { roster ->
+                it.findById(rosterId)?.let { roster ->
                     setupDisplay()
                 }
-
             }
         }
         realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
     }
 }
+

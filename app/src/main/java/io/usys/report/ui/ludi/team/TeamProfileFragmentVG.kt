@@ -11,10 +11,7 @@ import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.views.LudiViewGroup
-import io.usys.report.ui.views.ludiNotesAndEvalsVGFragments
-import io.usys.report.ui.views.ludiPlayerProfileFragments
-import io.usys.report.ui.views.ludiTeamVGFragments
+import io.usys.report.ui.views.*
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 
@@ -53,7 +50,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
                 fireGetRosterInBackground(rosterId!!)
             }
             if (_MODE == YsrMode.TRYOUTS) {
-                fireGetTryOutProfileIntoRealm(it)
+                realmInstance?.fireGetTryOutProfileIntoRealm(it)
             }
         }
         teamId?.let {
@@ -68,10 +65,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     }
 
     private fun setupTeamViewPager() {
-        linearLayout?.let {
-            val lvg = LudiViewGroup(this, it, teamId, null)
-            lvg.setupLudiTabs(ludiTeamVGFragments())
-        }
+        linearLayout.addLudiViewGroup(this, ludiTeamVGFragments(), teamId, null)
     }
 
     private fun setupCallBacks() {

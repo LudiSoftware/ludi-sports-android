@@ -18,13 +18,13 @@ fun Realm.fireGetTeamProfileInBackground(teamId:String) {
 /**
  * TryOuts
  */
-fun fireGetTryOutProfileIntoRealm(teamId:String?) {
+fun Realm.fireGetTryOutProfileIntoRealm(teamId:String?) {
     if (teamId == null) return
     firebaseDatabase {
-        it.child(DatabasePaths.TRYOUTS.path).orderByChild("teamId").equalTo(teamId)
+        it.child(DatabasePaths.TRYOUTS.path).child("teamId")
             .fairAddListenerForSingleValueEvent { ds ->
                 ds?.toRealmObjects<TryOut>()
-                log("Team Updated")
+                log("TryOut Updated")
             }
     }
 }

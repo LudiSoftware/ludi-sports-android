@@ -1,38 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<io.usys.report.ui.views.YsrTitleListView
+<io.usys.report.ui.views.LudiRosterView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ysrTitleListView"
+    android:id="@+id/ludiRosterView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ysrMainLayoutTitleListView"
+        android:id="@+id/ludiRosterViewConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent">
 
-        <TextView
-            android:id="@+id/ysrTxtTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="24dp"
-            android:text="Ysr Title"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ysrRecycler"
+            android:id="@+id/ludiRosterViewRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -40,15 +25,13 @@
             android:paddingBottom="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ysrTxtTitle"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="parent"
             tools:itemCount="2"
-            tools:listitem="@layout/card_note_small">
+            tools:listitem="@layout/card_player_tiny">
 
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</io.usys.report.ui.views.YsrTitleListView>
+</io.usys.report.ui.views.LudiRosterView>

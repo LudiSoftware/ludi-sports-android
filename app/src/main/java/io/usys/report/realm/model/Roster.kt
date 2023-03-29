@@ -27,6 +27,19 @@ const val ROSTER_STATUS_SUBMITTED = "submitted"
 const val ROSTER_STATUS_ACCEPTED = "accepted"
 const val ROSTER_STATUS_REJECTED = "rejected"
 
+
+enum class RosterType(val value: String) {
+    TEAM("team"),
+    TRYOUT("tryout"),
+    TEAM_OLD("team_old");
+
+    companion object {
+        fun fromValue(value: String): RosterType? {
+            return values().find { it.value == value }
+        }
+    }
+}
+
 open class Roster : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
@@ -41,7 +54,6 @@ open class Roster : RealmObject(), Serializable {
     var status: String? = "open"
     var sport: String? = "unassigned"
     var players: RealmList<PlayerRef>? = RealmList()
-
 }
 fun Roster?.getPlayer(playerId: String): PlayerRef? {
     if (this.isNullOrEmpty()) return null

@@ -170,7 +170,7 @@
 
         <include
             android:id="@+id/includedualEvalList"
-            layout="@layout/ysr_title_list_view"
+            layout="@layout/ludi_recycler_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

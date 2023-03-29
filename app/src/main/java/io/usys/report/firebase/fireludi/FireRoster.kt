@@ -22,7 +22,6 @@ fun fireGetRosterInBackground(rosterId:String) {
 fun Roster.fireUpdateRoster() {
     this.id?.let {
         val tosend = this.toHashMap()
-
         fireAddUpdateDBAsync(DatabasePaths.ROSTERS.path, it, tosend)
         log("Roster Updated")
     }

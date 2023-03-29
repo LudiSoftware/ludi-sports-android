@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/menu_save_formation"
+        android:icon="@drawable/ysr_world_icon_red"
         android:title="Save Formation" />
     <item
         android:id="@+id/menu_add_note"

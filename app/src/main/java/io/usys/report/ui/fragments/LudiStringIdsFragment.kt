@@ -21,6 +21,7 @@ abstract class LudiStringIdsFragment : Fragment() {
 
     var user: User? = null
 
+    var type: String? = "unassigned"
     var teamId: String? = "unassigned"
     var playerId: String? = "unassigned"
     var orgId: String? = "unassigned"
@@ -32,6 +33,7 @@ abstract class LudiStringIdsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         realmInstance = realm()
         realmInstance?.userOrLogout(requireActivity()) { user = it }
+        type = unbundleType()
         teamId = unbundleTeamId()
         playerId = unbundlePlayerId()
         orgId = unbundleOrgId()
