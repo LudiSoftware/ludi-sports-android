@@ -44,6 +44,9 @@ class LudiRecyclerCardView(context: Context) : CardView(context) {
         txtTitle?.text = title
     }
 
+    fun hideTitle() {
+        txtTitle?.makeGone()
+    }
     /** RecyclerView/List Functions **/
 
     fun loadInRealmListArrangable(realmObjectList: RealmList<RealmObject>, type: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?, size: String = "string") {
@@ -73,6 +76,7 @@ class LudiRecyclerCardView(context: Context) : CardView(context) {
     }
     fun setupRoster(rosterId:String, rosterTitle:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         setTitle(rosterTitle)
+        hideTitle()
         recyclerView?.setupPlayerListGridFromRosterId(rosterId, onClickReturnViewRealmObject)
     }
     fun setupPlayerListTeamSession(id:String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {

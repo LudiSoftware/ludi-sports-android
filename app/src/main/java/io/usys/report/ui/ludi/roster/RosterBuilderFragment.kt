@@ -8,7 +8,7 @@ import io.realm.RealmChangeListener
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.databinding.LudiRosterViewBinding
+import io.usys.report.databinding.LudiRosterBuilderBinding
 import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
@@ -23,26 +23,40 @@ import io.usys.report.utils.log
 class RosterBuilderFragment : LudiStringIdsFragment() {
 
     companion object {
-        const val TAB = "Roster"
+        private const val ARG_ROSTER_TYPE = "roster_type"
+        private const val ARG_ROSTER_ID = "roster_id"
+        private const val ARG_ROSTER_TITLE = "roster_title"
+        private const val ARG_ROSTER_TEAM_ID = "roster_team_id"
+
+        fun newRoster(rosterId: String, title:String, teamId:String): ViewRosterFragment {
+            val fragment = ViewRosterFragment()
+            val args = Bundle()
+            args.putString(ARG_ROSTER_ID, rosterId)
+            args.putString(ARG_ROSTER_TITLE, title)
+            args.putString(ARG_ROSTER_TEAM_ID, teamId)
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: LudiRosterViewBinding? = null
+    private var _binding: LudiRosterBuilderBinding? = null
     private val binding get() = _binding!!
 
+    var rosterType: String = "null"
+    var title: String = "No Roster Found!"
     var rosterId: String? = null
-    var roster: Roster? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = LudiRosterViewBinding.inflate(inflater, teamContainer, false)
+        _binding = LudiRosterBuilderBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
 
-        rosterId = realmInstance?.findRosterIdByTeamId(teamId)
-        roster = realmInstance?.findRosterById(rosterId)
-
-        if (roster == null && rosterId != null) {
-            fireGetRosterInBackground(rosterId!!)
+        arguments?.let {
+            rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"
+            rosterId = it.getString(ARG_ROSTER_ID) ?: "unknown"
+            title = it.getString(ARG_ROSTER_TITLE) ?: "No Roster Found!"
+            log("Roster type: $rosterType")
         }
 
         setupDisplay()
@@ -60,11 +74,8 @@ class RosterBuilderFragment : LudiStringIdsFragment() {
             log("Clicked on player: ${realmObject}")
             toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
-//        _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle("Roster")
-//        rosterId?.let {
-//            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupPlayerListOfficialRoster(
-//                it, onClickReturnViewRealmObject)
-//        }
+
+
     }
 
 

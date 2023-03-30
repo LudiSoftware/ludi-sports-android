@@ -12,10 +12,7 @@ import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.RosterType
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.views.addLudiRosterViewGroup
-import io.usys.report.ui.views.addLudiViewGroup
-import io.usys.report.ui.views.ludiRosterFragments
 import io.usys.report.utils.isNotNBE
-import io.usys.report.utils.log
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -33,9 +30,16 @@ class RosterFragmentVG : LudiStringIdsFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = FragmentRosterVgBinding.inflate(inflater, teamContainer, false)
+
+        if (container == null) {
+            _binding = FragmentRosterVgBinding.inflate(inflater, teamContainer, false)
+        } else {
+            _binding = FragmentRosterVgBinding.inflate(inflater, container, false)
+        }
+
         rootView = binding.root
 
+        /** Get/Add Roster Id's **/
         teamId?.let {
             realmInstance?.findTeamById(it)?.let { team ->
                 // Team Roster
@@ -43,30 +47,23 @@ class RosterFragmentVG : LudiStringIdsFragment() {
                     rosterIds.add(rosterId)
                 }
                 // Roster Type + TryOut Roster
-                rosterType = if (team.tryoutId.isNotNBE()) {
-                    realmInstance?.findTryOutById(team.tryoutId!!)?.let { tryout ->
-                        rosterIds.add(tryout.rosterId!!)
-                    }
-                    RosterType.TRYOUT
-                } else {
-                    RosterType.TEAM
+                realmInstance?.findTryOutById(team.tryoutId!!)?.let { tryout ->
+                    rosterIds.add(tryout.rosterId!!)
+                    rosterType = RosterType.TRYOUT
                 }
             }
         }
 
+        // Loop Roster Ids, if they don't exist, go get them.
         rosterIds.forEach { currentRosterId ->
             realmInstance?.ifObjectDoesNotExist<Roster>(currentRosterId) {
                 fireGetRosterInBackground(it)
             }
         }
 
+        // ViewPager/Tab Setup
         _binding?.ludiRosterVGLinearLayout.addLudiRosterViewGroup(this, teamId!!)
         return rootView
     }
-
-    private fun setupDisplay() {
-        log("setupDisplay:")
-    }
-
 
 }

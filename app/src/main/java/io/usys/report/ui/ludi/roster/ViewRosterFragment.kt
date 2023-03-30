@@ -28,14 +28,6 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         private const val ARG_ROSTER_TITLE = "roster_title"
         private const val ARG_ROSTER_TEAM_ID = "roster_team_id"
 
-        fun newRoster(rosterType: String): ViewRosterFragment {
-            val fragment = ViewRosterFragment()
-            val args = Bundle()
-            args.putString(ARG_ROSTER_TYPE, rosterType)
-            fragment.arguments = args
-            return fragment
-        }
-
         fun newRoster(rosterId: String, title:String, teamId:String): ViewRosterFragment {
             val fragment = ViewRosterFragment()
             val args = Bundle()
@@ -82,7 +74,6 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             log("Clicked on player: ${realmObject}")
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
-//        _binding?.includeTeamRosterLudiListViewTeams?.root?.setTitle(title)
         rosterId?.let {
             _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, title, onClickReturnViewRealmObject)
         }

@@ -9,4 +9,12 @@
         android:title="Formation"
         android:visible="true"
         app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/menuitem_roster"
+        android:enabled="true"
+        android:icon="@drawable/dark_soccer_field"
+        android:title="Roster"
+        android:visible="true"
+        app:showAsAction="ifRoom|withText" />
 </menu>
