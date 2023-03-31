@@ -24,6 +24,7 @@ import io.usys.report.ui.ludi.team.viewholders.setupTeamListFromSession
 import io.usys.report.ui.views.listAdapters.RealmListAdapter
 import io.usys.report.ui.views.listAdapters.loadInRealmListArrangable
 import io.usys.report.ui.views.listAdapters.loadInRealmListGridArrangable
+import io.usys.report.ui.views.listAdapters.setupRosterGridArrangable
 import io.usys.report.ui.views.touchAdapters.RealmListTouchAdapter
 import io.usys.report.utils.*
 
@@ -52,7 +53,7 @@ class LudiRosterView(context: Context) : RecyclerView(context) {
 
     /** Master Roster List Setup Helper Functions **/
     fun setupRoster(rosterId:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-        this.setupPlayerListGridFromRosterId(rosterId, onClickReturnViewRealmObject)
+        this.setupRosterGridArrangable(rosterId, onClickReturnViewRealmObject)
     }
     fun setupPlayerListOfficialRoster(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         this.setupPlayerListGridFromRosterId(id, onClickReturnViewRealmObject)

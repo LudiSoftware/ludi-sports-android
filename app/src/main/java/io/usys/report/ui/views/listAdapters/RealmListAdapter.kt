@@ -206,22 +206,6 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
 }
 
-fun <T> RealmListAdapter<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
-    val fromPosition = viewHolder.adapterPosition
-    val toPosition = target.adapterPosition
-    val fromColumn = this.gridLayoutManager?.spanSizeLookup?.getSpanIndex(fromPosition, this.gridLayoutManager!!.spanCount)
-    val toColumn = this.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, this.gridLayoutManager!!.spanCount)
-    if (fromColumn == toColumn) {
-        // Move the item within the same column
-        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
-        this.notifyItemMoved(fromPosition, toPosition)
-    } else {
-        // Move the item to a different column
-        writeToRealmOnMain { Collections.swap(this.realmList, fromPosition, toPosition) }
-        this.notifyItemChanged(fromPosition)
-        this.notifyItemChanged(toPosition)
-    }
-}
 
 /**
  * Pass a custom function and parameter.

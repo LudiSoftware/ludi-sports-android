@@ -31,12 +31,11 @@ fun RecyclerView?.setupPlayerListFromRosterId(id: String, onClickReturnViewRealm
 fun RecyclerView?.setupPlayerListGridFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
     val roster = realm().findRosterById(id)
-    val players: RealmList<PlayerRef> = roster?.players?.sortByName() ?: RealmList()
+    val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
     players.let {
         rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject, "medium_grid")
     }
 }
-
 
 fun RecyclerView?.setupPlayerListHorizontalFromRosterId(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this

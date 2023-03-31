@@ -6,24 +6,15 @@
     android:layout_height="match_parent">
 
     <!-- TODO: Add Roster Tools Here. -->
-    <TextView
-        android:id="@+id/txtTeamRosterLudi"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/includeTeamRosterLudiListViewTeams"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
 
     <include
         android:id="@+id/includeTeamRosterLudiListViewTeams"
         layout="@layout/ludi_roster_view"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTeamRosterLudi"/>
+        app:layout_constraintTop_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
