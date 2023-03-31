@@ -36,13 +36,6 @@ class LudiRosterView(context: Context) : RecyclerView(context) {
     var realmListAdapter: RealmListAdapter<RealmObject>? = null
     var realmListOnClick: ((View, RealmObject) -> Unit)? = null
 
-    override fun onViewAdded(child: View?) {
-        bindChildren()
-    }
-
-    private fun bindChildren() {
-        ludiConstraintLayout = this.rootView.bind(R.id.ludiRosterViewConstraintLayout)
-    }
 
     /** RecyclerView/List Functions **/
     fun setupRealmListAdapter(realmList: RealmList<RealmObject>?) {
@@ -58,6 +51,9 @@ class LudiRosterView(context: Context) : RecyclerView(context) {
     }
 
     /** Master Roster List Setup Helper Functions **/
+    fun setupRoster(rosterId:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+        this.setupPlayerListGridFromRosterId(rosterId, onClickReturnViewRealmObject)
+    }
     fun setupPlayerListOfficialRoster(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         this.setupPlayerListGridFromRosterId(id, onClickReturnViewRealmObject)
     }

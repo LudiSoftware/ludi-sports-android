@@ -10,7 +10,6 @@ import io.usys.report.firebase.DatabasePaths
 import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.sortByName
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.ui.views.listAdapters.loadInRealmListGridArrangable
 import io.usys.report.ui.views.listAdapters.loadInRealmListHorizontal

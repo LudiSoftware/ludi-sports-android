@@ -31,7 +31,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         _binding = ProfileTeamBinding.inflate(inflater, container, false)
         linearLayout = _binding?.profileTeamRosterRootLinearLayout
         rootView = binding.root
-
         return rootView
     }
 

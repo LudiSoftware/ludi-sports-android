@@ -12,7 +12,6 @@ import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.RosterType
 import io.usys.report.ui.fragments.*
 import io.usys.report.utils.log
 
@@ -47,6 +46,17 @@ class ViewRosterFragment : LudiStringIdsFragment() {
     var title: String = "No Roster Found!"
     var rosterId: String? = null
 
+
+    /**
+     * TODO:
+     *      1. Validate drag and drop works.
+     *      2. Update list with new order in Realm.
+     *      2. Sort List by Order.
+     *      3. Create different Sort Functions like sort by Name.
+     *
+     * What Other Modifications or Tools would we need for this page?
+     *
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         _binding = TeamRosterFragmentBinding.inflate(inflater, teamContainer, false)
@@ -75,7 +85,7 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
         rosterId?.let {
-            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, title, onClickReturnViewRealmObject)
+            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, onClickReturnViewRealmObject)
         }
     }
 

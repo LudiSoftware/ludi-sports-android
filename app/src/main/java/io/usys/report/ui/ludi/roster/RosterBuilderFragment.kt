@@ -8,8 +8,6 @@ import io.realm.RealmChangeListener
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.databinding.LudiRosterBuilderBinding
-import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
@@ -40,8 +38,8 @@ class RosterBuilderFragment : LudiStringIdsFragment() {
     }
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: LudiRosterBuilderBinding? = null
-    private val binding get() = _binding!!
+//    private var _binding: LudiRosterBuilderBinding? = null
+//    private val binding get() = _binding!!
 
     var rosterType: String = "null"
     var title: String = "No Roster Found!"
@@ -49,8 +47,8 @@ class RosterBuilderFragment : LudiStringIdsFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = LudiRosterBuilderBinding.inflate(inflater, teamContainer, false)
-        rootView = binding.root
+//        _binding = LudiRosterBuilderBinding.inflate(inflater, teamContainer, false)
+//        rootView = binding.root
 
         arguments?.let {
             rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"

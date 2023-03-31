@@ -12,7 +12,6 @@ import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.RosterType
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.views.addLudiRosterViewGroup
-import io.usys.report.utils.isNotNBE
 
 /**
  * Created by ChazzCoin : October 2022.

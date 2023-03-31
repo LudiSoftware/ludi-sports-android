@@ -21,7 +21,7 @@ fun Realm.fireGetTeamProfileInBackground(teamId:String) {
 fun Realm.fireGetTryOutProfileIntoRealm(teamId:String?) {
     if (teamId == null) return
     firebaseDatabase {
-        it.child(DatabasePaths.TRYOUTS.path).child("teamId")
+        it.child(DatabasePaths.TRYOUTS.path).orderByChild("teamId").equalTo(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
                 ds?.toRealmObjects<TryOut>()
                 log("TryOut Updated")
