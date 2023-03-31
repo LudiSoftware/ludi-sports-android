@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.usys.report.R
@@ -16,7 +15,7 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.toCustomAttributesList
 import io.usys.report.realm.model.toPlayerRef
 import io.usys.report.ui.setOnDoubleClickListener
-import io.usys.report.ui.views.addAttribute
+import io.usys.report.ui.views.cardViews.addAttribute
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty
 

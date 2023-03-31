@@ -12,6 +12,7 @@ import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.views.*
+import io.usys.report.ui.views.viewGroup.ludiTeamVGFragments
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
 

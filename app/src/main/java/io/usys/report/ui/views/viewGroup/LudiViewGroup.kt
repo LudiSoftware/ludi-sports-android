@@ -1,4 +1,4 @@
-package io.usys.report.ui.views
+package io.usys.report.ui.views.viewGroup
 
 import android.animation.ObjectAnimator
 import android.view.LayoutInflater
@@ -94,7 +94,7 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
         viewPager = mview?.findViewById(R.id.ludiViewPager)
         tabLayout?.isNestedScrollingEnabled = false
         tabLayout?.tabMode = TabLayout.MODE_FIXED
-        viewPager?.isUserInputEnabled = false
+        viewPager?.isUserInputEnabled = true
         setupLudiPagerAdapter(fragmentPairs)
     }
 

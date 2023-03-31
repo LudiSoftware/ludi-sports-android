@@ -6,19 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.RealmList
-import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.DetailsListFragmentBinding
-import io.usys.report.databinding.DialogPlayerProfileLayoutBinding
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
-import io.usys.report.ui.fragments.goBack
-import io.usys.report.ui.views.LudiViewGroup
-import io.usys.report.ui.views.ludiPlayerProfileFragments
-import io.usys.report.utils.log
-import io.usys.report.utils.views.animateOnClickListener
 
 class DetailsListFragment : LudiStringIdsFragment() {
     companion object {

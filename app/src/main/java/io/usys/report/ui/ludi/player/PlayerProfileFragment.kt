@@ -15,8 +15,8 @@ import io.usys.report.realm.findByField
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
-import io.usys.report.ui.views.LudiViewGroup
-import io.usys.report.ui.views.ludiPlayerProfileFragments
+import io.usys.report.ui.views.viewGroup.LudiViewGroup
+import io.usys.report.ui.views.viewGroup.ludiPlayerProfileFragments
 import io.usys.report.utils.hideLudiActionBar
 import io.usys.report.utils.log
 import io.usys.report.utils.views.animateOnClickListener

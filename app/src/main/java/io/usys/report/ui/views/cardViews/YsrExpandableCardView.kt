@@ -1,4 +1,4 @@
-package io.usys.report.ui.views
+package io.usys.report.ui.views.cardViews
 
 import android.content.Context
 import android.util.AttributeSet

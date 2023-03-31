@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.usys.report.ui.views.LudiCustomAttributesList
+    <io.usys.report.ui.views.cardViews.LudiCustomAttributesList
         android:id="@+id/includeDetailListFragmentLudiAttributesList"
         android:layout_width="0dp"
         android:layout_height="match_parent"

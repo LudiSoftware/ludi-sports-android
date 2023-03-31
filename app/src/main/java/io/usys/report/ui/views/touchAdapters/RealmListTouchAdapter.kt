@@ -8,6 +8,7 @@ import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.writeToRealmOnMain
 import io.usys.report.ui.views.listAdapters.RealmListAdapter
 import io.usys.report.ui.views.listAdapters.RosterListAdapter
+import io.usys.report.utils.views.wiggleOnce
 import java.util.*
 
 /**
@@ -30,6 +31,7 @@ class RosterListTouchAdapter(private val adapter: RosterListAdapter<*>) : ItemTo
     }
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        viewHolder.itemView.wiggleOnce()
         adapter.swapRealmObjects(viewHolder, target)
         return true
     }

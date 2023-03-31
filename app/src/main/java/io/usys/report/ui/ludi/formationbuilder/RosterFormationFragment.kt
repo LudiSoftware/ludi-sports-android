@@ -21,7 +21,7 @@ import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.toFragmentWithIds
-import io.usys.report.ui.gestures.LudiFreeFormGestureDetector
+import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*

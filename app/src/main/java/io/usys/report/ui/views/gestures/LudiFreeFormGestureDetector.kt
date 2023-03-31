@@ -1,4 +1,4 @@
-package io.usys.report.ui.gestures
+package io.usys.report.ui.views.gestures
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.*
-import kotlin.math.log
 import kotlin.math.sqrt
 
 fun distance(x1: Float, y1: Float, x2: Float, y2: Float): Float {

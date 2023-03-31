@@ -4,13 +4,8 @@ package io.usys.report.realm.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.realm.getValue
-import io.usys.report.realm.realm
-import io.usys.report.realm.toHashMap
-import io.usys.report.ui.views.addAttribute
-import io.usys.report.utils.log
+import io.usys.report.ui.views.cardViews.addAttribute
 import java.io.Serializable
-import java.lang.reflect.Modifier
 
 
 open class CustomAttribute : RealmObject(), Serializable {

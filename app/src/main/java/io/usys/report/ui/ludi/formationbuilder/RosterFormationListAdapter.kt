@@ -15,7 +15,7 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.bundleStringIds
-import io.usys.report.ui.gestures.onDownUpListener
+import io.usys.report.ui.views.gestures.onDownUpListener
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
 import io.usys.report.utils.views.*

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<io.usys.report.ui.views.YsrCreateListView xmlns:android="http://schemas.android.com/apk/res/android"
+<io.usys.report.ui.views.cardViews.YsrCreateListView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ysrTitleListView"
@@ -70,4 +70,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</io.usys.report.ui.views.YsrCreateListView>
+</io.usys.report.ui.views.cardViews.YsrCreateListView>

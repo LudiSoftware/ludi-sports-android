@@ -16,7 +16,7 @@ import io.usys.report.realm.realm
 import io.usys.report.ui.ludi.player.sortByOrderIndex
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
-import io.usys.report.ui.views.LudiRosterView
+import io.usys.report.ui.views.recyclerViews.LudiRosterView
 import io.usys.report.ui.views.touchAdapters.RosterListTouchAdapter
 import io.usys.report.utils.isNullOrEmpty
 
