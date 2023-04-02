@@ -92,6 +92,10 @@ open class RosterListAdapter<PlayerRef>(): RecyclerView.Adapter<RouterViewHolder
                 holder.itemView.onLongClick {
                     it?.wiggleOnce()
                 }
+                holder.itemView.setOnClickListener {
+                    itemClickListener?.invoke(it, it1)
+                }
+
             }
         }
     }

@@ -4,6 +4,8 @@ import android.view.MotionEvent
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import io.usys.report.realm.findPlayerRefById
+import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.roster.RosterListAdapter
@@ -49,10 +51,28 @@ class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTou
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
+    override fun chooseDropTarget(selected: RecyclerView.ViewHolder, dropTargets: MutableList<RecyclerView.ViewHolder>, curX: Int, curY: Int): RecyclerView.ViewHolder {
+        return super.chooseDropTarget(selected, dropTargets, curX, curY)
+    }
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        super.onSelectedChanged(viewHolder, actionState)
+        log("onSelectedChanged: RosterId = ${adapter.rosterId}")
+    }
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         log("onMove: RosterId = ${adapter.rosterId}")
-        adapter.swapRealmObjects2(viewHolder, target)
         return true
+    }
+    override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
+        super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
+        // Update orderIndex of the swapped objects
+        adapter.swapRealmObjects(viewHolder, target)
+        //todo: fix this part!!
+//        realm().safeWrite {
+//            val fromPlayerRef = adapter.realmList?.get(fromPos) as? PlayerRef
+//            val toPlayerRef = adapter.realmList?.get(toPos) as? PlayerRef
+//            fromPlayerRef?.orderIndex = toPlayerRef?.orderIndex
+//            toPlayerRef?.orderIndex = fromPlayerRef?.orderIndex
+//        }
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -61,15 +81,19 @@ class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTou
 }
 
 
-fun <T> RosterListAdapter<T>.swapRealmObjects2(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
+fun <T> RosterListAdapter<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
     val realmInstance = realm()
     val fromPosition = viewHolder.adapterPosition
     val toPosition = target.adapterPosition
-    realmInstance.safeWrite { this.realmList?.let { it1 -> Collections.swap(it1, fromPosition, toPosition) } }
+    realmInstance.safeWrite {
+        this.realmList?.let { it1 ->
+            Collections.swap(it1, fromPosition, toPosition)
+        }
+    }
     this.notifyItemMoved(fromPosition, toPosition)
 }
 
-fun <T> RosterListAdapter<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
+fun <T> RosterListAdapter<T>.swapRealmObjects1(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
     val realmInstance = realm()
     val fromPosition = viewHolder.adapterPosition
     val toPosition = target.adapterPosition

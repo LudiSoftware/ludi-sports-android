@@ -14,7 +14,6 @@ import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
-import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
@@ -77,7 +76,7 @@ class RosterBuilderFragment : YsrFragment() {
 
 
         setupRosterIds()
-        setupTeamRosterRealmListener()
+//        setupTeamRosterRealmListener()
         setupSpinner()
         return rootView
     }
@@ -102,11 +101,7 @@ class RosterBuilderFragment : YsrFragment() {
                 }
                 rosterType = selectedEntry.toString()
                 _binding?.reportBuilderLudiTxtRosterType?.text = rosterType
-                if (rosterType == "tryout") {
-                    setupCurrentRosterDisplay(test = true)
-                } else {
-                    setupCurrentRosterDisplay(test = false)
-                }
+                setupCurrentRosterDisplay(withTouch = true)
 
                 // Update the display with the new option
                 // Your logic for updating the display with the new option goes here
@@ -118,7 +113,14 @@ class RosterBuilderFragment : YsrFragment() {
         }
     }
 
+
+
     /** Master Roster Setup! **/
+    private fun setupRosterTypeTitle() {
+        val rosterTitle = "Roster: ${rosterType.capitalizeFirstChar()}"
+        _binding?.reportBuilderLudiTxtRosterType?.text = rosterTitle
+    }
+
     private fun setupRosterIds() {
         // Official Roster
         realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
@@ -144,56 +146,56 @@ class RosterBuilderFragment : YsrFragment() {
         realmInstance?.removeAllChangeListeners()
     }
 
-    private fun setupCurrentRosterDisplay(test: Boolean = false) {
+    private fun setupCurrentRosterDisplay(withTouch: Boolean = true) {
+
+        disableAndClearRosterList()
+        setupRosterTypeTitle()
+
         onClickReturnViewRealmObject = { view, realmObject ->
+            //TODO: setup the click listener for the player
             log("Clicked on player: ${realmObject}")
             toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
-        disable()
-        _binding?.rosterBuilderLudiRosterView?.root?.adapter = null
 
-        if (!test) {
-            // No Touch Adapter
-            currentRosterId?.let {
-                val roster = realm().findRosterById(it)
-                val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
-                players.let { itPlayers ->
-                    val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
-                    _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
-                    _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
-                }
-            }
-
+        if (withTouch) {
+            setupRosterListWithTouch()
         } else {
-            // TODO: We need to figure out how to minimalize this and remove it
-            // Touch Adapter
-            currentRosterId?.let {
-                val roster = realm().findRosterById(it)
-                val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
-                players.let { itPlayers ->
-                    val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
-                    // Drag and Drop
-                    itemTouchListener = RosterDragDropAction(adapter)
-                    itemTouchHelper = ItemTouchHelper(itemTouchListener!!)
-                    // Extra
-//                    touchListener = RosterItemTouchListener(viewPager2!!)
-                    //Attachments
-                    itemTouchHelper?.attachToRecyclerView(_binding?.rosterBuilderLudiRosterView?.root)
-                    // RecyclerView
-//                    _binding?.rosterBuilderLudiRosterView?.root?.addOnItemTouchListener(touchListener!!)
-                    _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
-                    _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
-                }
-            }
+            setupRosterListNoTouch()
         }
-//        currentRosterId?.let {
-//            _binding?.rosterBuilderLudiRosterView?.root?.setActivity(requireActivity())
-//            _binding?.rosterBuilderLudiRosterView?.root?.setupRoster(it, onClickReturnViewRealmObject)
-//        }
 
     }
 
-    fun disable() {
+    private fun setupRosterListWithTouch() {
+        currentRosterId?.let {
+            val roster = realm().findRosterById(it)
+            val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
+            players.let { itPlayers ->
+                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
+                // Drag and Drop
+                itemTouchListener = RosterDragDropAction(adapter)
+                itemTouchHelper = ItemTouchHelper(itemTouchListener!!)
+                //Attachments
+                itemTouchHelper?.attachToRecyclerView(_binding?.rosterBuilderLudiRosterView?.root)
+                // RecyclerView
+                _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
+                _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
+            }
+        }
+    }
+
+    private fun setupRosterListNoTouch() {
+        currentRosterId?.let {
+            val roster = realm().findRosterById(it)
+            val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
+            players.let { itPlayers ->
+                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
+                _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
+                _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
+            }
+        }
+    }
+
+    private fun disableAndClearRosterList() {
         itemTouchHelper?.attachToRecyclerView(null)
         itemTouchListener = null
         itemTouchHelper = null
@@ -212,6 +214,7 @@ class RosterBuilderFragment : YsrFragment() {
             }
             if (updateDisplay) {
                 setupCurrentRosterDisplay()
+                realmInstance?.removeAllChangeListeners()
             }
         }
         realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)

@@ -100,7 +100,7 @@ class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
         player?.let {
             txtItemPlayerName?.text = it.name
             txtItemPlayerOne?.text = "Position: ${position.toString()}"
-            txtItemPlayerTwo?.text = it.tryoutTag
+            txtItemPlayerTwo?.text = it.orderIndex.toString()
             it.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
