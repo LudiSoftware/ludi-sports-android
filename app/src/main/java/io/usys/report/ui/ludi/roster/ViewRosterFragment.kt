@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.viewpager2.widget.ViewPager2
 import io.realm.RealmChangeListener
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
@@ -14,7 +18,10 @@ import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.ludi.player.sortByOrderIndex
 import io.usys.report.ui.views.LudiViewGroupViewModel
+import io.usys.report.ui.views.touchAdapters.RosterDragDropAction
+import io.usys.report.ui.views.touchAdapters.RosterItemTouchListener
 import io.usys.report.utils.log
 
 /**
@@ -45,6 +52,11 @@ class ViewRosterFragment : LudiStringIdsFragment() {
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamRosterFragmentBinding? = null
     private val binding get() = _binding!!
+    private var viewPager2: ViewPager2? = null
+
+    var itemTouchListener: RosterDragDropAction? = null
+    var itemTouchHelper:ItemTouchHelper? = null
+    var touchListener: RosterItemTouchListener? = null
 
     var rosterType: String = "null"
     var title: String = "No Roster Found!"
@@ -67,7 +79,9 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         rootView = binding.root
 
         ludiViewGroupViewModel = ViewModelProvider(requireActivity())[LudiViewGroupViewModel::class.java]
-
+        ludiViewGroupViewModel?.ludiViewGroup?.value?.viewPager?.let {
+            viewPager2 = it
+        }
         arguments?.let {
             rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"
             rosterId = it.getString(ARG_ROSTER_ID) ?: "unknown"
@@ -83,6 +97,11 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         return rootView
     }
 
+    override fun onPause() {
+        super.onPause()
+        disable()
+    }
+
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
@@ -94,9 +113,33 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
         rosterId?.let {
-            _binding?.includeTeamRosterLudiListViewTeams?.root?.setActivity(requireActivity())
-            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, onClickReturnViewRealmObject)
+//            _binding?.includeTeamRosterLudiListViewTeams?.root?.setActivity(requireActivity())
+//            _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, onClickReturnViewRealmObject)
+            val roster = realm().findRosterById(it)
+            val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
+            players.let { itPlayers ->
+                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
+                // Drag and Drop
+                itemTouchListener = RosterDragDropAction(adapter)
+                itemTouchHelper = ItemTouchHelper(itemTouchListener!!)
+                // Extra
+                touchListener = RosterItemTouchListener(viewPager2!!)
+                //Attachments
+                itemTouchHelper?.attachToRecyclerView(_binding?.includeTeamRosterLudiListViewTeams?.root)
+                // RecyclerView
+                _binding?.includeTeamRosterLudiListViewTeams?.root?.addOnItemTouchListener(touchListener!!)
+                _binding?.includeTeamRosterLudiListViewTeams?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
+                _binding?.includeTeamRosterLudiListViewTeams?.root?.adapter = adapter
+            }
         }
+    }
+
+    fun disable() {
+        itemTouchHelper?.attachToRecyclerView(null)
+        itemTouchListener = null
+        itemTouchHelper = null
+        touchListener = null
+        _binding?.includeTeamRosterLudiListViewTeams?.root?.adapter = null
     }
 
     private fun setupTeamRosterRealmListener() {
