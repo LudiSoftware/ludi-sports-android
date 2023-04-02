@@ -22,7 +22,7 @@ import io.usys.report.utils.views.loadUriIntoImgView
 
 class TeamProfileFragmentVG : LudiTeamFragment() {
 
-    private var linearLayout: LinearLayout? = null
+    private var linearLayout: LudiLinearLayout? = null
     private var _binding: ProfileTeamBinding? = null
     private val binding get() = _binding!!
 

@@ -9,7 +9,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.usys.report.R
-import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.LudiPagerAdapter
 import io.usys.report.ui.fragments.LudiRosterPagerAdapter
 import io.usys.report.ui.ludi.chat.ChatFragment
@@ -18,6 +17,8 @@ import io.usys.report.ui.ludi.note.DualNotesFragment
 import io.usys.report.ui.ludi.player.DetailsListFragment
 import io.usys.report.ui.ludi.roster.RosterFragmentVG
 import io.usys.report.ui.ludi.roster.ViewRosterFragment
+import io.usys.report.ui.views.LudiLinearLayout
+import io.usys.report.ui.views.LudiTabLayout
 import io.usys.report.utils.log
 
 //fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
@@ -57,11 +58,11 @@ fun ludiRosterFragments(): MutableList<Pair<String, Fragment>> {
     }
 }
 
-class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
+class LudiViewGroup(parentFragment: Fragment, rootView: LudiLinearLayout) {
 
     var inflater: LayoutInflater? = null
-    var rootView: LinearLayout? = null
-    var tabLayout: TabLayout? = null
+    var rootView: LudiLinearLayout? = null
+    var tabLayout: LudiTabLayout? = null
     var viewPager: ViewPager2? = null
 
     var type: String? = null
@@ -82,7 +83,7 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
         log("LudiViewGroup: init")
     }
 
-    constructor(parentFragment: Fragment, rootView: LinearLayout, teamId: String?, playerId:String?=null, orgId:String?=null, type:String?=null) : this(parentFragment, rootView) {
+    constructor(parentFragment: Fragment, rootView: LudiLinearLayout, teamId: String?, playerId:String?=null, orgId:String?=null, type:String?=null) : this(parentFragment, rootView) {
         this.teamId = teamId
         this.playerId = playerId
         this.orgId = orgId
@@ -94,7 +95,7 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LinearLayout) {
         viewPager = mview?.findViewById(R.id.ludiViewPager)
         tabLayout?.isNestedScrollingEnabled = false
         tabLayout?.tabMode = TabLayout.MODE_FIXED
-        viewPager?.isUserInputEnabled = true
+        viewPager?.isUserInputEnabled = false
         setupLudiPagerAdapter(fragmentPairs)
     }
 

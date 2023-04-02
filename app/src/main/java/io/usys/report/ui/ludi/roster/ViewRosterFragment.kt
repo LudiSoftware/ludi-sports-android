@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import io.realm.RealmChangeListener
 import io.realm.RealmObject
 import io.realm.RealmResults
@@ -13,6 +14,7 @@ import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.views.LudiViewGroupViewModel
 import io.usys.report.utils.log
 
 /**
@@ -38,6 +40,8 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         }
     }
 
+    private lateinit var ludiViewGroupViewModel: LudiViewGroupViewModel
+
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamRosterFragmentBinding? = null
     private val binding get() = _binding!!
@@ -62,6 +66,8 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         _binding = TeamRosterFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
 
+        ludiViewGroupViewModel = ViewModelProvider(requireActivity())[LudiViewGroupViewModel::class.java]
+
         arguments?.let {
             rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"
             rosterId = it.getString(ARG_ROSTER_ID) ?: "unknown"
@@ -85,6 +91,7 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
         rosterId?.let {
+            _binding?.includeTeamRosterLudiListViewTeams?.root?.setActivity(requireActivity())
             _binding?.includeTeamRosterLudiListViewTeams?.root?.setupRoster(it, onClickReturnViewRealmObject)
         }
     }

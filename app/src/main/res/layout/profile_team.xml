@@ -2,7 +2,7 @@
 
 <!-- Created by ChazzCoin : October 2022 -->
 
-<LinearLayout
+<io.usys.report.ui.views.LudiLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/profileTeamRosterRootLinearLayout"
@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <io.usys.report.ui.views.LudiConstraintLayout
         android:id="@+id/profileTeamRosterConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +37,6 @@
         <!--            app:layout_constraintStart_toStartOf="parent"-->
         <!--            app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </io.usys.report.ui.views.LudiConstraintLayout>
 
-</LinearLayout>
+</io.usys.report.ui.views.LudiLinearLayout>

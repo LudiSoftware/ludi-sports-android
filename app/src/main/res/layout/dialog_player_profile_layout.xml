@@ -10,7 +10,7 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp">
 
-    <LinearLayout
+    <io.usys.report.ui.views.LudiLinearLayout
         android:id="@+id/playerProfileLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -67,6 +67,6 @@
                 app:srcCompat="@android:drawable/ic_menu_preferences" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+    </io.usys.report.ui.views.LudiLinearLayout>
 
 </androidx.cardview.widget.CardView>

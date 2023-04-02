@@ -82,8 +82,8 @@ inline fun <reified T> RecyclerView.loadInRealmListGridArrangable(realmList: Rea
     val adapter = RealmListAdapter(realmList, type, itemOnClick, size)
     this.layoutManager = GridLayoutManager(this.context, 2)
     this.adapter = adapter
-    val itemTouchHelper = ItemTouchHelper(RealmListTouchAdapter(adapter))
-    itemTouchHelper.attachToRecyclerView(this)
+//    val itemTouchHelper = ItemTouchHelper(RealmListTouchAdapter(adapter))
+//    itemTouchHelper.attachToRecyclerView(this)
 }
 
 inline fun <reified T> RecyclerView.loadInRealmListArrangable(realmList: RealmList<T>?,
@@ -95,8 +95,8 @@ inline fun <reified T> RecyclerView.loadInRealmListArrangable(realmList: RealmLi
     val gridLayoutManager = gridLayoutManager(this.context, 2)
     this.layoutManager = gridLayoutManager
     this.adapter = adapter
-    val itemTouchHelper = ItemTouchHelper(RealmListTouchAdapter(adapter))
-    itemTouchHelper.attachToRecyclerView(this)
+//    val itemTouchHelper = ItemTouchHelper(RealmListTouchAdapter(adapter))
+//    itemTouchHelper.attachToRecyclerView(this)
     return adapter
 }
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<io.usys.report.ui.views.LudiConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ludiConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.tabs.TabLayout
+    <io.usys.report.ui.views.LudiTabLayout
         android:id="@+id/ludiTabLayout"
         android:layout_width="0dp"
         android:layout_height="45dp"
@@ -18,7 +18,7 @@
         app:tabMode="fixed"
         app:tabTextColor="#3F51B5" />
 
-    <LinearLayout
+    <io.usys.report.ui.views.LudiLinearLayout
         android:id="@+id/ludiViewPagerLinearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -33,6 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </io.usys.report.ui.views.LudiLinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</io.usys.report.ui.views.LudiConstraintLayout>

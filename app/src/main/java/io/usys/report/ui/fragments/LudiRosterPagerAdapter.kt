@@ -15,12 +15,18 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
     var teamId: String? = null
     var tryoutId: String? = null
 
+
+    fun getFragmentAt(position: Int): Fragment {
+        return fragmentPairs[position].second
+    }
+
     fun setupRosters(teamId: String) {
         this.teamId = teamId
         this.realmInstance = realm()
         setupRosterFragments()
     }
 
+    /** Master Roster Setup! **/
     private fun setupRosterFragments() {
         // Official Roster
         realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->

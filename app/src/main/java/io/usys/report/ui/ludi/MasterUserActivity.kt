@@ -22,6 +22,7 @@ import io.usys.report.realm.realm
 class MasterUserActivity : AppCompatActivity() {
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,6 +33,8 @@ class MasterUserActivity : AppCompatActivity() {
         actionBar?.setDisplayUseLogoEnabled(true)
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(false)
+
+
 
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()
@@ -55,6 +58,8 @@ class MasterUserActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+
 
 }
 

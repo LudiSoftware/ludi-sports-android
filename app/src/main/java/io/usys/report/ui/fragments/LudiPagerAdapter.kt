@@ -13,15 +13,15 @@ class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFr
     var realmIdArg: String? = null
     var fragments: MutableList<Pair<String, Fragment>> = mutableListOf()
 
-    fun addRealmIdArg(realmIdArg: String?) {
-        this.realmIdArg = realmIdArg
-    }
-
     fun addStringIdArgs(teamId: String?=null, playerId: String?=null, orgId: String?=null, type: String?=null) {
         this.teamId = teamId
         this.playerId = playerId
         this.orgId = orgId
         this.type = type
+    }
+
+    fun getFragmentAt(position: Int): Fragment {
+        return fragments[position].second
     }
 
     fun addFragments(fragmentPairs: MutableList<Pair<String, Fragment>>) {
