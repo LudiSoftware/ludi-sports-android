@@ -32,6 +32,7 @@ import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
 import io.usys.report.ui.fragments.YsrFragment.Companion.ORG_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.PLAYER_ID
+import io.usys.report.ui.fragments.YsrFragment.Companion.ROSTER_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TEAM_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TYPE
 import io.usys.report.utils.*
@@ -52,6 +53,7 @@ abstract class YsrFragment : Fragment() {
         const val TEAM_ID = "teamId"
         const val PLAYER_ID = "playerId"
         const val ORG_ID = "orgId"
+        const val ROSTER_ID = "rosterId"
 
     }
 
@@ -139,6 +141,10 @@ fun Fragment.toFragmentWithIds(fragId: Int, teamId:String?=null, playerId:String
     this.findNavController().navigate(fragId, bundleStringIds(teamId, playerId, orgId, type))
 }
 
+fun Fragment.toViewRosterFragment(fragId: Int, teamId:String?=null, rosterId:String, type:String?=null) {
+    this.findNavController().navigate(fragId, bundleRosterIds(teamId, rosterId, type))
+}
+
 fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null) {
     toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
 }
@@ -179,4 +185,9 @@ fun bundleStringId(obj: String): Bundle {
 fun bundleStringIds(teamId: String?=null, playerId: String?=null, orgId: String?=null, type: String?=null): Bundle {
     //teamId, playerId, orgId
     return bundleOf(TEAM_ID to teamId, PLAYER_ID to playerId, ORG_ID to orgId, TYPE to type)
+}
+
+fun bundleRosterIds(teamId: String?=null, rosterId: String?=null, type: String?=null): Bundle {
+    //teamId, playerId, orgId
+    return bundleOf(TEAM_ID to teamId, ROSTER_ID to rosterId, TYPE to type)
 }

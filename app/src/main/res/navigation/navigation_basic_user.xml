@@ -119,6 +119,13 @@
         tools:layout="@layout/fragment_roster_vg">
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_roster_builder_frag"
+        android:name="io.usys.report.ui.ludi.roster.RosterBuilderFragment"
+        android:label="Build Roster"
+        tools:layout="@layout/roster_builder_fragment">
+    </fragment>
+
     <!-- BASE FRAGMENT -->
     <fragment
         android:id="@+id/navigation_base_frag"

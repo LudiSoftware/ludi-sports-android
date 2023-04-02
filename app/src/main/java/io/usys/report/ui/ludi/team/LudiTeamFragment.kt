@@ -157,7 +157,7 @@ class TeamMenuProvider(val fragment:Fragment, val teamId: String) : MenuProvider
                 return true
             }
             R.id.menuitem_roster -> {
-                fragment.toFragmentWithIds(R.id.navigation_roster_vg_frag, teamId)
+                fragment.toFragmentWithIds(R.id.navigation_roster_builder_frag, teamId)
                 return true
             }
             else -> {}

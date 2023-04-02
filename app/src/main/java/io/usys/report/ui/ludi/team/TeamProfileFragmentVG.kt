@@ -2,7 +2,6 @@ package io.usys.report.ui.ludi.team
 
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.firebase.fireGetTeamProfileInBackground

@@ -46,13 +46,11 @@ fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String, onPlayerClick:
     }
 }
 
-
 /**
  * Dynamic Master RecyclerView Adapter
  */
 open class RosterListAdapter<PlayerRef>(): RecyclerView.Adapter<RouterViewHolder>() {
 
-    var onLongPress: ((viewHolder: RecyclerView.ViewHolder) -> Unit)? = null
     var gridLayoutManager: GridLayoutManager? = null
     var itemClickListener: ((View, PlayerRef) -> Unit)? = onClickReturnViewT()
     var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
@@ -87,7 +85,7 @@ open class RosterListAdapter<PlayerRef>(): RecyclerView.Adapter<RouterViewHolder
     }
 
     override fun onBindViewHolder(holder: RouterViewHolder, position: Int) {
-        println("binding realmlist")
+        println("binding roster player: $position")
         realmList?.let { itPlayerList ->
             itPlayerList[position]?.let { it1 ->
                 holder.bind(it1 as RealmObject, position=position)

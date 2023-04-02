@@ -75,6 +75,9 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             log("Roster type: $rosterType")
         }
 
+        // if rosterId is null....
+        //      get rosterId from teamId
+
         setupDisplay()
         setupTeamRosterRealmListener()
         return rootView
