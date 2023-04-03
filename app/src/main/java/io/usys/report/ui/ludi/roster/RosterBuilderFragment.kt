@@ -1,11 +1,14 @@
 package io.usys.report.ui.ludi.roster
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,6 +17,7 @@ import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
+import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
@@ -32,12 +36,6 @@ import io.usys.report.utils.log
 
 class RosterBuilderFragment : YsrFragment() {
 
-    companion object {
-        fun newRoster(): RosterBuilderFragment {
-            val fragment = RosterBuilderFragment()
-            return fragment
-        }
-    }
     private lateinit var ludiViewGroupViewModel: LudiViewGroupViewModel
     private var viewPager2: ViewPager2? = null
 
@@ -47,7 +45,6 @@ class RosterBuilderFragment : YsrFragment() {
 
     var itemTouchListener: RosterDragDropAction? = null
     var itemTouchHelper:ItemTouchHelper? = null
-    var touchListener: RosterItemTouchListener? = null
 
     var teamId: String = "unknown"
 
@@ -218,5 +215,63 @@ class RosterBuilderFragment : YsrFragment() {
             }
         }
         realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
+    }
+}
+
+/**
+ * TODO:
+ *      1. Save Roster
+ *      2. Submit/Finalize Roster
+ */
+class RosterBuilderMenuPopupProvider(private val fragment: Fragment, private val teamId: String) : MenuProvider {
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.top_team_menu_dropdown, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.menuitem_options -> {
+                showCustomPopup(fragment.requireActivity().findViewById(R.id.menuitem_options))
+                return true
+            }
+            else -> {
+            }
+        }
+        return false
+    }
+
+    private fun showCustomPopup(anchorView: View) {
+        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.team_menu_popup, null)
+        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Load animations
+        val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
+        val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
+
+        // Set up click listeners for the custom menu items
+        popupView.findViewById<LinearLayout>(R.id.option_formation).setOnClickListener {
+            fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
+            popupWindow.dismiss()
+        }
+
+        popupView.findViewById<LinearLayout>(R.id.option_roster).setOnClickListener {
+            fragment.toFragmentWithIds(R.id.navigation_roster_builder_frag, teamId)
+            popupWindow.dismiss()
+        }
+
+        // If you want to dismiss the popup when clicking outside of it
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+
+        // Set the unfold animation when showing the popup
+        popupWindow.contentView.startAnimation(unfoldAnimation)
+
+        // Set the fold animation when dismissing the popup
+        popupWindow.setOnDismissListener {
+            popupView.startAnimation(foldAnimation)
+        }
+
+        // Show the PopupWindow below the anchor view (menu item)
+        popupWindow.showAsDropDown(anchorView)
     }
 }

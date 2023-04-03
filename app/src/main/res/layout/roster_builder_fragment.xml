@@ -11,7 +11,7 @@
     <io.usys.report.ui.views.LudiConstraintLayout
         android:id="@+id/rosterBuilderLudiInnerConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,32 +21,26 @@
             android:id="@+id/reportBuilderLudiTxtRosterType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
             android:text="Roster Type"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/rosBuilderLudiSpinRosterType"
+            app:layout_constraintEnd_toStartOf="@+id/rosBuilderLudiSpinRosterType"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/reportBuilderLudiBtnSubmitRoster"
-            style="@android:style/Widget.Holo.Light.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="#6C3D3D"
-            android:text="Submit Roster"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <Spinner
             android:id="@+id/rosBuilderLudiSpinRosterType"
             android:layout_width="145dp"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reportBuilderLudiTxtRosterType" />
+            android:layout_margin="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
     </io.usys.report.ui.views.LudiConstraintLayout>
 
     <include

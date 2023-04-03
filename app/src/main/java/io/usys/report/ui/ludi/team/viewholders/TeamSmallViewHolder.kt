@@ -4,6 +4,7 @@ package io.usys.report.ui.ludi.team.viewholders
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import de.hdodenhof.circleimageview.CircleImageView
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
@@ -30,7 +31,7 @@ class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtItemTeamName = itemView.bindTextView(R.id.cardTeamSmallTxtName)
     var txtItemTeamOrg = itemView.bindTextView(R.id.cardTeamSmallTxtOrg)
     var txtItemTeamEmail = itemView.bindTextView(R.id.cardTeamSmallTxtEmail)
-    var imgTeamProfile = itemView.bind<ImageView>(R.id.cardTeamSmallImgProfile)
+    var imgTeamProfile = itemView.bind<CircleImageView>(R.id.cardTeamSmallImgProfile)
 
     fun bind(team: Team?) {
         team?.let {
@@ -57,7 +58,7 @@ class TeamLargeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtItemTeamName = itemView.bindTextView(R.id.cardTeamSmallTxtName)
     var txtItemTeamOrg = itemView.bindTextView(R.id.cardTeamSmallTxtOrg)
     var txtItemTeamEmail = itemView.bindTextView(R.id.cardTeamSmallTxtEmail)
-    var imgTeamProfile = itemView.bind<ImageView>(R.id.cardTeamSmallImgProfile)
+    var imgTeamProfile = itemView.bind<CircleImageView>(R.id.cardTeamSmallImgProfile)
 
     fun bind(team: Team?) {
         team?.let {

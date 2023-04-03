@@ -10,7 +10,7 @@ import io.usys.report.utils.toUri
 
 fun ImageView.loadUriIntoImgView(stringUri: String) {
     val uri = stringUri.toUri()
-    Glide.with(this).load(uri).into(this)
+    Glide.with(this.context).load(uri).into(this)
 }
 fun ImageView.loadUriIntoImgView(uri: Uri) {
     Glide.with(this).load(uri).into(this)
