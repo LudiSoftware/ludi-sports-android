@@ -36,7 +36,8 @@ abstract class LudiMiddleFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realmInstance = realm()
-        realmInstance?.userOrLogout(requireActivity()) { user = it }
+        //todo: create a customer/no-sign-in base fragment
+//        realmInstance?.userOrLogout(requireActivity()) { user = it }
         realmObjectArg = unbundleRealmObject()
     }
 

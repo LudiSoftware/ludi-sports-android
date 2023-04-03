@@ -94,7 +94,7 @@ abstract class YsrFragment : Fragment() {
             user = it
             userId = it.id
         }
-        realmInstance?.userOrLogout(requireActivity()) { user = it }
+//        realmInstance?.userOrLogout(requireActivity()) { user = it }
         storage = Firebase.storage
         realmObjectArg = unbundleRealmObject()
     }

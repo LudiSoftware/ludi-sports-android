@@ -67,7 +67,8 @@ class AuthControllerActivity : AppCompatActivity()  {
             navigateUser(itSafeUser)
             return
         }
-        launchActivity<ProviderLoginActivity>()
+        launchActivity<MasterUserActivity>()
+//        launchActivity<ProviderLoginActivity>()
     }
 
     override fun onRestart() {

@@ -1,5 +1,6 @@
 package io.usys.report.ui.ludi
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
@@ -13,11 +14,19 @@ import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
+import io.usys.report.realm.model.users.userOrLogout
+import io.usys.report.realm.realm
+import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.utils.isNullOrEmpty
+import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
+import io.usys.report.utils.makeGone
 
 
 /**
@@ -26,7 +35,8 @@ import io.usys.report.utils.log
 
 class DashboardHomeFragment : YsrFragment() {
 
-    private var menu: SignInMenuProvider? = null
+    private var menuIn: SignInMenuProvider? = null
+    private var menuOut: SignOutMenuProvider? = null
     private var _binding: DefaultFullDashboardBinding? = null
     private val binding get() = _binding!!
 
@@ -39,6 +49,7 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
         rootView = binding.root
+        _binding?.txtWelcomeDashboard?.text = "Please Sign In!"
         setupOnClickListeners()
         realmInstance?.safeUser { itUser ->
             _binding?.txtWelcomeDashboard?.text = "Welcome, ${itUser.name}"
@@ -46,23 +57,28 @@ class DashboardHomeFragment : YsrFragment() {
             setupCoachDisplay()
         }
 //        NewEvaluationDialog().show(childFragmentManager, "NewEvaluationDialog")
-
-
-
-        setupRealmCoachListener()
+        user?.let {
+            setupRealmCoachListener()
+        } ?: kotlin.run {
+            _binding?.includeYsrListViewTeams?.root?.makeGone()
+        }
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         // todo: if user is logged in...
-        menu = SignInMenuProvider(this)
-        requireActivity().addMenuProvider(menu ?: return)
+        if (user == null) {
+            menuIn = SignInMenuProvider(requireActivity())
+            requireActivity().addMenuProvider(menuIn ?: return)
+        } else {
+            menuOut = SignOutMenuProvider(requireActivity())
+            requireActivity().addMenuProvider(menuOut ?: return)
+        }
     }
-
     override fun onPause() {
         super.onPause()
-        requireActivity().removeMenuProvider(menu ?: return)
+        requireActivity().removeMenuProvider(menuIn ?: menuOut ?: return)
     }
     private fun setupRealmCoachListener() {
         val coachListener = RealmChangeListener<RealmResults<Coach>> {
@@ -115,9 +131,14 @@ class DashboardHomeFragment : YsrFragment() {
 
     }
 
+    private fun navigateUserSignIn(){
+        realm().safeUser { return }
+        requireActivity().launchActivity<ProviderLoginActivity>()
+    }
+
 }
 
-class SignInMenuProvider(val fragment: Fragment) : MenuProvider {
+class SignInMenuProvider(val activity: Activity) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.sign_in_menu, menu)
     }
@@ -125,7 +146,7 @@ class SignInMenuProvider(val fragment: Fragment) : MenuProvider {
         when (menuItem.itemId) {
             R.id.menuitem_signin -> {
                 //TODO: Add Sign In Page
-                fragment.toFragmentWithIds(R.id.navigation_tryout_frag)
+                activity.launchActivity<ProviderLoginActivity>()
                 return true
             }else -> {}
         }
@@ -133,3 +154,18 @@ class SignInMenuProvider(val fragment: Fragment) : MenuProvider {
     }
 }
 
+class SignOutMenuProvider(val activity: Activity) : MenuProvider {
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.sign_out_menu, menu)
+    }
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.menuitem_signout -> {
+                //TODO: Add Sign In Page
+                Session.logoutAndRestartApplication(activity)
+                return true
+            }else -> {}
+        }
+        return true
+    }
+}
