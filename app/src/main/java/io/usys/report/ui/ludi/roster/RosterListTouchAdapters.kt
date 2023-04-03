@@ -11,6 +11,8 @@ import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.roster.RosterListAdapter
 import io.usys.report.utils.log
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 
 class RosterItemTouchListener(private val viewPager2: ViewPager2) : RecyclerView.OnItemTouchListener {
@@ -36,6 +38,9 @@ class RosterItemTouchListener(private val viewPager2: ViewPager2) : RecyclerView
 
 /** Working **/
 class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTouchHelper.Callback() {
+    val realmInstance = realm()
+//    var fromPosition = 0
+//    var toPosition = 0
 
     override fun isLongPressDragEnabled(): Boolean {
         return true
@@ -50,9 +55,10 @@ class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTou
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         return makeMovementFlags(dragFlags, swipeFlags)
     }
-
-    override fun chooseDropTarget(selected: RecyclerView.ViewHolder, dropTargets: MutableList<RecyclerView.ViewHolder>, curX: Int, curY: Int): RecyclerView.ViewHolder {
-        return super.chooseDropTarget(selected, dropTargets, curX, curY)
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
+        adapter.notifyDataSetChanged()
+        log("clearView: RosterId = ${adapter.rosterId}")
     }
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
@@ -65,49 +71,28 @@ class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTou
     override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
         super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
         // Update orderIndex of the swapped objects
-        adapter.swapRealmObjects(viewHolder, target)
-        //todo: fix this part!!
-//        realm().safeWrite {
-//            val fromPlayerRef = adapter.realmList?.get(fromPos) as? PlayerRef
-//            val toPlayerRef = adapter.realmList?.get(toPos) as? PlayerRef
-//            fromPlayerRef?.orderIndex = toPlayerRef?.orderIndex
-//            toPlayerRef?.orderIndex = fromPlayerRef?.orderIndex
-//        }
+        val fromPosition = viewHolder.adapterPosition
+        val toPosition = target.adapterPosition
+        realmInstance.safeWrite {
+            adapter.realmList?.let { realmList ->
+                if (fromPosition < toPosition) {
+                    for (i in fromPosition until toPosition) {
+                        Collections.swap(realmList, i, i + 1)
+                    }
+                } else {
+                    for (i in fromPosition downTo toPosition + 1) {
+                        Collections.swap(realmList, i, i - 1)
+                    }
+                }
+            }
+        }
+        adapter.notifyItemMoved(fromPosition, toPosition)
+        log("onMoved: RosterId = ${adapter.rosterId}")
     }
+
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         // not implemented
-    }
-}
-
-
-fun <T> RosterListAdapter<T>.swapRealmObjects(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
-    val realmInstance = realm()
-    val fromPosition = viewHolder.adapterPosition
-    val toPosition = target.adapterPosition
-    realmInstance.safeWrite {
-        this.realmList?.let { it1 ->
-            Collections.swap(it1, fromPosition, toPosition)
-        }
-    }
-    this.notifyItemMoved(fromPosition, toPosition)
-}
-
-fun <T> RosterListAdapter<T>.swapRealmObjects1(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
-    val realmInstance = realm()
-    val fromPosition = viewHolder.adapterPosition
-    val toPosition = target.adapterPosition
-    val fromColumn = this.gridLayoutManager?.spanSizeLookup?.getSpanIndex(fromPosition, this.gridLayoutManager!!.spanCount)
-    val toColumn = this.gridLayoutManager?.spanSizeLookup?.getSpanIndex(toPosition, this.gridLayoutManager!!.spanCount)
-    if (fromColumn == toColumn) {
-        // Move the item within the same column
-        realmInstance.safeWrite { this.realmList?.let { it1 -> Collections.swap(it1, fromPosition, toPosition) } }
-        this.notifyItemMoved(fromPosition, toPosition)
-    } else {
-        // Move the item to a different column
-        realmInstance.safeWrite { this.realmList?.let { it1 -> Collections.swap(it1, fromPosition, toPosition) } }
-        this.notifyItemChanged(fromPosition)
-        this.notifyItemChanged(toPosition)
     }
 }
 
