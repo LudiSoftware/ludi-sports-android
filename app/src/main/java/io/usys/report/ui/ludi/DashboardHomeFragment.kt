@@ -131,11 +131,6 @@ class DashboardHomeFragment : YsrFragment() {
 
     }
 
-    private fun navigateUserSignIn(){
-        realm().safeUser { return }
-        requireActivity().launchActivity<ProviderLoginActivity>()
-    }
-
 }
 
 class SignInMenuProvider(val activity: Activity) : MenuProvider {

@@ -2,6 +2,7 @@ package io.usys.report.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.view.MenuProvider
@@ -25,6 +26,7 @@ import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
+import io.usys.report.utils.views.wiggleOnce
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -172,6 +174,10 @@ class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: 
         val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.team_menu_popup, null)
         val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+        // Load animations
+        val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
+        val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
+
         // Set up click listeners for the custom menu items
         popupView.findViewById<LinearLayout>(R.id.option_formation).setOnClickListener {
             fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
@@ -186,6 +192,14 @@ class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: 
         // If you want to dismiss the popup when clicking outside of it
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
+
+        // Set the unfold animation when showing the popup
+        popupWindow.contentView.startAnimation(unfoldAnimation)
+
+        // Set the fold animation when dismissing the popup
+        popupWindow.setOnDismissListener {
+            popupView.startAnimation(foldAnimation)
+        }
 
         // Show the PopupWindow below the anchor view (menu item)
         popupWindow.showAsDropDown(anchorView)
