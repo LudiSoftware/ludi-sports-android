@@ -63,7 +63,7 @@ class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(conte
         fireGetReviewTemplateQuestionsAsync(FireTypes.COACHES) {
             log("reviewTemplate successfully pulled.")
             reviewQuestions = this?.toRealmList()
-            recyclerView?.loadInRealmListCallback(reviewQuestions, context, FireTypes.REVIEW_TEMPLATES, updateCallback)
+            recyclerView?.loadInRealmListCallback(reviewQuestions, FireTypes.REVIEW_TEMPLATES, updateCallback)
         }
 
         updater()

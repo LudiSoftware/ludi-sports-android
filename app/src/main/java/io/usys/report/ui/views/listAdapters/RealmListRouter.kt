@@ -9,12 +9,12 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.ludi.coach.CoachViewHolder
 import io.usys.report.ui.ludi.note.NoteViewHolder
 import io.usys.report.ui.ludi.organization.OrgViewHolder
-import io.usys.report.ui.ludi.player.PlayerMediumGridViewHolder
 import io.usys.report.ui.ludi.player.PlayerMediumViewHolder
-import io.usys.report.ui.ludi.player.PlayerTinyHorizontalViewHolder
 import io.usys.report.ui.ludi.player.PlayerTinyViewHolder
 import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ludi.review.organization.OrgReviewCommentViewHolder
+import io.usys.report.ui.ludi.roster.PlayerMediumGridViewHolder
+import io.usys.report.ui.ludi.roster.PlayerTinyHorizontalViewHolder
 import io.usys.report.ui.ludi.service.ServiceViewHolder
 import io.usys.report.ui.ludi.sport.SportViewHolder
 import io.usys.report.ui.ludi.team.viewholders.TeamLargeViewHolder

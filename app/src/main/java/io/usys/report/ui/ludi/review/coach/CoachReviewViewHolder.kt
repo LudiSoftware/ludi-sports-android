@@ -29,7 +29,7 @@ import io.usys.report.utils.log
 fun RecyclerView?.setupReviewQuestionsList(context: Context, questionList: RealmList<Question>?, itemOnClick: ((View, RealmObject) -> Unit)?) {
     // Load Reviews by Receiver.id
     val rv = this
-    rv?.loadInCustomAttributes(questionList, context, FireTypes.REVIEW_TEMPLATES, itemOnClick)
+    rv?.loadInCustomAttributes(questionList, FireTypes.REVIEW_TEMPLATES, itemOnClick)
 }
 
 class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

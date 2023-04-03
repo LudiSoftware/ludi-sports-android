@@ -30,7 +30,7 @@ fun RecyclerView?.setupOrganizationList(context: Context, realmObjectArg: RealmO
     var organizationList: RealmList<Organization>?
     fireGetOrderByEqualToAsync(FireTypes.ORGANIZATIONS, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
         organizationList = this?.toRealmList()
-        rv?.loadInCustomAttributes(organizationList, context, FireTypes.ORGANIZATIONS, onClick)
+        rv?.loadInCustomAttributes(organizationList, FireTypes.ORGANIZATIONS, onClick)
     }
 }
 

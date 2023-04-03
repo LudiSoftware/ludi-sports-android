@@ -22,7 +22,7 @@ fun RecyclerView?.setupOrgReviewCommentList(context: Context, receiverId:String,
     val rv = this
     val callBack : ((DataSnapshot?) -> Unit) = { ds ->
         val reviewList = ds?.toRealmList<Review>()
-        rv?.loadInCustomAttributes(reviewList, context, FireTypes.REVIEWS, itemOnClick)
+        rv?.loadInCustomAttributes(reviewList, FireTypes.REVIEWS, itemOnClick)
     }
     fireGetReviewsByReceiverIdToCallback(receiverId, callBack)
 }

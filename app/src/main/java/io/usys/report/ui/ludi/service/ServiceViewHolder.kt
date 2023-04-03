@@ -33,7 +33,7 @@ fun RecyclerView?.setupServiceList(context: Context, onClickReturnViewRealmObjec
     fireGetBaseYsrObjects<Service>(FireTypes.SERVICES) {
         serviceList = (this ?: RealmList())
         serviceList.addToSession()
-        rv?.loadInRealmListGrid(serviceList, context, FireTypes.SERVICES, onClickReturnViewRealmObject)
+        rv?.loadInRealmListGrid(serviceList, FireTypes.SERVICES, onClickReturnViewRealmObject)
     }
 }
 

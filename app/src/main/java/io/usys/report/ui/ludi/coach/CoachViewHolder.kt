@@ -26,7 +26,7 @@ fun RecyclerView?.setupCoachList(context: Context, realmObjectArg: RealmObject?,
     var coachesList: RealmList<Coach>?
     fireGetOrderByEqualToAsync(FireTypes.COACHES, Coach.ORDER_BY_ORGANIZATION, realmObjectArg?.cast<Organization>()?.id ?: return) {
         coachesList = this?.toRealmList()
-        rv?.loadInCustomAttributes(coachesList, context, FireTypes.COACHES, onClick)
+        rv?.loadInCustomAttributes(coachesList, FireTypes.COACHES, onClick)
     }
 }
 
