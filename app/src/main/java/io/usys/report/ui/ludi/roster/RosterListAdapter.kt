@@ -14,6 +14,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
+import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.sortByOrderIndex
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
@@ -96,6 +97,17 @@ open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
                     itemClickListener?.invoke(it, it1)
                 }
 
+            }
+        }
+    }
+
+    fun updateOrderIndexes() {
+        realmList?.let { list ->
+            // Perform updates in a Realm transaction
+            realm().safeWrite { _ ->
+                list.forEachIndexed { index, playerRef ->
+                    playerRef.orderIndex = index
+                }
             }
         }
     }

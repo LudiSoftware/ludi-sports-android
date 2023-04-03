@@ -59,8 +59,10 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
     }
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        fireUpdatePlayersInRoster(adapter.rosterId!!, adapter.realmList)
+        adapter.updateOrderIndexes()
         adapter.notifyDataSetChanged()
+        //TODO: Update firebase Manually
+        fireUpdatePlayersInRoster(adapter.rosterId!!, adapter.realmList)
         log("clearView: RosterId = ${adapter.rosterId}")
     }
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
