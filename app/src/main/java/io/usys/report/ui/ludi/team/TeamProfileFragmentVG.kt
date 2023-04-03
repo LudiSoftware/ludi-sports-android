@@ -53,7 +53,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
             }
         }
         teamId?.let {
-            menu = TeamMenuProvider(this, it)
+            menu = TeamMenuPopupProvider(this, it)
             requireActivity().addMenuProvider(menu ?: return@let)
         }
         //Setup Functions

@@ -2,6 +2,8 @@ package io.usys.report.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import io.realm.Realm
@@ -33,7 +35,7 @@ abstract class LudiTeamFragment : Fragment() {
 
     var _MODE = YsrMode.TRYOUTS
     lateinit var rootView : View
-    var menu: TeamMenuProvider? = null
+    var menu: TeamMenuPopupProvider? = null
     var itemOnClick: ((View, RealmObject) -> Unit)? = null
 
     var realmTeamCallBack: ((Team) -> Unit)? = null
@@ -163,5 +165,47 @@ class TeamMenuProvider(val fragment:Fragment, val teamId: String) : MenuProvider
             else -> {}
         }
         return true
+    }
+}
+
+
+class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: String) : MenuProvider {
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.top_team_menu_dropdown, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.menuitem_options -> {
+                showCustomPopup(fragment.requireActivity().findViewById(R.id.menuitem_options))
+                return true
+            }
+            else -> {
+            }
+        }
+        return false
+    }
+
+    private fun showCustomPopup(anchorView: View) {
+        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.team_menu_popup, null)
+        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set up click listeners for the custom menu items
+        popupView.findViewById<LinearLayout>(R.id.option_formation).setOnClickListener {
+            fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
+            popupWindow.dismiss()
+        }
+
+        popupView.findViewById<LinearLayout>(R.id.option_roster).setOnClickListener {
+            fragment.toFragmentWithIds(R.id.navigation_roster_builder_frag, teamId)
+            popupWindow.dismiss()
+        }
+
+        // If you want to dismiss the popup when clicking outside of it
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+
+        // Show the PopupWindow below the anchor view (menu item)
+        popupWindow.showAsDropDown(anchorView)
     }
 }
