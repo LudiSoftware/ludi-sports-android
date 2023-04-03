@@ -148,25 +148,7 @@ abstract class LudiTeamFragment : Fragment() {
     }
 }
 
-class TeamMenuProvider(val fragment:Fragment, val teamId: String) : MenuProvider {
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.top_team_menu, menu)
-    }
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.menuitem_formation -> {
-                fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
-                return true
-            }
-            R.id.menuitem_roster -> {
-                fragment.toFragmentWithIds(R.id.navigation_roster_builder_frag, teamId)
-                return true
-            }
-            else -> {}
-        }
-        return true
-    }
-}
+
 
 
 class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: String) : MenuProvider {
