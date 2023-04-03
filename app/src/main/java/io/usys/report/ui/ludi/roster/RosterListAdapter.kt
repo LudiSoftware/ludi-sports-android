@@ -49,25 +49,25 @@ fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String, onPlayerClick:
 /**
  * Dynamic Master RecyclerView Adapter
  */
-open class RosterListAdapter<PlayerRef>(): RecyclerView.Adapter<RouterViewHolder>() {
+open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
 
     var gridLayoutManager: GridLayoutManager? = null
-    var itemClickListener: ((View, PlayerRef) -> Unit)? = onClickReturnViewT()
+    var itemClickListener: ((View, io.usys.report.realm.model.PlayerRef) -> Unit)? = onClickReturnViewT()
     var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
-    var realmList: RealmList<PlayerRef>? = null
+    var realmList: RealmList<io.usys.report.realm.model.PlayerRef>? = null
     var layout: Int = R.layout.card_player_medium_grid
     var type: String = FireTypes.PLAYERS
     var size: String = "medium_grid"
     var rosterId: String? = null
 
-    constructor(realmList: RealmList<PlayerRef>?, itemClickListener: ((View, PlayerRef) -> Unit)?, size: String) : this() {
+    constructor(realmList: RealmList<io.usys.report.realm.model.PlayerRef>?, itemClickListener: ((View, io.usys.report.realm.model.PlayerRef) -> Unit)?, size: String) : this() {
         this.realmList = realmList
         this.itemClickListener = itemClickListener
         this.size = size
         this.layout = RouterViewHolder.getLayout(type, size)
     }
 
-    constructor(realmList: RealmList<PlayerRef>?, itemClickListener: ((View, PlayerRef) -> Unit)?, size: String, rosterId:String) : this() {
+    constructor(realmList: RealmList<io.usys.report.realm.model.PlayerRef>?, itemClickListener: ((View, io.usys.report.realm.model.PlayerRef) -> Unit)?, size: String, rosterId:String) : this() {
         this.realmList = realmList
         this.itemClickListener = itemClickListener
         this.size = size

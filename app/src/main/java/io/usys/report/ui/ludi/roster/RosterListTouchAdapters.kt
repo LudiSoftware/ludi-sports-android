@@ -4,6 +4,8 @@ import android.view.MotionEvent
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import io.realm.RealmList
+import io.usys.report.firebase.fireUpdatePlayersInRoster
 import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
@@ -37,7 +39,7 @@ class RosterItemTouchListener(private val viewPager2: ViewPager2) : RecyclerView
 
 
 /** Working **/
-class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTouchHelper.Callback() {
+class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchHelper.Callback() {
     val realmInstance = realm()
 //    var fromPosition = 0
 //    var toPosition = 0
@@ -57,6 +59,7 @@ class RosterDragDropAction(private val adapter: RosterListAdapter<*>) :  ItemTou
     }
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
+        fireUpdatePlayersInRoster(adapter.rosterId!!, adapter.realmList)
         adapter.notifyDataSetChanged()
         log("clearView: RosterId = ${adapter.rosterId}")
     }
