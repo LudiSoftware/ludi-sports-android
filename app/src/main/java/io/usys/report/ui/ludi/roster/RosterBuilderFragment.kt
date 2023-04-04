@@ -88,6 +88,7 @@ class RosterBuilderFragment : YsrFragment() {
 
     private fun setupSelectedCountSpinner() {
         _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
+        _binding?.rosterBuilderLudiSubTxt?.makeVisible()
         val selectedCounts = generateNumberStrings()
         val spinnerAdapter = RosterSpinnerAdapter(requireContext(), selectedCounts)
         _binding?.rosterBuilderLudiSpinRosterLimit?.adapter = spinnerAdapter
@@ -101,6 +102,7 @@ class RosterBuilderFragment : YsrFragment() {
     }
     private fun hideSelectedCountSpinner() {
         _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
+        _binding?.rosterBuilderLudiSubTxt?.makeGone()
     }
 
     /** Master Roster Setup! **/
@@ -157,18 +159,23 @@ class RosterBuilderFragment : YsrFragment() {
             }
             when (rosterType) {
                 "tryout" -> {
+                    setupSelectedCountSpinner()
                     rosterConfig.mode = TEAM_MODE_TRYOUT
+                    rosterConfig.touchEnabled = true
                     adapter = RosterListAdapter(rosterConfig)
                 }
                 "selected" -> {
+                    setupSelectedCountSpinner()
                     rosterConfig.mode = TEAM_MODE_TRYOUT
+                    rosterConfig.touchEnabled = true
                     adapter = RosterListAdapter(rosterConfig)
                     adapter?.filterByStatusSelected()
                 }
                 else -> {
+                    hideSelectedCountSpinner()
                     rosterConfig.mode = TEAM_MODE_IN_SEASON
+                    rosterConfig.touchEnabled = false
                     adapter = RosterListAdapter(rosterConfig)
-                    adapter?.disableTouch()
                 }
             }
         }

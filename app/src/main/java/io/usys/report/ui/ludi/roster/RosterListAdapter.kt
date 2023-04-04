@@ -1,5 +1,6 @@
 package io.usys.report.ui.ludi.roster
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,7 @@ class RosterLayoutConfig {
     var selectedCount: Int = 20
     var playerFilters = ludiFilters()
     // Click Listeners
+    var touchEnabled: Boolean = true
     var itemClickListener: ((View, PlayerRef) -> Unit)? = onClickReturnViewT()
     var itemTouchListener: RosterDragDropAction? = null
     var itemTouchHelper: ItemTouchHelper? = null
@@ -118,16 +120,18 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
     }
 
     /** Setup Functions */
+    @SuppressLint("NotifyDataSetChanged")
     private fun setup() {
         loadRosterById()
-        addTouchAdapters()
+        if (config.touchEnabled) addTouchAdapters()
         attach()
         notifyDataSetChanged()
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun reload() {
         this.playerRefList?.clear()
         loadRosterById()
-        addTouchAdapters()
+        if (config.touchEnabled) addTouchAdapters()
         attach()
         notifyDataSetChanged()
     }
@@ -143,19 +147,12 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
 
     /** Disable Functions */
     fun disableAndClearRosterList() {
-        config.itemTouchHelper?.attachToRecyclerView(null)
-        config.itemTouchListener = null
-        config.itemTouchHelper = null
+        config = RosterLayoutConfig()
         this.config.recyclerView?.adapter = null
         this.playerRefList?.clear()
         this.config.playerFilters.clear()
     }
 
-    fun disableTouch() {
-        config.itemTouchHelper?.attachToRecyclerView(null)
-        config.itemTouchListener = null
-        config.itemTouchHelper = null
-    }
 
     /** Filter Functions */
     fun filterByStatusSelected() {

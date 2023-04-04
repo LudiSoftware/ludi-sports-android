@@ -94,14 +94,6 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
 
-            itemView.onLongClick {
-                it?.wiggleOnce()
-            }
-
-            itemView.setOnClickListener {
-                config.itemClickListener?.invoke(it, itPlayer)
-            }
-
         }
     }
 
@@ -134,6 +126,14 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
+            }
+
+            itemView.onLongClick {
+                it?.wiggleOnce()
+            }
+
+            itemView.setOnClickListener {
+                config.itemClickListener?.invoke(it, itPlayer)
             }
         }
     }
