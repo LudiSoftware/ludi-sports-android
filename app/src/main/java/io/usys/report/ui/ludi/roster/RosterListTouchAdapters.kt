@@ -57,15 +57,15 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
         adapter.updateOrderIndexes()
         adapter.notifyDataSetChanged()
         //TODO: Update firebase Manually
-        fireUpdatePlayersInRoster(adapter.rosterId!!, adapter.playerRefList)
-        log("clearView: RosterId = ${adapter.rosterId}")
+        fireUpdatePlayersInRoster(adapter.config.rosterId!!, adapter.playerRefList)
+        log("clearView: RosterId = ${adapter.config.rosterId}")
     }
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
-        log("onSelectedChanged: RosterId = ${adapter.rosterId}")
+        log("onSelectedChanged: RosterId = ${adapter.config.rosterId}")
     }
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        log("onMove: RosterId = ${adapter.rosterId}")
+        log("onMove: RosterId = ${adapter.config.rosterId}")
         return true
     }
     override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
@@ -87,7 +87,7 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
             }
         }
         adapter.notifyItemMoved(fromPosition, toPosition)
-        log("onMoved: RosterId = ${adapter.rosterId}")
+        log("onMoved: RosterId = ${adapter.config.rosterId}")
     }
 
 

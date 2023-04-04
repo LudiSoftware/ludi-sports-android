@@ -15,6 +15,7 @@ import io.usys.report.ui.ludi.review.coach.ReviewQuestionsViewHolder
 import io.usys.report.ui.ludi.review.organization.OrgReviewCommentViewHolder
 import io.usys.report.ui.ludi.roster.PlayerMediumGridViewHolder
 import io.usys.report.ui.ludi.roster.PlayerTinyHorizontalViewHolder
+import io.usys.report.ui.ludi.roster.RosterLayoutConfig
 import io.usys.report.ui.ludi.service.ServiceViewHolder
 import io.usys.report.ui.ludi.sport.SportViewHolder
 import io.usys.report.ui.ludi.team.viewholders.TeamLargeViewHolder
@@ -43,7 +44,7 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
                     "tiny" -> return PlayerTinyViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                     "tiny_horizontal" -> return PlayerTinyHorizontalViewHolder(itemView).bind(obj as? PlayerRef, position=position)
                     "medium" -> return PlayerMediumViewHolder(itemView).bind(obj as? PlayerRef, position=position)
-                    "medium_grid" -> return PlayerMediumGridViewHolder(itemView).bind(obj as? PlayerRef, position=position)
+                    "medium_grid" -> return PlayerMediumGridViewHolder(itemView, RosterLayoutConfig()).bind(obj as? PlayerRef, position=position)
                 }
             }
             FireTypes.TEAMS -> {

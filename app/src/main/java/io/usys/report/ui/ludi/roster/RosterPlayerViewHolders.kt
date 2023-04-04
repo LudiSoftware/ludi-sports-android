@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.usys.report.R
 import io.usys.report.realm.findPlayerRefById
-import io.usys.report.realm.model.PLAYER_STATUS_ACCEPTED
 import io.usys.report.realm.model.PLAYER_STATUS_OPEN
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
@@ -17,9 +16,10 @@ import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
-import io.usys.report.utils.views.onCheckListener
+import io.usys.report.utils.views.wiggleOnce
+import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
-class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+open class PlayerMediumGridViewHolder(var itemView: View, var config: RosterLayoutConfig) : RecyclerView.ViewHolder(itemView) {
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
@@ -37,10 +37,7 @@ class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
 
             cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
                 var newStatus = PLAYER_STATUS_OPEN
-                if (isChecked) {
-                    // Checkbox is checked
-                    newStatus = PLAYER_STATUS_SELECTED
-                }
+                if (isChecked) newStatus = PLAYER_STATUS_SELECTED
                 val realm = realm()
                 realm.safeWrite {
                     realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
@@ -55,8 +52,59 @@ class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
+
+            itemView.onLongClick {
+                it?.wiggleOnce()
+            }
+
+            itemView.setOnClickListener {
+                config.itemClickListener?.invoke(it, itPlayer)
+            }
+
         }
     }
+
+    fun bindTryout(player: PlayerRef?, position: Int, selectedCount:Int) {
+        player?.let { itPlayer ->
+
+            val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
+            val isInTop = position <= selectedCount
+
+            // Player Selection Color
+            // If in top 20, make green
+            if (isInTop) {
+                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+            } else if (isSelected) {
+                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+            } else {
+                itemView.setBackgroundColor(getColor(itemView.context, R.color.white))
+            }
+
+            // Selected CheckBox
+            cardChkSelected.setOnCheckedChangeListener(null)
+            cardChkSelected.isChecked = isSelected
+            cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
+                var newStatus = PLAYER_STATUS_OPEN
+                if (isChecked) newStatus = PLAYER_STATUS_SELECTED
+                val realm = realm()
+                realm.safeWrite {
+                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
+                        playerRef.status = newStatus
+                    }
+                }
+            }
+
+            // Basic Tryout Attributes
+            txtItemPlayerName?.text = itPlayer.name
+            txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag}"
+            txtItemPlayerTwo?.text = itPlayer.position
+            // Image Profile
+            itPlayer.imgUrl?.let { url ->
+                imgPlayerProfile.loadUriIntoImgView(url)
+            }
+        }
+    }
+
 }
 
 class PlayerTinyHorizontalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

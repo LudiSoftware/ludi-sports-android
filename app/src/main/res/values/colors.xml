@@ -25,6 +25,9 @@
     <color name="colorWindowBackground">@color/white</color>
 
     <color name="ludiRosterCardSelected">#FFCDF8CF</color>
+    <color name="ludiRosterCardUnselected">@color/white</color>
+    <color name="ludiRosterCardYellow">#F6E86B</color>
+    <color name="ludiRosterCardRed">#FFFDA19A</color>
 
     <!-- Tab colors -->
     <color name="tabBackground">#FFFFFF</color>

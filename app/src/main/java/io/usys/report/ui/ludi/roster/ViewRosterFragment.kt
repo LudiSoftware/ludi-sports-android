@@ -118,7 +118,10 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             val roster = realm().findRosterById(it)
             val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
             players.let { itPlayers ->
-                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
+                val config = RosterLayoutConfig()
+                config.rosterId = it
+                config.itemClickListener = onClickReturnViewRealmObject
+                val adapter = RosterListAdapter(config)
                 // Drag and Drop
                 itemTouchListener = RosterDragDropAction(adapter)
                 itemTouchHelper = ItemTouchHelper(itemTouchListener!!)

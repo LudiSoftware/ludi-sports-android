@@ -15,6 +15,11 @@ import java.io.Serializable
  * Created by ChazzCoin : November 2022.
  */
 
+const val TEAM_MODE_CREATION = "creation"
+const val TEAM_MODE_IN_SEASON = "in_season"
+const val TEAM_MODE_OFF_SEASON = "off_season"
+const val TEAM_MODE_TRYOUT = "tryout"
+
 open class TeamRef : RealmObject(), Serializable {
     @PrimaryKey
     var id: String? = newUUID()
@@ -28,7 +33,7 @@ open class TeamRef : RealmObject(), Serializable {
     var ageGroup: String? = "null"
     var gender: String? = "null"
     var sport: String? = "null"
-    var status: String? = "null"
+    var status: String? = TEAM_MODE_CREATION
     var imgUrl: String? = "null"
 }
 
@@ -59,8 +64,8 @@ open class Team : RealmObject(), Serializable {
     var subType: String? = "null"
     var details: String? = "null"
     var isFree: Boolean = false
-    var status: String? = "null"
-    var mode: String? = "null"
+    var status: String? = TEAM_MODE_CREATION
+    var mode: String? = TEAM_MODE_CREATION
     var imgUrl: String? = "null"
     var sport: String? = "null"
     var chatEnabled: Boolean = false

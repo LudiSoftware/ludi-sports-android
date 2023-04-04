@@ -19,9 +19,11 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
+import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
+import io.usys.report.realm.model.TEAM_MODE_TRYOUT
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.player.sortByOrderIndex
 import io.usys.report.ui.views.LudiViewGroupViewModel
@@ -142,27 +144,31 @@ class RosterBuilderFragment : YsrFragment() {
             log("Clicked on player: ${realmObject}")
             toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
         }
-
-        if (withTouch) {
-            setupRosterListWithTouch()
-        } else {
-            setupRosterListNoTouch()
-        }
-
+        setupRosterListWithTouch()
     }
 
     private fun setupRosterListWithTouch() {
-        currentRosterId?.let {
+
+        currentRosterId?.let { rosterId ->
+            var rosterConfig = RosterLayoutConfig().apply {
+                this.rosterId = currentRosterId
+                this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
+                this.itemClickListener = onClickReturnViewRealmObject
+                this.layout = R.layout.card_player_medium_grid
+                this.type = FireTypes.PLAYERS
+                this.size = "medium_grid"
+            }
             when (rosterType) {
                 "tryout" -> {
-                    adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
+                    rosterConfig.mode = TEAM_MODE_TRYOUT
+                    adapter = RosterListAdapter(rosterConfig)
                 }
                 "selected" -> {
-                    adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
+                    adapter = RosterListAdapter(rosterConfig)
                     adapter?.filterByStatusSelected()
                 }
                 else -> {
-                    adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
+                    adapter = RosterListAdapter(rosterConfig)
                     adapter?.disableTouch()
                 }
             }
@@ -170,17 +176,17 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeTitle()
     }
 
-    private fun setupRosterListNoTouch() {
-        currentRosterId?.let {
-            val roster = realm().findRosterById(it)
-            val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
-            players.let { itPlayers ->
-                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
-                _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
-                _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
-            }
-        }
-    }
+//    private fun setupRosterListNoTouch() {
+//        currentRosterId?.let {
+//            val roster = realm().findRosterById(it)
+//            val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
+//            players.let { itPlayers ->
+//                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
+//                _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
+//                _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
+//            }
+//        }
+//    }
 
 //    private fun disableAndClearRosterList() {
 //        itemTouchHelper?.attachToRecyclerView(null)
