@@ -3,8 +3,10 @@ package io.usys.report.ui.ludi.roster
 import android.view.View
 import android.widget.CheckBox
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
+import io.realm.RealmObjectChangeListener
 import io.usys.report.R
 import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.model.PLAYER_STATUS_OPEN
@@ -19,7 +21,39 @@ import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce
 import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
-open class PlayerMediumGridViewHolder(var itemView: View, var config: RosterLayoutConfig) : RecyclerView.ViewHolder(itemView) {
+class PlayerViewModel : ViewModel() {
+    private val _player = MutableLiveData<PlayerRef?>()
+    val player: LiveData<PlayerRef?> = _player
+
+    private val realmObjectChangeListener =
+        RealmObjectChangeListener<PlayerRef> { _, changeSet ->
+            if (changeSet != null) {
+                if (changeSet.isDeleted) {
+                    _player.value = null
+                } else {
+                    _player.postValue(_player.value)
+                }
+            }
+        }
+
+    fun setPlayer(playerRef: PlayerRef?) {
+        playerRef?.removeChangeListener(realmObjectChangeListener)
+        _player.value = playerRef
+        playerRef?.addChangeListener(realmObjectChangeListener)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        _player.value?.removeChangeListener(realmObjectChangeListener)
+    }
+}
+
+open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutConfig) : RecyclerView.ViewHolder(itemView) {
+
+    private val viewModel: PlayerViewModel by lazy {
+        ViewModelProvider.NewInstanceFactory().create(PlayerViewModel::class.java)
+    }
+
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
@@ -28,6 +62,13 @@ open class PlayerMediumGridViewHolder(var itemView: View, var config: RosterLayo
     var cardBackground = itemView.bind<CardView>(R.id.cardPlayerMediumGridLayout)
     var cardChkSelected = itemView.bind<CheckBox>(R.id.cardPlayerMediumGridChkSelected)
 
+    init {
+        // Observe LiveData properties and update UI
+        viewModel.player.observe(itemView.context as LifecycleOwner) { player ->
+            // Call the existing 'bind' method with the new player data
+            bind(player)
+        }
+    }
 
     fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let { itPlayer ->
@@ -68,17 +109,8 @@ open class PlayerMediumGridViewHolder(var itemView: View, var config: RosterLayo
         player?.let { itPlayer ->
 
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
-            val isInTop = position <= selectedCount
-
-            // Player Selection Color
-            // If in top 20, make green
-            if (isInTop) {
-                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
-            } else if (isSelected) {
-                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
-            } else {
-                itemView.setBackgroundColor(getColor(itemView.context, R.color.white))
-            }
+            val isInTop = position + 1 <= selectedCount
+            setSelectionColor(isInTop, isSelected)
 
             // Selected CheckBox
             cardChkSelected.setOnCheckedChangeListener(null)
@@ -92,16 +124,29 @@ open class PlayerMediumGridViewHolder(var itemView: View, var config: RosterLayo
                         playerRef.status = newStatus
                     }
                 }
+                setSelectionColor(isInTop, isChecked)
             }
 
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag}"
-            txtItemPlayerTwo?.text = itPlayer.position
+            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
+        }
+    }
+
+    fun setSelectionColor(isInTop: Boolean, isSelected: Boolean) {
+        // Player Selection Color
+        // If in top 20, make green
+        if (isInTop) {
+            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+        } else if (isSelected) {
+            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+        } else {
+            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
     }
 

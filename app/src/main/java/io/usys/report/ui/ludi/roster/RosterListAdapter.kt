@@ -19,8 +19,6 @@ import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.onClickReturnViewT
 import io.usys.report.ui.views.touchAdapters.*
-import io.usys.report.utils.views.wiggleOnce
-import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
 
 /**
@@ -72,7 +70,7 @@ class RosterLayoutConfig {
 /**
  * Dynamic Master RecyclerView Adapter
  */
-open class RosterListAdapter(): RecyclerView.Adapter<PlayerMediumGridViewHolder>() {
+open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
 
     // Realm
     var realmInstance = realm()
@@ -82,23 +80,23 @@ open class RosterListAdapter(): RecyclerView.Adapter<PlayerMediumGridViewHolder>
 
     constructor(rosterLayoutConfig: RosterLayoutConfig) : this() {
         this.config = rosterLayoutConfig
-        this.setupRosterList()
+        this.setup()
     }
     constructor(rosterId: String) : this() {
         this.config = RosterLayoutConfig().apply { this.rosterId = rosterId }
-        this.setupRosterList()
+        this.setup()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerMediumGridViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(config.layout, parent, false)
-        return PlayerMediumGridViewHolder(itemView, config)
+        return RosterPlayerViewHolder(itemView, config)
     }
 
     override fun getItemCount(): Int {
         return playerRefList?.size ?: 0
     }
 
-    override fun onBindViewHolder(holder: PlayerMediumGridViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RosterPlayerViewHolder, position: Int) {
         println("binding roster player: $position")
         playerRefList?.let { itPlayerList ->
             itPlayerList[position]?.let { it1 ->
@@ -113,14 +111,21 @@ open class RosterListAdapter(): RecyclerView.Adapter<PlayerMediumGridViewHolder>
     }
 
     /** Load Roster by ID */
-    fun loadRosterById(localRosterId: String?=null) {
-        realmInstance.findRosterById(localRosterId ?: config.rosterId)?.let { roster ->
+    private fun loadRosterById() {
+        realmInstance.findRosterById(config.rosterId)?.let { roster ->
             playerRefList = roster.players?.ludiFilters(config.playerFilters)?.sortByOrderIndex()
         }
     }
 
     /** Setup Functions */
-    private fun setupRosterList() {
+    private fun setup() {
+        loadRosterById()
+        addTouchAdapters()
+        attach()
+        notifyDataSetChanged()
+    }
+    fun reload() {
+        this.playerRefList?.clear()
         loadRosterById()
         addTouchAdapters()
         attach()
@@ -142,6 +147,8 @@ open class RosterListAdapter(): RecyclerView.Adapter<PlayerMediumGridViewHolder>
         config.itemTouchListener = null
         config.itemTouchHelper = null
         this.config.recyclerView?.adapter = null
+        this.playerRefList?.clear()
+        this.config.playerFilters.clear()
     }
 
     fun disableTouch() {
@@ -157,18 +164,6 @@ open class RosterListAdapter(): RecyclerView.Adapter<PlayerMediumGridViewHolder>
         notifyDataSetChanged()
     }
 
-    /** Sort Functions */
-    fun sortByOrderIndex() {
-        playerRefList?.let { list ->
-            // Perform updates in a Realm transaction
-            realmInstance.safeWrite { _ ->
-                val templist = list.sortByOrderIndex()
-                list.clear()
-                list.addAll(templist)
-            }
-        }
-        notifyDataSetChanged()
-    }
 
     /** Update Functions */
     fun updateOrderIndexes() {
@@ -176,7 +171,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<PlayerMediumGridViewHolder>
             // Perform updates in a Realm transaction
             realmInstance.safeWrite { _ ->
                 list.forEachIndexed { index, playerRef ->
-                    playerRef.orderIndex = index
+                    playerRef.orderIndex = index + 1
                 }
             }
         }

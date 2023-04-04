@@ -3,18 +3,11 @@ package io.usys.report.ui.ludi.roster
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.viewpager2.widget.ViewPager2
 import io.realm.RealmChangeListener
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
@@ -23,14 +16,14 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
+import io.usys.report.realm.model.TEAM_MODE_IN_SEASON
 import io.usys.report.realm.model.TEAM_MODE_TRYOUT
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.player.sortByOrderIndex
-import io.usys.report.ui.views.LudiViewGroupViewModel
-import io.usys.report.ui.views.touchAdapters.RosterDragDropAction
-import io.usys.report.ui.views.touchAdapters.RosterItemTouchListener
 import io.usys.report.utils.capitalizeFirstChar
 import io.usys.report.utils.log
+import io.usys.report.utils.makeGone
+import io.usys.report.utils.makeVisible
+import io.usys.report.utils.views.onItemSelected
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -38,10 +31,12 @@ import io.usys.report.utils.log
 
 class RosterBuilderFragment : YsrFragment() {
 
+    var isFirst = true
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
+    var rosterConfig = RosterLayoutConfig()
     var adapter: RosterListAdapter? = null
 
     var teamId: String = "unknown"
@@ -66,47 +61,52 @@ class RosterBuilderFragment : YsrFragment() {
 
         setupRosterIds()
 //        setupTeamRosterRealmListener()
-        setupSpinner()
+        setupRosterTypeSpinner()
+        setupSelectedCountSpinner()
         return rootView
     }
 
-    private fun setupSpinner() {
+    private fun setupRosterTypeSpinner() {
         rosterEntries = rosterIds.keys.toMutableList()
-        val spinnerAdapter = ArrayAdapter(
-            requireContext(), // Your context (e.g., Activity, FragmentActivity, or use 'requireContext()' in a Fragment)
-            android.R.layout.simple_spinner_item, // Layout for each item in the Spinner
-            rosterEntries
-        )
-
-        _binding?.rosBuilderLudiSpinRosterType?.adapter = spinnerAdapter
+        val spinnerAdapter = RosterSpinnerAdapter(requireContext(), rosterEntries)
+        _binding?.rosterBuilderLudiSpinRosterType?.adapter = spinnerAdapter
 
         // ROSTER SELECTION
-        _binding?.rosBuilderLudiSpinRosterType?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                val selectedEntry = parent.getItemAtPosition(position)
-                rosterIds.forEach { (key, value) ->
-                    if (key == selectedEntry) {
-                        currentRosterId = value
-                    }
+        _binding?.rosterBuilderLudiSpinRosterType?.onItemSelected { parent, view, position, id ->
+            val selectedEntry = parent.getItemAtPosition(position)
+            rosterIds.forEach { (key, value) ->
+                if (key == selectedEntry) {
+                    currentRosterId = value
                 }
-                rosterType = selectedEntry.toString()
-                _binding?.reportBuilderLudiTxtRosterType?.text = rosterType
-                setupCurrentRosterDisplay(withTouch = true)
-
-                // Update the display with the new option
-                // Your logic for updating the display with the new option goes here
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing or handle the case when no item is selected, if necessary
-            }
+            rosterType = selectedEntry.toString()
+            _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
+            setupCurrentRosterDisplay()
         }
+
+    }
+
+    private fun setupSelectedCountSpinner() {
+        _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
+        val selectedCounts = generateNumberStrings()
+        val spinnerAdapter = RosterSpinnerAdapter(requireContext(), selectedCounts)
+        _binding?.rosterBuilderLudiSpinRosterLimit?.adapter = spinnerAdapter
+        _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(19)
+        // ROSTER SELECTION
+        _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
+            val selectedEntry = parent.getItemAtPosition(position)
+            adapter?.config?.selectedCount = selectedEntry.toString().toInt()
+            adapter?.reload()
+        }
+    }
+    private fun hideSelectedCountSpinner() {
+        _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
     }
 
     /** Master Roster Setup! **/
     private fun setupRosterTypeTitle() {
         val rosterTitle = "Roster: ${rosterType.capitalizeFirstChar()} (${adapter?.itemCount})"
-        _binding?.reportBuilderLudiTxtRosterType?.text = rosterTitle
+        _binding?.rosterBuilderLudiTxtRosterType?.text = rosterTitle
     }
 
     private fun setupRosterIds() {
@@ -115,7 +115,7 @@ class RosterBuilderFragment : YsrFragment() {
             // official roster
             rosterIds["official"] = rosterId
             currentRosterId = rosterId
-            _binding?.reportBuilderLudiTxtRosterType?.text = "Official Roster"
+            _binding?.rosterBuilderLudiTxtRosterType?.text = "Official Roster"
         }
         // TryOut Roster
         realmInstance?.findTryOutIdByTeamId(teamId) { tryoutId ->
@@ -135,10 +135,7 @@ class RosterBuilderFragment : YsrFragment() {
         realmInstance?.removeAllChangeListeners()
     }
 
-    private fun setupCurrentRosterDisplay(withTouch: Boolean = true) {
-
-        adapter?.disableAndClearRosterList()
-
+    private fun setupCurrentRosterDisplay() {
         onClickReturnViewRealmObject = { view, realmObject ->
             //TODO: setup the click listener for the player
             log("Clicked on player: ${realmObject}")
@@ -148,9 +145,9 @@ class RosterBuilderFragment : YsrFragment() {
     }
 
     private fun setupRosterListWithTouch() {
-
+        adapter?.disableAndClearRosterList()
         currentRosterId?.let { rosterId ->
-            var rosterConfig = RosterLayoutConfig().apply {
+            rosterConfig.apply {
                 this.rosterId = currentRosterId
                 this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
                 this.itemClickListener = onClickReturnViewRealmObject
@@ -164,10 +161,12 @@ class RosterBuilderFragment : YsrFragment() {
                     adapter = RosterListAdapter(rosterConfig)
                 }
                 "selected" -> {
+                    rosterConfig.mode = TEAM_MODE_TRYOUT
                     adapter = RosterListAdapter(rosterConfig)
                     adapter?.filterByStatusSelected()
                 }
                 else -> {
+                    rosterConfig.mode = TEAM_MODE_IN_SEASON
                     adapter = RosterListAdapter(rosterConfig)
                     adapter?.disableTouch()
                 }
@@ -175,25 +174,6 @@ class RosterBuilderFragment : YsrFragment() {
         }
         setupRosterTypeTitle()
     }
-
-//    private fun setupRosterListNoTouch() {
-//        currentRosterId?.let {
-//            val roster = realm().findRosterById(it)
-//            val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
-//            players.let { itPlayers ->
-//                val adapter = RosterListAdapter(itPlayers, onClickReturnViewRealmObject, "medium_grid", it)
-//                _binding?.rosterBuilderLudiRosterView?.root?.layoutManager = GridLayoutManager(requireContext(), 2)
-//                _binding?.rosterBuilderLudiRosterView?.root?.adapter = adapter
-//            }
-//        }
-//    }
-
-//    private fun disableAndClearRosterList() {
-//        itemTouchHelper?.attachToRecyclerView(null)
-//        itemTouchListener = null
-//        itemTouchHelper = null
-//        _binding?.rosterBuilderLudiRosterView?.root?.adapter = null
-//    }
 
     private fun setupTeamRosterRealmListener() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
@@ -270,4 +250,12 @@ class RosterBuilderMenuPopupProvider(private val fragment: Fragment, private val
         // Show the PopupWindow below the anchor view (menu item)
         popupWindow.showAsDropDown(anchorView)
     }
+}
+
+
+fun generateNumbers(): List<Int> {
+    return (1..100).toList()
+}
+fun generateNumberStrings(): List<String> {
+    return (1..100).map { it.toString() }
 }
