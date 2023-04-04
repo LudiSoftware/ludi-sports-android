@@ -4,17 +4,12 @@ import android.view.MotionEvent
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import io.realm.RealmList
 import io.usys.report.firebase.fireUpdatePlayersInRoster
-import io.usys.report.realm.findPlayerRefById
-import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.roster.RosterListAdapter
 import io.usys.report.utils.log
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
 
 
 class RosterItemTouchListener(private val viewPager2: ViewPager2) : RecyclerView.OnItemTouchListener {
@@ -62,7 +57,7 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
         adapter.updateOrderIndexes()
         adapter.notifyDataSetChanged()
         //TODO: Update firebase Manually
-        fireUpdatePlayersInRoster(adapter.rosterId!!, adapter.realmList)
+        fireUpdatePlayersInRoster(adapter.rosterId!!, adapter.playerRefList)
         log("clearView: RosterId = ${adapter.rosterId}")
     }
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -79,7 +74,7 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
         val fromPosition = viewHolder.adapterPosition
         val toPosition = target.adapterPosition
         realmInstance.safeWrite {
-            adapter.realmList?.let { realmList ->
+            adapter.playerRefList?.let { realmList ->
                 if (fromPosition < toPosition) {
                     for (i in fromPosition until toPosition) {
                         Collections.swap(realmList, i, i + 1)

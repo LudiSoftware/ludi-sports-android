@@ -15,11 +15,11 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.bundleStringIds
+import io.usys.report.ui.ludi.player.matchesLudiFilter
 import io.usys.report.ui.views.gestures.onDownUpListener
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
 import io.usys.report.utils.views.*
-import java.util.*
 
 /**
  * RecyclerView Adapter
@@ -114,7 +114,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
                 for (player in rosterPlayers) {
                     if (this.filteredOutPlayerIds.contains(player.id)) { continue }
                     if (filters != null) {
-                        if (!player.matchesFilter(filters!!)) {
+                        if (player.matchesLudiFilter(filters!!)) {
                             this.filteredOutPlayerIds.safeAdd(player.id)
                             continue
                         }
@@ -190,32 +190,4 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
 
 
-fun PlayerRef.matchesFilter(filters: MutableMap<String,String>): Boolean {
-    for (filter in filters) {
-        if (this.matchesFilter(filter.key, filter.value)) {
-            return true
-        }
-    }
-    return false
-}
 
-fun PlayerRef.matchesFilter(filterKey:String, filterValue:String): Boolean {
-    when (filterKey.toLowerCase(Locale.getDefault())) {
-        "status" -> {
-            if (this.status.equals(filterValue, ignoreCase = true)) {
-                return true
-            }
-        }
-        "position" -> {
-            if (this.position.equals(filterValue, ignoreCase = true)) {
-                return true
-            }
-        }
-        "foot" -> {
-            if (this.foot.equals(filterValue, ignoreCase = true)) {
-                return true
-            }
-        }
-    }
-    return false
-}

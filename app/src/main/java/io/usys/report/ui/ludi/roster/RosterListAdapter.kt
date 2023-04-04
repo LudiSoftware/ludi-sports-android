@@ -12,14 +12,16 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findRosterById
+import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.ludi.player.sortByOrderIndex
+import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
 import io.usys.report.ui.views.listAdapters.RouterViewHolder
 import io.usys.report.ui.views.touchAdapters.*
+import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.wiggleOnce
 import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
@@ -52,24 +54,38 @@ fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String, onPlayerClick:
  */
 open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
 
-    var gridLayoutManager: GridLayoutManager? = null
-    var itemClickListener: ((View, io.usys.report.realm.model.PlayerRef) -> Unit)? = onClickReturnViewT()
+    // Realm
+    var realmInstance = realm()
+    // Touch Adapters
+    var itemTouchListener: RosterDragDropAction? = null
+    var itemTouchHelper:ItemTouchHelper? = null
+    // Click Listeners
+    private var itemClickListener: ((View, PlayerRef) -> Unit)? = onClickReturnViewT()
     var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
-    var realmList: RealmList<io.usys.report.realm.model.PlayerRef>? = null
+    // Master List
+    var playerRefList: RealmList<PlayerRef>? = null
+    var playerFilters = mutableMapOf<String,String>()
+    // Layout Details
+    var recyclerView: RecyclerView? = null
     var layout: Int = R.layout.card_player_medium_grid
     var type: String = FireTypes.PLAYERS
     var size: String = "medium_grid"
+    // Roster Details
+    var selectedCount: Int = 20
     var rosterId: String? = null
+    var isOpen: Boolean = false
 
-    constructor(realmList: RealmList<io.usys.report.realm.model.PlayerRef>?, itemClickListener: ((View, io.usys.report.realm.model.PlayerRef) -> Unit)?, size: String) : this() {
-        this.realmList = realmList
+    constructor(rosterId: String, recyclerView: RecyclerView, itemClickListener: ((View, PlayerRef) -> Unit)?, size: String) : this() {
+        this.rosterId = rosterId
+        this.recyclerView = recyclerView
         this.itemClickListener = itemClickListener
         this.size = size
         this.layout = RouterViewHolder.getLayout(type, size)
+        this.setupRosterList()
     }
 
-    constructor(realmList: RealmList<io.usys.report.realm.model.PlayerRef>?, itemClickListener: ((View, io.usys.report.realm.model.PlayerRef) -> Unit)?, size: String, rosterId:String) : this() {
-        this.realmList = realmList
+    constructor(realmList: RealmList<PlayerRef>?, itemClickListener: ((View, PlayerRef) -> Unit)?, size: String, rosterId:String) : this() {
+        this.playerRefList = realmList
         this.itemClickListener = itemClickListener
         this.size = size
         this.layout = RouterViewHolder.getLayout(type, size)
@@ -82,13 +98,20 @@ open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return realmList?.size ?: 0
+        return playerRefList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: RouterViewHolder, position: Int) {
         println("binding roster player: $position")
-        realmList?.let { itPlayerList ->
+        playerRefList?.let { itPlayerList ->
             itPlayerList[position]?.let { it1 ->
+
+                if (position <= selectedCount) {
+                    holder.itemView.setBackgroundColor(getColor(holder.itemView.context, R.color.ludiRosterCardSelected))
+                } else {
+                    holder.itemView.setBackgroundColor(getColor(holder.itemView.context, R.color.white))
+                }
+
                 holder.bind(it1 as RealmObject, position=position)
                 holder.itemView.onLongClick {
                     it?.wiggleOnce()
@@ -96,15 +119,67 @@ open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
                 holder.itemView.setOnClickListener {
                     itemClickListener?.invoke(it, it1)
                 }
-
             }
         }
     }
 
-    fun updateOrderIndexes() {
-        realmList?.let { list ->
+    /** Load Roster by ID */
+    fun loadRosterById(localRosterId: String?=null) {
+        realmInstance.findRosterById(localRosterId ?: rosterId)?.let { roster ->
+            playerRefList = roster.players?.ludiFilters(playerFilters)?.sortByOrderIndex()
+        }
+    }
+
+    /** Setup Functions */
+    private fun setupRosterList() {
+        loadRosterById()
+        addTouchAdapters()
+        attach()
+        notifyDataSetChanged()
+    }
+    private fun addTouchAdapters() {
+        itemTouchListener = RosterDragDropAction(this)
+        itemTouchHelper = ItemTouchHelper(itemTouchListener!!)
+        itemTouchHelper?.attachToRecyclerView(recyclerView)
+    }
+    private fun attach() {
+        recyclerView?.layoutManager = GridLayoutManager(recyclerView?.context, 2)
+        recyclerView?.adapter = this
+    }
+
+    /** Disable Functions */
+    fun disableAndClearRosterList() {
+        itemTouchHelper?.attachToRecyclerView(null)
+        itemTouchListener = null
+        itemTouchHelper = null
+        this.recyclerView?.adapter = null
+    }
+
+    /** Filter Functions */
+    fun filterByStatusSelected() {
+        this.playerFilters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
+        loadRosterById()
+        notifyDataSetChanged()
+    }
+
+    /** Sort Functions */
+    fun sortByOrderIndex() {
+        playerRefList?.let { list ->
             // Perform updates in a Realm transaction
-            realm().safeWrite { _ ->
+            realmInstance.safeWrite { _ ->
+                val templist = list.sortByOrderIndex()
+                list.clear()
+                list.addAll(templist)
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    /** Update Functions */
+    fun updateOrderIndexes() {
+        playerRefList?.let { list ->
+            // Perform updates in a Realm transaction
+            realmInstance.safeWrite { _ ->
                 list.forEachIndexed { index, playerRef ->
                     playerRef.orderIndex = index
                 }
@@ -117,6 +192,9 @@ open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
 
 
 
-
+fun View.hideCompletely() {
+    layoutParams.width = 0
+    layoutParams.height = 0
+}
 
 

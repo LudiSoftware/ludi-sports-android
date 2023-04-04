@@ -97,7 +97,6 @@ abstract class LudiTeamFragment : Fragment() {
             log("Team listener called")
             it.find { it.id == teamId }?.let { team ->
                 realmInstance?.safeWrite { itRealm ->
-                    teamSession?.team = team
                     teamSession?.rosterId = team.rosterId
                 }
                 realmTeamCallBack?.invoke(team)

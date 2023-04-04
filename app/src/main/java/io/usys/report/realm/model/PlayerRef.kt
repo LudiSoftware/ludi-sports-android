@@ -10,7 +10,9 @@ import java.io.Serializable
 
 const val PLAYER_STATUS_OPEN = "open"
 const val PLAYER_STATUS_CLOSED = "closed"
+const val PLAYER_STATUS_SELECTED = "selected"
 const val PLAYER_STATUS_OFFERED = "offered"
+const val PLAYER_STATUS_PENDING = "pending"
 const val PLAYER_STATUS_ACCEPTED = "accepted"
 const val PLAYER_STATUS_REJECTED = "rejected"
 open class PlayerRef : RealmObject(), Serializable {

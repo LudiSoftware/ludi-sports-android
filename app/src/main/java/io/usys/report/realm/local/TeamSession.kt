@@ -20,8 +20,6 @@ open class TeamSession : RealmObject(), Serializable {
     var id: String = newUUID()
     var dateCreated: String = getTimeStamp()
     var teamId: String? = "null"
-    var teamRef: TeamRef? = null
-    var team: Team? = null
     var rosterId: String? = "null"
     var roster: Roster? = null
     var tryout: TryOut? = null

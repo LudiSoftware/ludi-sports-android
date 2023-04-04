@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:id="@+id/cardPlayerMediumGridLayout"
+    android:layout_width="185dp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="3dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="3dp"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp"
     app:cardMaxElevation="5dp">
@@ -52,44 +53,30 @@
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <ImageView
-            android:id="@+id/cardPlayerMediumGridImgArrow"
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtName"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/button_arrow_right_small" />
-
         <TextView
             android:id="@+id/cardPlayerMediumGridTxtOne"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="51dp"
+            android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:text="Text One"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/cardPlayerMediumGridImgIconOne"
-            app:layout_constraintEnd_toStartOf="@+id/cardPlayerMediumGridImgArrow"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgIconOne"
-            app:layout_constraintTop_toTopOf="@+id/cardPlayerMediumGridImgIconOne" />
+            app:layout_constraintTop_toTopOf="@+id/cardPlayerMediumGridImgIconOne"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cardPlayerMediumGridTxtTwo"
-            android:layout_width="133dp"
+            android:layout_width="51dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:text="Text Two"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/cardPlayerMediumGridImgIconTwo"
-            app:layout_constraintEnd_toStartOf="@+id/cardPlayerMediumGridImgArrow"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgIconTwo"
-            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtOne" />
+            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtOne"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/cardPlayerMediumGridImgIconTwo"
@@ -111,6 +98,21 @@
             app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridImgProfile"
             app:srcCompat="@drawable/org_blue"
             app:tint="#FF0000" />
+
+        <CheckBox
+            android:id="@+id/cardPlayerMediumGridChkSelected"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:hapticFeedbackEnabled="true"
+            android:scaleX=".75"
+            android:scaleY=".75"
+            android:text="Selected"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridTxtTwo" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

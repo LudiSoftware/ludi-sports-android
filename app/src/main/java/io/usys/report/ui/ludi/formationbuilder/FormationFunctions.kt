@@ -39,7 +39,9 @@ fun View.setPlayerTeamBackgroundColor(colorName: String?) {
     }
     backgroundColor = color
 }
-
+fun getColor(): Int {
+    return Color.parseColor("#FF0000")
+}
 fun ImageView.setPlayerTeamBackgroundBanner(colorName: String?) {
     var bg: Drawable? = getDrawable(this.context, R.drawable.player_name_banner_red)
     val color = when (colorName) {
