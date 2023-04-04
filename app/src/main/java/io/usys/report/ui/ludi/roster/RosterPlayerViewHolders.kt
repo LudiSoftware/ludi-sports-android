@@ -6,14 +6,18 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.usys.report.R
+import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.model.PLAYER_STATUS_ACCEPTED
 import io.usys.report.realm.model.PLAYER_STATUS_OPEN
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.realm
+import io.usys.report.realm.safeWrite
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
+import io.usys.report.utils.views.onCheckListener
 
 class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -26,18 +30,29 @@ class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
 
 
     fun bind(player: PlayerRef?, position: Int?= null) {
-        player?.let {
+        player?.let { itPlayer ->
 
-            cardChkSelected.isChecked = it.status == PLAYER_STATUS_SELECTED
+            cardChkSelected.setOnCheckedChangeListener(null)
+            cardChkSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
 
-            cardChkSelected.setOnClickListener {
-
+            cardChkSelected.setOnCheckedChangeListener { compoundButton, isChecked ->
+                var newStatus = PLAYER_STATUS_OPEN
+                if (isChecked) {
+                    // Checkbox is checked
+                    newStatus = PLAYER_STATUS_SELECTED
+                }
+                val realm = realm()
+                realm.safeWrite {
+                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
+                        playerRef.status = newStatus
+                    }
+                }
             }
 
-            txtItemPlayerName?.text = it.name
+            txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Position: ${position.toString()}"
-            txtItemPlayerTwo?.text = it.orderIndex.toString()
-            it.imgUrl?.let { url ->
+            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
+            itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
         }

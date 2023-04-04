@@ -101,11 +101,9 @@ class RosterBuilderFragment : YsrFragment() {
         }
     }
 
-
-
     /** Master Roster Setup! **/
     private fun setupRosterTypeTitle() {
-        val rosterTitle = "Roster: ${rosterType.capitalizeFirstChar()}"
+        val rosterTitle = "Roster: ${rosterType.capitalizeFirstChar()} (${adapter?.itemCount})"
         _binding?.reportBuilderLudiTxtRosterType?.text = rosterTitle
     }
 
@@ -138,7 +136,6 @@ class RosterBuilderFragment : YsrFragment() {
     private fun setupCurrentRosterDisplay(withTouch: Boolean = true) {
 
         adapter?.disableAndClearRosterList()
-        setupRosterTypeTitle()
 
         onClickReturnViewRealmObject = { view, realmObject ->
             //TODO: setup the click listener for the player
@@ -156,9 +153,21 @@ class RosterBuilderFragment : YsrFragment() {
 
     private fun setupRosterListWithTouch() {
         currentRosterId?.let {
-            adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
-            adapter?.filterByStatusSelected()
+            when (rosterType) {
+                "tryout" -> {
+                    adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
+                }
+                "selected" -> {
+                    adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
+                    adapter?.filterByStatusSelected()
+                }
+                else -> {
+                    adapter = RosterListAdapter(it, _binding?.rosterBuilderLudiRosterView?.root!!, onClickReturnViewRealmObject, "medium_grid")
+                    adapter?.disableTouch()
+                }
+            }
         }
+        setupRosterTypeTitle()
     }
 
     private fun setupRosterListNoTouch() {

@@ -119,7 +119,10 @@ open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
                 holder.itemView.setOnClickListener {
                     itemClickListener?.invoke(it, it1)
                 }
+
+
             }
+
         }
     }
 
@@ -153,6 +156,12 @@ open class RosterListAdapter(): RecyclerView.Adapter<RouterViewHolder>() {
         itemTouchListener = null
         itemTouchHelper = null
         this.recyclerView?.adapter = null
+    }
+
+    fun disableTouch() {
+        itemTouchHelper?.attachToRecyclerView(null)
+        itemTouchListener = null
+        itemTouchHelper = null
     }
 
     /** Filter Functions */

@@ -92,16 +92,6 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         }
     }
 
-    fun addRealmObject(realmObject: T) {
-        writeToRealmOnMain { realmList?.add(realmObject) }
-        this.notifyItemInserted(realmList?.size ?: 0)
-    }
-
-    fun removeRealmObject(realmObject: T) {
-        writeToRealmOnMain { realmList?.remove(realmObject) }
-        this.notifyItemRemoved(realmList?.size ?: 0)
-    }
-
 }
 
 
