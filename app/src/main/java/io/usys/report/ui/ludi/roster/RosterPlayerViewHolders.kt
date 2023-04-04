@@ -35,7 +35,7 @@ class PlayerMediumGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
             cardChkSelected.setOnCheckedChangeListener(null)
             cardChkSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
 
-            cardChkSelected.setOnCheckedChangeListener { compoundButton, isChecked ->
+            cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
                 var newStatus = PLAYER_STATUS_OPEN
                 if (isChecked) {
                     // Checkbox is checked
