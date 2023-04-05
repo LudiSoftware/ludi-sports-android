@@ -5,6 +5,7 @@ import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.Spinner
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import io.realm.RealmChangeListener
@@ -13,15 +14,19 @@ import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
+import io.usys.report.realm.model.PLAYER_STATUS_ACCEPTED
 import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.TEAM_MODE_IN_SEASON
-import io.usys.report.realm.model.TEAM_MODE_TRYOUT
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.ludi.formationbuilder.setPlayerFormationBackgroundColor
+import io.usys.report.ui.ludi.player.positionMap
+import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.utils.capitalizeFirstChar
 import io.usys.report.utils.log
 import io.usys.report.utils.makeGone
 import io.usys.report.utils.makeVisible
+import io.usys.report.utils.views.attachAndInflatePopMenu
 import io.usys.report.utils.views.onItemSelected
+import io.usys.report.utils.views.wiggleOnce
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -62,9 +67,11 @@ class RosterBuilderFragment : YsrFragment() {
         return rootView
     }
 
+
+
     private fun setupRosterTypeSpinner() {
         rosterEntries = rosterIds.keys.toMutableList()
-        val spinnerAdapter = RosterSpinnerAdapter(requireContext(), rosterEntries)
+        val spinnerAdapter = LudiSpinnerAdapter(requireContext(), rosterEntries)
         _binding?.rosterBuilderLudiSpinRosterType?.adapter = spinnerAdapter
 
         // ROSTER SELECTION
@@ -97,7 +104,7 @@ class RosterBuilderFragment : YsrFragment() {
     private fun setupRosterSizeSpinner() {
         toggleTryoutTools()
         val selectedCounts = generateNumberStrings()
-        val spinnerAdapter = RosterSpinnerAdapter(requireContext(), selectedCounts)
+        val spinnerAdapter = LudiSpinnerAdapter(requireContext(), selectedCounts)
         _binding?.rosterBuilderLudiSpinRosterLimit?.adapter = spinnerAdapter
         _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(rosterConfig.rosterSizeLimit - 1)
         // ROSTER SELECTION
@@ -181,6 +188,9 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeTitle()
     }
 
+
+
+
     private fun setupTeamRosterRealmListener() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
@@ -205,7 +215,7 @@ class RosterBuilderFragment : YsrFragment() {
  *      1. Save Roster
  *      2. Submit/Finalize Roster
  */
-class RosterBuilderMenuPopupProvider(private val fragment: Fragment, private val teamId: String) : MenuProvider {
+class PositionPickerMenuPopupProvider(private val fragment: Fragment) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.top_team_menu_dropdown, menu)
     }
@@ -223,23 +233,15 @@ class RosterBuilderMenuPopupProvider(private val fragment: Fragment, private val
     }
 
     private fun showCustomPopup(anchorView: View) {
-        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.team_menu_popup, null)
+        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
         val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+        // Find and set up the Spinner
+        val positionSpinner = popupView.findViewById<Spinner>(R.id.menuPlayerPositionSpinner)
+        positionSpinner.setupPlayerPositionSpinner(fragment.requireContext())
         // Load animations
         val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
         val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
-
-        // Set up click listeners for the custom menu items
-        popupView.findViewById<LinearLayout>(R.id.option_formation).setOnClickListener {
-            fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
-            popupWindow.dismiss()
-        }
-
-        popupView.findViewById<LinearLayout>(R.id.option_roster).setOnClickListener {
-            fragment.toFragmentWithIds(R.id.navigation_roster_builder_frag, teamId)
-            popupWindow.dismiss()
-        }
 
         // If you want to dismiss the popup when clicking outside of it
         popupWindow.isOutsideTouchable = true

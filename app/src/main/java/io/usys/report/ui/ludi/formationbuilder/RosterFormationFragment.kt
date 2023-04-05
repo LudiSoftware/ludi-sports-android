@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.ImageFilterView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.toFragmentWithIds
 import io.usys.report.ui.ludi.player.ludiFilters
+import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
@@ -367,7 +370,11 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             newPlayerRef.color?.let {
                 playerCircleLayout.setPlayerFormationBackgroundColor(it)
             }
-            playerRefViewItem.setupPlayerPopupMenu()
+//            playerRefViewItem.attachPositionPickerMenu(this)
+            onTap = { playerId ->
+                log("Double Tap")
+                showPlayerMenuPopup(playerRefViewItem, this)
+            }
             // Gestures
             playerRefViewItem.onGestureDetectorRosterFormation(
                 teamId= teamId!!,
@@ -375,6 +382,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 onSingleTapUp = onTap,
                 onLongPress = onLongPress
             )
+
             // Add to FormationLayout
             formationViewList.add(playerRefViewItem)
             formationCardViews.add(playerCircleLayout)
@@ -439,17 +447,53 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 }
             }
         }
-        onTap = { playerId ->
-            log("Double Tap")
-            this?.wiggleOnce()
-            playerPopMenuView?.show()
-        }
+//        onTap = { playerId ->
+//            log("Double Tap")
+//            this?.wiggleOnce()
+//            playerPopMenuView?.show()
+//        }
         onLongPress = {
             log("Double Tap")
             this?.wiggleOnce()
             playerPopMenuView?.show()
         }
     }
+
+
+//    fun View.attachPositionPickerMenu(fragment: Fragment) {
+//        setOnClickListener {
+//            showCustomPopup(this, fragment)
+//        }
+//    }
+
+    private fun showPlayerMenuPopup(anchorView: View, fragment: Fragment) {
+        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
+        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Find and set up the Spinner
+        val positionSpinner = popupView.findViewById<Spinner>(R.id.menuPlayerPositionSpinner)
+        positionSpinner.setupPlayerPositionSpinner(fragment.requireContext())
+        // Load animations
+        val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
+        val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
+
+        // If you want to dismiss the popup when clicking outside of it
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+
+        // Set the unfold animation when showing the popup
+        popupWindow.contentView.startAnimation(unfoldAnimation)
+
+        // Set the fold animation when dismissing the popup
+        popupWindow.setOnDismissListener {
+            popupView.startAnimation(foldAnimation)
+        }
+
+        // Show the PopupWindow below the anchor view (menu item)
+        popupWindow.showAsDropDown(anchorView)
+    }
+
+
     /** FORMATION LAYOUT: Class Helpers Below **/
     private inline fun findPlayerViewInFormation(playerId: String, block: (CardView) -> Unit) {
         formationCardViews.forEach { playerView ->

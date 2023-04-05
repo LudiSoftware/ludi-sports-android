@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import io.usys.report.R
 
-class RosterSpinnerAdapter(context: Context, private val items: List<String>) : ArrayAdapter<String>(context, R.layout.ludi_roster_spinner, items) {
+class LudiSpinnerAdapter(context: Context, private val items: List<String>) : ArrayAdapter<String>(context, R.layout.ludi_roster_spinner, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return createView(position, convertView, parent)
