@@ -10,7 +10,6 @@ import io.usys.report.databinding.FragmentRosterVgBinding
 import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.RosterType
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.views.LudiViewGroupViewModel
 import io.usys.report.ui.views.viewGroup.LudiViewGroup

@@ -8,13 +8,11 @@ import android.widget.PopupWindow
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import io.realm.RealmChangeListener
-import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
-import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.TEAM_MODE_IN_SEASON
 import io.usys.report.realm.model.TEAM_MODE_TRYOUT
@@ -31,8 +29,6 @@ import io.usys.report.utils.views.onItemSelected
 
 class RosterBuilderFragment : YsrFragment() {
 
-    var isFirst = true
-    var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -41,7 +37,7 @@ class RosterBuilderFragment : YsrFragment() {
 
     var teamId: String = "unknown"
 
-    var rosterType: String = "null"
+    var rosterType: String = RosterType.OFFICIAL.type
     var title: String = "No Roster Found!"
     var rosterIds = mutableMapOf<String,String>()
     private var rosterEntries = mutableListOf<String>()
@@ -62,7 +58,7 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterIds()
 //        setupTeamRosterRealmListener()
         setupRosterTypeSpinner()
-        setupSelectedCountSpinner()
+        setupRosterSizeSpinner()
         return rootView
     }
 
@@ -81,14 +77,25 @@ class RosterBuilderFragment : YsrFragment() {
             }
             rosterType = selectedEntry.toString()
             _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
-            setupRosterListWithTouch()
+            setupRosterList()
         }
 
     }
 
-    private fun setupSelectedCountSpinner() {
-        _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
-        _binding?.rosterBuilderLudiSubTxt?.makeVisible()
+    private fun toggleTryoutTools() {
+        if (rosterType != RosterType.OFFICIAL.type) {
+            _binding?.rosterBuilderLudiSubTxt?.makeVisible()
+            _binding?.rosterBuilderLudiSpinRosterSizeText?.makeVisible()
+            _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
+        } else {
+            _binding?.rosterBuilderLudiSubTxt?.makeGone()
+            _binding?.rosterBuilderLudiSpinRosterSizeText?.makeGone()
+            _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
+        }
+    }
+
+    private fun setupRosterSizeSpinner() {
+        toggleTryoutTools()
         val selectedCounts = generateNumberStrings()
         val spinnerAdapter = RosterSpinnerAdapter(requireContext(), selectedCounts)
         _binding?.rosterBuilderLudiSpinRosterLimit?.adapter = spinnerAdapter
@@ -96,15 +103,10 @@ class RosterBuilderFragment : YsrFragment() {
         // ROSTER SELECTION
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
-            adapter?.config?.selectedCount = selectedEntry.toString().toInt()
+            adapter?.config?.rosterSizeLimit = selectedEntry.toString().toInt()
             adapter?.notifyDataSetChanged()
         }
     }
-    private fun hideSelectedCountSpinner() {
-        _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
-        _binding?.rosterBuilderLudiSubTxt?.makeGone()
-    }
-
     /** Master Roster Setup! **/
     private fun setupRosterTypeTitle() {
         val rosterTitle = "Roster: ${rosterType.capitalizeFirstChar()} (${adapter?.itemCount})"
@@ -115,7 +117,7 @@ class RosterBuilderFragment : YsrFragment() {
         // Official Roster
         realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
             // official roster
-            rosterIds["official"] = rosterId
+            rosterIds[RosterType.OFFICIAL.type] = rosterId
             currentRosterId = rosterId
             _binding?.rosterBuilderLudiTxtRosterType?.text = "Official Roster"
         }
@@ -124,8 +126,8 @@ class RosterBuilderFragment : YsrFragment() {
             realmInstance?.findTryOutById(tryoutId)?.let { to ->
                 to.rosterId?.let {
                     // tryout roster
-                    rosterIds["tryout"] = it
-                    rosterIds["selected"] = it
+                    rosterIds[RosterType.TRYOUT.type] = it
+                    rosterIds[RosterType.SELECTED.type] = it
                 }
                 this.tryoutId = tryoutId
             }
@@ -134,7 +136,6 @@ class RosterBuilderFragment : YsrFragment() {
         rosterConfig.apply {
             this.rosterId = currentRosterId
             this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
-            this.itemClickListener = onClickReturnViewRealmObject
             this.layout = R.layout.card_player_medium_grid
             this.type = FireTypes.PLAYERS
             this.size = "medium_grid"
@@ -146,21 +147,21 @@ class RosterBuilderFragment : YsrFragment() {
         realmInstance?.removeAllChangeListeners()
     }
 
-    private fun setupRosterListWithTouch() {
+    private fun setupRosterList() {
         adapter?.disableAndClearRosterList()
         adapter = null
         currentRosterId?.let { rosterId ->
             when (rosterType) {
-                "tryout" -> {
-                    setupSelectedCountSpinner()
+                RosterType.TRYOUT.type -> {
+                    setupRosterSizeSpinner()
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = TEAM_MODE_TRYOUT
                     rosterConfig.touchEnabled = true
                     rosterConfig.playerFilters.clear()
                     adapter = RosterListAdapter(rosterConfig)
                 }
-                "selected" -> {
-                    setupSelectedCountSpinner()
+                RosterType.SELECTED.type -> {
+                    setupRosterSizeSpinner()
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = TEAM_MODE_TRYOUT
                     rosterConfig.touchEnabled = true
@@ -168,7 +169,7 @@ class RosterBuilderFragment : YsrFragment() {
                     adapter?.filterByStatusSelected()
                 }
                 else -> {
-                    hideSelectedCountSpinner()
+                    toggleTryoutTools()
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = TEAM_MODE_IN_SEASON
                     rosterConfig.touchEnabled = false
@@ -191,7 +192,7 @@ class RosterBuilderFragment : YsrFragment() {
                 }
             }
             if (updateDisplay) {
-                setupRosterListWithTouch()
+                setupRosterList()
                 realmInstance?.removeAllChangeListeners()
             }
         }

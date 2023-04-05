@@ -120,7 +120,6 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             players.let { itPlayers ->
                 val config = RosterLayoutConfig()
                 config.rosterId = it
-                config.itemClickListener = onClickReturnViewRealmObject
                 val adapter = RosterListAdapter(config)
                 // Drag and Drop
                 itemTouchListener = RosterDragDropAction(adapter)

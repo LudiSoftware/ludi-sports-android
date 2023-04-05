@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -18,34 +17,40 @@ import io.usys.report.realm.model.TEAM_MODE_TRYOUT
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.*
-import io.usys.report.ui.onClickReturnViewT
 import io.usys.report.ui.views.touchAdapters.*
 
 
 /**
  * Custom Roster Setups
  */
-fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String, onPlayerClick: ((View, PlayerRef) -> Unit)?, viewPager2: ViewPager2) {
+fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String) {
     val roster = realm().findRosterById(id)
     val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
     players.let {
         val config = RosterLayoutConfig()
         config.rosterId = id
-        config.itemClickListener = onPlayerClick
         val adapter = RosterListAdapter(config)
         // Drag and Drop
         val itemTouchListener = RosterDragDropAction(adapter)
         val itemTouchHelper = ItemTouchHelper(itemTouchListener)
         // Extra
-        val touchListener = RosterItemTouchListener(viewPager2)
+//        val touchListener = RosterItemTouchListener(viewPager2)
         //Attachments
         itemTouchHelper.attachToRecyclerView(this)
         // RecyclerView
-        this?.addOnItemTouchListener(touchListener)
+//        this?.addOnItemTouchListener(touchListener)
         this?.layoutManager = GridLayoutManager(this!!.context, 2)
         this.adapter = adapter
 
     }
+}
+
+enum class RosterType(val type: String) {
+    OFFICIAL("official"),
+    OFFICIAL_ARCHIVE("official_archive"),
+    TRYOUT("tryout"),
+    SELECTED("selected"),
+    UNSELECTED("unselected")
 }
 
 class RosterLayoutConfig {
@@ -59,11 +64,10 @@ class RosterLayoutConfig {
     var mode: String = "official"
     var isOpen: Boolean = true
     // Optional
-    var selectedCount: Int = 20
+    var rosterSizeLimit: Int = 20
     var playerFilters = ludiFilters()
     // Click Listeners
     var touchEnabled: Boolean = true
-    var itemClickListener: ((View, PlayerRef) -> Unit)? = onClickReturnViewT()
     var itemTouchListener: RosterDragDropAction? = null
     var itemTouchHelper: ItemTouchHelper? = null
 
@@ -103,7 +107,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         playerRefList?.let { itPlayerList ->
             itPlayerList[position]?.let { it1 ->
                 if (config.mode == TEAM_MODE_TRYOUT) {
-                    holder.bindTryout(it1, position=position, selectedCount=config.selectedCount)
+                    holder.bindTryout(it1, position=position, selectedCount=config.rosterSizeLimit)
                 } else {
                     holder.bind(it1, position=position)
                 }
@@ -129,15 +133,6 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
     }
     @SuppressLint("NotifyDataSetChanged")
     fun reload() {
-        disableAndClearRosterList()
-        loadRosterById()
-        if (config.touchEnabled) addTouchAdapters()
-        attach()
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun refresh() {
         disableAndClearRosterList()
         loadRosterById()
         if (config.touchEnabled) addTouchAdapters()

@@ -41,8 +41,8 @@ class LudiRosterRecyclerView(context: Context) : RecyclerView(context) {
     }
 
     /** Master Roster List Setup Helper Functions **/
-    fun setupRoster(rosterId:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
-        this.setupRosterGridArrangable(rosterId, onClickReturnViewRealmObject, viewPager2!!)
+    fun setupRoster(rosterId:String) {
+        this.setupRosterGridArrangable(rosterId)
     }
     fun setupPlayerListOfficialRoster(id:String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         this.setupPlayerListGridFromRosterId(id, onClickReturnViewRealmObject)
