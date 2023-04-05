@@ -32,7 +32,7 @@ class RosterBuilderFragment : YsrFragment() {
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
-    var rosterConfig = RosterLayoutConfig()
+    var rosterConfig = RosterConfig()
     var adapter: RosterListAdapter? = null
 
     var teamId: String = "unknown"
@@ -99,7 +99,7 @@ class RosterBuilderFragment : YsrFragment() {
         val selectedCounts = generateNumberStrings()
         val spinnerAdapter = RosterSpinnerAdapter(requireContext(), selectedCounts)
         _binding?.rosterBuilderLudiSpinRosterLimit?.adapter = spinnerAdapter
-        _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(19)
+        _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(rosterConfig.rosterSizeLimit - 1)
         // ROSTER SELECTION
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
@@ -149,8 +149,8 @@ class RosterBuilderFragment : YsrFragment() {
 
     private fun setupRosterList() {
         adapter?.disableAndClearRosterList()
-        adapter = null
         currentRosterId?.let { rosterId ->
+            rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
             when (rosterType) {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()

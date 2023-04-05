@@ -118,7 +118,7 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             val roster = realm().findRosterById(it)
             val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
             players.let { itPlayers ->
-                val config = RosterLayoutConfig()
+                val config = RosterConfig()
                 config.rosterId = it
                 val adapter = RosterListAdapter(config)
                 // Drag and Drop

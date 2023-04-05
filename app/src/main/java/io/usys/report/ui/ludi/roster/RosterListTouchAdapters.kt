@@ -57,7 +57,7 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
         adapter.updateOrderIndexes()
         adapter.notifyDataSetChanged()
         //TODO: Update firebase Manually
-        fireUpdatePlayersInRoster(adapter.config.rosterId!!, adapter.playerRefList)
+//        fireUpdatePlayersInRoster(adapter.config.rosterId!!, adapter.playerRefList)
         log("clearView: RosterId = ${adapter.config.rosterId}")
     }
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {

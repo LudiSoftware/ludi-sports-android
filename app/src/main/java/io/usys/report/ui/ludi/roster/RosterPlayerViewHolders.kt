@@ -2,7 +2,6 @@ package io.usys.report.ui.ludi.roster
 
 import android.view.View
 import android.widget.CheckBox
-import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +14,8 @@ import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
-import io.usys.report.utils.makeGone
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce
@@ -51,7 +48,7 @@ class PlayerViewModel : ViewModel() {
     }
 }
 
-open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutConfig) : RecyclerView.ViewHolder(itemView) {
+open class RosterPlayerViewHolder(var itemView: View, var config: RosterConfig) : RecyclerView.ViewHolder(itemView) {
 
     private val viewModel: PlayerViewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(PlayerViewModel::class.java)

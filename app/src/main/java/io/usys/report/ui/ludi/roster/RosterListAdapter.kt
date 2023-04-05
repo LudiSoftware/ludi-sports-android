@@ -27,7 +27,7 @@ fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String) {
     val roster = realm().findRosterById(id)
     val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
     players.let {
-        val config = RosterLayoutConfig()
+        val config = RosterConfig()
         config.rosterId = id
         val adapter = RosterListAdapter(config)
         // Drag and Drop
@@ -53,7 +53,7 @@ enum class RosterType(val type: String) {
     UNSELECTED("unselected")
 }
 
-class RosterLayoutConfig {
+class RosterConfig {
     // Roster ID
     var rosterId: String? = null
     var recyclerView: RecyclerView? = null
@@ -71,6 +71,14 @@ class RosterLayoutConfig {
     var itemTouchListener: RosterDragDropAction? = null
     var itemTouchHelper: ItemTouchHelper? = null
 
+    fun destroy() {
+        itemTouchHelper?.attachToRecyclerView(null)
+        recyclerView = null
+        itemTouchListener = null
+        itemTouchHelper = null
+        playerFilters.clear()
+    }
+
 }
 
 /**
@@ -80,16 +88,16 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
 
     // Realm
     var realmInstance = realm()
-    var config: RosterLayoutConfig = RosterLayoutConfig()
+    var config: RosterConfig = RosterConfig()
     // Master List
     var playerRefList: RealmList<PlayerRef>? = null
 
-    constructor(rosterLayoutConfig: RosterLayoutConfig) : this() {
+    constructor(rosterLayoutConfig: RosterConfig) : this() {
         this.config = rosterLayoutConfig
         this.setup()
     }
     constructor(rosterId: String) : this() {
-        this.config = RosterLayoutConfig().apply { this.rosterId = rosterId }
+        this.config = RosterConfig().apply { this.rosterId = rosterId }
         this.setup()
     }
 
@@ -151,12 +159,10 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
 
     /** Disable Functions */
     fun disableAndClearRosterList() {
-        config = RosterLayoutConfig()
-        this.config.recyclerView?.adapter = null
+        config.destroy()
+        config = RosterConfig()
         this.playerRefList?.clear()
-        this.config.playerFilters.clear()
     }
-
 
     /** Filter Functions */
     fun filterByStatusSelected() {
