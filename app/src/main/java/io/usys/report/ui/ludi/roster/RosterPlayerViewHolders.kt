@@ -15,6 +15,7 @@ import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
+import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.makeGone
@@ -138,7 +139,7 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
             }
 
             itemView.setOnClickListener {
-                config.itemClickListener?.invoke(it, itPlayer)
+//                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
             }
         }
     }

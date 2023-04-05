@@ -135,6 +135,15 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         attach()
         notifyDataSetChanged()
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun refresh() {
+        disableAndClearRosterList()
+        loadRosterById()
+        if (config.touchEnabled) addTouchAdapters()
+        attach()
+        notifyDataSetChanged()
+    }
     private fun addTouchAdapters() {
         config.itemTouchListener = RosterDragDropAction(this)
         config.itemTouchHelper = ItemTouchHelper(config.itemTouchListener!!)
