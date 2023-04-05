@@ -16,6 +16,7 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
+import io.usys.report.utils.makeGone
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce
@@ -48,12 +49,7 @@ class PlayerViewModel : ViewModel() {
     }
 }
 
-open class RosterPlayerViewHolder(var itemView: View, var config: RosterConfig) : RecyclerView.ViewHolder(itemView) {
-
-    private val viewModel: PlayerViewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(PlayerViewModel::class.java)
-    }
-
+open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
 //    var imgIconOne = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconOne)
@@ -64,30 +60,10 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterConfig) 
     var cardBackground = itemView.bind<CardView>(R.id.cardPlayerMediumGridLayout)
     var cardChkSelected = itemView.bind<CheckBox>(R.id.cardPlayerMediumGridChkSelected)
 
-    init {
-        // Observe LiveData properties and update UI
-        viewModel.player.observe(itemView.context as LifecycleOwner) { player ->
-            // Call the existing 'bind' method with the new player data
-            bind(player)
-        }
-    }
-
     fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let { itPlayer ->
 
-            cardChkSelected.setOnCheckedChangeListener(null)
-            cardChkSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
-
-            cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
-                var newStatus = PLAYER_STATUS_OPEN
-                if (isChecked) newStatus = PLAYER_STATUS_SELECTED
-                val realm = realm()
-                realm.safeWrite {
-                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
-                        playerRef.status = newStatus
-                    }
-                }
-            }
+            cardChkSelected.makeGone()
 
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Position: ${position.toString()}"
@@ -99,13 +75,50 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterConfig) 
         }
     }
 
-    fun bindTryout(player: PlayerRef?, position: Int, selectedCount:Int) {
+    fun bindTryout(player: PlayerRef?, adapter: RosterListAdapter, counter: Int): Boolean {
         player?.let { itPlayer ->
-
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
-            val isInTop = position + 1 <= selectedCount
-            setSelectionColor(isInTop, isSelected)
 
+            val isInTop = counter < adapter.config.rosterSizeLimit
+            setTryoutColor(isInTop, isSelected)
+            // Selected CheckBox
+            cardChkSelected.setOnCheckedChangeListener(null)
+            cardChkSelected.isChecked = isSelected
+            cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
+                var newStatus = PLAYER_STATUS_OPEN
+                if (isChecked) newStatus = PLAYER_STATUS_SELECTED
+                val realm = realm()
+                realm.safeWrite {
+                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
+                        playerRef.status = newStatus
+                    }
+                }
+                adapter.refresh()
+            }
+
+            // Basic Tryout Attributes
+            txtItemPlayerName?.text = itPlayer.name
+            txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
+            // Image Profile
+            itPlayer.imgUrl?.let { url ->
+                imgPlayerProfile.loadUriIntoImgView(url)
+            }
+            itemView.onLongClick {
+                it?.wiggleOnce()
+            }
+            itemView.setOnClickListener {
+//                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
+            }
+            return isSelected
+        }
+        return false
+    }
+
+    fun bindSelection(player: PlayerRef?, position: Int, rosterLimit:Int) {
+        player?.let { itPlayer ->
+            val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
+            val isInTop = position + 1 <= rosterLimit
+            setSelectionColor(isInTop, isSelected)
             // Selected CheckBox
             cardChkSelected.setOnCheckedChangeListener(null)
             cardChkSelected.isChecked = isSelected
@@ -120,34 +133,42 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterConfig) 
                 }
                 setSelectionColor(isInTop, isChecked)
             }
-
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
-//            txtItemPlayerTwo?.makeGone()
-//            imgIconTwo.makeGone()
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
-
             itemView.onLongClick {
                 it?.wiggleOnce()
             }
-
             itemView.setOnClickListener {
 //                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
             }
         }
     }
-
-    fun setSelectionColor(isInTop: Boolean, isSelected: Boolean) {
+    private fun setSelectionColor(isInTop: Boolean, isSelected: Boolean) {
         // Player Selection Color
         // If in top 20, make green
         if (isInTop) {
             itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
         } else if (isSelected) {
             itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+        } else {
+            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
+        }
+    }
+
+    private fun setTryoutColor(isInTop: Boolean, isSelected: Boolean) {
+        // Player Selection Color
+        // If in top 20, make green
+        if (isSelected) {
+            if (isInTop) {
+                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+            } else {
+                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+            }
         } else {
             itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }

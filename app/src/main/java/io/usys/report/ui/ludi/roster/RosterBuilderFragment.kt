@@ -104,7 +104,7 @@ class RosterBuilderFragment : YsrFragment() {
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
             adapter?.config?.rosterSizeLimit = selectedEntry.toString().toInt()
-            adapter?.notifyDataSetChanged()
+            adapter?.refresh()
         }
     }
     /** Master Roster Setup! **/
@@ -155,7 +155,7 @@ class RosterBuilderFragment : YsrFragment() {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
                     rosterConfig.rosterId = rosterId
-                    rosterConfig.mode = TEAM_MODE_TRYOUT
+                    rosterConfig.mode = RosterType.TRYOUT.type
                     rosterConfig.touchEnabled = true
                     rosterConfig.playerFilters.clear()
                     adapter = RosterListAdapter(rosterConfig)
@@ -163,7 +163,7 @@ class RosterBuilderFragment : YsrFragment() {
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
                     rosterConfig.rosterId = rosterId
-                    rosterConfig.mode = TEAM_MODE_TRYOUT
+                    rosterConfig.mode = RosterType.SELECTED.type
                     rosterConfig.touchEnabled = true
                     adapter = RosterListAdapter(rosterConfig)
                     adapter?.filterByStatusSelected()
@@ -171,7 +171,7 @@ class RosterBuilderFragment : YsrFragment() {
                 else -> {
                     toggleTryoutTools()
                     rosterConfig.rosterId = rosterId
-                    rosterConfig.mode = TEAM_MODE_IN_SEASON
+                    rosterConfig.mode = RosterType.OFFICIAL.type
                     rosterConfig.touchEnabled = false
                     rosterConfig.playerFilters.clear()
                     adapter = RosterListAdapter(rosterConfig)

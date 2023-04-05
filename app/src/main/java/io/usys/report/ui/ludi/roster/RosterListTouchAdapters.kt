@@ -36,8 +36,6 @@ class RosterItemTouchListener(private val viewPager2: ViewPager2) : RecyclerView
 /** Working **/
 class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchHelper.Callback() {
     val realmInstance = realm()
-//    var fromPosition = 0
-//    var toPosition = 0
 
     override fun isLongPressDragEnabled(): Boolean {
         return true
@@ -55,7 +53,7 @@ class RosterDragDropAction(private val adapter: RosterListAdapter) :  ItemTouchH
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         adapter.updateOrderIndexes()
-        adapter.notifyDataSetChanged()
+        adapter.refresh()
         //TODO: Update firebase Manually
 //        fireUpdatePlayersInRoster(adapter.config.rosterId!!, adapter.playerRefList)
         log("clearView: RosterId = ${adapter.config.rosterId}")

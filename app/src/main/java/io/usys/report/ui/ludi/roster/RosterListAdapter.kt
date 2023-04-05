@@ -66,6 +66,8 @@ class RosterConfig {
     // Optional
     var rosterSizeLimit: Int = 20
     var playerFilters = ludiFilters()
+    var playersSelectedCount: Int = 0
+    var selectionCounter = 0
     // Click Listeners
     var touchEnabled: Boolean = true
     var itemTouchListener: RosterDragDropAction? = null
@@ -91,6 +93,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
     var config: RosterConfig = RosterConfig()
     // Master List
     var playerRefList: RealmList<PlayerRef>? = null
+    var counter = 0
 
     constructor(rosterLayoutConfig: RosterConfig) : this() {
         this.config = rosterLayoutConfig
@@ -103,7 +106,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(config.layout, parent, false)
-        return RosterPlayerViewHolder(itemView, config)
+        return RosterPlayerViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
@@ -114,8 +117,11 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         println("binding roster player: $position")
         playerRefList?.let { itPlayerList ->
             itPlayerList[position]?.let { it1 ->
-                if (config.mode == TEAM_MODE_TRYOUT) {
-                    holder.bindTryout(it1, position=position, selectedCount=config.rosterSizeLimit)
+                if (config.mode == RosterType.TRYOUT.type) {
+                    val result = holder.bindTryout(it1, adapter=this, counter=counter)
+                    if (result) counter++
+                } else if (config.mode == RosterType.SELECTED.type) {
+                    holder.bindSelection(it1, position=position, rosterLimit=config.rosterSizeLimit)
                 } else {
                     holder.bind(it1, position=position)
                 }
@@ -135,6 +141,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setup() {
         loadRosterById()
+        if (config.mode == RosterType.TRYOUT.type || config.mode == RosterType.SELECTED.type) getPlayersSelectedCount()
         if (config.touchEnabled) addTouchAdapters()
         attach()
         notifyDataSetChanged()
@@ -145,6 +152,12 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         loadRosterById()
         if (config.touchEnabled) addTouchAdapters()
         attach()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun refresh() {
+        counter = 0
         notifyDataSetChanged()
     }
     private fun addTouchAdapters() {
@@ -169,6 +182,13 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         this.config.playerFilters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
         loadRosterById()
         notifyDataSetChanged()
+    }
+
+    /** Add Functions */
+    private fun getPlayersSelectedCount() {
+        realmInstance.findRosterById(config.rosterId)?.let { roster ->
+            config.playersSelectedCount = roster.players?.ludiFilters(ludiFilters("status" to PLAYER_STATUS_SELECTED))?.count() ?: 0
+        }
     }
 
 
