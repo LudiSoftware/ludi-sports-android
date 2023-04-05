@@ -2,6 +2,7 @@ package io.usys.report.ui.ludi.roster
 
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
+import io.usys.report.utils.makeGone
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce
@@ -56,6 +58,8 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
 
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
+//    var imgIconOne = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconOne)
+    var imgIconTwo = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconTwo)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
     var txtItemPlayerOne = itemView.bindTextView(R.id.cardPlayerMediumGridTxtOne)
     var txtItemPlayerTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTxtTwo)
@@ -121,8 +125,9 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
 
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
-            txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag}"
-            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
+            txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
+            txtItemPlayerTwo?.makeGone()
+            imgIconTwo.makeGone()
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
