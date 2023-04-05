@@ -59,10 +59,10 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
 //    var imgIconOne = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconOne)
-    var imgIconTwo = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconTwo)
+//    var imgIconTwo = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconTwo)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
     var txtItemPlayerOne = itemView.bindTextView(R.id.cardPlayerMediumGridTxtOne)
-    var txtItemPlayerTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTxtTwo)
+//    var txtItemPlayerTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTxtTwo)
     var cardBackground = itemView.bind<CardView>(R.id.cardPlayerMediumGridLayout)
     var cardChkSelected = itemView.bind<CheckBox>(R.id.cardPlayerMediumGridChkSelected)
 
@@ -93,7 +93,7 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
 
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Position: ${position.toString()}"
-            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
+//            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)
             }
@@ -126,8 +126,8 @@ open class RosterPlayerViewHolder(var itemView: View, var config: RosterLayoutCo
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
-            txtItemPlayerTwo?.makeGone()
-            imgIconTwo.makeGone()
+//            txtItemPlayerTwo?.makeGone()
+//            imgIconTwo.makeGone()
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile.loadUriIntoImgView(url)

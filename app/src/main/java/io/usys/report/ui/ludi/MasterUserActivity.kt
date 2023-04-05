@@ -21,8 +21,6 @@ import io.usys.report.realm.realm
 
 class MasterUserActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,11 +28,9 @@ class MasterUserActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val actionBar = supportActionBar
         actionBar?.setLogo(R.drawable.ysr_2)
-        actionBar?.setDisplayUseLogoEnabled(true)
-        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.setDisplayUseLogoEnabled(false)
+        actionBar?.setDisplayShowHomeEnabled(false)
         actionBar?.setDisplayHomeAsUpEnabled(false)
-
-
 
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()

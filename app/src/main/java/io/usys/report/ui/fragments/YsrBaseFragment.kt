@@ -145,6 +145,9 @@ fun Fragment.toViewRosterFragment(fragId: Int, teamId:String?=null, rosterId:Str
     this.findNavController().navigate(fragId, bundleRosterIds(teamId, rosterId, type))
 }
 
+fun Fragment.toTeamProfileVG(teamId: String) {
+    toFragmentWithRealmObject(R.id.navigation_team_profile, bundleStringId(teamId))
+}
 fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null) {
     toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
 }

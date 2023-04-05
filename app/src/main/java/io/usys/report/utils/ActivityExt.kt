@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,6 +21,19 @@ import io.usys.report.R
 /** startActivity **/
 inline fun <reified TO> Activity.launchActivity() {
     startActivity(Intent(this, TO::class.java))
+}
+
+
+
+//onBackPressed
+inline fun FragmentActivity.onBackButtonPressed(crossinline block: () -> Unit) {
+    this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            // Your custom back button behavior goes here
+            isEnabled = false // This is important to let the back press event propagate to the default behavior after your custom behavior is executed.
+            block()
+        }
+    })
 }
 
 /** Register for Activity Result **/

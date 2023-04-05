@@ -97,7 +97,7 @@ class RosterBuilderFragment : YsrFragment() {
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
             adapter?.config?.selectedCount = selectedEntry.toString().toInt()
-            adapter?.reload()
+            adapter?.notifyDataSetChanged()
         }
     }
     private fun hideSelectedCountSpinner() {

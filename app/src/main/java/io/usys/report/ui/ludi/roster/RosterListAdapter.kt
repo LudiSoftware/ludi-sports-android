@@ -129,7 +129,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
     }
     @SuppressLint("NotifyDataSetChanged")
     fun reload() {
-        this.playerRefList?.clear()
+        disableAndClearRosterList()
         loadRosterById()
         if (config.touchEnabled) addTouchAdapters()
         attach()

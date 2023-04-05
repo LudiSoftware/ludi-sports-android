@@ -38,7 +38,7 @@
             android:id="@+id/cardPlayerMediumGridTxtName"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="1dp"
             android:layout_marginEnd="4dp"
             android:autoSizeMaxTextSize="20sp"
             android:autoSizeMinTextSize="12sp"
@@ -47,53 +47,30 @@
             android:maxLines="1"
             android:text="Player Name"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/cardPlayerMediumGridTxtOne"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgProfile"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.062"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/cardPlayerMediumGridTxtOne"
-            android:layout_width="51dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="Text One"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardPlayerMediumGridImgProfile"
-            app:layout_constraintEnd_toStartOf="@+id/cardPlayerMediumGridChkSelected"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgProfile" />
-
-        <TextView
-            android:id="@+id/cardPlayerMediumGridTxtTwo"
-            android:layout_width="51dp"
+            android:layout_width="0dp"
             android:layout_height="16dp"
             android:layout_marginStart="2dp"
-            android:text="Text Two"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="1dp"
+            android:text="Text One"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardPlayerMediumGridImgIconTwo"
-            app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgIconTwo"
-            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtOne"
-            app:layout_constraintVertical_bias="0.0"
-            tools:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/cardPlayerMediumGridImgIconTwo"
-            android:layout_width="8dp"
-            android:layout_height="11dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ysr_email_icon_red"
-            tools:layout_editor_absoluteY="40dp"
-            tools:visibility="gone" />
+            app:layout_constraintEnd_toStartOf="@+id/cardPlayerMediumGridChkSelected"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgProfile"
+            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtName" />
 
         <CheckBox
             android:id="@+id/cardPlayerMediumGridChkSelected"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="2dp"
             android:hapticFeedbackEnabled="true"
