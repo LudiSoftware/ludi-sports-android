@@ -9,7 +9,7 @@ fun Realm.fireGetTeamProfileInBackground(teamId:String) {
     firebaseDatabase {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toRealmObjectCast<Team>(this)
+                ds?.toLudiObject<Team>(this)
                 log("Team Updated")
             }
     }
@@ -23,7 +23,7 @@ fun Realm.fireGetTryOutProfileIntoRealm(teamId:String?) {
     firebaseDatabase {
         it.child(DatabasePaths.TRYOUTS.path).orderByChild("teamId").equalTo(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toRealmObjects<TryOut>()
+                ds?.toLudiObjects<TryOut>()
                 log("TryOut Updated")
             }
     }

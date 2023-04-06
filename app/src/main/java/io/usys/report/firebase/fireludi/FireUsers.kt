@@ -37,7 +37,7 @@ fun fireGetCoachProfileInBackground(userId:String) {
     firebaseDatabase {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toRealmObjectCast<Coach>()
+                ds?.toLudiObject<Coach>()
                 log("Coach Updated")
             }
     }
@@ -46,7 +46,7 @@ fun Realm.fireGetCoachProfileInBackground(userId:String) {
     firebaseDatabase {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toRealmObjectCast<Coach>(this)
+                ds?.toLudiObject<Coach>(this)
                 log("Coach Updated")
             }
     }

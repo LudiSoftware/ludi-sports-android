@@ -4,12 +4,9 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.firebase.fireUpdateRoster
 import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.Team
-import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
-import io.usys.report.realm.model.users.safeUserId
+import io.usys.report.ui.ludi.roster.RosterProvider
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -42,8 +39,8 @@ inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSes
 
 fun TeamSession?.saveRosterToFirebase() {
     this?.let { ts ->
-        ts.roster?.let { roster: Roster ->
-            roster.fireUpdateRoster()
+        ts.rosterId?.let { rosterId: String ->
+            RosterProvider(rosterId).pushRosterToFirebase()
         }
     }
 }

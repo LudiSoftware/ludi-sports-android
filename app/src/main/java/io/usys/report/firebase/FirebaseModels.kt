@@ -1,10 +1,7 @@
 package io.usys.report.firebase
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import io.realm.RealmList
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.utils.newUUID
 
 class FirebaseModels {
 
@@ -94,15 +91,3 @@ fun realmListToDataList(realmList: RealmList<PlayerRef>): List<FirebaseModels.Pl
 }
 
 
-fun fireUpdatePlayersInRoster(rosterId: String, players: RealmList<PlayerRef>?) {
-    // Convert the RealmList<PlayerRef> to a regular list of data objects
-    if (players == null) return
-    val playersDataList = realmListToDataList(players)
-    firebaseDatabase {
-        it.child("rosters")
-            .child(rosterId)
-            .child("players")
-            .setValue(playersDataList)
-    }
-
-}
