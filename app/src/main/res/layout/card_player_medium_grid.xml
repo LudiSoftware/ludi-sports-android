@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardPlayerMediumGridLayout"
-    android:layout_width="185dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="3dp"
@@ -18,8 +18,9 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardPlayerConstraintLayout"
         android:layout_width="200dp"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cardPlayerMediumGridImgProfile"
@@ -32,7 +33,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.111" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cardPlayerMediumGridTxtName"
@@ -40,7 +41,7 @@
             android:layout_height="20dp"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="4dp"
-            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeMaxTextSize="30sp"
             android:autoSizeMinTextSize="12sp"
             android:drawablePadding="25dp"
             android:gravity="center_vertical"
@@ -56,32 +57,51 @@
         <TextView
             android:id="@+id/cardPlayerMediumGridTxtOne"
             android:layout_width="0dp"
-            android:layout_height="16dp"
+            android:layout_height="0dp"
             android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="1dp"
+            android:autoSizeMaxTextSize="16sp"
+            android:autoSizeMinTextSize="8sp"
+            android:lines="2"
             android:text="Text One"
-            android:textSize="10sp"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cardPlayerMediumGridChkSelected"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/cardPlayerMediumGridImgProfile"
-            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtName" />
+            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtName"
+            app:layout_constraintVertical_bias="0.0" />
 
         <CheckBox
             android:id="@+id/cardPlayerMediumGridChkSelected"
-            android:layout_width="0dp"
+            style="@android:style/Widget.CompoundButton.CheckBox"
+            android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="2dp"
             android:hapticFeedbackEnabled="true"
             android:scaleX=".75"
             android:scaleY=".75"
-            android:text="Selected"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textAlignment="viewStart"
+            android:textColor="#000000"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtName"
-            app:layout_constraintVertical_bias="0.181" />
+            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridTxtName" />
+
+        <TextView
+            android:id="@+id/cardPlayerSelectedTxtView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="8sp"
+            android:text="Selected"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardPlayerMediumGridChkSelected"
+            app:layout_constraintStart_toStartOf="@+id/cardPlayerMediumGridChkSelected"
+            app:layout_constraintTop_toBottomOf="@+id/cardPlayerMediumGridChkSelected"
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

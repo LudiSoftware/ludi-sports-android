@@ -58,6 +58,7 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
     var txtItemPlayerOne = itemView.bindTextView(R.id.cardPlayerMediumGridTxtOne)
 //    var txtItemPlayerTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTxtTwo)
     var cardBackground = itemView.bind<CardView>(R.id.cardPlayerMediumGridLayout)
+    var constraintBackground = itemView.bind<View>(R.id.cardPlayerConstraintLayout)
     var cardChkSelected = itemView.bind<CheckBox>(R.id.cardPlayerMediumGridChkSelected)
 
     fun bind(player: PlayerRef?, position: Int?= null) {
@@ -152,11 +153,11 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
         // Player Selection Color
         // If in top 20, make green
         if (isInTop) {
-            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
         } else if (isSelected) {
-            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
         } else {
-            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
+            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
     }
 
@@ -165,12 +166,12 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
         // If in top 20, make green
         if (isSelected) {
             if (isInTop) {
-                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+                constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
             } else {
-                itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+                constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
             }
         } else {
-            itemView.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
+            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
     }
 

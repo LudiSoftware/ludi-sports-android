@@ -220,6 +220,11 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         }
     }
 
+    /** Helper Functions */
+    fun areTooManySelected() : Boolean {
+        return config.playersSelectedCount > config.rosterSizeLimit
+    }
+
 }
 
 
