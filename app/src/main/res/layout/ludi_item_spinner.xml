@@ -7,8 +7,10 @@
 
     <TextView
         android:id="@+id/txtItemSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
         android:text="Type of note"
         android:textSize="18sp"
         android:textStyle="bold"

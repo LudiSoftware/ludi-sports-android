@@ -1,15 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- popup_layout.xml -->
-<LinearLayout
+<io.usys.report.ui.views.LudiConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:text="Player Profile"
+        app:layout_constraintBottom_toBottomOf="@+id/menuPlayerBtnProfile"
+        app:layout_constraintEnd_toStartOf="@+id/menuPlayerBtnProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menuPlayerBtnProfile"
+        app:layout_constraintVertical_bias="0.483" />
+
+    <ImageButton
+        android:id="@+id/menuPlayerBtnProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="#00FFFFFF"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/f_profile_dark" />
+
+    <ImageButton
+        android:id="@+id/menuPlayerBtnChangeTeams"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:background="#00FFFFFF"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/menuPlayerPositionSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerBtnProfile"
+        app:layout_constraintVertical_bias="0.135"
+        app:srcCompat="@drawable/f_profile_dark" />
+
     <Spinner
         android:id="@+id/menuPlayerPositionSpinner"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
-        android:background="@drawable/ft_border_rounded_creme" />
-</LinearLayout>
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/ft_border_rounded_creme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Position"
+        app:layout_constraintBottom_toTopOf="@+id/menuPlayerPositionSpinner"
+        app:layout_constraintStart_toStartOf="@+id/menuPlayerPositionSpinner" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Change Teams"
+        app:layout_constraintBottom_toBottomOf="@+id/menuPlayerBtnChangeTeams"
+        app:layout_constraintEnd_toStartOf="@+id/menuPlayerBtnChangeTeams"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menuPlayerBtnChangeTeams"
+        app:layout_constraintVertical_bias="0.483" />
+
+    <CheckBox
+        android:id="@+id/menuPlayerCheckIsSelected"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/menuPlayerPositionSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerBtnChangeTeams"
+        app:layout_constraintVertical_bias="0.13" />
+
+    <TextView
+        android:id="@+id/menuPlayerTxtIsSelected"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Is Selected"
+        app:layout_constraintBottom_toBottomOf="@+id/menuPlayerCheckIsSelected"
+        app:layout_constraintEnd_toStartOf="@+id/menuPlayerCheckIsSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menuPlayerCheckIsSelected"
+        app:layout_constraintVertical_bias="0.483" />
+</io.usys.report.ui.views.LudiConstraintLayout>

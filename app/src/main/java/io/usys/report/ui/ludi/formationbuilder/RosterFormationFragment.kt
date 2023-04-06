@@ -459,13 +459,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
     }
 
-
-//    fun View.attachPositionPickerMenu(fragment: Fragment) {
-//        setOnClickListener {
-//            showCustomPopup(this, fragment)
-//        }
-//    }
-
     private fun showPlayerMenuPopup(anchorView: View, fragment: Fragment) {
         val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
         val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -492,7 +485,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         // Show the PopupWindow below the anchor view (menu item)
         popupWindow.showAsDropDown(anchorView)
     }
-
 
     /** FORMATION LAYOUT: Class Helpers Below **/
     private inline fun findPlayerViewInFormation(playerId: String, block: (CardView) -> Unit) {
