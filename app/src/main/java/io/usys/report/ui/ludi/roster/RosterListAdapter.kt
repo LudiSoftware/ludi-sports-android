@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findRosterById
+import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.TEAM_MODE_TRYOUT
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.*
@@ -72,6 +73,21 @@ class RosterConfig {
     var touchEnabled: Boolean = true
     var itemTouchListener: RosterDragDropAction? = null
     var itemTouchHelper: ItemTouchHelper? = null
+
+    fun setRosterSizeLimit(realmInstance: Realm?, teamId: String?){
+        realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
+            this.rosterSizeLimit = teamSession.rosterSizeLimit
+        }
+    }
+
+    fun updateRosterSizeLimit(realmInstance: Realm?, teamId: String?, newSizeLimit: Int){
+        this.rosterSizeLimit = newSizeLimit
+        realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
+            realmInstance.safeWrite {
+                teamSession.rosterSizeLimit = newSizeLimit
+            }
+        }
+    }
 
     fun destroy() {
         itemTouchHelper?.attachToRecyclerView(null)

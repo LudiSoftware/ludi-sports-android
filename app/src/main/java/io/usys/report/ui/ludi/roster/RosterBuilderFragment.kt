@@ -14,6 +14,7 @@ import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
+import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PLAYER_STATUS_ACCEPTED
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
@@ -123,7 +124,7 @@ class RosterBuilderFragment : YsrFragment() {
         // ROSTER SELECTION
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
-            adapter?.config?.rosterSizeLimit = selectedEntry.toString().toInt()
+            adapter?.config?.updateRosterSizeLimit(realmInstance, teamId, selectedEntry.toString().toInt())
             adapter?.refresh()
         }
     }
@@ -159,6 +160,7 @@ class RosterBuilderFragment : YsrFragment() {
             this.layout = R.layout.card_player_medium_grid
             this.type = FireTypes.PLAYERS
             this.size = "medium_grid"
+            this.setRosterSizeLimit(realmInstance, teamId)
         }
     }
 

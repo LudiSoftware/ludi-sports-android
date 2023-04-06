@@ -18,8 +18,11 @@ open class TeamSession : RealmObject(), Serializable {
     var dateCreated: String = getTimeStamp()
     var teamId: String? = "null"
     var rosterId: String? = "null"
+    var tryoutId: String? = "null"
+    var tryoutRosterId: String? = "null"
     var roster: Roster? = null
     var tryout: TryOut? = null
+    var rosterSizeLimit: Int = 20
     var playerIds: RealmList<String>? = RealmList()
     //formation
     var teamColorsAreOn: Boolean = true
