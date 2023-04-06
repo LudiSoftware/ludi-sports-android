@@ -134,6 +134,7 @@ abstract class LudiTeamFragment : Fragment() {
         }
     }
     private fun setupTeamRosterRealmListener() {
+
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
             log("Roster listener called")
@@ -148,8 +149,6 @@ abstract class LudiTeamFragment : Fragment() {
         realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
     }
 }
-
-
 
 
 class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: String) : MenuProvider {

@@ -20,6 +20,7 @@ import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.formationbuilder.setPlayerFormationBackgroundColor
 import io.usys.report.ui.ludi.player.positionMap
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
+import io.usys.report.ui.views.LudiPopupMenu
 import io.usys.report.utils.capitalizeFirstChar
 import io.usys.report.utils.log
 import io.usys.report.utils.makeGone
@@ -34,6 +35,8 @@ import io.usys.report.utils.views.wiggleOnce
 
 class RosterBuilderFragment : YsrFragment() {
 
+    private var ludiPopupMenu: LudiPopupMenu? = null
+    var ludiMenuIsAttached = false
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -59,6 +62,16 @@ class RosterBuilderFragment : YsrFragment() {
         arguments?.let {
             teamId = it.getString("teamId") ?: "unknown"
         }
+
+        ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder_popup, action = { view, popupWindow ->
+
+            val layoutOne = view.findViewById<LinearLayout>(R.id.menuRosterBuilderBtnOneLayout)
+            layoutOne.setOnClickListener {
+                   layoutOne.wiggleOnce()
+            }
+
+            view.wiggleOnce()
+        })
 
         setupRosterIds()
 //        setupTeamRosterRealmListener()
@@ -152,6 +165,21 @@ class RosterBuilderFragment : YsrFragment() {
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
+        detachLudiMenu()
+    }
+
+    private fun attachLudiMenu() {
+        if (ludiMenuIsAttached) return
+        ludiPopupMenu?.let {
+            requireActivity().addMenuProvider(it)
+            ludiMenuIsAttached = true
+        }
+    }
+    private fun detachLudiMenu() {
+        ludiPopupMenu?.let {
+            requireActivity().removeMenuProvider(it)
+            ludiMenuIsAttached = false
+        }
     }
 
     private fun setupRosterList() {
@@ -161,6 +189,7 @@ class RosterBuilderFragment : YsrFragment() {
             when (rosterType) {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
+                    attachLudiMenu()
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = RosterType.TRYOUT.type
                     rosterConfig.touchEnabled = true
@@ -169,6 +198,7 @@ class RosterBuilderFragment : YsrFragment() {
                 }
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
+                    attachLudiMenu()
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = RosterType.SELECTED.type
                     rosterConfig.touchEnabled = true
@@ -177,6 +207,7 @@ class RosterBuilderFragment : YsrFragment() {
                 }
                 else -> {
                     toggleTryoutTools()
+                    detachLudiMenu()
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = RosterType.OFFICIAL.type
                     rosterConfig.touchEnabled = false

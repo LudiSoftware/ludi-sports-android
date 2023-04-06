@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- popup_layout.xml -->
+<io.usys.report.ui.views.LudiConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/menuRosterBuilderBtnOneLayout"
+        android:layout_width="214dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/menuRosterBuilderBtnOneText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:text="Submit Roster"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/menuRosterBuilderBtnOneImgBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/fui_ic_check_circle_black_128dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuRosterBuilderBtnTwoLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuRosterBuilderBtnOneLayout">
+
+        <TextView
+            android:id="@+id/menuRosterBuilderBtnTwoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:text="Change Teams"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/menuRosterBuilderBtnTwoImgBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/f_profile_dark" />
+    </LinearLayout>
+</io.usys.report.ui.views.LudiConstraintLayout>
