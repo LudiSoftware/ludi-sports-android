@@ -9,93 +9,120 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="end"
-        android:text="Player Profile"
-        app:layout_constraintBottom_toBottomOf="@+id/menuPlayerBtnProfile"
-        app:layout_constraintEnd_toStartOf="@+id/menuPlayerBtnProfile"
+    <LinearLayout
+        android:id="@+id/menuPlayerPlayerProfileLayout"
+        android:layout_width="214dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@drawable/border_shape"
+        android:layout_margin="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/menuPlayerBtnProfile"
-        app:layout_constraintVertical_bias="0.483" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/menuPlayerBtnProfile"
-        android:layout_width="50dp"
+        <TextView
+            android:id="@+id/menuPlayerTVplayerProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:text="Player Profile" />
+
+        <ImageButton
+            android:id="@+id/menuPlayerBtnProfile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/f_profile_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_weight="1"
-        android:background="#00FFFFFF"
-        android:scaleType="fitXY"
+        android:orientation="horizontal"
+        android:background="@drawable/border_shape"
+        android:layout_margin="3dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/f_profile_dark" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerPlayerProfileLayout">
 
-    <ImageButton
-        android:id="@+id/menuPlayerBtnChangeTeams"
-        android:layout_width="50dp"
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:text="Change Teams" />
+
+        <ImageButton
+            android:id="@+id/menuPlayerBtnChangeTeams"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/f_profile_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        android:background="#00FFFFFF"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/menuPlayerPositionSpinner"
+        android:orientation="horizontal"
+        android:background="@drawable/border_shape"
+        android:layout_margin="3dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerBtnProfile"
-        app:layout_constraintVertical_bias="0.135"
-        app:srcCompat="@drawable/f_profile_dark" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-    <Spinner
-        android:id="@+id/menuPlayerPositionSpinner"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/ft_border_rounded_creme"
+        <TextView
+            android:id="@+id/menuPlayerTxtIsSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight=".75"
+            android:text="Is Selected" />
+
+        <CheckBox
+            android:id="@+id/menuPlayerCheckIsSelected"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:layout_marginBottom="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Position"
-        app:layout_constraintBottom_toTopOf="@+id/menuPlayerPositionSpinner"
-        app:layout_constraintStart_toStartOf="@+id/menuPlayerPositionSpinner" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:text="Change Teams"
-        app:layout_constraintBottom_toBottomOf="@+id/menuPlayerBtnChangeTeams"
-        app:layout_constraintEnd_toStartOf="@+id/menuPlayerBtnChangeTeams"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/menuPlayerBtnChangeTeams"
-        app:layout_constraintVertical_bias="0.483" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-    <CheckBox
-        android:id="@+id/menuPlayerCheckIsSelected"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/menuPlayerPositionSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerBtnChangeTeams"
-        app:layout_constraintVertical_bias="0.13" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".75"
+            android:text="Change Position" />
 
-    <TextView
-        android:id="@+id/menuPlayerTxtIsSelected"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:text="Is Selected"
-        app:layout_constraintBottom_toBottomOf="@+id/menuPlayerCheckIsSelected"
-        app:layout_constraintEnd_toStartOf="@+id/menuPlayerCheckIsSelected"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/menuPlayerCheckIsSelected"
-        app:layout_constraintVertical_bias="0.483" />
+        <Spinner
+            android:id="@+id/menuPlayerPositionSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="4dp"
+            android:layout_weight=".25"
+            android:background="@drawable/ft_border_rounded_creme" />
+
+    </LinearLayout>
+
 </io.usys.report.ui.views.LudiConstraintLayout>
