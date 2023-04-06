@@ -23,6 +23,7 @@ import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.toFragmentWithIds
+import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
@@ -307,9 +308,11 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         // Create New PlayerView for Formation
         val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_formation)
         // Bind PlayerView's
-        val playerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtName)
-        val playerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
-//        val playerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTryOutTag)
+        val vPlayerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtName)
+        val vPlayerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTag)
+        val vPlayerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
+        val vPlayerPosition = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtPosition)
+
 
         //Prepare PlayerView from Drag/Drop
         safePlayerFromRoster(playerId) { newPlayerRef ->
@@ -363,14 +366,14 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
-            playerCircleLayout.tag = newPlayerRef.id
+            vPlayerCircleLayout.tag = newPlayerRef.id
             // Bind Data
-            playerName.text = newPlayerRef.name
-//            playerTryOutTag.text = newPlayerRef.tryoutTag
+            vPlayerName.text = newPlayerRef.name
+            vPlayerTryOutTag.text = newPlayerRef.tryoutTag.toString()
+            vPlayerPosition.text = newPlayerRef.position
             newPlayerRef.color?.let {
-                playerCircleLayout.setPlayerFormationBackgroundColor(it)
+                vPlayerCircleLayout.setPlayerFormationBackgroundColor(it)
             }
-//            playerRefViewItem.attachPositionPickerMenu(this)
             onTap = { playerId ->
                 log("Double Tap")
                 showPlayerMenuPopup(playerRefViewItem, this)
@@ -385,87 +388,26 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
             // Add to FormationLayout
             formationViewList.add(playerRefViewItem)
-            formationCardViews.add(playerCircleLayout)
+            formationCardViews.add(vPlayerCircleLayout)
             formationRelativeLayout?.addView(playerRefViewItem)
         }
 
     }
 
     /** FORMATION LAYOUT: PLAYER POPUP MENU **/
-    private fun View?.setupPlayerPopupMenu() {
-        val playerPopMenuView = this?.attachAndInflatePopMenu(R.menu.floating_player_menu) { menuItem, parentView ->
-            val playerId = parentView.tag
-            when (menuItem.itemId) {
-                R.id.menu_player_profile -> {
-                    // Do something
-                    log("menu_player_profile")
-                    toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId.toString())
-                }
-                R.id.menu_player_make_sub -> {
-                    // Do something
-                    log("menu_player_make_sub")
-                    //todo: move player back to subsitutues
-                    //      remove player from formation
-                }
-                R.id.menu_player_accept -> {
-                    // Do something
-                    log("menu_player_accept")
-                    safePlayerFromRoster(playerId as String) { playerRef ->
-                        realmInstance?.safeWrite {
-                            playerRef.status = PLAYER_STATUS_ACCEPTED
-                        }
-                    }
-                }
-                R.id.menu_player_change_teams -> {
-                    // Do something
-                    safePlayerFromRoster(playerId as String) { playerRef ->
-                        when (playerRef.color) {
-                            "red" -> {
-                                realmInstance?.safeWrite {
-                                    playerRef.color = "blue"
-                                }
-                            }
-                            "blue" -> {
-                                realmInstance?.safeWrite {
-                                    playerRef.color = "red"
-                                }
-                            }
-                        }
-                        findPlayerViewInFormation(playerId) { playerView ->
-                            playerView.setPlayerFormationBackgroundColor(playerRef.color)
-                        }
-                    }
-
-                    log("menu_player_change_teams")
-                }
-                R.id.menu_player_add_note -> {
-                    // Do something
-                    log("menu_player_add_note")
-                }
-                else -> {
-                    log("Unknown Touch")
-                }
-            }
-        }
-//        onTap = { playerId ->
-//            log("Double Tap")
-//            this?.wiggleOnce()
-//            playerPopMenuView?.show()
-//        }
-        onLongPress = {
-            log("Double Tap")
-            this?.wiggleOnce()
-            playerPopMenuView?.show()
-        }
-    }
-
     private fun showPlayerMenuPopup(anchorView: View, fragment: Fragment) {
         val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
         val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+        val playerId = anchorView.tag
+        val layoutPlayerProfile = popupView.findViewById<LinearLayout>(R.id.menuPlayerPlayerProfileLayout)
+        val layoutChangeTeams = popupView.findViewById<LinearLayout>(R.id.menuPlayerChangeTeamsLayout)
+        val layoutIsSelected = popupView.findViewById<LinearLayout>(R.id.menuPlayerIsSelectedLayout)
+        val checkBoxIsSelected = popupView.findViewById<CheckBox>(R.id.menuPlayerCheckIsSelected)
+
         // Find and set up the Spinner
         val positionSpinner = popupView.findViewById<Spinner>(R.id.menuPlayerPositionSpinner)
-        positionSpinner.setupPlayerPositionSpinner(fragment.requireContext())
+        positionSpinner.setupPlayerPositionSpinner(playerId as String)
         // Load animations
         val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
         val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
@@ -473,9 +415,61 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         // If you want to dismiss the popup when clicking outside of it
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
-
         // Set the unfold animation when showing the popup
         popupWindow.contentView.startAnimation(unfoldAnimation)
+
+        layoutPlayerProfile.setOnClickListener {
+            log("menu_player_profile")
+            fragment.toPlayerProfile(playerId.toString())
+            popupWindow.dismiss()
+        }
+
+        layoutChangeTeams.setOnClickListener {
+            log("menu_player_change_teams")
+            safePlayerFromRoster(playerId as String) { playerRef ->
+                when (playerRef.color) {
+                    "red" -> {
+                        realmInstance?.safeWrite {
+                            playerRef.color = "blue"
+                        }
+                    }
+                    "blue" -> {
+                        realmInstance?.safeWrite {
+                            playerRef.color = "red"
+                        }
+                    }
+                }
+                findPlayerViewInFormation(playerId) { playerView ->
+                    playerView.setPlayerFormationBackgroundColor(playerRef.color)
+                }
+            }
+            popupWindow.dismiss()
+        }
+
+        realmInstance?.findPlayerRefById(playerId as String)?.let { itPlayer ->
+            checkBoxIsSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
+        }
+
+        checkBoxIsSelected.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                safePlayerFromRoster(playerId as String) { playerRef ->
+                    realmInstance?.safeWrite {
+                        playerRef.status = PLAYER_STATUS_SELECTED
+                    }
+                }
+            } else {
+                safePlayerFromRoster(playerId as String) { playerRef ->
+                    realmInstance?.safeWrite {
+                        playerRef.status = PLAYER_STATUS_OPEN
+                    }
+                }
+            }
+        }
+
+        layoutIsSelected.setOnClickListener {
+            log("menu_player_is_selected")
+            checkBoxIsSelected.toggle()
+        }
 
         // Set the fold animation when dismissing the popup
         popupWindow.setOnDismissListener {

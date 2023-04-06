@@ -48,6 +48,11 @@ fun Realm.findTeamById(teamId:String?): Team? {
 fun Realm.findPlayerRefById(playerId:String?): PlayerRef? {
     return this.where(PlayerRef::class.java).equalTo("playerId", playerId).findFirst()
 }
+
+inline fun Realm.findPlayerRefById(playerId:String?, block: (PlayerRef?) -> Unit?) {
+    val result = this.where(PlayerRef::class.java).equalTo("playerId", playerId).findFirst()
+    block(result)
+}
 /** TryOut Queries **/
 fun Realm.findTryOutById(tryoutId:String?): TryOut? {
     return this.where(TryOut::class.java).equalTo("id", tryoutId).findFirst()

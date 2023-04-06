@@ -188,9 +188,6 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeTitle()
     }
 
-
-
-
     private fun setupTeamRosterRealmListener() {
         val rosterListener = RealmChangeListener<RealmResults<Roster>> {
             // Handle changes to the Realm data here
@@ -207,56 +204,6 @@ class RosterBuilderFragment : YsrFragment() {
             }
         }
         realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
-    }
-}
-
-/**
- * TODO:
- *      1. Save Roster
- *      2. Submit/Finalize Roster
- */
-class PositionPickerMenuPopupProvider(private val fragment: Fragment) : MenuProvider {
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.top_team_menu_dropdown, menu)
-    }
-
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.menuitem_options -> {
-                showCustomPopup(fragment.requireActivity().findViewById(R.id.menuitem_options))
-                return true
-            }
-            else -> {
-            }
-        }
-        return false
-    }
-
-    private fun showCustomPopup(anchorView: View) {
-        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
-        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        // Find and set up the Spinner
-        val positionSpinner = popupView.findViewById<Spinner>(R.id.menuPlayerPositionSpinner)
-        positionSpinner.setupPlayerPositionSpinner(fragment.requireContext())
-        // Load animations
-        val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
-        val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
-
-        // If you want to dismiss the popup when clicking outside of it
-        popupWindow.isOutsideTouchable = true
-        popupWindow.isFocusable = true
-
-        // Set the unfold animation when showing the popup
-        popupWindow.contentView.startAnimation(unfoldAnimation)
-
-        // Set the fold animation when dismissing the popup
-        popupWindow.setOnDismissListener {
-            popupView.startAnimation(foldAnimation)
-        }
-
-        // Show the PopupWindow below the anchor view (menu item)
-        popupWindow.showAsDropDown(anchorView)
     }
 }
 
