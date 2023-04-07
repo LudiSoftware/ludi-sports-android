@@ -51,6 +51,15 @@ fun View.enablePinchToZoom() {
 }
 
 
+inline fun View.attachViewsToOnClickListener(vararg views: View, crossinline onClick: (View) -> Unit) {
+    val clickListener = View.OnClickListener { view -> onClick(view) }
+
+    this.setOnClickListener(clickListener)
+    for (view in views) {
+        view.setOnClickListener(clickListener)
+    }
+}
+
 fun <T: View> Dialog.bind(res: Int) : T {
     return this.findViewById(res)
 }

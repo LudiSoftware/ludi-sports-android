@@ -39,9 +39,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight=".25"
-            android:background="#00FFFFFF"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/fui_ic_check_circle_black_128dp" />
+            android:background="@drawable/fui_ic_check_circle_black_128dp"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
     <LinearLayout

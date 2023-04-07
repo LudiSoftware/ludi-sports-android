@@ -3,6 +3,7 @@ package io.usys.report.ui.ludi.roster
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Spinner
@@ -17,15 +18,13 @@ import io.usys.report.realm.*
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PLAYER_STATUS_ACCEPTED
 import io.usys.report.realm.model.Roster
+import io.usys.report.realm.model.TEAM_MODE_OFF_SEASON
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.formationbuilder.setPlayerFormationBackgroundColor
 import io.usys.report.ui.ludi.player.positionMap
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.views.LudiPopupMenu
-import io.usys.report.utils.capitalizeFirstChar
-import io.usys.report.utils.log
-import io.usys.report.utils.makeGone
-import io.usys.report.utils.makeVisible
+import io.usys.report.utils.*
 import io.usys.report.utils.views.attachAndInflatePopMenu
 import io.usys.report.utils.views.onItemSelected
 import io.usys.report.utils.views.wiggleOnce
@@ -64,14 +63,35 @@ class RosterBuilderFragment : YsrFragment() {
             teamId = it.getString("teamId") ?: "unknown"
         }
 
-        ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder_popup, action = { view, popupWindow ->
+        ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder_popup, action = { view, _ ->
 
             val layoutOne = view.findViewById<LinearLayout>(R.id.menuRosterBuilderBtnOneLayout)
-            layoutOne.setOnClickListener {
-                   layoutOne.wiggleOnce()
-            }
+            val imgBtnOne = view.findViewById<ImageButton>(R.id.menuRosterBuilderBtnOneImgBtn)
 
-            view.wiggleOnce()
+
+            adapter?.let {
+                if (it.areTooManySelected()) {
+                    imgBtnOne.setBackgroundResource(android.R.drawable.ic_delete)
+                    layoutOne.attachViewsToOnClickListener(imgBtnOne) {
+                        layoutOne.wiggleOnce()
+                    }
+                } else {
+                    imgBtnOne.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp)
+                    layoutOne.attachViewsToOnClickListener(imgBtnOne) {
+                        realmInstance?.findRosterById(currentRosterId)?.let { roster ->
+                            realmInstance?.safeWrite {
+                                roster.status = RosterStatus.PENDING.status
+                            }
+                        }
+                        realmInstance?.findTeamById(teamId)?.let { team ->
+                            realmInstance?.safeWrite {
+                                team.mode = TeamStatus.PENDING.status
+                            }
+                        }
+                        currentRosterId?.let { it1 -> RosterProvider(it1).pushRosterToFirebase() }
+                    }
+                }
+            }
         })
 
         setupRosterIds()
@@ -89,7 +109,7 @@ class RosterBuilderFragment : YsrFragment() {
         _binding?.rosterBuilderLudiSpinRosterType?.adapter = spinnerAdapter
 
         // ROSTER SELECTION
-        _binding?.rosterBuilderLudiSpinRosterType?.onItemSelected { parent, view, position, id ->
+        _binding?.rosterBuilderLudiSpinRosterType?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
             rosterIds.forEach { (key, value) ->
                 if (key == selectedEntry) {
@@ -186,8 +206,8 @@ class RosterBuilderFragment : YsrFragment() {
 
     private fun setupRosterList() {
         adapter?.disableAndClearRosterList()
+        rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
         currentRosterId?.let { rosterId ->
-            rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
             when (rosterType) {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
@@ -221,23 +241,6 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeTitle()
     }
 
-    private fun setupTeamRosterRealmListener() {
-        val rosterListener = RealmChangeListener<RealmResults<Roster>> {
-            // Handle changes to the Realm data here
-            log("Roster listener called")
-            var updateDisplay = false
-            rosterIds.values.forEach { rosterId ->
-                it.find { it.id == rosterId }?.let { _ ->
-                    updateDisplay = true
-                }
-            }
-            if (updateDisplay) {
-                setupRosterList()
-                realmInstance?.removeAllChangeListeners()
-            }
-        }
-        realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
-    }
 }
 
 

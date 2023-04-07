@@ -46,6 +46,34 @@ fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String) {
     }
 }
 
+enum class TeamStatus(val status: String) {
+    IN_SEASON("open"),
+    POST_SEASON("pending"),
+    TRYOUT("finalized"),
+    PENDING("archive"),
+    ARCHIVE("archive"),
+    DEAD("dead")
+}
+
+enum class PlayerStatus(val status: String) {
+    OPEN("open"),
+    PENDING("pending"),
+    SELECTED("finalized"),
+    SEND_LETTER("archive"),
+    PENDING_APPROVAL("dead"),
+    APPROVED("approved"),
+    REJECTED("rejected"),
+}
+
+enum class RosterStatus(val status: String) {
+    OPEN("open"),
+    PENDING("pending"),
+    FINALIZED("finalized"),
+    ARCHIVE("archive"),
+    DEAD("dead")
+}
+
+
 enum class RosterType(val type: String) {
     OFFICIAL("official"),
     OFFICIAL_ARCHIVE("official_archive"),
@@ -165,10 +193,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     fun reload() {
         disableAndClearRosterList()
-        loadRosterById()
-        if (config.touchEnabled) addTouchAdapters()
-        attach()
-        notifyDataSetChanged()
+        setup()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -207,7 +232,6 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         }
     }
 
-
     /** Update Functions */
     fun updateOrderIndexes() {
         playerRefList?.let { list ->
@@ -225,14 +249,6 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         return config.playersSelectedCount > config.rosterSizeLimit
     }
 
-}
-
-
-
-
-fun View.hideCompletely() {
-    layoutParams.width = 0
-    layoutParams.height = 0
 }
 
 

@@ -7,13 +7,14 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.realm.findByField
+import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.Roster
@@ -21,9 +22,8 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.userOrLogout
-import io.usys.report.realm.realm
-import io.usys.report.realm.safeAdd
-import io.usys.report.realm.safeWrite
+import io.usys.report.ui.ludi.roster.RosterFragmentVG
+import io.usys.report.ui.ludi.roster.ViewRosterFragment
 import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
 import io.usys.report.utils.views.wiggleOnce
@@ -178,6 +178,9 @@ class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: 
 
         // Set up click listeners for the custom menu items
         popupView.findViewById<LinearLayout>(R.id.option_formation).setOnClickListener {
+//            realm().findRosterIdByTeamId(teamId)?.let { rosterId ->
+//                fragment.popup(ViewRosterFragment.newRoster(rosterId, "Official", teamId))
+//            }
             fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
             popupWindow.dismiss()
         }

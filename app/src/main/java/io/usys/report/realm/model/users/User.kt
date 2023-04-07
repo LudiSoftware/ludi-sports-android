@@ -20,14 +20,6 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class UserRef : RealmObject(), Serializable {
-    @PrimaryKey
-    var id: String = "" // SETUP VIA FIREBASE TO LINK TO AUTH SYSTEM
-    var username: String = UNASSIGNED
-    var auth: String = BASIC_USER // "basic"
-    var email: String = UNASSIGNED
-    var phone: String = UNASSIGNED
-}
 open class User : RealmObject(), Serializable {
 
     @PrimaryKey
@@ -61,45 +53,12 @@ open class User : RealmObject(), Serializable {
     var imgUrl: String? = null
     var sport: String? = null
 
-    fun isParentUser() : Boolean {
-        return this.parent
-    }
-    fun isPlayerUser() : Boolean {
-        return this.player
-    }
-    fun isCoachUser() : Boolean {
-        return this.coach
-    }
-    fun makeCoachAndSave(coach: Coach?) {
-        this.apply {
-            this.coachUser = coach
-        }
-    }
-    fun executeMakeCoachAndSave(coach: Coach?) {
-        writeToRealm {
-            this.apply {
-                this.coachUser = coach
-            }
-        }
-        this.saveToRealm()
-    }
-
-    fun isIdentical(userTwo: User): Boolean {
-        if (this == userTwo) return true
-        return false
-    }
-
     fun saveToFirebase(): User {
         fireSaveUserToFirebaseAsync(this)
         return this
     }
 
-    fun saveToRealm(): User {
-        writeToRealm {
-            it.insertOrUpdate(this)
-        }
-        return this
-    }
+
 
 }
 

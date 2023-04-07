@@ -17,7 +17,7 @@
         android:layout_gravity="bottom"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,9 +26,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/cardPlayerHor2ImgProfile"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="32dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/ysr_empty_profile_icon_blue"
         app:layout_constraintRight_toRightOf="parent"

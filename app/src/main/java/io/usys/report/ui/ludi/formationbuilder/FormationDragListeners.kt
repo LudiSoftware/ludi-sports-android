@@ -12,11 +12,8 @@ inline fun RelativeLayout.setFormationDropListener(crossinline dropBlock: (Strin
     val dragListener = View.OnDragListener { v, event ->
         when (event.action) {
             DragEvent.ACTION_DROP -> {
-
                 val x = event.x
                 val y = event.y
-
-
                 val clipData = event.clipData
                 if (clipData != null && clipData.itemCount > 0) {
                     val playerId = clipData.getItemAt(0).text.toString()

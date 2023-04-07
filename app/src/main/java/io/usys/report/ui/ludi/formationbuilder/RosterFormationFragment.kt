@@ -169,10 +169,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
      */
     private fun setupDisplay() {
         activity?.window?.let {
-            setupFloatingActionMenu()
             setupFullDisplay()
             setupFilteredList()
             setupFormationList()
+            setupFloatingActionMenu()
         }
     }
 
@@ -239,7 +239,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
      */
     @SuppressLint("ClickableViewAccessibility")
     private fun setupFloatingActionMenu() {
-        floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, parentView ->
+        floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, _ ->
             // Handle menu item click events
             // todo: events to handle:
             //  - if in tryout mode, submit formation as roster.
@@ -313,10 +313,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         val vPlayerCircleLayout = playerRefViewItem.findViewById<CardView>(R.id.formationCardViewLayout)
         val vPlayerPosition = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtPosition)
 
-
         //Prepare PlayerView from Drag/Drop
         safePlayerFromRoster(playerId) { newPlayerRef ->
-
             if (!loadingFromSession) {
                 realmInstance?.safeWrite { itRealm ->
                     itRealm.teamSessionByTeamId(teamId) { ts ->
@@ -368,7 +366,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             playerRefViewItem.tag = newPlayerRef.id
             vPlayerCircleLayout.tag = newPlayerRef.id
             // Bind Data
-            vPlayerName.text = newPlayerRef.name
+//            vPlayerName.text = newPlayerRef.name
+            vPlayerName.text = "X: [${newPlayerRef.pointX}] Y: [${newPlayerRef.pointY}]"
             vPlayerTryOutTag.text = newPlayerRef.tryoutTag.toString()
             vPlayerPosition.text = newPlayerRef.position
             newPlayerRef.color?.let {
@@ -404,6 +403,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         val layoutChangeTeams = popupView.findViewById<LinearLayout>(R.id.menuPlayerChangeTeamsLayout)
         val layoutIsSelected = popupView.findViewById<LinearLayout>(R.id.menuPlayerIsSelectedLayout)
         val checkBoxIsSelected = popupView.findViewById<CheckBox>(R.id.menuPlayerCheckIsSelected)
+        val btnProfile = popupView.findViewById<ImageButton>(R.id.menuPlayerBtnProfile)
+        val btnChangeTeams = popupView.findViewById<ImageButton>(R.id.menuPlayerBtnChangeTeams)
 
         // Find and set up the Spinner
         val positionSpinner = popupView.findViewById<Spinner>(R.id.menuPlayerPositionSpinner)
@@ -418,13 +419,13 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         // Set the unfold animation when showing the popup
         popupWindow.contentView.startAnimation(unfoldAnimation)
 
-        layoutPlayerProfile.setOnClickListener {
+        layoutPlayerProfile.attachViewsToOnClickListener(btnProfile) {
             log("menu_player_profile")
             fragment.toPlayerProfile(playerId.toString())
             popupWindow.dismiss()
         }
 
-        layoutChangeTeams.setOnClickListener {
+        layoutChangeTeams.attachViewsToOnClickListener(btnChangeTeams) {
             log("menu_player_change_teams")
             safePlayerFromRoster(playerId as String) { playerRef ->
                 when (playerRef.color) {
