@@ -4,6 +4,7 @@ import io.usys.report.firebase.FirebaseModels
 import io.usys.report.firebase.realmListToDataList
 import io.usys.report.realm.model.Roster
 
+/** Firebase Model */
 data class RosterData (
     var id: String?,
     var organizationId:String?,
@@ -19,7 +20,7 @@ data class RosterData (
     var players: List<FirebaseModels.PlayerRefData>?,
 )
 
-
+/** Converter */
 fun Roster.convertForFirebase(): RosterData {
     return RosterData(
         id = this.id,

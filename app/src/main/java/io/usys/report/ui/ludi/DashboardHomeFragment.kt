@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -14,16 +13,11 @@ import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.model.*
-import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
-import io.usys.report.realm.model.users.userOrLogout
-import io.usys.report.realm.realm
-import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
-import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.onClickReturnViewRealmObject
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.loadInRealmIds
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
@@ -45,6 +39,7 @@ class DashboardHomeFragment : YsrFragment() {
     var itemOnClickTeamList: ((View, RealmObject) -> Unit)? = null
     var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
 
+    var teamIds: MutableList<String>? = mutableListOf()
     var teamRefList: RealmList<TeamRef>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,7 +54,7 @@ class DashboardHomeFragment : YsrFragment() {
         }
 //        NewEvaluationDialog().show(childFragmentManager, "NewEvaluationDialog")
         user?.let {
-            setupRealmCoachListener()
+//            setupRealmCoachListener()
         } ?: kotlin.run {
             _binding?.includeYsrListViewTeams?.root?.makeGone()
         }
@@ -93,11 +88,14 @@ class DashboardHomeFragment : YsrFragment() {
     private fun setupCoachDisplay() {
         val coach = realmInstance?.findCoachBySafeId()
         if (coach != null) {
-            val teams = coach.teams
-            teams?.let {
-                teamRefList = it
-                setupTeamList()
-            }
+            teamIds = coach.teams?.toMutableList()
+            if (teamIds.isNullOrEmpty()) return
+            setupTeamList()
+//            teams?.let { realmInstance?.fireGetTeamProfilesInBackground(it) }
+//            teams?.let {
+//                teamRefList = it
+//                setupTeamList()
+//            }
         }
     }
     override fun onStart() {
@@ -118,7 +116,7 @@ class DashboardHomeFragment : YsrFragment() {
     }
     private fun setupTeamList() {
         _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
-        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmList(teamRefList, FireTypes.TEAMS, itemOnClickTeamList, "small")
+        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmIds(teamIds)
     }
     override fun setupOnClickListeners() {
         itemOnClickSportList = { _, obj ->

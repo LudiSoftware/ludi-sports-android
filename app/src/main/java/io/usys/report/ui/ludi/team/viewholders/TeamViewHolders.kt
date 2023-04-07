@@ -4,10 +4,13 @@ package io.usys.report.ui.ludi.team.viewholders
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
+import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
+import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
+import io.usys.report.realm.realm
 import io.usys.report.realm.sessionTeams
 import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.*
@@ -20,6 +23,19 @@ import io.usys.report.utils.views.loadUriIntoImgView
 fun RecyclerView?.setupTeamListFromSession(onClickReturnViewRealmObject: ((View, Team) -> Unit)?, size:String = "small") {
     sessionTeams {
         this?.loadInRealmList(it, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
+    }
+}
+
+fun RecyclerView?.setupTeamListFromIds(teamIds:MutableList<String>, onClickReturnViewRealmObject: ((View, Team) -> Unit)?, size:String = "small") {
+    val tempList = RealmList<Team>()
+    val realm = realm()
+    teamIds.forEach {
+        realm.findTeamById(it)?.let { team ->
+            tempList.add(team)
+        }
+    }
+    if (tempList.isNotEmpty()) {
+        this?.loadInRealmList(tempList, FireTypes.TEAMS, onClickReturnViewRealmObject, size)
     }
 }
 
@@ -36,7 +52,7 @@ class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtItemTeamOrg?.text = it.headCoachName
             txtItemTeamEmail?.text = it.ageGroup
             val url = it.imgUrl.toString()
-            imgTeamProfile.loadUriIntoImgView(url)
+            imgTeamProfile?.loadUriIntoImgView(url)
         }
     }
     fun bind(team: TeamRef?) {
@@ -45,7 +61,7 @@ class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtItemTeamOrg?.text = it.headCoachName
             txtItemTeamEmail?.text = it.ageGroup
             val url = it.imgUrl.toString()
-            imgTeamProfile.loadUriIntoImgView(url)
+            imgTeamProfile?.loadUriIntoImgView(url)
         }
     }
 }
@@ -63,7 +79,7 @@ class TeamLargeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtItemTeamOrg?.text = it.headCoachName
             txtItemTeamEmail?.text = it.ageGroup
             val url = it.imgUrl.toString()
-            imgTeamProfile.loadUriIntoImgView(url)
+            imgTeamProfile?.loadUriIntoImgView(url)
         }
     }
 
@@ -73,7 +89,7 @@ class TeamLargeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtItemTeamOrg?.text = it.headCoachName
             txtItemTeamEmail?.text = it.ageGroup
             val url = it.imgUrl.toString()
-            imgTeamProfile.loadUriIntoImgView(url)
+            imgTeamProfile?.loadUriIntoImgView(url)
         }
     }
 }

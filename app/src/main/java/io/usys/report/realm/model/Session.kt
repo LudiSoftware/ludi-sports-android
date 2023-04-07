@@ -113,6 +113,11 @@ open class Session : RealmObject() {
                 it.where(Review::class.java).findAll().deleteAllFromRealm()
                 it.where(Service::class.java).findAll().deleteAllFromRealm()
                 it.where(Team::class.java).findAll().deleteAllFromRealm()
+                it.where(TeamRef::class.java).findAll().deleteAllFromRealm()
+                it.where(PlayerRef::class.java).findAll().deleteAllFromRealm()
+                it.where(Roster::class.java).findAll().deleteAllFromRealm()
+                it.where(TryOut::class.java).findAll().deleteAllFromRealm()
+                it.where(Coach::class.java).findAll().deleteAllFromRealm()
                 it.deleteAll()
             }
         }

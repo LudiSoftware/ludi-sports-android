@@ -1,8 +1,10 @@
 package io.usys.report.firebase
 
 import io.realm.Realm
+import io.usys.report.firebase.models.toRealmCoach
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.User
+import io.usys.report.realm.safeWrite
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 
@@ -47,6 +49,18 @@ fun Realm.fireGetCoachProfileInBackground(userId:String) {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
                 ds?.toLudiObject<Coach>(this)
+                log("Coach Updated")
+            }
+    }
+}
+
+fun Realm.fireGetCoachProfileCustom(userId:String) {
+    firebaseDatabase {
+        it.child(FireTypes.COACHES).child(userId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                this.safeWrite {
+                    ds?.toRealmCoach()
+                }
                 log("Coach Updated")
             }
     }

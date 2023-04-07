@@ -64,13 +64,13 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
     fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let { itPlayer ->
 
-            cardChkSelected.makeGone()
+            cardChkSelected?.makeGone()
 
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Position: ${position.toString()}"
 //            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
             itPlayer.imgUrl?.let { url ->
-                imgPlayerProfile.loadUriIntoImgView(url)
+                imgPlayerProfile?.loadUriIntoImgView(url)
             }
 
         }
@@ -83,9 +83,9 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
             val isInTop = counter < adapter.config.rosterSizeLimit
             setTryoutColor(isInTop, isSelected)
             // Selected CheckBox
-            cardChkSelected.setOnCheckedChangeListener(null)
-            cardChkSelected.isChecked = isSelected
-            cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
+            cardChkSelected?.setOnCheckedChangeListener(null)
+            cardChkSelected?.isChecked = isSelected
+            cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
                 var newStatus = PLAYER_STATUS_OPEN
                 if (isChecked) newStatus = PLAYER_STATUS_SELECTED
                 val realm = realm()
@@ -102,7 +102,7 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
             // Image Profile
             itPlayer.imgUrl?.let { url ->
-                imgPlayerProfile.loadUriIntoImgView(url)
+                imgPlayerProfile?.loadUriIntoImgView(url)
             }
             itemView.onLongClick {
                 it?.wiggleOnce()
@@ -121,9 +121,9 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
             val isInTop = position + 1 <= rosterLimit
             setSelectionColor(isInTop, isSelected)
             // Selected CheckBox
-            cardChkSelected.setOnCheckedChangeListener(null)
-            cardChkSelected.isChecked = isSelected
-            cardChkSelected.setOnCheckedChangeListener { _, isChecked ->
+            cardChkSelected?.setOnCheckedChangeListener(null)
+            cardChkSelected?.isChecked = isSelected
+            cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
                 var newStatus = PLAYER_STATUS_OPEN
                 if (isChecked) newStatus = PLAYER_STATUS_SELECTED
                 val realm = realm()
@@ -139,7 +139,7 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
             // Image Profile
             itPlayer.imgUrl?.let { url ->
-                imgPlayerProfile.loadUriIntoImgView(url)
+                imgPlayerProfile?.loadUriIntoImgView(url)
             }
             itemView.onLongClick {
                 it?.wiggleOnce()
@@ -153,11 +153,11 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
         // Player Selection Color
         // If in top 20, make green
         if (isInTop) {
-            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
         } else if (isSelected) {
-            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
         } else {
-            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
     }
 
@@ -166,12 +166,12 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
         // If in top 20, make green
         if (isSelected) {
             if (isInTop) {
-                constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+                constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
             } else {
-                constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+                constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
             }
         } else {
-            constraintBackground.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
     }
 
@@ -186,7 +186,7 @@ class PlayerTinyHorizontalViewHolder(itemView: View) : RecyclerView.ViewHolder(i
         player?.let {
             txtItemPlayerName?.text = it.name
             it.imgUrl?.let { url ->
-                imgPlayerProfile.loadUriIntoImgView(url)
+                imgPlayerProfile?.loadUriIntoImgView(url)
             }
         }
     }

@@ -34,7 +34,7 @@ class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtNoteName = itemView.bindTextView(R.id.cardNoteSmallTxtUserName)
     var txtNoteDate = itemView.bindTextView(R.id.cardNoteSmallTxtDate)
     var txtMessage = itemView.bindTextView(R.id.cardNoteSmallTxtMessage)
-    var imgNoteProfile: ImageView = itemView.bind(R.id.cardNoteSmallImgProfile)
+    var imgNoteProfile: ImageView? = itemView.bind(R.id.cardNoteSmallImgProfile)
 
     fun bind(note: Note?) {
         txtNoteName?.text = note?.ownerName

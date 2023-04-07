@@ -76,6 +76,7 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
         this.email = email
         this.name = name
         this.photoUrl = photoUrl.toString()
+        this.imgUrl = photoUrl.toString()
         this.emailVerified = emailVerified
     }
     return user

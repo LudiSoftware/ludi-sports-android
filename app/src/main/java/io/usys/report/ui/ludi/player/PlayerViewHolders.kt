@@ -66,7 +66,7 @@ class PlayerTinyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtItemPlayerName?.text = it.name
 //            txtItemPlayerRank?.text = position.toString()
             it.imgUrl?.let { url ->
-                imgPlayerProfile.loadUriIntoImgView(url)
+                imgPlayerProfile?.loadUriIntoImgView(url)
             }
         }
     }
@@ -83,7 +83,7 @@ class PlayerMediumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             txtItemPlayerName?.text = it.name
             txtItemPlayerRank?.text = position.toString()
             it.imgUrl?.let { url ->
-                imgPlayerProfile.loadUriIntoImgView(url)
+                imgPlayerProfile?.loadUriIntoImgView(url)
             }
         }
     }

@@ -64,7 +64,7 @@ fun <T: View> Dialog.bind(res: Int) : T {
     return this.findViewById(res)
 }
 
-fun <T: View> View.bind(res: Int) : T {
+fun <T: View> View.bind(res: Int) : T? {
     return this.findViewById(res)
 }
 

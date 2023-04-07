@@ -5,19 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.Realm
+import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.realm.writeToRealmOnMain
+import io.usys.report.firebase.fireGetTeamProfileInBackground
+import io.usys.report.realm.*
+import io.usys.report.realm.model.Team
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
-import io.usys.report.ui.views.touchAdapters.RealmListTouchAdapter
-import io.usys.report.utils.getObjectType
-import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 import java.util.*
 
@@ -35,10 +35,11 @@ fun gridLayoutManager(context: Context, columnCount:Int=2): GridLayoutManager {
 
 open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
+    var realmInstance = realm()
     var gridLayoutManager: GridLayoutManager? = null
     var itemClickListener: ((View, T) -> Unit)? = onClickReturnViewT()
     var updateCallback: ((String, String) -> Unit)? = onClickReturnStringString()
-    var realmList: RealmList<T>? = null
+    var realmList: RealmList<T>? = RealmList()
     var layout: Int = R.layout.card_organization_medium2
     var type: String = FireTypes.ORGANIZATIONS
     var size: String = "small"
@@ -48,6 +49,13 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.type = type
         this.itemClickListener = itemClickListener
         this.layout = RouterViewHolder.getLayout(type, size)
+    }
+
+    constructor(type: String, itemClickListener: ((View, T) -> Unit)?, size:String) : this() {
+        this.type = type
+        this.itemClickListener = itemClickListener
+        this.layout = RouterViewHolder.getLayout(type, size)
+        this.size = size
     }
 
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, size:String) : this() {
@@ -92,8 +100,15 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         }
     }
 
-}
 
+
+}
+class RealmObjectListener<T>(val objectId: String, private val onRealmChange: (obj:T) -> Unit) : RealmChangeListener<T> {
+    override fun onChange(t: T) {
+        log("Realm listener called")
+        onRealmChange(t)
+    }
+}
 
 /**
  * Pass a custom function and parameter.
@@ -106,8 +121,6 @@ fun <T> View.setOnRealmListener(itemClickListener: ((View, T) -> Unit)?, item: T
         itemClickListener?.invoke(this, item)
     }
 }
-
-
 
 
 

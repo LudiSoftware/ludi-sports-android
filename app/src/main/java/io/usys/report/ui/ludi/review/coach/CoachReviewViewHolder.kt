@@ -62,28 +62,28 @@ class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
     fun bind(questions: Question?) {
         questions?.let {
             currentQuestion = it.question
-            cardQuestionTxtQ.text = it.question
-            cardQuestionRadioA.text = it.choiceA
-            cardQuestionRadioB.text = it.choiceB
-            cardQuestionRadioC.text = it.choiceC
-            cardQuestionRadioD.text = it.choiceD
+            cardQuestionTxtQ?.text = it.question
+            cardQuestionRadioA?.text = it.choiceA
+            cardQuestionRadioB?.text = it.choiceB
+            cardQuestionRadioC?.text = it.choiceC
+            cardQuestionRadioD?.text = it.choiceD
 
-            cardQuestionRadioA.setOnClickListener {
+            cardQuestionRadioA?.setOnClickListener {
                 toggleRadioOn(A)
                 currentChoice = A
                 updater()
             }
-            cardQuestionRadioB.setOnClickListener {
+            cardQuestionRadioB?.setOnClickListener {
                 toggleRadioOn(B)
                 currentChoice = B
                 updater()
             }
-            cardQuestionRadioC.setOnClickListener {
+            cardQuestionRadioC?.setOnClickListener {
                 toggleRadioOn(C)
                 currentChoice = C
                 updater()
             }
-            cardQuestionRadioD.setOnClickListener {
+            cardQuestionRadioD?.setOnClickListener {
                 toggleRadioOn(D)
                 currentChoice = D
                 updater()
@@ -95,28 +95,28 @@ class ReviewQuestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
     private fun toggleRadioOn(letter:String) {
         when (letter) {
             A -> {
-                cardQuestionRadioA.isChecked = true
-                cardQuestionRadioB.isChecked = false
-                cardQuestionRadioC.isChecked = false
-                cardQuestionRadioD.isChecked = false
+                cardQuestionRadioA?.isChecked = true
+                cardQuestionRadioB?.isChecked = false
+                cardQuestionRadioC?.isChecked = false
+                cardQuestionRadioD?.isChecked = false
             }
             B -> {
-                cardQuestionRadioA.isChecked = false
-                cardQuestionRadioB.isChecked = true
-                cardQuestionRadioC.isChecked = false
-                cardQuestionRadioD.isChecked = false
+                cardQuestionRadioA?.isChecked = false
+                cardQuestionRadioB?.isChecked = true
+                cardQuestionRadioC?.isChecked = false
+                cardQuestionRadioD?.isChecked = false
             }
             C -> {
-                cardQuestionRadioA.isChecked = false
-                cardQuestionRadioB.isChecked = false
-                cardQuestionRadioC.isChecked = true
-                cardQuestionRadioD.isChecked = false
+                cardQuestionRadioA?.isChecked = false
+                cardQuestionRadioB?.isChecked = false
+                cardQuestionRadioC?.isChecked = true
+                cardQuestionRadioD?.isChecked = false
             }
             D -> {
-                cardQuestionRadioA.isChecked = false
-                cardQuestionRadioB.isChecked = false
-                cardQuestionRadioC.isChecked = false
-                cardQuestionRadioD.isChecked = true
+                cardQuestionRadioA?.isChecked = false
+                cardQuestionRadioB?.isChecked = false
+                cardQuestionRadioC?.isChecked = false
+                cardQuestionRadioD?.isChecked = true
             }
         }
     }

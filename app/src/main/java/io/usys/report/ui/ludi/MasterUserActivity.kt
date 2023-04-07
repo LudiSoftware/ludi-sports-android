@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
 import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
+import io.usys.report.firebase.fireGetCoachProfileCustom
 import io.usys.report.firebase.fireGetCoachProfileInBackground
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
@@ -34,9 +35,10 @@ class MasterUserActivity : AppCompatActivity() {
 
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()
-        realm().safeUser {
-            fireGetCoachProfileInBackground(it.id)
-        }
+//        val realm = realm()
+//        realm.safeUser {
+//            realm.fireGetCoachProfileCustom(it.id)
+//        }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)

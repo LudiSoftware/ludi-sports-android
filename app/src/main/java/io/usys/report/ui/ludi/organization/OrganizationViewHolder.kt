@@ -40,19 +40,19 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtOrgName = itemView.bindTextView(R.id.cardOrgTxtTitle)
     var txtWebsite = itemView.bindTextView(R.id.cardOrgTxtOne)
     var txtLeague = itemView.bindTextView(R.id.cardOrgTxtTwo)
-    var imgOrganization: ImageView = itemView.bind(R.id.cardOrgImgMainIcon)
-    var includeReviewCard: FrameLayout = itemView.findViewById(R.id.includeReviewCard)
+    var imgOrganization: ImageView? = itemView.bind(R.id.cardOrgImgMainIcon)
+    var includeReviewCard: FrameLayout? = itemView.findViewById(R.id.includeReviewCard)
 
-    var cardRatingBar: RatingBar = includeReviewCard.bind(R.id.cardRatingBar)
-    var cardRatingBarScore: TextView = includeReviewCard.bind(R.id.cardRatingTxtScore)
-    var cardRatingBarCount: TextView = includeReviewCard.bind(R.id.cardRatingTxtCount)
+    var cardRatingBar: RatingBar? = includeReviewCard?.bind(R.id.cardRatingBar)
+    var cardRatingBarScore: TextView? = includeReviewCard?.bind(R.id.cardRatingTxtScore)
+    var cardRatingBarCount: TextView? = includeReviewCard?.bind(R.id.cardRatingTxtCount)
 
     fun bind(org: Organization?) {
         txtOrgName?.text = org?.name
         txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
         txtLeague?.text = org?.leagues?.first()?.leagueName ?: "Alabama State League"
-        cardRatingBar.rating = org?.ratingScore?.toFloat() ?: 0.0F
-        cardRatingBarScore.text = org?.ratingScore.toString()
-        cardRatingBarCount.text = "${org?.ratingCount} Reviews"
+        cardRatingBar?.rating = org?.ratingScore?.toFloat() ?: 0.0F
+        cardRatingBarScore?.text = org?.ratingScore.toString()
+        cardRatingBarCount?.text = "${org?.ratingCount} Reviews"
     }
 }

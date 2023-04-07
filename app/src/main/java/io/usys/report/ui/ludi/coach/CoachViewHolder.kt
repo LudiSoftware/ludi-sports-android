@@ -41,7 +41,11 @@ class CoachViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             cardCoachTxtName?.text = it.name
             cardCoachTxtEmail?.text = it.details
 //            cardCoachTxtOrg?.text = it.organizations?.first()?.name
-            itemView.context.loadUriIntoImgView(it.imgUrl?.toUri() ?: return, cardCoachImgProfile)
+            cardCoachImgProfile?.let { it1 ->
+                itemView.context.loadUriIntoImgView(it.imgUrl?.toUri() ?: return,
+                    it1
+                )
+            }
         }
     }
 }

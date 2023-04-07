@@ -26,7 +26,7 @@ inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User
                 coreFireUser.updateFieldsAndSave(itUpdatedUser, tempRealm)
                 // Check if is Coach.
                 if (coreFireUser.coach && coreFireUser.coachUser == null) {
-                    tempRealm.fireGetCoachProfileInBackground(coreFireUser.id)
+                    tempRealm.fireGetCoachProfileCustom(coreFireUser.id)
                 }
                 block(coreFireUser)
                 return@fairAddListenerForSingleValueEvent

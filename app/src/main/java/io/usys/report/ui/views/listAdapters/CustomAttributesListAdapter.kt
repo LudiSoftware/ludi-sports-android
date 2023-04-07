@@ -68,27 +68,27 @@ class CustomAttributesListAdapter() : RecyclerView.Adapter<CustomAttributeViewHo
 
             // Field Name Setup
             if (customAttribute.key!! == "Field Name") {
-                fieldTexts.add(holder.txtFieldName)
-                holder.txtFieldName.setText(customAttribute.key)
-                holder.txtFieldName.setOnDoubleClickListener {
-                    holder.txtFieldName.setEditable(true)
+                holder.txtFieldName?.let { fieldTexts.add(it) }
+                holder.txtFieldName?.setText(customAttribute.key)
+                holder.txtFieldName?.setOnDoubleClickListener {
+                    holder.txtFieldName?.setEditable(true)
                 }
-                holder.txtFieldName.setEditable(false)
+                holder.txtFieldName?.setEditable(false)
             } else {
-                holder.txtFieldName.setText(customAttribute.key?.capitalizeFirstChar())
-                holder.txtFieldName.setEditable(false)
+                holder.txtFieldName?.setText(customAttribute.key?.capitalizeFirstChar())
+                holder.txtFieldName?.setEditable(false)
             }
 
             // Value Setup
-            this.editTexts.add(holder.editValue)
-            holder.editValue.setText(customAttribute.value)
-            holder.editValue.setOnDoubleClickListener {
+            holder.editValue?.let { this.editTexts.add(it) }
+            holder.editValue?.setText(customAttribute.value)
+            holder.editValue?.setOnDoubleClickListener {
                 changeModeToEdit()
-                holder.editValue.onTextChangeWatcher {
+                holder.editValue?.onTextChangeWatcher {
                     log("onTextChanged: $it")
                 }
             }
-            holder.editValue.setEditable(false)
+            holder.editValue?.setEditable(false)
         } ?: run {
             holder.itemView.removeItemViewFromList()
         }

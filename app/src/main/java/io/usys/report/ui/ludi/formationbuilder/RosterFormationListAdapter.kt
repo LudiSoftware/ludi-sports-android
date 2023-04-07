@@ -76,16 +76,16 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
             // Filtering System
             fs.roster?.players?.find { it.id == playerId }?.let { player ->
                 //Normal Display Setup
-                holder.textView.text = player.name
+                holder.textView?.text = player.name
                 filters?.let {
-                    holder.filterTextView.text = player.foot
+                    holder.filterTextView?.text = player.foot
                 } ?: run {
-                    holder.filterTextView.visibility = View.INVISIBLE
+                    holder.filterTextView?.visibility = View.INVISIBLE
                 }
                 player.imgUrl?.let { itImgUrl ->
-                    holder.profileImageView.loadUriIntoImgView(itImgUrl)
+                    holder.profileImageView?.loadUriIntoImgView(itImgUrl)
                 }
-                holder.bannerNameImageView.setPlayerTeamBackgroundBanner(player.color)
+                holder.bannerNameImageView?.setPlayerTeamBackgroundBanner(player.color)
 
                 holder.itemView.onDownUpListener({
                     println("onDown")
@@ -180,11 +180,11 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
     /** ViewHolder **/
     inner class RosterFormationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.bind(R.id.cardPlayerHor2TxtName)
-        val filterTextView: TextView = itemView.bind(R.id.cardPlayerHor2TxtFilter)
-        val profileImageView: ImageView = itemView.bind(R.id.cardPlayerHor2ImgProfile)
-        val badgeImageView: ImageView = itemView.bind(R.id.cardPlayerHor2ImgBadge)
-        val bannerNameImageView: ImageView = itemView.bind(R.id.cardPlayerHor2TxtImageBanner)
+        val textView: TextView? = itemView.bind(R.id.cardPlayerHor2TxtName)
+        val filterTextView: TextView? = itemView.bind(R.id.cardPlayerHor2TxtFilter)
+        val profileImageView: ImageView? = itemView.bind(R.id.cardPlayerHor2ImgProfile)
+        val badgeImageView: ImageView? = itemView.bind(R.id.cardPlayerHor2ImgBadge)
+        val bannerNameImageView: ImageView? = itemView.bind(R.id.cardPlayerHor2TxtImageBanner)
     }
 }
 

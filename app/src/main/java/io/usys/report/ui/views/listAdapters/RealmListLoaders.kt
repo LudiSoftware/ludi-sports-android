@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
+import io.usys.report.realm.model.Team
 import io.usys.report.utils.getObjectType
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
@@ -53,6 +54,13 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
 ) : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick, size)
+    this.layoutManager = linearLayoutManager(this.context)
+    this.adapter = adapter
+    return adapter
+}
+
+fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?) : RealmListAdapter2? {
+    val adapter = realmIds?.let { RealmListAdapter2(it) }
     this.layoutManager = linearLayoutManager(this.context)
     this.adapter = adapter
     return adapter

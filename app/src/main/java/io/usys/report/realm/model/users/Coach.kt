@@ -34,23 +34,23 @@ open class Coach : RealmObject() {
     var userId: String? = "unassigned"
     var name: String = "unassigned"
     var title: String? = null
-//    var organizationIds: RealmList<String>? = null
-    var teams: RealmList<TeamRef>? = RealmList()
+    var organizationIds: RealmList<String>? = null
+    var teams: RealmList<String>? = RealmList()
     var hasReview: Boolean = false
     var reviewIds: RealmList<String>? = null
     // base (12)
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()
-    var firstName: String? = null
-    var lastName: String? = null
-    var type: String? = null
-    var subType: String? = null
-    var details: String? = null
-    var isFree: Boolean = false
-    var status: String? = null
-    var mode: String? = null
-    var imgUrl: String? = null
-    var sport: String? = null
+    var firstName: String? = "null"
+    var lastName: String? = "null"
+    var type: String? = "null"
+    var subType: String? = "null"
+    var details: String? = "null"
+    var isFree: Boolean = true
+    var status: String? = "null"
+    var mode: String? = "null"
+    var imgUrl: String? = "null"
+    var sport: String? = "null"
 
 }
 
