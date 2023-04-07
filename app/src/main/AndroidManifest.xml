@@ -29,6 +29,12 @@
             android:name="io.usys.report.ui.login.ProviderLoginActivity"
             android:label="@string/title_activity_login" />
         <activity
+            android:name="io.usys.report.ui.login.LudiLoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name="io.usys.report.ui.login.LudiUserTypeLoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
             android:name="io.usys.report.ui.ludi.MasterUserActivity"
             android:label="Main Ludi Activity"
             android:configChanges="orientation|screenSize"

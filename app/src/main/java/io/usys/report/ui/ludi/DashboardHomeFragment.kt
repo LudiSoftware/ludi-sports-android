@@ -20,6 +20,7 @@ import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.realm.realm
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.login.LudiLoginActivity
 import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.ui.views.listAdapters.loadInRealmList
@@ -141,7 +142,7 @@ class SignInMenuProvider(val activity: Activity) : MenuProvider {
         when (menuItem.itemId) {
             R.id.menuitem_signin -> {
                 //TODO: Add Sign In Page
-                activity.launchActivity<ProviderLoginActivity>()
+                activity.launchActivity<LudiLoginActivity>()
                 return true
             }else -> {}
         }
