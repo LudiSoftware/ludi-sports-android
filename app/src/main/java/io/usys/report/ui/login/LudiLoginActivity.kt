@@ -3,13 +3,9 @@ package io.usys.report.ui.login
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
 import io.usys.report.firebase.fireSyncUserWithDatabase
@@ -17,7 +13,6 @@ import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.fromFirebaseToRealmUser
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
-import io.usys.report.utils.fairRegisterActivityResult
 import io.usys.report.utils.hideLudiActionBar
 
 /**
@@ -30,6 +25,7 @@ class LudiLoginActivity : AppCompatActivity() {
     var userName: EditText? = null
     var password: EditText? = null
     var btnSignIn: Button? = null
+    var btnSignUp: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +36,12 @@ class LudiLoginActivity : AppCompatActivity() {
         userName = findViewById<EditText>(R.id.editUsername)
         password = findViewById<EditText>(R.id.editPassword)
         btnSignIn = findViewById<Button>(R.id.btnLogin)
+        btnSignUp = findViewById<Button>(R.id.btnLoginSignUp)
 
+
+        btnSignUp?.setOnClickListener {
+            launchActivity<LudiSignUpActivity>()
+        }
 
         btnSignIn?.setOnClickListener {
             if (isUsernamePasswordValid()) {

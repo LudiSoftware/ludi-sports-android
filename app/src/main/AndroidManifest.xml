@@ -32,7 +32,7 @@
             android:name="io.usys.report.ui.login.LudiLoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name="io.usys.report.ui.login.LudiUserTypeLoginActivity"
+            android:name="io.usys.report.ui.login.LudiSignUpActivity"
             android:label="@string/title_activity_login" />
         <activity
             android:name="io.usys.report.ui.ludi.MasterUserActivity"
