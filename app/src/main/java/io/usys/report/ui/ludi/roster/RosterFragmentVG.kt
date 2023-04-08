@@ -66,7 +66,6 @@ class RosterFragmentVG : LudiStringIdsFragment() {
         }
 
         // ViewPager/Tab Setup
-//        val viewgroup = _binding?.ludiRosterVGLinearLayout.addLudiRosterViewGroup(this, teamId!!)
         val lvg = LudiViewGroup(this, _binding?.ludiRosterVGLinearLayout!!, teamId, playerId, null, type)
         ludiViewGroupViewModel.setLudiViewGroup(lvg)
         ludiViewGroupViewModel.ludiViewGroup.value?.setupRosterTabs()

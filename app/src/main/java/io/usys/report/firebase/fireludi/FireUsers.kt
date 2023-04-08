@@ -59,7 +59,10 @@ fun Realm.fireGetCoachProfileCustom(userId:String) {
         it.child(FireTypes.COACHES).child(userId)
             .fairAddListenerForSingleValueEvent { ds ->
                 this.safeWrite {
-                    ds?.toRealmCoach()
+                    val coach = ds?.toRealmCoach()
+                    if (coach != null) {
+                        this.copyToRealmOrUpdate(coach)
+                    }
                 }
                 log("Coach Updated")
             }

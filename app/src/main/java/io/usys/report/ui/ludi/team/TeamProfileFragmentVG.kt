@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import io.usys.report.databinding.ProfileTeamBinding
 import io.usys.report.firebase.fireGetRosterInBackground
-import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.firebase.fireGetTryOutProfileIntoRealm
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
@@ -41,16 +40,19 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         //Basic Setup
         teamId?.let {
             // 1. Get Team Profile from Firebase
-//            realmInstance?.fireGetTeamProfileInBackground(it)
-            val team = realmInstance?.findTeamById(it)
-            rosterId = team?.rosterId
-            val tempRoster = realmInstance?.findRosterById(rosterId)
-            if (tempRoster == null && rosterId != null) {
-                fireGetRosterInBackground(rosterId!!)
-            }
-            if (_MODE == YsrMode.TRYOUTS) {
-                realmInstance?.fireGetTryOutProfileIntoRealm(it)
-            }
+            val tp = TeamProvider(it)
+            tp.pullTeamAndDetailsFromFirebase()
+
+////            realmInstance?.fireGetTeamProfileInBackground(it)
+//            val team = realmInstance?.findTeamById(it)
+//            rosterId = team?.rosterId
+//            val tempRoster = realmInstance?.findRosterById(rosterId)
+//            if (tempRoster == null && rosterId != null) {
+//                fireGetRosterInBackground(rosterId!!)
+//            }
+//            if (_MODE == YsrMode.TRYOUTS) {
+//                realmInstance?.fireGetTryOutProfileIntoRealm(it)
+//            }
         }
         teamId?.let {
             menu = TeamMenuPopupProvider(this, it)

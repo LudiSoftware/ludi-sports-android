@@ -6,7 +6,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.TryOut
-import io.usys.report.ui.ludi.roster.RosterProvider
+import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -39,11 +39,11 @@ inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSes
     }
 }
 
-
 fun TeamSession?.saveRosterToFirebase() {
     this?.let { ts ->
-        ts.rosterId?.let { rosterId: String ->
-            RosterProvider(rosterId).pushRosterToFirebase()
+        ts.teamId?.let { teamId: String ->
+            val tp = TeamProvider(teamId)
+            tp.pushOfficialRosterToFirebase()
         }
     }
 }

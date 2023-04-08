@@ -10,6 +10,7 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
+import io.usys.report.firebase.models.CoachRealmSingleEventListener
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
@@ -75,14 +76,6 @@ class DashboardHomeFragment : YsrFragment() {
         super.onPause()
         requireActivity().removeMenuProvider(menuIn ?: menuOut ?: return)
     }
-    private fun setupRealmCoachListener() {
-        val coachListener = RealmChangeListener<RealmResults<Coach>> {
-            // Handle changes to the Realm data here
-            log("Coach listener called")
-            setupCoachDisplay()
-        }
-        realmInstance?.where(Coach::class.java)?.findAllAsync()?.addChangeListener(coachListener)
-    }
 
     private fun setupCoachDisplay() {
         val coach = realmInstance?.findCoachBySafeId()
@@ -90,11 +83,22 @@ class DashboardHomeFragment : YsrFragment() {
             teamIds = coach.teams?.toMutableList()
             if (teamIds.isNullOrEmpty()) return
             setupTeamList()
-//            teams?.let { realmInstance?.fireGetTeamProfilesInBackground(it) }
-//            teams?.let {
-//                teamRefList = it
-//                setupTeamList()
-//            }
+        } else {
+            CoachRealmSingleEventListener(coachCallback())
+        }
+    }
+
+    private fun coachCallback() : (() -> Unit) {
+        return {
+            log("Coach Updated")
+            val coach = realmInstance?.findCoachBySafeId()
+            if (coach != null) {
+
+                teamIds = coach.teams?.toMutableList()
+                if (!teamIds.isNullOrEmpty()) {
+                    setupTeamList()
+                }
+            }
         }
     }
     override fun onStart() {

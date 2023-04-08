@@ -1,13 +1,17 @@
 package io.usys.report.firebase.models
 
 import com.google.firebase.database.DataSnapshot
+import io.realm.Realm
+import io.realm.RealmChangeListener
 import io.realm.RealmList
-import io.usys.report.firebase.toObject
-import io.usys.report.firebase.toRealmObject
+import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.realm.model.Coach
-import io.usys.report.realm.model.Team
-import io.usys.report.realm.model.TeamRef
+import io.usys.report.realm.model.users.getUserId
+import io.usys.report.realm.model.users.safeUserId
+import io.usys.report.realm.realm
+import io.usys.report.realm.safeWrite
 import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.log
 
 class CoachData  {
 
@@ -61,8 +65,9 @@ fun Coach.mapToCoachData(): CoachData {
 }
 fun DataSnapshot.toRealmCoach(): Coach {
     val coach = Coach()
+    val realm = realm()
 
-    coach.id = this.child("id").getValue(String::class.java) ?: "unassigned"
+    coach.id = this.child("id").getValue(String::class.java) ?: realm.getUserId() ?: coreFirebaseUserUid() ?: "unassigned"
     coach.userId = this.child("userId").getValue(String::class.java)
     coach.name = this.child("name").getValue(String::class.java) ?: "unassigned"
     coach.title = this.child("title").getValue(String::class.java)
@@ -116,32 +121,34 @@ fun DataSnapshot.toRealmCoach(): Coach {
 
     return coach
 }
-//fun parseCoachFromHashMap(map: HashMap<String, Any>): Coach {
-//    val coach = Coach()
-//
-//    coach.id = (map["id"] as? String) ?: "unassigned"
-//    coach.userId = map["userId"] as? String
-//    coach.name = (map["name"] as? String) ?: "unassigned"
-//    coach.title = map["title"] as? String
-//    val organizationIds = map["organizationIds"] as? List<String>
-//    coach.organizationIds = if (organizationIds != null) RealmList(*organizationIds.toTypedArray()) else null
-//    val teams = map["teams"] as? List<TeamRef>
-//    coach.teams = if (teams != null) RealmList(*teams.toTypedArray()) else null
-//    coach.hasReview = (map["hasReview"] as? Boolean) ?: false
-//    val reviewIds = map["reviewIds"] as? List<String>
-//    coach.reviewIds = if (reviewIds != null) RealmList(*reviewIds.toTypedArray()) else null
-//    coach.dateCreated = map["dateCreated"] as? String
-//    coach.dateUpdated = map["dateUpdated"] as? String
-//    coach.firstName = map["firstName"] as? String
-//    coach.lastName = map["lastName"] as? String
-//    coach.type = map["type"] as? String
-//    coach.subType = map["subType"] as? String
-//    coach.details = map["details"] as? String
-//    coach.isFree = (map["isFree"] as? Boolean) ?: true
-//    coach.status = map["status"] as? String
-//    coach.mode = map["mode"] as? String
-//    coach.imgUrl = map["imgUrl"] as? String
-//    coach.sport = map["sport"] as? String
-//
-//    return coach
-//}
+
+
+
+class CoachRealmSingleEventListener(private val onRealmChange: () -> Unit) : RealmChangeListener<Coach> {
+    private val realm: Realm = Realm.getDefaultInstance()
+    private lateinit var coachResult: Coach
+    private var coachId: String = "unassigned"
+
+    init {
+        realm.safeUserId { userId ->
+            coachId = userId
+        }
+        registerListener()
+    }
+
+    override fun onChange(t: Coach) {
+        log("Coach listener called")
+//        unregisterListener()
+        onRealmChange()
+    }
+
+    private fun registerListener() {
+        coachResult = realm.where(Coach::class.java).equalTo("id", coachId).findFirstAsync()
+        coachResult.addChangeListener(this)
+    }
+
+    private fun unregisterListener() {
+        coachResult.removeChangeListener(this)
+        realm.close()
+    }
+}

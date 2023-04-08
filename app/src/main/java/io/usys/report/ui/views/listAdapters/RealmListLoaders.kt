@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
-import io.usys.report.realm.model.Team
 import io.usys.report.utils.getObjectType
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
@@ -60,8 +59,8 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
     return adapter
 }
 
-fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?, fragment: Fragment) : RealmListAdapter2? {
-    val adapter = realmIds?.let { RealmListAdapter2(it, fragment) }
+fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?, fragment: Fragment) : RealmListAdapterSync? {
+    val adapter = realmIds?.let { RealmListAdapterSync(it, fragment) }
     this.layoutManager = linearLayoutManager(this.context)
     this.adapter = adapter
     return adapter

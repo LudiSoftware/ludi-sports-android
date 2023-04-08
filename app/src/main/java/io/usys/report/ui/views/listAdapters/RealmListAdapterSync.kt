@@ -3,7 +3,6 @@ package io.usys.report.ui.views.listAdapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.*
 import io.usys.report.R
@@ -12,19 +11,23 @@ import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Team
+import io.usys.report.ui.ludi.team.TeamRealmSingleEventListener
 import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
 import io.usys.report.utils.log
+import io.usys.report.utils.main
 
 /**
  * Dynamic Master RecyclerView Adapter
  */
 
 
-open class RealmListAdapter2(): RecyclerView.Adapter<TeamSmallViewHolder>() {
+open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
 
     var realmInstance = realm()
     var realmIds = mutableListOf<String>()
     var realmList: RealmList<RealmObject>? = RealmList()
+
+    var realmMap: MutableMap<String, MutableList<String>> = mutableMapOf()
 
     var parentFragment: Fragment? = null
     var layout: Int = R.layout.card_organization_medium2
@@ -33,16 +36,25 @@ open class RealmListAdapter2(): RecyclerView.Adapter<TeamSmallViewHolder>() {
 
     private fun runTeamIds() {
         realmIds.forEach { teamId ->
-            TeamRealmSingleEventListener(teamId = teamId, uiCallbackUpdater())
-            realmInstance.fireGetTeamProfileInBackground(teamId)
+            realmInstance.findTeamById(teamId)?.let { team ->
+                realmList?.add(team as? Team)
+            } ?: kotlin.run {
+                TeamRealmSingleEventListener(teamId = teamId, uiCallbackUpdater())
+                realmInstance.fireGetTeamProfileInBackground(teamId)
+            }
+
         }
     }
 
     // Updates From Team ID Come Here
-    private fun <T:RealmObject> uiCallbackUpdater() : ((obj:T) -> Unit) {
+    private fun uiCallbackUpdater() : ((obj:String) -> Unit) {
         return { obj ->
             log("Obj Updated")
-            loadTeamsByIds()
+            main {
+                runTeamIds()
+                notifyDataSetChanged()
+            }
+
         }
     }
 
@@ -52,7 +64,6 @@ open class RealmListAdapter2(): RecyclerView.Adapter<TeamSmallViewHolder>() {
                 realmList?.add(team as? Team)
             }
         }
-        notifyDataSetChanged()
     }
 
     constructor(realmIds: MutableList<String>, fragment: Fragment) : this() {
@@ -89,32 +100,7 @@ open class RealmListAdapter2(): RecyclerView.Adapter<TeamSmallViewHolder>() {
 
 }
 
-class TeamRealmSingleEventListener(val teamId: String, private val onRealmChange: (teamId: Team) -> Unit) : RealmChangeListener<Team> {
-    private val realm: Realm = Realm.getDefaultInstance()
-    private lateinit var teamResult: Team
 
-    init {
-        registerListener()
-    }
-
-    override fun onChange(t: Team) {
-        log("Team listener called")
-        val r = t as? Team
-        if (teamId != r?.id) return
-        unregisterListener()
-        onRealmChange(t)
-    }
-
-    private fun registerListener() {
-        teamResult = realm.where(Team::class.java).equalTo("id", teamId).findFirstAsync()
-        teamResult.addChangeListener(this)
-    }
-
-    private fun unregisterListener() {
-        teamResult.removeChangeListener(this)
-        realm.close()
-    }
-}
 
 
 

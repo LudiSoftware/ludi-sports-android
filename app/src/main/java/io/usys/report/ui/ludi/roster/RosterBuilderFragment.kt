@@ -2,30 +2,16 @@ package io.usys.report.ui.ludi.roster
 
 import android.os.Bundle
 import android.view.*
-import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.PopupWindow
-import android.widget.Spinner
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
-import io.realm.RealmChangeListener
-import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
-import io.usys.report.realm.local.teamSessionByTeamId
-import io.usys.report.realm.model.PLAYER_STATUS_ACCEPTED
-import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.TEAM_MODE_OFF_SEASON
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.formationbuilder.setPlayerFormationBackgroundColor
-import io.usys.report.ui.ludi.player.positionMap
-import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
+import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.ui.views.LudiPopupMenu
 import io.usys.report.utils.*
-import io.usys.report.utils.views.attachAndInflatePopMenu
 import io.usys.report.utils.views.onItemSelected
 import io.usys.report.utils.views.wiggleOnce
 
@@ -43,6 +29,7 @@ class RosterBuilderFragment : YsrFragment() {
     var rosterConfig = RosterConfig()
     var adapter: RosterListAdapter? = null
 
+    var teamProvider: TeamProvider? = null
     var teamId: String = "unknown"
 
     var rosterType: String = RosterType.OFFICIAL.type
@@ -88,11 +75,15 @@ class RosterBuilderFragment : YsrFragment() {
                                 team.mode = TeamStatus.PENDING.status
                             }
                         }
-                        currentRosterId?.let { it1 -> RosterProvider(it1).pushRosterToFirebase() }
+                        currentRosterId?.let { it1 ->
+                            teamProvider?.pushOfficialRosterToFirebase()
+                        }
                     }
                 }
             }
         })
+
+        teamProvider = TeamProvider(teamId)
 
         setupRosterIds()
 //        setupTeamRosterRealmListener()
