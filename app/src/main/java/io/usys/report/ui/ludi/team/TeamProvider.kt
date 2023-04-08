@@ -44,7 +44,7 @@ class TeamProvider(val teamId: String) {
             // Tryout
             team.tryoutId?.let { tryoutId ->
                 TryoutRealmSingleEventListener(tryoutId = tryoutId, tryoutCallback())
-                realmInstance.fireGetTryOutProfileIntoRealm(tryoutId)
+                realmInstance.fireGetTryOutProfileById(tryoutId)
             }
         } ?: run {
             // Team
@@ -135,7 +135,6 @@ class TryoutRealmSingleEventListener(val tryoutId: String, private val onRealmCh
 
     override fun onChange(t: TryOut) {
         log("Team listener called")
-        unregisterListener()
         onRealmChange(tryoutId)
     }
 

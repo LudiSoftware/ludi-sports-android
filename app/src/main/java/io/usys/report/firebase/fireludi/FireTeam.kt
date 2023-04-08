@@ -70,3 +70,14 @@ fun Realm.fireGetTryOutProfileIntoRealm(teamId:String?) {
     }
 }
 
+fun Realm.fireGetTryOutProfileById(tryoutId:String?) {
+    if (tryoutId == null) return
+    firebaseDatabase {
+        it.child(DatabasePaths.TRYOUTS.path).child(tryoutId)
+            .fairAddListenerForSingleValueEvent { ds ->
+                ds?.toLudiObjects<TryOut>()
+                log("TryOut Updated")
+            }
+    }
+}
+

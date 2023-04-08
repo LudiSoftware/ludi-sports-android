@@ -19,8 +19,6 @@ import io.usys.report.utils.main
 /**
  * Dynamic Master RecyclerView Adapter
  */
-
-
 open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
 
     var realmInstance = realm()
@@ -34,7 +32,7 @@ open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
     var type: String = FireTypes.ORGANIZATIONS
     var size: String = "small"
 
-    private fun runTeamIds() {
+    private fun loadTeamIds() {
         realmIds.forEach { teamId ->
             realmInstance.findTeamById(teamId)?.let { team ->
                 realmList?.add(team as? Team)
@@ -50,7 +48,7 @@ open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
         return { obj ->
             log("Obj Updated")
             main {
-                runTeamIds()
+                loadTeamIds()
                 notifyDataSetChanged()
             }
         }
@@ -59,7 +57,7 @@ open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
     constructor(realmIds: MutableList<String>, fragment: Fragment) : this() {
         this.realmIds = realmIds
         this.parentFragment = fragment
-        runTeamIds()
+        loadTeamIds()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSmallViewHolder {
