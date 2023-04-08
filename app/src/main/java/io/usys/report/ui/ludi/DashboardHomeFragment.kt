@@ -10,7 +10,6 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
-import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
@@ -116,7 +115,7 @@ class DashboardHomeFragment : YsrFragment() {
     }
     private fun setupTeamList() {
         _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
-        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmIds(teamIds)
+        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmIds(teamIds, this)
     }
     override fun setupOnClickListeners() {
         itemOnClickSportList = { _, obj ->

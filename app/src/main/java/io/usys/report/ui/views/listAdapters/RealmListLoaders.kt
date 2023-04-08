@@ -1,6 +1,7 @@
 package io.usys.report.ui.views.listAdapters
 
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,8 +60,8 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
     return adapter
 }
 
-fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?) : RealmListAdapter2? {
-    val adapter = realmIds?.let { RealmListAdapter2(it) }
+fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?, fragment: Fragment) : RealmListAdapter2? {
+    val adapter = realmIds?.let { RealmListAdapter2(it, fragment) }
     this.layoutManager = linearLayoutManager(this.context)
     this.adapter = adapter
     return adapter

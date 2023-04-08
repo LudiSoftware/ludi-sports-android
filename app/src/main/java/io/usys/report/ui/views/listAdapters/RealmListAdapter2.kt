@@ -2,6 +2,8 @@ package io.usys.report.ui.views.listAdapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.*
 import io.usys.report.R
@@ -24,29 +26,39 @@ open class RealmListAdapter2(): RecyclerView.Adapter<TeamSmallViewHolder>() {
     var realmIds = mutableListOf<String>()
     var realmList: RealmList<RealmObject>? = RealmList()
 
+    var parentFragment: Fragment? = null
     var layout: Int = R.layout.card_organization_medium2
     var type: String = FireTypes.ORGANIZATIONS
     var size: String = "small"
 
-    fun runTeamIds(teamIds: MutableList<String>?) {
-        realmIds = teamIds ?: mutableListOf()
+    private fun runTeamIds() {
         realmIds.forEach { teamId ->
-            TeamRealmSingleEventListener(teamId = teamId, createNewTeamClicker())
+            TeamRealmSingleEventListener(teamId = teamId, uiCallbackUpdater())
             realmInstance.fireGetTeamProfileInBackground(teamId)
         }
     }
 
     // Updates From Team ID Come Here
-    private fun <T:RealmObject> createNewTeamClicker() : ((obj:T) -> Unit) {
+    private fun <T:RealmObject> uiCallbackUpdater() : ((obj:T) -> Unit) {
         return { obj ->
             log("Obj Updated")
             loadTeamsByIds()
         }
     }
 
-    constructor(realmIds: MutableList<String>) : this() {
+    private fun loadTeamsByIds() {
+        realmIds.forEach { id ->
+            realmInstance.findTeamById(id)?.let { team ->
+                realmList?.add(team as? Team)
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    constructor(realmIds: MutableList<String>, fragment: Fragment) : this() {
         this.realmIds = realmIds
-        runTeamIds(realmIds)
+        this.parentFragment = fragment
+        runTeamIds()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSmallViewHolder {
@@ -62,28 +74,17 @@ open class RealmListAdapter2(): RecyclerView.Adapter<TeamSmallViewHolder>() {
         println("binding realmlist")
         realmList?.let {
             it[position]?.let { it1 ->
-
                 when (it1) {
                     is Team -> {
                         log("Team")
-                        holder.bind(it1)
+                        holder.bind(it1, fragment = parentFragment)
                     }
                     is Organization -> {
                         log("Organization")
                     }
                 }
-
             }
         }
-    }
-
-    private fun loadTeamsByIds() {
-        realmIds.forEach { id ->
-            realmInstance.findTeamById(id)?.let { team ->
-                realmList?.add(team as? Team)
-            }
-        }
-        notifyDataSetChanged()
     }
 
 }

@@ -48,8 +48,8 @@ class RouterViewHolder(itemView: View, var type:String, var updateCallback:((Str
             }
             FireTypes.TEAMS -> {
                 when (size) {
-                    "small" -> return TeamSmallViewHolder(itemView).bind(obj as? TeamRef)
-                    "large" -> return TeamLargeViewHolder(itemView).bind(obj as? TeamRef)
+//                    "small" -> return TeamSmallViewHolder(itemView).bind(obj as? Team)
+//                    "large" -> return TeamLargeViewHolder(itemView).bind(obj as? Team)
                 }
             }
             FireTypes.SERVICES -> return ServiceViewHolder(itemView).bind(obj as? Service)

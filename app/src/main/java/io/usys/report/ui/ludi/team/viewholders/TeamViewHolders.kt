@@ -2,6 +2,8 @@ package io.usys.report.ui.ludi.team.viewholders
 
 
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.realm.RealmList
@@ -12,6 +14,7 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.sessionTeams
+import io.usys.report.ui.fragments.toTeamProfileVG
 import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.*
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -46,22 +49,20 @@ class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var txtItemTeamEmail = itemView.bindTextView(R.id.cardTeamSmallTxtEmail)
     var imgTeamProfile = itemView.bind<CircleImageView>(R.id.cardTeamSmallImgProfile)
 
-    fun bind(team: Team?) {
+    fun bind(team: Team?, fragment: Fragment?) {
+        var teamId = team?.id ?: "UNKNOWN"
         team?.let {
+            teamId = it.id
             txtItemTeamName?.text = it.name
             txtItemTeamOrg?.text = it.headCoachName
             txtItemTeamEmail?.text = it.ageGroup
             val url = it.imgUrl.toString()
             imgTeamProfile?.loadUriIntoImgView(url)
         }
-    }
-    fun bind(team: TeamRef?) {
-        team?.let {
-            txtItemTeamName?.text = it.name
-            txtItemTeamOrg?.text = it.headCoachName
-            txtItemTeamEmail?.text = it.ageGroup
-            val url = it.imgUrl.toString()
-            imgTeamProfile?.loadUriIntoImgView(url)
+
+        itemView.setOnClickListener {
+            log("Team Clicked")
+            fragment?.toTeamProfileVG(teamId)
         }
     }
 }
@@ -80,16 +81,12 @@ class TeamLargeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             txtItemTeamEmail?.text = it.ageGroup
             val url = it.imgUrl.toString()
             imgTeamProfile?.loadUriIntoImgView(url)
+
+            itemView.setOnClickListener {
+                log("Team Clicked")
+            }
         }
     }
 
-    fun bind(team: TeamRef?) {
-        team?.let {
-            txtItemTeamName?.text = it.name
-            txtItemTeamOrg?.text = it.headCoachName
-            txtItemTeamEmail?.text = it.ageGroup
-            val url = it.imgUrl.toString()
-            imgTeamProfile?.loadUriIntoImgView(url)
-        }
-    }
+
 }

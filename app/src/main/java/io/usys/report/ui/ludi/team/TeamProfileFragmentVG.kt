@@ -41,7 +41,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         //Basic Setup
         teamId?.let {
             // 1. Get Team Profile from Firebase
-            realmInstance?.fireGetTeamProfileInBackground(it)
+//            realmInstance?.fireGetTeamProfileInBackground(it)
             val team = realmInstance?.findTeamById(it)
             rosterId = team?.rosterId
             val tempRoster = realmInstance?.findRosterById(rosterId)
