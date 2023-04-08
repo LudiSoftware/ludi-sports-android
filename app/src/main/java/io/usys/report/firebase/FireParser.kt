@@ -88,7 +88,9 @@ inline fun <reified T:RealmObject> DataSnapshot?.toLudiObjects(): RealmList<T>? 
                 if (value is HashMap<*,*>) {
                     val tempHash = value as HashMap<String, Any>
                     temp = tempHash.toRealmObject<T>()
-                    temp?.let { itTemp-> realmList.add(itTemp) }
+                    temp?.let { itTemp ->
+                        realmList.add(itTemp)
+                    }
                 }
             }
         } else {

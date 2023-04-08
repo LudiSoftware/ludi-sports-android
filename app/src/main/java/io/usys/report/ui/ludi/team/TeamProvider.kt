@@ -134,7 +134,7 @@ class TryoutRealmSingleEventListener(val tryoutId: String, private val onRealmCh
     }
 
     override fun onChange(t: TryOut) {
-        log("Team listener called")
+        log("TryOut listener called")
         onRealmChange(tryoutId)
     }
 

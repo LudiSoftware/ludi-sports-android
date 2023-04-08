@@ -42,17 +42,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
             // 1. Get Team Profile from Firebase
             val tp = TeamProvider(it)
             tp.pullTeamAndDetailsFromFirebase()
-
-////            realmInstance?.fireGetTeamProfileInBackground(it)
-//            val team = realmInstance?.findTeamById(it)
-//            rosterId = team?.rosterId
-//            val tempRoster = realmInstance?.findRosterById(rosterId)
-//            if (tempRoster == null && rosterId != null) {
-//                fireGetRosterInBackground(rosterId!!)
-//            }
-//            if (_MODE == YsrMode.TRYOUTS) {
-//                realmInstance?.fireGetTryOutProfileIntoRealm(it)
-//            }
         }
         teamId?.let {
             menu = TeamMenuPopupProvider(this, it)

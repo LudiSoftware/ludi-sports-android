@@ -75,7 +75,7 @@ fun Realm.fireGetTryOutProfileById(tryoutId:String?) {
     firebaseDatabase {
         it.child(DatabasePaths.TRYOUTS.path).child(tryoutId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toLudiObjects<TryOut>()
+                ds?.toLudiObject<TryOut>()
                 log("TryOut Updated")
             }
     }

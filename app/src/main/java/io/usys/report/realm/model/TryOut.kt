@@ -62,8 +62,8 @@ open class TryOut : RealmObject(), Serializable {
     var rosterId: String? = null
     // References (3)
     var coachIds: RealmList<String>? = null
-    var managerIds: RealmList<String>? = null
-    var organizationIds: RealmList<String>? = null
+//    var managerIds: RealmList<String>? = null
+//    var organizationIds: RealmList<String>? = null
     // Schedule (1)
 //    var schedule: Schedule? = null
     // Team Attributes (3)
@@ -83,11 +83,7 @@ open class TryOut : RealmObject(), Serializable {
     var imgUrl: String? = null
     var sport: String? = null
     var chatEnabled: Boolean = false
-
-
     //todo: save tryout to firebase/realm
     //todo: create note
     //todo: register player
-
-
 }
