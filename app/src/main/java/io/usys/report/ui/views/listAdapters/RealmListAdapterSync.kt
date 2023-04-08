@@ -42,7 +42,6 @@ open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
                 TeamRealmSingleEventListener(teamId = teamId, uiCallbackUpdater())
                 realmInstance.fireGetTeamProfileInBackground(teamId)
             }
-
         }
     }
 
@@ -53,15 +52,6 @@ open class RealmListAdapterSync(): RecyclerView.Adapter<TeamSmallViewHolder>() {
             main {
                 runTeamIds()
                 notifyDataSetChanged()
-            }
-
-        }
-    }
-
-    private fun loadTeamsByIds() {
-        realmIds.forEach { id ->
-            realmInstance.findTeamById(id)?.let { team ->
-                realmList?.add(team as? Team)
             }
         }
     }

@@ -11,14 +11,21 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
+import io.usys.report.firebase.fireGetRosterInBackground
+import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.realm.findRosterById
+import io.usys.report.realm.findTeamById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.Team
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.*
+import io.usys.report.ui.ludi.team.TeamRealmSingleEventListener
 import io.usys.report.ui.views.touchAdapters.*
+import io.usys.report.utils.log
+import io.usys.report.utils.main
 
 
 /**
@@ -181,10 +188,33 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
         }
     }
 
+    private fun loadRoster() {
+        realmInstance.findRosterById(config.rosterId)?.let { roster ->
+            playerRefList?.clear()
+            playerRefList = roster.players?.ludiFilters(config.playerFilters)?.sortByOrderIndex()
+        } ?: kotlin.run {
+            config.rosterId?.let {
+                RosterRealmSingleEventListener(rosterId = it, uiCallbackUpdater())
+                fireGetRosterInBackground(it)
+            }
+        }
+    }
+
+    // Updates From Team ID Come Here
+    private fun uiCallbackUpdater() : ((obj:String) -> Unit) {
+        return { obj ->
+            log("Obj Updated")
+            main {
+                loadRoster()
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     /** Setup Functions */
     @SuppressLint("NotifyDataSetChanged")
     private fun setup() {
-        loadRosterById()
+        loadRoster()
         if (config.mode == RosterType.TRYOUT.type || config.mode == RosterType.SELECTED.type) getPlayersSelectedCount()
         if (config.touchEnabled) addTouchAdapters()
         attach()

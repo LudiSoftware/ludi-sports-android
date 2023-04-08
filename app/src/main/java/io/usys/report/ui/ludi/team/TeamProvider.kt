@@ -110,9 +110,6 @@ class TeamRealmSingleEventListener(val teamId: String, private val onRealmChange
 
     override fun onChange(t: Team) {
         log("Team listener called")
-//        val r = t as? Team
-//        if (teamId != r?.id) returnx
-//        unregisterListener()
         onRealmChange(teamId)
     }
 
