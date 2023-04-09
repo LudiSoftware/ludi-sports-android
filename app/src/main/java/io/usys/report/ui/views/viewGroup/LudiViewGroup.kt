@@ -133,9 +133,7 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LudiLinearLayout) {
                 }
             }
         })
-
         tlm.attach()
-
     }
 
     private fun setupLudiRosterPagerAdapter() {

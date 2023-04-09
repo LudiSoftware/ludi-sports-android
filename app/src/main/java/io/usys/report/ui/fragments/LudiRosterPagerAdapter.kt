@@ -6,7 +6,6 @@ import io.realm.Realm
 import io.usys.report.realm.*
 import io.usys.report.ui.ludi.roster.ViewRosterFragment
 
-
 class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
 
     var fragmentPairs: MutableList<Pair<String, Fragment>> = mutableListOf()
@@ -14,7 +13,6 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
     var realmInstance: Realm? = null
     var teamId: String? = null
     var tryoutId: String? = null
-
 
     fun getFragmentAt(position: Int): Fragment {
         return fragmentPairs[position].second
@@ -28,17 +26,15 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
 
     /** Master Roster Setup! **/
     private fun setupRosterFragments() {
-        // Official Roster
-        realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
-            fragmentPairs.add(Pair("Official Roster", ViewRosterFragment.newRoster(rosterId, "Official Roster", teamId!!)))
-        }
-        // TryOut Roster
-        realmInstance?.findTryOutIdByTeamId(teamId) { tryoutId ->
-            realmInstance?.findTryOutById(tryoutId)?.let { to ->
+        realmInstance?.findTeamById(teamId)?.let { team ->
+            // Official Roster
+            fragmentPairs.add(Pair("Official Roster", ViewRosterFragment.newRoster(team.rosterId!!, "Official Roster", teamId!!)))
+            // TryOut Roster
+            realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
                 to.rosterId?.let {
                     fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(it, "TryOut", teamId!!)))
                 }
-                this.tryoutId = tryoutId
+                this.tryoutId = team.tryoutId
             }
         }
     }
