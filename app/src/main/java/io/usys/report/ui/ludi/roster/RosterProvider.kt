@@ -20,16 +20,15 @@ class RosterRealmSingleEventListener(val rosterId: String,
 
     override fun onChange(t: Roster) {
         log("Team listener called")
-        unregisterListener()
         onRealmChange(rosterId)
     }
 
-    private fun registerListener() {
+    fun registerListener() {
         rosterResult = realm.where(Roster::class.java).equalTo("id", rosterId).findFirstAsync()
         rosterResult.addChangeListener(this)
     }
 
-    private fun unregisterListener() {
+    fun unregisterListener() {
         rosterResult.removeChangeListener(this)
         realm.close()
     }

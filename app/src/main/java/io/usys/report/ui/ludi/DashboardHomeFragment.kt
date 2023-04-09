@@ -18,10 +18,7 @@ import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.ui.views.listAdapters.loadInRealmIds
-import io.usys.report.utils.isNullOrEmpty
-import io.usys.report.utils.launchActivity
-import io.usys.report.utils.log
-import io.usys.report.utils.makeGone
+import io.usys.report.utils.*
 
 
 /**
@@ -159,7 +156,9 @@ class SignOutMenuProvider(val activity: Activity) : MenuProvider {
         when (menuItem.itemId) {
             R.id.menuitem_signout -> {
                 //TODO: Add Sign In Page
-                Session.logoutAndRestartApplication(activity)
+                activity.popupYesNo("Sign Out.", "Are you sure you want to sign out?") {
+                    Session.logoutAndRestartApplication(activity)
+                }
                 return true
             }else -> {}
         }

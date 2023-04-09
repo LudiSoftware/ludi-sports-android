@@ -9,6 +9,7 @@ import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
+import io.usys.report.ui.ludi.roster.RosterRealmSingleEventListener
 import io.usys.report.utils.log
 
 class TeamProvider(val teamId: String) {
@@ -18,13 +19,14 @@ class TeamProvider(val teamId: String) {
     var officialRosterId: String? = null
     var officialIsComplete: Boolean = false
     var tryoutId: String? = null
-    var tryoutIsComplete: Boolean = false
+    private var tryoutIsComplete: Boolean = false
     var tryoutRosterId: String? = null
     var tryoutRosterIsComplete: Boolean = false
     var teamReference: DatabaseReference? = null
-    var teamFireListener: TeamFireListener
+    private var teamFireListener: TeamFireListener
 
     var teamListener: TeamRealmSingleEventListener? = null
+    var rosterListener: RosterRealmSingleEventListener? = null
     var tryoutListener: TryoutRealmSingleEventListener? = null
 
     init {
@@ -106,16 +108,6 @@ class TeamProvider(val teamId: String) {
                     }
                 }
             }
-        }
-    }
-
-    // PULL
-    fun pullRostersFromFirebase() {
-        officialRosterId?.let {
-            fireGetRosterInBackground(it)
-        }
-        tryoutRosterId?.let {
-            fireGetRosterInBackground(it)
         }
     }
 
