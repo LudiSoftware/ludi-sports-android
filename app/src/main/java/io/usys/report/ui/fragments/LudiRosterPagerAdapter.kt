@@ -5,6 +5,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import io.realm.Realm
 import io.usys.report.realm.*
 import io.usys.report.ui.ludi.roster.ViewRosterFragment
+import io.usys.report.ui.ludi.team.subscribeToTryoutUpdates
 
 class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
 
@@ -30,11 +31,13 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
             // Official Roster
             fragmentPairs.add(Pair("Official Roster", ViewRosterFragment.newRoster(team.rosterId!!, "Official Roster", teamId!!)))
             // TryOut Roster
-            realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
-                to.rosterId?.let {
-                    fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(it, "TryOut", teamId!!)))
+            team.tryoutId?.let {
+                realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
+                    to.rosterId?.let {
+                        fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(it, "TryOut", teamId!!)))
+                    }
+                    this.tryoutId = team.tryoutId
                 }
-                this.tryoutId = team.tryoutId
             }
         }
     }

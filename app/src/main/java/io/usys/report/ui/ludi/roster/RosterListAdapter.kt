@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
+import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
@@ -18,11 +19,13 @@ import io.usys.report.realm.findTeamById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.ludi.team.TeamRealmSingleEventListener
+import io.usys.report.ui.ludi.team.subscribeToUpdates
 import io.usys.report.ui.views.touchAdapters.*
 import io.usys.report.utils.log
 import io.usys.report.utils.main
@@ -141,6 +144,7 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
 
     // Realm
     var realmInstance = realm()
+    var rosterUpdates: RealmChangeListener<Roster>? = null
     var config: RosterConfig = RosterConfig()
     // Master List
     var playerRefList: RealmList<PlayerRef>? = null
@@ -193,20 +197,15 @@ open class RosterListAdapter(): RecyclerView.Adapter<RosterPlayerViewHolder>() {
             playerRefList?.clear()
             playerRefList = roster.players?.ludiFilters(config.playerFilters)?.sortByOrderIndex()
         } ?: kotlin.run {
-            config.rosterId?.let {
-                RosterRealmSingleEventListener(rosterId = it, uiCallbackUpdater())
+            config.rosterId?.let { it ->
+                rosterUpdates = realmInstance.subscribeToUpdates { realm ->
+                    main {
+                        loadRoster()
+                        notifyDataSetChanged()
+                    }
+                    realm.removeChangeListener(rosterUpdates as RealmChangeListener<Realm>)
+                }
                 fireGetRosterInBackground(it)
-            }
-        }
-    }
-
-    // Updates From Team ID Come Here
-    private fun uiCallbackUpdater() : ((obj:String) -> Unit) {
-        return { obj ->
-            log("Obj Updated")
-            main {
-                loadRoster()
-                notifyDataSetChanged()
             }
         }
     }

@@ -3,6 +3,7 @@ package io.usys.report.ui.ludi.team
 import com.google.firebase.database.DatabaseReference
 import io.realm.Realm
 import io.realm.RealmChangeListener
+import io.realm.RealmObject
 import io.usys.report.firebase.*
 import io.usys.report.firebase.models.convertForFirebase
 import io.usys.report.realm.*
@@ -126,6 +127,8 @@ class TeamProvider(val teamId: String) {
     }
 
 }
+
+/** Team Realm Listener */
 class TeamRealmSingleEventListener(val teamId: String, private val onRealmChange: (teamId: String) -> Unit) : RealmChangeListener<Team> {
     private val realm: Realm = Realm.getDefaultInstance()
     private lateinit var teamResult: Team
@@ -150,7 +153,7 @@ class TeamRealmSingleEventListener(val teamId: String, private val onRealmChange
     }
 }
 
-
+/** TryOut Realm Listener */
 class TryoutRealmSingleEventListener(val tryoutId: String, private val onRealmChange: (tryoutId: String) -> Unit) : RealmChangeListener<TryOut> {
     private val realm: Realm = Realm.getDefaultInstance()
     private lateinit var tryoutResult: TryOut
@@ -174,11 +177,20 @@ class TryoutRealmSingleEventListener(val tryoutId: String, private val onRealmCh
         realm.close()
     }
 }
-inline fun Realm.subscribeToTeamUpdates(teamId: String? = null, crossinline updateCallBack: (String) -> Unit) {
-    val teamListener = RealmChangeListener<Team> { team ->
+inline fun <reified T:RealmObject> Realm.subscribeToUpdates(crossinline updateCallBack: (Realm) -> Unit): RealmChangeListener<T> {
+    val listener = RealmChangeListener<T> {
+        // Handle changes to the Realm data here
+        log("Realm listener called")
+        updateCallBack(this)
+    }
+    this.where(T::class.java)?.findFirstAsync()?.addChangeListener(listener)
+    return listener
+}
+inline fun Realm.subscribeToTryoutUpdates(tryoutId: String, crossinline updateCallBack: (String) -> Unit) {
+    val tryoutListener = RealmChangeListener<TryOut> { tryout ->
         // Handle changes to the Realm data here
         log("Roster listener called")
-        updateCallBack(team.id)
+        updateCallBack(tryoutId)
     }
-    this.where(Team::class.java)?.equalTo("id", teamId)?.findFirstAsync()?.addChangeListener(teamListener)
+    this.where(TryOut::class.java)?.equalTo("id", tryoutId)?.findFirstAsync()?.addChangeListener(tryoutListener)
 }

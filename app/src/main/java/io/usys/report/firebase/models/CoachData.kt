@@ -138,16 +138,15 @@ class CoachRealmSingleEventListener(private val onRealmChange: () -> Unit) : Rea
 
     override fun onChange(t: Coach) {
         log("Coach listener called")
-//        unregisterListener()
         onRealmChange()
     }
 
-    private fun registerListener() {
+    fun registerListener() {
         coachResult = realm.where(Coach::class.java).equalTo("id", coachId).findFirstAsync()
         coachResult.addChangeListener(this)
     }
 
-    private fun unregisterListener() {
+    fun unregisterListener() {
         coachResult.removeChangeListener(this)
         realm.close()
     }

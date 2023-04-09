@@ -36,6 +36,7 @@ class DashboardHomeFragment : YsrFragment() {
     var itemOnClickTeamList: ((View, RealmObject) -> Unit)? = null
     var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
 
+    var coachListener: CoachRealmSingleEventListener? = null
     var teamIds: MutableList<String>? = mutableListOf()
     var teamRefList: RealmList<TeamRef>? = RealmList()
 
@@ -79,23 +80,17 @@ class DashboardHomeFragment : YsrFragment() {
         if (coach != null) {
             teamIds = coach.teams?.toMutableList()
             if (teamIds.isNullOrEmpty()) return
+            coachListener?.unregisterListener()
             setupTeamList()
         } else {
-            CoachRealmSingleEventListener(coachCallback())
+            coachListener = CoachRealmSingleEventListener(coachCallback())
         }
     }
 
     private fun coachCallback() : (() -> Unit) {
         return {
             log("Coach Updated")
-            val coach = realmInstance?.findCoachBySafeId()
-            if (coach != null) {
-
-                teamIds = coach.teams?.toMutableList()
-                if (!teamIds.isNullOrEmpty()) {
-                    setupTeamList()
-                }
-            }
+            setupCoachDisplay()
         }
     }
     override fun onStart() {

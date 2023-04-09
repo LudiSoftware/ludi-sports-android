@@ -1,11 +1,7 @@
 package io.usys.report.ui.ludi.roster
 
-import com.google.firebase.database.DatabaseReference
 import io.realm.Realm
 import io.realm.RealmChangeListener
-import io.usys.report.firebase.*
-import io.usys.report.firebase.models.convertForFirebase
-import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
 import io.usys.report.utils.log
 
