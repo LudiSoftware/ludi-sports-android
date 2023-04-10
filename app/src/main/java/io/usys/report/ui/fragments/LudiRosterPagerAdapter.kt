@@ -3,17 +3,22 @@ package io.usys.report.ui.fragments
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import io.realm.Realm
+import io.realm.RealmObject
+import io.realm.RealmResults
 import io.usys.report.realm.*
+import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.ludi.roster.ViewRosterFragment
-import io.usys.report.ui.ludi.team.subscribeToTryoutUpdates
+import io.usys.report.utils.log
 
-class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
+class LudiRosterPagerAdapter(val parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
 
     var fragmentPairs: MutableList<Pair<String, Fragment>> = mutableListOf()
 
     var realmInstance: Realm? = null
     var teamId: String? = null
     var tryoutId: String? = null
+
+    var tryoutListener: RealmResults<TryOut>? = null
 
     fun getFragmentAt(position: Int): Fragment {
         return fragmentPairs[position].second
@@ -27,17 +32,28 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
 
     /** Master Roster Setup! **/
     private fun setupRosterFragments() {
+        fragmentPairs.clear()
         realmInstance?.findTeamById(teamId)?.let { team ->
             // Official Roster
             fragmentPairs.add(Pair("Official Roster", ViewRosterFragment.newRoster(team.rosterId!!, "Official Roster", teamId!!)))
             // TryOut Roster
-            team.tryoutId?.let {
-                realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
-                    to.rosterId?.let {
-                        fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(it, "TryOut", teamId!!)))
+            team.tryoutId?.let { itToId ->
+
+                tryoutListener = realmInstance?.observe(parentFragment.viewLifecycleOwner) { results ->
+                    results.find { it.id == itToId }?.let {
+                        log("Team results updated")
+                        realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
+                            to.rosterId?.let { itToRosterId ->
+                                fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(itToRosterId, "TryOut", teamId!!)))
+                                tryoutListener?.removeAllChangeListeners()
+                                notifyDataSetChanged()
+                            }
+                            this.tryoutId = team.tryoutId
+                        }
                     }
-                    this.tryoutId = team.tryoutId
                 }
+
+
             }
         }
     }
@@ -52,3 +68,10 @@ class LudiRosterPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(pa
 
 }
 
+fun <T:RealmObject> RealmResults<T>.findByIds(idOne: String, idTwo:String): RealmResults<T> {
+    val ids = mutableListOf(idOne, idTwo)
+    return this.where().`in`("id", ids.toTypedArray()).findAll()
+}
+fun <T:RealmObject> RealmResults<T>.findByIds(ids: List<String>): RealmResults<T> {
+    return this.where().`in`("id", ids.toTypedArray()).findAll()
+}
