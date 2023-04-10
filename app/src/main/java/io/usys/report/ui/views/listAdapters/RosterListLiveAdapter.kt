@@ -24,7 +24,6 @@ import io.usys.report.utils.log
 
 abstract class LudiBaseListAdapter<R,L,T : ViewHolder> : RecyclerView.Adapter<T>() {
 
-    protected var recyclerView: RecyclerView? = null
     protected var context: Context? = null
     protected val realmInstance = realm()
     var results: RealmResults<R>? = null
@@ -35,14 +34,11 @@ abstract class LudiBaseListAdapter<R,L,T : ViewHolder> : RecyclerView.Adapter<T>
     }
 
     override fun onBindViewHolder(holder: T, position: Int) {
-        binder(holder, position)
+        onBind(holder, position)
     }
 
-    abstract fun binder(holder: T, position: Int)
+    abstract fun onBind(holder: T, position: Int)
 
-//    inline fun binder(holder: T, position: Int, block: (item: T, position: Int) -> Unit) {
-//        return block(holder, position)
-//    }
     override fun getItemCount(): Int {
         return itemList?.size ?: 0
     }
@@ -54,11 +50,6 @@ abstract class LudiBaseListAdapter<R,L,T : ViewHolder> : RecyclerView.Adapter<T>
     protected fun destroyObserver() {
         realmInstance.removeAllChangeListeners()
     }
-
-//    protected fun attach() {
-//        recyclerView?.layoutManager = GridLayoutManager(recyclerView?.context, 2)
-//        recyclerView?.adapter = this
-//    }
 
 }
 /**
@@ -92,7 +83,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         return RosterPlayerViewHolder(itemView)
     }
 
-    override fun binder(holder: RosterPlayerViewHolder, position: Int) {
+    override fun onBind(holder: RosterPlayerViewHolder, position: Int) {
         println("binding realmlist")
         itemList?.let {
             it[position]?.let { it1 ->
@@ -117,7 +108,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     }
 
     protected fun attach() {
-        config.recyclerView?.layoutManager = GridLayoutManager(recyclerView?.context, 2)
+        config.recyclerView?.layoutManager = GridLayoutManager(config.recyclerView?.context, 2)
         config.recyclerView?.adapter = this
     }
 
@@ -140,9 +131,8 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     private fun addTouchAdapters() {
         config.itemLiveTouchListener = RosterLiveDragDropAction(this)
         config.itemTouchHelper = ItemTouchHelper(config.itemLiveTouchListener!!)
-        config.itemTouchHelper?.attachToRecyclerView(recyclerView)
+        config.itemTouchHelper?.attachToRecyclerView(config.recyclerView)
     }
-
 
     /** Disable Functions */
     fun disableAndClearRosterList() {
