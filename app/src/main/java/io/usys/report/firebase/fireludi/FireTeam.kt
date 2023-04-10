@@ -6,6 +6,7 @@ import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.realm.model.*
+import io.usys.report.ui.ludi.team.pullTeamRosterTryoutFromFirebase
 import io.usys.report.utils.log
 
 /** Teams Profiles */
@@ -15,6 +16,7 @@ fun Realm.fireGetTeamProfileInBackground(teamId:String) {
         it.child(FireTypes.TEAMS).child(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
                 ds?.toLudiObject<Team>(this)
+                this.pullTeamRosterTryoutFromFirebase(teamId)
                 log("Team Updated")
             }
     }
@@ -64,7 +66,14 @@ fun Realm.fireGetTryOutProfileIntoRealm(teamId:String?) {
     firebaseDatabase {
         it.child(DatabasePaths.TRYOUTS.path).orderByChild("teamId").equalTo(teamId)
             .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toLudiObjects<TryOut>()
+                val tempResults = ds?.toLudiObjects<TryOut>()
+                if (tempResults != null) {
+                    tempResults.first()?.let { itTO ->
+                        itTO.rosterId?.let { rosterId ->
+                            fireGetRosterInBackground(rosterId)
+                        }
+                    }
+                }
                 log("TryOut Updated")
             }
     }

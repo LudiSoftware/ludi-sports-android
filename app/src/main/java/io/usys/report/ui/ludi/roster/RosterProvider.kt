@@ -5,8 +5,7 @@ import io.realm.RealmChangeListener
 import io.usys.report.realm.model.Roster
 import io.usys.report.utils.log
 
-class RosterRealmSingleEventListener(val rosterId: String,
-                                     private val onRealmChange: (teamId: String) -> Unit) : RealmChangeListener<Roster> {
+class RosterRealmSingleEventListener(private val onRealmChange: () -> Unit) : RealmChangeListener<Roster> {
     private val realm: Realm = Realm.getDefaultInstance()
     private lateinit var rosterResult: Roster
 
@@ -16,11 +15,11 @@ class RosterRealmSingleEventListener(val rosterId: String,
 
     override fun onChange(t: Roster) {
         log("Team listener called")
-        onRealmChange(rosterId)
+        onRealmChange()
     }
 
     fun registerListener() {
-        rosterResult = realm.where(Roster::class.java).equalTo("id", rosterId).findFirstAsync()
+        rosterResult = realm.where(Roster::class.java).findFirstAsync()
         rosterResult.addChangeListener(this)
     }
 

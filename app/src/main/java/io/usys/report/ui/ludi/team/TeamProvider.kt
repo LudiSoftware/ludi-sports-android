@@ -28,15 +28,31 @@ class TeamProvider(val teamId: String) {
 
     var teamListener: TeamRealmSingleEventListener? = null
     var rosterListener: RosterRealmSingleEventListener? = null
+    var rosterSubscriptions: MutableList<() -> Unit> = mutableListOf()
     var tryoutListener: TryoutRealmSingleEventListener? = null
+
+    companion object {
+        fun getTeamFromFirebase(teamId: String, realmInstance: Realm) {
+            realmInstance.fireGetTeamProfileInBackground(teamId)
+        }
+    }
 
     init {
         pullTeamAndDetailsFromFirebase()
-        firebaseDatabase { teamReference = it.child(DatabasePaths.TEAMS.path) }
+        firebaseDatabase {
+            teamReference = it.child(DatabasePaths.TEAMS.path)
+        }
         teamFireListener = TeamFireListener()
+        teamListener = TeamRealmSingleEventListener(teamId = teamId, realmInstance, teamCallback())
+        rosterListener = RosterRealmSingleEventListener(rosterCallback())
     }
 
-    /** FireTeam */
+    /** FireTeam
+     * 1. Team
+     * 2. OfficialRoster
+     * 3. Tryout
+     * 4. TryOutRoster
+     * */
     fun pullTeamAndDetailsFromFirebase() {
         realmInstance.findTeamById(teamId)?.let { team ->
             teamIsComplete = true
@@ -62,11 +78,12 @@ class TeamProvider(val teamId: String) {
         } ?: run {
             // Team
             realmInstance.ifObjectDoesNotExist<Team>(teamId) {
-                teamListener = TeamRealmSingleEventListener(teamId = teamId, teamCallback())
                 realmInstance.fireGetTeamProfileInBackground(teamId)
             }
         }
     }
+
+    /** Is Completion Checkers **/
     private fun officialRosterIsComplete() : Boolean {
         realmInstance.ifObjectExists<Roster>(this.officialRosterId) {
             this.officialIsComplete = true
@@ -89,17 +106,25 @@ class TeamProvider(val teamId: String) {
         return tryoutRosterIsComplete
     }
 
+    /** CallBacks **/
     private fun teamCallback() : ((teamId:String) -> Unit) {
         return { _ ->
-            log("Team Updated")
+            log("Team Callback")
             pullTeamAndDetailsFromFirebase()
             teamListener?.unregisterListener()
         }
     }
-
+    private fun rosterCallback() : (() -> Unit) {
+        return {
+            log("Roster Callback")
+            for (subscription in rosterSubscriptions) {
+                subscription.invoke()
+            }
+        }
+    }
     private fun tryoutCallback() : ((id:String) -> Unit) {
         return { id ->
-            log("Tryout Updated")
+            log("Tryout Callback")
             // Tryout Roster
             realmInstance.findTryOutById(id)?.let { tryout ->
                 tryout.rosterId?.let { rosterId ->
@@ -112,7 +137,7 @@ class TeamProvider(val teamId: String) {
         }
     }
 
-    // PUSH
+    /** PUSH ROSTERS **/
     fun pushOfficialRosterToFirebase() {
         officialRosterId?.let { itRosterId ->
             realmInstance.findRosterById(itRosterId)?.let { itRoster ->
@@ -129,8 +154,7 @@ class TeamProvider(val teamId: String) {
 }
 
 /** Team Realm Listener */
-class TeamRealmSingleEventListener(val teamId: String, private val onRealmChange: (teamId: String) -> Unit) : RealmChangeListener<Team> {
-    private val realm: Realm = Realm.getDefaultInstance()
+class TeamRealmSingleEventListener(val teamId: String, val realm: Realm, private val onRealmChange: (teamId: String) -> Unit) : RealmChangeListener<Team> {
     private lateinit var teamResult: Team
 
     init {
@@ -193,4 +217,28 @@ inline fun Realm.subscribeToTryoutUpdates(tryoutId: String, crossinline updateCa
         updateCallBack(tryoutId)
     }
     this.where(TryOut::class.java)?.equalTo("id", tryoutId)?.findFirstAsync()?.addChangeListener(tryoutListener)
+}
+
+
+
+fun Realm.pullTeamRosterTryoutFromFirebase(teamId: String) {
+    this.findTeamById(teamId)?.let { team ->
+        // Official Roster
+        team.rosterId?.let { rosterId ->
+            this.ifObjectDoesNotExist<Roster>(rosterId) {
+                // Pull Roster from Firebase
+                fireGetRosterInBackground(rosterId)
+            }
+        }
+        // Tryout
+        team.tryoutId?.let { tryoutId ->
+            this.ifObjectDoesNotExist<TryOut>(tryoutId) {
+                // Pull Tryout From Firebase
+                this.fireGetTryOutProfileIntoRealm(tryoutId)
+            }
+        }
+    } ?: run {
+        // Pull Team from Firebase
+        this.fireGetTeamProfileInBackground(teamId)
+    }
 }

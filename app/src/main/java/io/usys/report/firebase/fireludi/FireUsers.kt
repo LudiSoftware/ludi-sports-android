@@ -61,7 +61,12 @@ fun Realm.fireGetCoachProfileCustom(userId:String) {
                 this.safeWrite {
                     val coach = ds?.toRealmCoach()
                     if (coach != null) {
-                        this.copyToRealmOrUpdate(coach)
+                        this.insertOrUpdate(coach)
+                        coach.teams?.let { teams ->
+                            for (teamId in teams) {
+                                this.fireGetTeamProfileInBackground(teamId)
+                            }
+                        }
                     }
                 }
                 log("Coach Updated")

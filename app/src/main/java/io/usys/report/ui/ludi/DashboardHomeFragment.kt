@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
+import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -16,6 +17,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
+import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.ui.views.listAdapters.loadInRealmIds
 import io.usys.report.utils.*
@@ -36,9 +38,11 @@ class DashboardHomeFragment : YsrFragment() {
     var itemOnClickTeamList: ((View, RealmObject) -> Unit)? = null
     var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
 
+    var teamListener: RealmChangeListener<RealmResults<Team>>? = null
     var coachListener: CoachRealmSingleEventListener? = null
     var teamIds: MutableList<String>? = mutableListOf()
     var teamRefList: RealmList<TeamRef>? = RealmList()
+    var teamProvider: TeamProvider? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
@@ -80,7 +84,8 @@ class DashboardHomeFragment : YsrFragment() {
         if (coach != null) {
             teamIds = coach.teams?.toMutableList()
             if (teamIds.isNullOrEmpty()) return
-            coachListener?.unregisterListener()
+//            teamProvider = TeamProvider(teamId = teamIds?.first() ?: return)
+//            setupTeamRealmListener()
             setupTeamList()
         } else {
             coachListener = CoachRealmSingleEventListener(coachCallback())
@@ -90,7 +95,19 @@ class DashboardHomeFragment : YsrFragment() {
     private fun coachCallback() : (() -> Unit) {
         return {
             log("Coach Updated")
+//            coachListener?.unregisterListener()
             setupCoachDisplay()
+        }
+    }
+
+    private fun setupTeamRealmListener() {
+        teamListener = RealmChangeListener {
+            // Handle changes to the Realm data here
+            log("Team listener called")
+//            setupTeamList()
+        }
+        teamListener?.let {
+            realmInstance?.where(Team::class.java)?.findAllAsync()?.addChangeListener(it)
         }
     }
     override fun onStart() {
@@ -134,7 +151,6 @@ class SignInMenuProvider(val activity: Activity) : MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menuitem_signin -> {
-                //TODO: Add Sign In Page
                 activity.launchActivity<LudiLoginActivity>()
                 return true
             }else -> {}
@@ -150,7 +166,6 @@ class SignOutMenuProvider(val activity: Activity) : MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menuitem_signout -> {
-                //TODO: Add Sign In Page
                 activity.popupYesNo("Sign Out.", "Are you sure you want to sign out?") {
                     Session.logoutAndRestartApplication(activity)
                 }

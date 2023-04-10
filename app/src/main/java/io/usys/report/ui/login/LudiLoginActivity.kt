@@ -44,9 +44,10 @@ class LudiLoginActivity : AppCompatActivity() {
         }
 
         btnSignIn?.setOnClickListener {
-            if (isUsernamePasswordValid()) {
-                checkIfEmailExists()
-            }
+            onSignInResult()
+//            if (isUsernamePasswordValid()) {
+//                checkIfEmailExists()
+//            }
         }
         supportActionBar?.title = ""
         hideLudiActionBar()
@@ -82,8 +83,10 @@ class LudiLoginActivity : AppCompatActivity() {
 
     //
     private fun onSignInResult() {
-        val email = userName?.text.toString()
-        val passw = password?.text.toString()
+//        val email = userName?.text.toString()
+//        val passw = password?.text.toString()
+        val email = "ckrphone@gmail.com"
+        val passw = "allensgay"
         auth?.signInWithEmailAndPassword(email, passw)
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {

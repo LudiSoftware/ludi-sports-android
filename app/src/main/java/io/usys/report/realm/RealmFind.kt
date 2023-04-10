@@ -4,6 +4,7 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
+import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.isNBE
