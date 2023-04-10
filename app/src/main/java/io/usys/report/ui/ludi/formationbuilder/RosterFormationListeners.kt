@@ -13,7 +13,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 fun View?.onGestureDetectorRosterFormation(teamId:String, playerId:String?=null,
-                                           onSingleTapUp:((String) -> Unit)?=null, onLongPress:((String) -> Unit)?=null) {
+                                           onSingleTapUp:((String) -> Unit)?=null,
+                                           onLongPress:((String) -> Unit)?=null) {
     val tempRealm = realm()
     // Window Height and Width
     var lastX = 0
@@ -102,6 +103,7 @@ fun View?.onGestureDetectorRosterFormation(teamId:String, playerId:String?=null,
             lastY = e2.rawY.toInt()
             return true
         }
+
     })
 
     // Set the touch listener to pass events to the gesture detector

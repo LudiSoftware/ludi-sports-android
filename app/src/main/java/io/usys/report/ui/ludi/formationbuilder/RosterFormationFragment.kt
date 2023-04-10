@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.realm.*
 import io.usys.report.realm.local.TeamSession
@@ -22,7 +23,6 @@ import io.usys.report.realm.local.saveRosterToFirebase
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
-import io.usys.report.ui.fragments.toFragmentWithIds
 import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
@@ -54,11 +54,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     // Formation Session
     var floatingMenuButton: FloatingActionButton? = null
     var floatingPopMenu: PopupMenu? = null
-    private var playerPopMenuView: PopupMenu? = null
 
     // Player Icons on the field
-    var formationViewList = mutableListOf<View>()
-    var formationCardViews = mutableListOf<CardView>()
+    var playerObserver: RealmResults<PlayerRef>? = null
+    var formationPlayerItemViewList = mutableListOf<View>()
+    var formationPlayerItemPositionTextViewList = mutableListOf<TextView>()
+    var formationPlayerColoredBackgroundViews = mutableListOf<CardView>()
     // Player Formation
     var onTap: ((String) -> Unit)? = null
     var onLongPress: ((String) -> Unit)? = null
@@ -159,7 +160,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
      */
     private fun resetFormationLayout() {
         adapterSubstitutes?.resetDeckToRoster()
-        formationViewList.clear()
+        formationPlayerItemViewList.clear()
         formationRelativeLayout?.removeAllViews()
     }
 
@@ -178,26 +179,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** GLOBAL/FRAGMENT DISPLAY SETUP - display process function **/
     private fun setupFullDisplay() {
-        // We want to do this all in one instance of getting the session from realm.
-        realmInstance?.teamSessionByTeamId(teamId) { ts ->
-
-            // -> Setup Substitution List
-            if (!ts.deckListIds.isNullOrEmpty()) {
-                adapterSubstitutes = RosterFormationListAdapter(teamId!!, realmInstance, findNavController())
-                deckSubsRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
-                deckSubsRecyclerView?.adapter = adapterSubstitutes
-                createDeckDragListener()
-            }
-
-            // -> Setup Formation Of Players
-            ts.formationListIds?.let { formationList ->
-                formationRelativeLayout?.removeAllViews()
-                formationViewList.clear()
-                formationList.forEach { itPlayerId ->
-                    addPlayerToFormation(itPlayerId, loadingFromSession = true)
-                }
-            }
-        }
+        reloadDeck()
+        reloadFormation()
     }
 
     /** ON-DECK LAYOUT: SETUP A FILTERED LIST OF PLAYERS ON-DECK - display process function **/
@@ -291,6 +274,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun createFormationDragListener() {
         tryCatch {
             formationRelativeLayout?.setFormationDropListener { itPlayerId, x, y ->
+                // stop observer
+                playerObserver?.removeAllChangeListeners()
                 adapterSubstitutes?.movePlayerToFormation(itPlayerId)
                 addPlayerToFormation(itPlayerId, x = x, y = y)
             }
@@ -329,9 +314,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 adapterFiltered?.reload()
             }
 
-            formationViewList.find { it.tag == playerId }?.let {
-                return@safePlayerFromRoster
-            }
+            formationPlayerItemViewList.removeIf { it.tag == playerId }
 
             val layoutParams = preparePlayerLayoutParamsForFormation(loadingFromSession)
             // X
@@ -365,10 +348,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             playerRefViewItem.layoutParams = layoutParams
             playerRefViewItem.tag = newPlayerRef.id
             vPlayerCircleLayout.tag = newPlayerRef.id
+            vPlayerPosition.tag = newPlayerRef.id
             // Bind Data
-//            vPlayerName.text = newPlayerRef.name
-            vPlayerName.text = "X: [${newPlayerRef.pointX}] Y: [${newPlayerRef.pointY}]"
-            vPlayerTryOutTag.text = newPlayerRef.tryoutTag.toString()
+            vPlayerName.text = newPlayerRef.name
+            // Debugging player positions on the screen
+//            vPlayerName.text = "X: [${newPlayerRef.pointX}] Y: [${newPlayerRef.pointY}]"
+            vPlayerTryOutTag.text = "Tag: ${newPlayerRef.tryoutTag.toString()}"
             vPlayerPosition.text = newPlayerRef.position
             newPlayerRef.color?.let {
                 vPlayerCircleLayout.setPlayerFormationBackgroundColor(it)
@@ -385,12 +370,51 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 onLongPress = onLongPress
             )
 
-            // Add to FormationLayout
-            formationViewList.add(playerRefViewItem)
-            formationCardViews.add(vPlayerCircleLayout)
+            // Add to reference lists
+            formationPlayerItemViewList.add(playerRefViewItem)
+            formationPlayerColoredBackgroundViews.add(vPlayerCircleLayout)
+            formationPlayerItemPositionTextViewList.add(vPlayerPosition)
+            // Add to Layout
             formationRelativeLayout?.addView(playerRefViewItem)
         }
 
+    }
+
+    private fun setupListener() {
+        playerObserver = realmInstance?.observe<PlayerRef>(this.viewLifecycleOwner) { results ->
+            reloadFormation()
+        }
+    }
+
+    private fun reloadDeck() {
+        realmInstance?.teamSessionByTeamId(teamId) { ts ->
+            // -> Setup Substitution List
+            if (!ts.deckListIds.isNullOrEmpty()) {
+                adapterSubstitutes = RosterFormationListAdapter(teamId!!, realmInstance, findNavController())
+                deckSubsRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
+                deckSubsRecyclerView?.adapter = adapterSubstitutes
+                createDeckDragListener()
+            }
+        }
+    }
+    private fun reloadFormation() {
+        // We want to do this all in one instance of getting the session from realm.
+        realmInstance?.teamSessionByTeamId(teamId) { ts ->
+            // -> Setup Formation Of Players
+            ts.formationListIds?.let { formationList ->
+                formationRelativeLayout?.removeAllViews()
+                formationPlayerItemViewList.clear()
+                formationList.forEach { itPlayerId ->
+                    addPlayerToFormation(itPlayerId, loadingFromSession = true)
+                }
+            }
+        }
+    }
+    private fun getFormationPlayerPositionTextView(playerId: String): TextView? {
+        return formationPlayerItemPositionTextViewList.find { it.tag == playerId }
+    }
+    private fun getFormationPlayerView(playerId: String): View? {
+        return formationPlayerItemViewList.find { it.tag == playerId }
     }
 
     /** FORMATION LAYOUT: PLAYER POPUP MENU **/
@@ -408,7 +432,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
         // Find and set up the Spinner
         val positionSpinner = popupView.findViewById<Spinner>(R.id.menuPlayerPositionSpinner)
-        positionSpinner.setupPlayerPositionSpinner(playerId as String)
+        positionSpinner.setupPlayerPositionSpinner(playerId as String, getFormationPlayerPositionTextView(playerId))
         // Load animations
         val unfoldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.unfold)
         val foldAnimation = AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.fold)
@@ -483,7 +507,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** FORMATION LAYOUT: Class Helpers Below **/
     private inline fun findPlayerViewInFormation(playerId: String, block: (CardView) -> Unit) {
-        formationCardViews.forEach { playerView ->
+        formationPlayerColoredBackgroundViews.forEach { playerView ->
             if (playerView.tag == playerId) {
                 block(playerView)
             }

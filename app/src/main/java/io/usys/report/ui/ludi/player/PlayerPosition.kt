@@ -1,6 +1,8 @@
 package io.usys.report.ui.ludi.player
 
+import android.view.View
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.core.text.isDigitsOnly
 import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.realm
@@ -54,14 +56,14 @@ fun getPosition(number: Int): String? {
     return invertedPositionMap[number]
 }
 
-fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
+fun Spinner?.setupPlayerPositionSpinner(playerId: String, playerView:TextView?=null) {
     if (this == null) return
     val realmInstance = realm()
     val positionsToDisplay = positionMapDisplay.values.toMutableList()
-    val positionsToSet = positionMap.keys.toMutableList()
     val spinnerAdapter = LudiSpinnerAdapter(this.context, positionsToDisplay)
     this.adapter = spinnerAdapter
 
+    // Setup Player Position
     realmInstance.findPlayerRefById(playerId)?.let {  player ->
         val pNumber = player.position.toIntOrDefault(12) // 12
         val pp = getPosition(pNumber) // "substitute"
@@ -72,7 +74,7 @@ fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
         }
     }
 
-    // ROSTER SELECTION
+    // POSITION SELECTION
     this.onItemSelected { parent, _, position, _ ->
         val positionName = parent.getItemAtPosition(position)
         val p2 = getPositionFromDisplay(positionName.toString())
@@ -80,6 +82,7 @@ fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
         realmInstance.safeWrite {
             it.findPlayerRefById(playerId)?.position = positionNumber.toString()
         }
+        playerView?.text = positionNumber.toString()
     }
 
 }
