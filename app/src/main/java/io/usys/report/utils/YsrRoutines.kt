@@ -24,3 +24,13 @@ inline fun io(crossinline block: suspend CoroutineScope.() -> Unit) {
         block(this)
     }
 }
+
+
+suspend inline fun retryLoading(maxRetries: Int = 3, retryCondition: () -> Boolean, retryBlock: () -> Unit) {
+    var retryCount = 0
+    while (retryCount < maxRetries && retryCondition()) {
+        retryBlock()
+        retryCount++
+        delay(5000L) // Wait for 5 seconds before the next retry
+    }
+}

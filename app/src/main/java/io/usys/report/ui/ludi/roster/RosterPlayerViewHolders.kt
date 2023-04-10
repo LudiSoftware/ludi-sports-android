@@ -14,6 +14,7 @@ import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
+import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.makeGone
@@ -74,6 +75,45 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
             }
 
         }
+    }
+
+    fun bindTryout(player: PlayerRef?, adapter: RosterListLiveAdapter, counter: Int): Boolean {
+        player?.let { itPlayer ->
+            val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
+
+            val isInTop = counter < adapter.config.rosterSizeLimit
+            setTryoutColor(isInTop, isSelected)
+            // Selected CheckBox
+            cardChkSelected?.setOnCheckedChangeListener(null)
+            cardChkSelected?.isChecked = isSelected
+            cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
+                var newStatus = PLAYER_STATUS_OPEN
+                if (isChecked) newStatus = PLAYER_STATUS_SELECTED
+                val realm = realm()
+                realm.safeWrite {
+                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
+                        playerRef.status = newStatus
+                    }
+                }
+                adapter.refresh()
+            }
+
+            // Basic Tryout Attributes
+            txtItemPlayerName?.text = itPlayer.name
+            txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
+            // Image Profile
+            itPlayer.imgUrl?.let { url ->
+                imgPlayerProfile?.loadUriIntoImgView(url)
+            }
+            itemView.onLongClick {
+                it?.wiggleOnce()
+            }
+            itemView.setOnClickListener {
+//                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
+            }
+            return isSelected
+        }
+        return false
     }
 
     fun bindTryout(player: PlayerRef?, adapter: RosterListAdapter, counter: Int): Boolean {

@@ -59,8 +59,8 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
     return adapter
 }
 
-fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?, fragment: Fragment) : RealmListAdapterSync? {
-    val adapter = realmIds?.let { RealmListAdapterSync(it, fragment) }
+fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?, fragment: Fragment) : TeamListLiveAdapter? {
+    val adapter = realmIds?.let { TeamListLiveAdapter(it, fragment) }
     this.layoutManager = linearLayoutManager(this.context)
     this.adapter = adapter
     return adapter

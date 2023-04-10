@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -96,6 +97,7 @@ class RosterConfig {
     // Roster ID
     var rosterId: String? = null
     var recyclerView: RecyclerView? = null
+    var parentFragment: Fragment? = null
     // Mandatory
     var layout: Int = R.layout.card_player_medium_grid
     var type: String = FireTypes.PLAYERS
@@ -110,6 +112,7 @@ class RosterConfig {
     // Click Listeners
     var touchEnabled: Boolean = true
     var itemTouchListener: RosterDragDropAction? = null
+    var itemLiveTouchListener: RosterLiveDragDropAction? = null
     var itemTouchHelper: ItemTouchHelper? = null
 
     fun setRosterSizeLimit(realmInstance: Realm?, teamId: String?){

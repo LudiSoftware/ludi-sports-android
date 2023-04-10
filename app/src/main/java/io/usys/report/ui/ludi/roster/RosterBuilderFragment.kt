@@ -11,6 +11,7 @@ import io.usys.report.realm.*
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.ui.views.LudiPopupMenu
+import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
 import io.usys.report.utils.*
 import io.usys.report.utils.views.onItemSelected
 import io.usys.report.utils.views.wiggleOnce
@@ -27,7 +28,7 @@ class RosterBuilderFragment : YsrFragment() {
     private val binding get() = _binding!!
 
     var rosterConfig = RosterConfig()
-    var adapter: RosterListAdapter? = null
+    var adapter: RosterListLiveAdapter? = null
 
     var teamProvider: TeamProvider? = null
     var teamId: String = "unknown"
@@ -168,6 +169,7 @@ class RosterBuilderFragment : YsrFragment() {
         rosterConfig.apply {
             this.rosterId = currentRosterId
             this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
+            this.parentFragment = this@RosterBuilderFragment
             this.layout = R.layout.card_player_medium_grid
             this.type = FireTypes.PLAYERS
             this.size = "medium_grid"
@@ -207,7 +209,7 @@ class RosterBuilderFragment : YsrFragment() {
                     rosterConfig.mode = RosterType.TRYOUT.type
                     rosterConfig.touchEnabled = true
                     rosterConfig.playerFilters.clear()
-                    adapter = RosterListAdapter(rosterConfig)
+                    adapter = RosterListLiveAdapter(rosterConfig)
                 }
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
@@ -215,7 +217,7 @@ class RosterBuilderFragment : YsrFragment() {
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = RosterType.SELECTED.type
                     rosterConfig.touchEnabled = true
-                    adapter = RosterListAdapter(rosterConfig)
+                    adapter = RosterListLiveAdapter(rosterConfig)
                     adapter?.filterByStatusSelected()
                 }
                 else -> {
@@ -225,7 +227,7 @@ class RosterBuilderFragment : YsrFragment() {
                     rosterConfig.mode = RosterType.OFFICIAL.type
                     rosterConfig.touchEnabled = false
                     rosterConfig.playerFilters.clear()
-                    adapter = RosterListAdapter(rosterConfig)
+                    adapter = RosterListLiveAdapter(rosterConfig)
                 }
             }
         }
