@@ -48,8 +48,9 @@ fun RecyclerView?.setupPlayerListHorizontalFromRosterId(id: String, onClickRetur
 
 fun RecyclerView?.setupPlayerListFromTeamSession(id: String, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
     val rv = this
-    val ts = realm().findByField<TeamSession>(field = "teamId", value = id)
-    val players = ts?.roster?.players
+    val realm = realm()
+    val ts = realm.findByField<TeamSession>(field = "teamId", value = id)
+    val players = realm.findRosterById(ts?.rosterId)?.players
     players?.let {
         rv?.loadInRealmListGridArrangable(it, DatabasePaths.PLAYERS.path, onClickReturnViewRealmObject)
     }

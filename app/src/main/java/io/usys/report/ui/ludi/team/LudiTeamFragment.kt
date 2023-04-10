@@ -53,6 +53,7 @@ abstract class LudiTeamFragment : Fragment() {
         if (teamId == null) teamId = unbundleStringId()
         log("TeamId: $teamId")
         setupTeamSession()
+        // todo: fix this to new observe model
         setupTeamRealmListener()
         setupTeamRosterRealmListener()
         setupTryOutRealmListener()
@@ -103,7 +104,7 @@ abstract class LudiTeamFragment : Fragment() {
             log("TryOut listener called")
             it.find { it.teamId == teamId }?.let { tryout ->
                 realmInstance?.safeWrite { itRealm ->
-                    teamSession?.tryout = tryout
+                    teamSession?.tryoutId = tryout.id
                 }
             }
         }
@@ -113,7 +114,7 @@ abstract class LudiTeamFragment : Fragment() {
     private fun updateTeamSession(roster: Roster) {
         this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
             this.realmInstance?.safeWrite { itRealm ->
-                fs.roster = roster
+                fs.rosterId = roster.id
                 fs.playerIds?.clear()
                 val loadDeck = fs.deckListIds.isNullOrEmpty()
                 roster.players?.forEach {

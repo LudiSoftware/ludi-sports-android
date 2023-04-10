@@ -308,7 +308,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                                 it.add(playerId)
                             }
                         }
-                        ts.roster.setPlayerAsAccepted(playerId)
+//                        ts.roster.setPlayerAsAccepted(playerId)
                     }
                 }
                 adapterFiltered?.reload()
@@ -335,10 +335,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             if (x != null && y != null) {
                 realmInstance?.teamSessionByTeamId(teamId) { fs ->
                     playerId.let { itId ->
-                        fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
+                        realmInstance?.findPlayerRefById(itId) { playerRef ->
                             realmInstance?.safeWrite {
-                                playerRef.pointX = y.toInt() - 75
-                                playerRef.pointY = x.toInt() - 75
+                                playerRef?.pointX = y.toInt() - 75
+                                playerRef?.pointY = x.toInt() - 75
                                 it.copyToRealmOrUpdate(playerRef)
                             }
                         }
@@ -516,10 +516,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     private inline fun safePlayerFromRoster(playerId: String, block: (PlayerRef) -> Unit) {
         teamSession?.let { ts ->
-            ts.roster?.let { roster ->
-                roster.players?.forEach { playerRef ->
-                    if (playerRef.id == playerId) {
-                        block(playerRef)
+            ts.rosterId?.let { rosterId ->
+                realmInstance?.findRosterById(rosterId)?.let { roster ->
+                    roster.players?.forEach { playerRef ->
+                        if (playerRef.id == playerId) {
+                            block(playerRef)
+                        }
                     }
                 }
             }

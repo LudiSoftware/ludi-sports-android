@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.RelativeLayout
+import io.usys.report.realm.findRosterById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
@@ -88,11 +89,13 @@ fun View?.onGestureDetectorRosterFormation(teamId:String, playerId:String?=null,
 
             tempRealm.teamSessionByTeamId(teamId) { fs ->
                 playerId?.let { itId ->
-                    fs.roster?.players?.find { it.id == itId }?.let { playerRef ->
-                        tempRealm.safeWrite {
-                            playerRef.pointX = topMargin
-                            playerRef.pointY = leftMargin
-                            it.copyToRealmOrUpdate(playerRef)
+                    tempRealm.findRosterById(fs.rosterId)?.let { itRoster ->
+                        itRoster.players?.find { it.id == itId }?.let { playerRef ->
+                            tempRealm.safeWrite {
+                                playerRef.pointX = topMargin
+                                playerRef.pointY = leftMargin
+                                it.copyToRealmOrUpdate(playerRef)
+                            }
                         }
                     }
                 }

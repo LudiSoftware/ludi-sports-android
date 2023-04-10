@@ -9,11 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
+import io.usys.report.realm.*
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.realm
-import io.usys.report.realm.safeAdd
-import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.bundleStringIds
 import io.usys.report.ui.ludi.player.matchesLudiFilter
 import io.usys.report.ui.views.gestures.onDownUpListener
@@ -73,29 +71,32 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
         val playerId = onDeckPlayerIdList[position] ?: "unknown"
         realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
-            // Filtering System
-            fs.roster?.players?.find { it.id == playerId }?.let { player ->
-                //Normal Display Setup
-                holder.textView?.text = player.name
-                filters?.let {
-                    holder.filterTextView?.text = player.foot
-                } ?: run {
-                    holder.filterTextView?.visibility = View.INVISIBLE
-                }
-                player.imgUrl?.let { itImgUrl ->
-                    holder.profileImageView?.loadUriIntoImgView(itImgUrl)
-                }
-                holder.bannerNameImageView?.setPlayerTeamBackgroundBanner(player.color)
+            realmInstance?.findRosterById(fs.rosterId)?.let { itRoster ->
+                // Filtering System
+                itRoster.players?.find { it.id == playerId }?.let { player ->
+                    //Normal Display Setup
+                    holder.textView?.text = player.name
+                    filters?.let {
+                        holder.filterTextView?.text = player.foot
+                    } ?: run {
+                        holder.filterTextView?.visibility = View.INVISIBLE
+                    }
+                    player.imgUrl?.let { itImgUrl ->
+                        holder.profileImageView?.loadUriIntoImgView(itImgUrl)
+                    }
+                    holder.bannerNameImageView?.setPlayerTeamBackgroundBanner(player.color)
 
-                holder.itemView.onDownUpListener({
-                    println("onDown")
-                    holder.itemView.wiggleOnce()
-                    holder.startClipDataDragAndDrop(playerId)
-                }, {
-                    println("onSingleTapUp")
-                    navController?.navigate(R.id.navigation_player_profile, bundleStringIds(teamId, playerId, null))
-                })
+                    holder.itemView.onDownUpListener({
+                        println("onDown")
+                        holder.itemView.wiggleOnce()
+                        holder.startClipDataDragAndDrop(playerId)
+                    }, {
+                        println("onSingleTapUp")
+                        navController?.navigate(R.id.navigation_player_profile, bundleStringIds(teamId, playerId, null))
+                    })
+                }
             }
+
         }
     }
 
@@ -110,16 +111,18 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
             this.formationSessionId = fs.id
             fs.formationListIds?.let { this.filteredOutPlayerIds.addAll(it) }
             //load from full roster
-            fs.roster?.players?.let { rosterPlayers ->
-                for (player in rosterPlayers) {
-                    if (this.filteredOutPlayerIds.contains(player.id)) { continue }
-                    if (filters != null) {
-                        if (player.matchesLudiFilter(filters!!)) {
-                            this.filteredOutPlayerIds.safeAdd(player.id)
-                            continue
+            realmInstance?.findRosterById(fs.rosterId)?.let { itRoster ->
+                itRoster.players?.let { rosterPlayers ->
+                    for (player in rosterPlayers) {
+                        if (this.filteredOutPlayerIds.contains(player.id)) { continue }
+                        if (filters != null) {
+                            if (player.matchesLudiFilter(filters!!)) {
+                                this.filteredOutPlayerIds.safeAdd(player.id)
+                                continue
+                            }
                         }
+                        tempList.safeAdd(player.id)
                     }
-                    tempList.safeAdd(player.id)
                 }
             }
         }
@@ -149,9 +152,11 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
                 fs.deckListIds?.clear()
                 fs.formationListIds?.clear()
             }
-            fs.roster?.players?.let { rosterPlayers ->
-                for (playerId in rosterPlayers) {
-                    this.addPlayer(playerId)
+            realmInstance?.findRosterById(fs.rosterId)?.let { itRoster ->
+                itRoster.players?.let { rosterPlayers ->
+                    for (playerId in rosterPlayers) {
+                        this.addPlayer(playerId)
+                    }
                 }
             }
         }

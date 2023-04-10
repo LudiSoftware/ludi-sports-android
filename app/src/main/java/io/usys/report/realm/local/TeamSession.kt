@@ -20,8 +20,6 @@ open class TeamSession : RealmObject(), Serializable {
     var rosterId: String? = "null"
     var tryoutId: String? = "null"
     var tryoutRosterId: String? = "null"
-    var roster: Roster? = null
-    var tryout: TryOut? = null
     var rosterSizeLimit: Int = 20
     var playerIds: RealmList<String>? = RealmList()
     //formation
@@ -30,7 +28,6 @@ open class TeamSession : RealmObject(), Serializable {
     var layoutList: RealmList<Int>? = RealmList()
     var formationListIds: RealmList<String>? = RealmList()
     var deckListIds: RealmList<String>? = RealmList()
-    var blackListIds: RealmList<String>? = RealmList()
 }
 
 inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSession) -> Unit) {
