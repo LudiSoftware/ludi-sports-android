@@ -84,8 +84,6 @@ class DashboardHomeFragment : YsrFragment() {
         if (coach != null) {
             teamIds = coach.teams?.toMutableList()
             if (teamIds.isNullOrEmpty()) return
-//            teamProvider = TeamProvider(teamId = teamIds?.first() ?: return)
-//            setupTeamRealmListener()
             setupTeamList()
         } else {
             coachListener = CoachRealmSingleEventListener(coachCallback())
@@ -95,19 +93,7 @@ class DashboardHomeFragment : YsrFragment() {
     private fun coachCallback() : (() -> Unit) {
         return {
             log("Coach Updated")
-//            coachListener?.unregisterListener()
             setupCoachDisplay()
-        }
-    }
-
-    private fun setupTeamRealmListener() {
-        teamListener = RealmChangeListener {
-            // Handle changes to the Realm data here
-            log("Team listener called")
-//            setupTeamList()
-        }
-        teamListener?.let {
-            realmInstance?.where(Team::class.java)?.findAllAsync()?.addChangeListener(it)
         }
     }
     override fun onStart() {
