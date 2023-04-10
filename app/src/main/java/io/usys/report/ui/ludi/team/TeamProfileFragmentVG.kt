@@ -3,9 +3,6 @@ package io.usys.report.ui.ludi.team
 import android.os.Bundle
 import android.view.*
 import io.usys.report.databinding.ProfileTeamBinding
-import io.usys.report.firebase.fireGetRosterInBackground
-import io.usys.report.firebase.fireGetTryOutProfileIntoRealm
-import io.usys.report.realm.findRosterById
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
@@ -67,13 +64,8 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 
     private fun setupHeader(team:Team?=null, refresh:Boolean=false) {
 
-        if (refresh) {
-            realmInstance?.findTeamById(teamId)?.let {
-                this.team = it
-            }
-        } else {
-            this.team = team
-        }
+        if (refresh) { realmInstance?.findTeamById(teamId)?.let { this.team = it } }
+        else { this.team = team }
 
         tryCatch {
             requireActivity().ludiActionBar()?.title = this.team?.name

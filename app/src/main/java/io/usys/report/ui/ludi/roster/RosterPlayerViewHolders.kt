@@ -3,10 +3,8 @@ package io.usys.report.ui.ludi.roster
 import android.view.View
 import android.widget.CheckBox
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
-import io.realm.RealmObjectChangeListener
 import io.usys.report.R
 import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.model.PLAYER_STATUS_OPEN
@@ -23,32 +21,6 @@ import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce
 import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
-class PlayerViewModel : ViewModel() {
-    private val _player = MutableLiveData<PlayerRef?>()
-    val player: LiveData<PlayerRef?> = _player
-
-    private val realmObjectChangeListener =
-        RealmObjectChangeListener<PlayerRef> { _, changeSet ->
-            if (changeSet != null) {
-                if (changeSet.isDeleted) {
-                    _player.value = null
-                } else {
-                    _player.postValue(_player.value)
-                }
-            }
-        }
-
-    fun setPlayer(playerRef: PlayerRef?) {
-        playerRef?.removeChangeListener(realmObjectChangeListener)
-        _player.value = playerRef
-        playerRef?.addChangeListener(realmObjectChangeListener)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        _player.value?.removeChangeListener(realmObjectChangeListener)
-    }
-}
 
 open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -109,46 +81,7 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
                 it?.wiggleOnce()
             }
             itemView.setOnClickListener {
-//                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
-            }
-            return isSelected
-        }
-        return false
-    }
-
-    fun bindTryout(player: PlayerRef?, adapter: RosterListAdapter, counter: Int): Boolean {
-        player?.let { itPlayer ->
-            val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
-
-            val isInTop = counter < adapter.config.rosterSizeLimit
-            setTryoutColor(isInTop, isSelected)
-            // Selected CheckBox
-            cardChkSelected?.setOnCheckedChangeListener(null)
-            cardChkSelected?.isChecked = isSelected
-            cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
-                var newStatus = PLAYER_STATUS_OPEN
-                if (isChecked) newStatus = PLAYER_STATUS_SELECTED
-                val realm = realm()
-                realm.safeWrite {
-                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
-                        playerRef.status = newStatus
-                    }
-                }
-                adapter.refresh()
-            }
-
-            // Basic Tryout Attributes
-            txtItemPlayerName?.text = itPlayer.name
-            txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
-            // Image Profile
-            itPlayer.imgUrl?.let { url ->
-                imgPlayerProfile?.loadUriIntoImgView(url)
-            }
-            itemView.onLongClick {
-                it?.wiggleOnce()
-            }
-            itemView.setOnClickListener {
-//                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
+                adapter.config.toPlayerProfile(itPlayer.id)
             }
             return isSelected
         }

@@ -36,13 +36,9 @@ class DashboardHomeFragment : YsrFragment() {
 
     var itemOnClickSportList: ((View, Sport) -> Unit)? = null
     var itemOnClickTeamList: ((View, RealmObject) -> Unit)? = null
-    var itemOnClickServiceList: ((View, RealmObject) -> Unit)? = onClickReturnViewRealmObject()
 
-    var teamListener: RealmChangeListener<RealmResults<Team>>? = null
     var coachListener: CoachRealmSingleEventListener? = null
     var teamIds: MutableList<String>? = mutableListOf()
-    var teamRefList: RealmList<TeamRef>? = RealmList()
-    var teamProvider: TeamProvider? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
@@ -58,7 +54,7 @@ class DashboardHomeFragment : YsrFragment() {
         user?.let {
 //            setupRealmCoachListener()
         } ?: kotlin.run {
-            _binding?.includeYsrListViewTeams?.root?.makeGone()
+            _binding?.includeYsrListViewTeams?.root?.makeInVisible()
         }
         return binding.root
     }
@@ -125,7 +121,6 @@ class DashboardHomeFragment : YsrFragment() {
             val id = teamRef.id ?: "unknown"
             toFragmentWithRealmObject(R.id.navigation_team_profile, bundleStringId(id))
         }
-
     }
 
 }

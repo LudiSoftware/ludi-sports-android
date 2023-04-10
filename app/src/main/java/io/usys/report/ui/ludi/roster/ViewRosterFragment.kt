@@ -4,25 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.viewpager2.widget.ViewPager2
-import io.realm.RealmChangeListener
-import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
-import io.usys.report.realm.*
-import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.player.sortByOrderIndex
-import io.usys.report.ui.views.LudiViewGroupViewModel
-import io.usys.report.ui.views.touchAdapters.RosterDragDropAction
-import io.usys.report.ui.views.touchAdapters.RosterItemTouchListener
+import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
 import io.usys.report.utils.log
 
 /**
@@ -48,16 +33,8 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         }
     }
 
-    private lateinit var ludiViewGroupViewModel: LudiViewGroupViewModel
-
-    var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: TeamRosterFragmentBinding? = null
     private val binding get() = _binding!!
-    private var viewPager2: ViewPager2? = null
-
-    var itemTouchListener: RosterDragDropAction? = null
-    var itemTouchHelper:ItemTouchHelper? = null
-    var touchListener: RosterItemTouchListener? = null
 
     var rosterType: String = "null"
     var title: String = "No Roster Found!"
@@ -84,10 +61,6 @@ class ViewRosterFragment : LudiStringIdsFragment() {
 
         rootView = binding.root
 
-        ludiViewGroupViewModel = ViewModelProvider(requireActivity())[LudiViewGroupViewModel::class.java]
-        ludiViewGroupViewModel?.ludiViewGroup?.value?.viewPager?.let {
-            viewPager2 = it
-        }
         arguments?.let {
             rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"
             rosterId = it.getString(ARG_ROSTER_ID) ?: "unknown"
@@ -95,16 +68,8 @@ class ViewRosterFragment : LudiStringIdsFragment() {
             log("Roster type: $rosterType")
         }
 
-        // if rosterId is null....
-        //      get rosterId from teamId
-
         setupDisplay()
-        setupTeamRosterRealmListener()
         return rootView
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     override fun onStop() {
@@ -115,26 +80,12 @@ class ViewRosterFragment : LudiStringIdsFragment() {
     private fun setupDisplay() {
         rosterId?.let {
             val config = RosterConfig()
+            config.parentFragment = this
             config.rosterId = it
             config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
-//            config.mode = RosterType.OFFICIAL.type
-            val adapter = RosterListAdapter(config)
+            val adapter = RosterListLiveAdapter(config)
         }
     }
 
-
-
-    private fun setupTeamRosterRealmListener() {
-        val rosterListener = RealmChangeListener<RealmResults<Roster>> {
-            // Handle changes to the Realm data here
-            log("Roster listener called")
-            rosterId?.let { rosterId ->
-                it.findById(rosterId)?.let { roster ->
-                    setupDisplay()
-                }
-            }
-        }
-        realmInstance?.where(Roster::class.java)?.findAllAsync()?.addChangeListener(rosterListener)
-    }
 }
 

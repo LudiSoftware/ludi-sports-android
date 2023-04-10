@@ -103,12 +103,6 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
 
 
 }
-class RealmObjectListener<T>(val objectId: String, private val onRealmChange: (obj:T) -> Unit) : RealmChangeListener<T> {
-    override fun onChange(t: T) {
-        log("Realm listener called")
-        onRealmChange(t)
-    }
-}
 
 /**
  * Pass a custom function and parameter.

@@ -208,7 +208,7 @@ class RosterBuilderFragment : YsrFragment() {
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = RosterType.TRYOUT.type
                     rosterConfig.touchEnabled = true
-                    rosterConfig.playerFilters.clear()
+                    rosterConfig.filters.clear()
                     adapter = RosterListLiveAdapter(rosterConfig)
                 }
                 RosterType.SELECTED.type -> {
@@ -226,7 +226,7 @@ class RosterBuilderFragment : YsrFragment() {
                     rosterConfig.rosterId = rosterId
                     rosterConfig.mode = RosterType.OFFICIAL.type
                     rosterConfig.touchEnabled = false
-                    rosterConfig.playerFilters.clear()
+                    rosterConfig.filters.clear()
                     adapter = RosterListLiveAdapter(rosterConfig)
                 }
             }
