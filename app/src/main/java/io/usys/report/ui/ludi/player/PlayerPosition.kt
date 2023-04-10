@@ -4,7 +4,7 @@ import android.widget.Spinner
 import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.ludi.roster.LudiSpinnerAdapter
+import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
 import io.usys.report.utils.views.onItemSelected
 import java.util.*
 

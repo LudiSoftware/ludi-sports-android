@@ -18,7 +18,7 @@ import io.usys.report.ui.views.viewGroup.LudiViewGroup
  * Created by ChazzCoin : October 2022.
  */
 
-class RosterFragmentVG : LudiStringIdsFragment() {
+class RosterListFragmentVG : LudiStringIdsFragment() {
 
     private var _binding: FragmentRosterVgBinding? = null
     private val binding get() = _binding!!

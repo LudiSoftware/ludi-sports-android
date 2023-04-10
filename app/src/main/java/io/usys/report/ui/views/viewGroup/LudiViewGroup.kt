@@ -3,7 +3,6 @@ package io.usys.report.ui.views.viewGroup
 import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -15,8 +14,8 @@ import io.usys.report.ui.ludi.chat.ChatFragment
 import io.usys.report.ui.ludi.evaluation.CreateEvaluationFragment
 import io.usys.report.ui.ludi.note.DualNotesFragment
 import io.usys.report.ui.ludi.player.DetailsListFragment
-import io.usys.report.ui.ludi.roster.RosterFragmentVG
-import io.usys.report.ui.ludi.roster.ViewRosterFragment
+import io.usys.report.ui.ludi.roster.RosterListFragmentVG
+import io.usys.report.ui.ludi.roster.ViewRosterListFragment
 import io.usys.report.ui.views.LudiLinearLayout
 import io.usys.report.ui.views.LudiTabLayout
 import io.usys.report.utils.log
@@ -31,7 +30,7 @@ import io.usys.report.utils.log
 
 fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
-        add(Pair("Roster", RosterFragmentVG()))
+        add(Pair("Roster", RosterListFragmentVG()))
         add(Pair("Notes", DualNotesFragment()))
         add(Pair("Chat", ChatFragment()))
     }
@@ -53,8 +52,8 @@ fun ludiPlayerProfileFragments(): MutableList<Pair<String, Fragment>> {
 
 fun ludiRosterFragments(): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
-        add(Pair("Official", ViewRosterFragment()))
-        add(Pair("Tryouts", ViewRosterFragment()))
+        add(Pair("Official", ViewRosterListFragment()))
+        add(Pair("Tryouts", ViewRosterListFragment()))
     }
 }
 

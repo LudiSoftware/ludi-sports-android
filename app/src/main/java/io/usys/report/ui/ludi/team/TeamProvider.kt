@@ -2,15 +2,12 @@ package io.usys.report.ui.ludi.team
 
 import com.google.firebase.database.DatabaseReference
 import io.realm.Realm
-import io.realm.RealmChangeListener
-import io.realm.RealmObject
 import io.usys.report.firebase.*
 import io.usys.report.firebase.models.convertForFirebase
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
-import io.usys.report.ui.ludi.roster.RosterRealmSingleEventListener
 import io.usys.report.utils.log
 
 class TeamProvider(val teamId: String) {
@@ -26,10 +23,7 @@ class TeamProvider(val teamId: String) {
     var teamReference: DatabaseReference? = null
     private var teamFireListener: TeamFireListener
 
-    var teamListener: TeamRealmSingleEventListener? = null
-    var rosterListener: RosterRealmSingleEventListener? = null
     var rosterSubscriptions: MutableList<() -> Unit> = mutableListOf()
-    var tryoutListener: TryoutRealmSingleEventListener? = null
 
     init {
         pullTeamAndDetailsFromFirebase()
@@ -37,8 +31,6 @@ class TeamProvider(val teamId: String) {
             teamReference = it.child(DatabasePaths.TEAMS.path)
         }
         teamFireListener = TeamFireListener()
-        teamListener = TeamRealmSingleEventListener(teamId = teamId, realmInstance, teamCallback())
-        rosterListener = RosterRealmSingleEventListener(rosterCallback())
     }
 
     /** FireTeam
@@ -60,7 +52,6 @@ class TeamProvider(val teamId: String) {
             // Tryout
             team.tryoutId?.let { tryoutId ->
                 if (!tryoutIsComplete()) {
-                    tryoutListener = TryoutRealmSingleEventListener(tryoutId = tryoutId, tryoutCallback())
                     realmInstance.fireGetTryOutProfileById(tryoutId)
                 } else {
                     realmInstance.findTryOutIdByTeamId(teamId)?.let {
@@ -88,7 +79,6 @@ class TeamProvider(val teamId: String) {
     private fun tryoutIsComplete() : Boolean {
         realmInstance.ifObjectExists<TryOut>(this.tryoutId) {
             this.tryoutIsComplete = true
-            tryoutListener?.unregisterListener()
         }
         return tryoutIsComplete
     }
@@ -105,7 +95,6 @@ class TeamProvider(val teamId: String) {
         return { _ ->
             log("Team Callback")
             pullTeamAndDetailsFromFirebase()
-            teamListener?.unregisterListener()
         }
     }
     private fun rosterCallback() : (() -> Unit) {
@@ -146,75 +135,6 @@ class TeamProvider(val teamId: String) {
     }
 
 }
-
-/** Team Realm Listener */
-class TeamRealmSingleEventListener(val teamId: String, val realm: Realm, private val onRealmChange: (teamId: String) -> Unit) : RealmChangeListener<Team> {
-    private lateinit var teamResult: Team
-
-    init {
-        registerListener()
-    }
-
-    override fun onChange(t: Team) {
-        log("Team listener called")
-        onRealmChange(teamId)
-    }
-
-    fun registerListener() {
-        teamResult = realm.where(Team::class.java).equalTo("id", teamId).findFirstAsync()
-        teamResult.addChangeListener(this)
-    }
-
-    fun unregisterListener() {
-        teamResult.removeChangeListener(this)
-        realm.close()
-    }
-}
-
-/** TryOut Realm Listener */
-class TryoutRealmSingleEventListener(val tryoutId: String, private val onRealmChange: (tryoutId: String) -> Unit) : RealmChangeListener<TryOut> {
-    private val realm: Realm = Realm.getDefaultInstance()
-    private lateinit var tryoutResult: TryOut
-
-    init {
-        registerListener()
-    }
-
-    override fun onChange(t: TryOut) {
-        log("TryOut listener called")
-        onRealmChange(tryoutId)
-    }
-
-    fun registerListener() {
-        tryoutResult = realm.where(TryOut::class.java).equalTo("id", tryoutId).findFirstAsync()
-        tryoutResult.addChangeListener(this)
-    }
-
-    fun unregisterListener() {
-        tryoutResult.removeChangeListener(this)
-        realm.close()
-    }
-}
-inline fun <reified T:RealmObject> Realm.subscribeToUpdates(crossinline updateCallBack: (Realm) -> Unit): RealmChangeListener<T> {
-    val listener = RealmChangeListener<T> {
-        // Handle changes to the Realm data here
-        log("Realm listener called")
-        updateCallBack(this)
-    }
-    this.where(T::class.java)?.findFirstAsync()?.addChangeListener(listener)
-    return listener
-}
-inline fun Realm.subscribeToTryoutUpdates(tryoutId: String, crossinline updateCallBack: (String) -> Unit) {
-    val tryoutListener = RealmChangeListener<TryOut> { tryout ->
-        // Handle changes to the Realm data here
-        log("Roster listener called")
-        updateCallBack(tryoutId)
-    }
-    this.where(TryOut::class.java)?.equalTo("id", tryoutId)?.findFirstAsync()?.addChangeListener(tryoutListener)
-}
-
-
-
 fun Realm.pullTeamRosterTryoutFromFirebase(teamId: String) {
     this.findTeamById(teamId)?.let { team ->
         // Official Roster

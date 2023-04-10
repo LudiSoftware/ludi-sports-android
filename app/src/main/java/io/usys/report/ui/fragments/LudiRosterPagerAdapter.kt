@@ -6,7 +6,7 @@ import io.realm.Realm
 import io.realm.RealmResults
 import io.usys.report.realm.*
 import io.usys.report.realm.model.TryOut
-import io.usys.report.ui.ludi.roster.ViewRosterFragment
+import io.usys.report.ui.ludi.roster.ViewRosterListFragment
 import io.usys.report.utils.log
 
 class LudiRosterPagerAdapter(private val parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
@@ -30,7 +30,7 @@ class LudiRosterPagerAdapter(private val parentFragment: Fragment) : FragmentSta
         fragmentPairs.clear()
         realmInstance?.findTeamById(teamId)?.let { team ->
             // Official Roster
-            fragmentPairs.add(Pair("Official Roster", ViewRosterFragment.newRoster(team.rosterId!!, "Official Roster", teamId!!)))
+            fragmentPairs.add(Pair("Official Roster", ViewRosterListFragment.newRoster(team.rosterId!!, "Official Roster", teamId!!)))
             // TryOut Roster
             team.tryoutId?.let { itToId ->
                 tryoutListener = realmInstance?.observe(parentFragment.viewLifecycleOwner) { results ->
@@ -38,7 +38,7 @@ class LudiRosterPagerAdapter(private val parentFragment: Fragment) : FragmentSta
                         log("Team results updated")
                         realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
                             to.rosterId?.let { itToRosterId ->
-                                fragmentPairs.add(Pair("TryOut Roster", ViewRosterFragment.newRoster(itToRosterId, "TryOut", teamId!!)))
+                                fragmentPairs.add(Pair("TryOut Roster", ViewRosterListFragment.newRoster(itToRosterId, "TryOut", teamId!!)))
                                 tryoutListener?.removeAllChangeListeners()
                                 notifyDataSetChanged()
                             }

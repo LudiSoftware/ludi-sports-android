@@ -14,7 +14,7 @@ import io.usys.report.utils.log
  * Created by ChazzCoin : October 2022.
  */
 
-class ViewRosterFragment : LudiStringIdsFragment() {
+class ViewRosterListFragment : LudiStringIdsFragment() {
 
     companion object {
         private const val ARG_ROSTER_TYPE = "roster_type"
@@ -22,8 +22,8 @@ class ViewRosterFragment : LudiStringIdsFragment() {
         private const val ARG_ROSTER_TITLE = "roster_title"
         private const val ARG_ROSTER_TEAM_ID = "roster_team_id"
 
-        fun newRoster(rosterId: String, title:String, teamId:String): ViewRosterFragment {
-            val fragment = ViewRosterFragment()
+        fun newRoster(rosterId: String, title:String, teamId:String): ViewRosterListFragment {
+            val fragment = ViewRosterListFragment()
             val args = Bundle()
             args.putString(ARG_ROSTER_ID, rosterId)
             args.putString(ARG_ROSTER_TITLE, title)

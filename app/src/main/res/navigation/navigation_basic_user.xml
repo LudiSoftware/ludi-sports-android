@@ -114,7 +114,7 @@
 
     <fragment
         android:id="@+id/navigation_roster_vg_frag"
-        android:name="io.usys.report.ui.ludi.roster.RosterFragmentVG"
+        android:name="io.usys.report.ui.ludi.roster.RosterListFragmentVG"
         android:label="Roster"
         tools:layout="@layout/fragment_roster_vg">
     </fragment>

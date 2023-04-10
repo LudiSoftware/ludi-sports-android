@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.roster
+package io.usys.report.ui.views.spinners
 
 import android.content.Context
 import android.view.LayoutInflater
