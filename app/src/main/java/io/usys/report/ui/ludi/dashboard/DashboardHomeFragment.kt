@@ -125,7 +125,7 @@ class DashboardHomeFragment : YsrFragment() {
 
 }
 
-class SignInMenuProvider(val activity: Activity) : MenuProvider {
+class SignInMenuProvider(private val activity: Activity) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.sign_in_menu, menu)
     }
@@ -140,7 +140,7 @@ class SignInMenuProvider(val activity: Activity) : MenuProvider {
     }
 }
 
-class SignOutMenuProvider(val activity: Activity) : MenuProvider {
+class SignOutMenuProvider(private val activity: Activity) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.sign_out_menu, menu)
     }

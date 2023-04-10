@@ -1,12 +1,12 @@
 package io.usys.report.ui.ludi.player
 
 import android.widget.Spinner
+import androidx.core.text.isDigitsOnly
 import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
 import io.usys.report.utils.views.onItemSelected
-import java.util.*
 
 val positionMap = hashMapOf(
     "goalkeeper" to 1,
@@ -40,14 +40,14 @@ val positionMap2 = hashMapOf(
     "right winger" to "(7) right winger",
     "left winger" to "(11) left winger",
     "center forward" to "(9) center forward",
-    "striker" to "(9) striker"
+    "striker" to "(9) striker",
+    "substitute" to "(12) substitute",
+    "reserve" to "(13) reserve",
+    "unknown" to "(0) Unknown"
 )
 
-fun getPosition(position: String): Int? {
-    return positionMap[position.toLowerCase(Locale.ROOT)]
-}
-fun getPosition2(position: String): String? {
-    return positionMap2[position.toLowerCase(Locale.ROOT)]
+fun getPosition(position: String): Int {
+    return positionMap.filter { it.key == position }.values.first()
 }
 fun getPosition(number: Int): String? {
     val invertedPositionMap = positionMap.entries.associate { it.value to it.key }
@@ -57,18 +57,17 @@ fun getPosition(number: Int): String? {
 fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
     if (this == null) return
     val realmInstance = realm()
-    val positions = positionMap2.keys.toMutableList()
+    val positions = positionMap.keys.toMutableList()
     val spinnerAdapter = LudiSpinnerAdapter(this.context, positions)
     this.adapter = spinnerAdapter
 
-    val player = realmInstance.findPlayerRefById(playerId)
-    getPosition(player?.position!!)?.let {
-        positionMap2.forEach { (key, _) ->
-            positions.find { it == key }?.let {
-                val tempIndex = positions.indexOf(it)
-                this.setSelection(tempIndex)
-            }}
+    realmInstance.findPlayerRefById(playerId)?.let {  player ->
+        val pp = getPosition(player.position.toIntOrDefault(12))
+        positions.find { it == pp }?.let {
+            val tempIndex = positions.indexOf(it)
+            this.setSelection(tempIndex)
         }
+    }
 
     // ROSTER SELECTION
     this.onItemSelected { parent, _, position, _ ->
@@ -79,4 +78,12 @@ fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
         }
     }
 
+}
+fun String?.toIntOrDefault(defaultValue: Int = 0): Int {
+    if (this == null) return defaultValue
+    return if (this.isDigitsOnly()) {
+        this.toInt()
+    } else {
+        defaultValue
+    }
 }
