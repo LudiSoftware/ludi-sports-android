@@ -15,7 +15,7 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
-import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
+import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.touchAdapters.*
 
 

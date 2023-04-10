@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.roster
+package io.usys.report.ui.views.listAdapters.rosterLiveList
 
 import android.view.View
 import android.widget.CheckBox
@@ -12,7 +12,6 @@ import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.makeGone

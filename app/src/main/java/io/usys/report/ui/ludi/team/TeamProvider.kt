@@ -31,12 +31,6 @@ class TeamProvider(val teamId: String) {
     var rosterSubscriptions: MutableList<() -> Unit> = mutableListOf()
     var tryoutListener: TryoutRealmSingleEventListener? = null
 
-    companion object {
-        fun getTeamFromFirebase(teamId: String, realmInstance: Realm) {
-            realmInstance.fireGetTeamProfileInBackground(teamId)
-        }
-    }
-
     init {
         pullTeamAndDetailsFromFirebase()
         firebaseDatabase {

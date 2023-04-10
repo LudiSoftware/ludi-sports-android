@@ -50,14 +50,6 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.itemClickListener = itemClickListener
         this.layout = RouterViewHolder.getLayout(type, size)
     }
-
-    constructor(type: String, itemClickListener: ((View, T) -> Unit)?, size:String) : this() {
-        this.type = type
-        this.itemClickListener = itemClickListener
-        this.layout = RouterViewHolder.getLayout(type, size)
-        this.size = size
-    }
-
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, size:String) : this() {
         this.realmList = realmList
         this.type = type
@@ -65,14 +57,6 @@ open class RealmListAdapter<T>(): RecyclerView.Adapter<RouterViewHolder>() {
         this.layout = RouterViewHolder.getLayout(type, size)
         this.size = size
     }
-    constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, gridLayoutManager: GridLayoutManager) : this() {
-        this.gridLayoutManager = gridLayoutManager
-        this.realmList = realmList
-        this.type = type
-        this.itemClickListener = itemClickListener
-        this.layout = RouterViewHolder.getLayout(type, size)
-    }
-
     constructor(realmList: RealmList<T>?, type: String, itemClickListener: ((View, T) -> Unit)?, updateCallback: ((String, String) -> Unit)?) : this() {
         this.realmList = realmList
         this.type = type

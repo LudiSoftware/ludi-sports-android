@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
+import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.utils.log
 import java.util.*
 

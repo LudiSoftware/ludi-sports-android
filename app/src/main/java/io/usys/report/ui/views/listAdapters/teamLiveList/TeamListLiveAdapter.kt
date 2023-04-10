@@ -1,4 +1,4 @@
-package io.usys.report.ui.views.listAdapters
+package io.usys.report.ui.views.listAdapters.teamLiveList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

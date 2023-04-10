@@ -11,7 +11,7 @@ import io.usys.report.realm.*
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.ui.views.LudiPopupMenu
-import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
+import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.utils.*
 import io.usys.report.utils.views.onItemSelected
 import io.usys.report.utils.views.wiggleOnce

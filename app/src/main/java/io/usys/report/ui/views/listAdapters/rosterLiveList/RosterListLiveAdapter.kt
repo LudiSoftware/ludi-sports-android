@@ -1,13 +1,10 @@
-package io.usys.report.ui.views.listAdapters
+package io.usys.report.ui.views.listAdapters.rosterLiveList
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import io.realm.*
 import io.usys.report.realm.*
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
@@ -16,42 +13,13 @@ import io.usys.report.realm.model.Roster
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.sortByOrderIndex
 import io.usys.report.ui.ludi.roster.RosterConfig
-import io.usys.report.ui.ludi.roster.RosterPlayerViewHolder
 import io.usys.report.ui.ludi.roster.RosterType
+import io.usys.report.ui.views.recyclerViews.LudiBaseListAdapter
 import io.usys.report.ui.views.touchAdapters.RosterLiveDragDropAction
 import io.usys.report.utils.log
 
 
-abstract class LudiBaseListAdapter<R,L,T : ViewHolder> : RecyclerView.Adapter<T>() {
 
-    protected var context: Context? = null
-    protected val realmInstance = realm()
-    var results: RealmResults<R>? = null
-    var itemList: RealmList<L>? = RealmList()
-
-    init {
-        realmInstance.isAutoRefresh = true
-    }
-
-    override fun onBindViewHolder(holder: T, position: Int) {
-        onBind(holder, position)
-    }
-
-    abstract fun onBind(holder: T, position: Int)
-
-    override fun getItemCount(): Int {
-        return itemList?.size ?: 0
-    }
-
-    protected fun onDestroy() {
-        realmInstance.removeAllChangeListeners()
-    }
-
-    protected fun destroyObserver() {
-        realmInstance.removeAllChangeListeners()
-    }
-
-}
 /**
  * Dynamic Master RecyclerView Adapter
  */

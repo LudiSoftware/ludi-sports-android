@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.views.listAdapters.RosterListLiveAdapter
+import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.utils.log
 
 /**
