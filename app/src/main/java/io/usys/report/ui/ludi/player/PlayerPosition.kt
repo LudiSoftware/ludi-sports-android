@@ -27,7 +27,7 @@ val positionMap = hashMapOf(
     "unknown" to 0
 )
 
-val positionMap2 = hashMapOf(
+val positionMapDisplay = hashMapOf(
     "goalkeeper" to "(1) goalkeeper",
     "right back" to "(2) right back",
     "center back" to "(4) center back",
@@ -46,8 +46,8 @@ val positionMap2 = hashMapOf(
     "unknown" to "(0) Unknown"
 )
 
-fun getPosition(position: String): Int {
-    return positionMap.filter { it.key == position }.values.first()
+fun getPositionFromDisplay(position: String): String {
+    return positionMapDisplay.filter { it.value == position }.keys.first()
 }
 fun getPosition(number: Int): String? {
     val invertedPositionMap = positionMap.entries.associate { it.value to it.key }
@@ -57,14 +57,17 @@ fun getPosition(number: Int): String? {
 fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
     if (this == null) return
     val realmInstance = realm()
-    val positions = positionMap.keys.toMutableList()
-    val spinnerAdapter = LudiSpinnerAdapter(this.context, positions)
+    val positionsToDisplay = positionMapDisplay.values.toMutableList()
+    val positionsToSet = positionMap.keys.toMutableList()
+    val spinnerAdapter = LudiSpinnerAdapter(this.context, positionsToDisplay)
     this.adapter = spinnerAdapter
 
     realmInstance.findPlayerRefById(playerId)?.let {  player ->
-        val pp = getPosition(player.position.toIntOrDefault(12))
-        positions.find { it == pp }?.let {
-            val tempIndex = positions.indexOf(it)
+        val pNumber = player.position.toIntOrDefault(12) // 12
+        val pp = getPosition(pNumber) // "substitute"
+        val p2 = positionMapDisplay[pp]
+        positionsToDisplay.find { it == p2 }?.let {
+            val tempIndex = positionsToDisplay.indexOf(it)
             this.setSelection(tempIndex)
         }
     }
@@ -72,7 +75,8 @@ fun Spinner?.setupPlayerPositionSpinner(playerId: String) {
     // ROSTER SELECTION
     this.onItemSelected { parent, _, position, _ ->
         val positionName = parent.getItemAtPosition(position)
-        val positionNumber = positionMap[positionName]
+        val p2 = getPositionFromDisplay(positionName.toString())
+        val positionNumber = positionMap[p2]
         realmInstance.safeWrite {
             it.findPlayerRefById(playerId)?.position = positionNumber.toString()
         }
