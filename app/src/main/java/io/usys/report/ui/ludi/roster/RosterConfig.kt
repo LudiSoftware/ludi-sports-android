@@ -1,5 +1,6 @@
 package io.usys.report.ui.ludi.roster
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -87,9 +88,9 @@ class RosterConfig(var teamId: String) {
     val realmInstance: Realm = realm()
     var recyclerView: RecyclerView? = null
     var parentFragment: Fragment? = null
-    // TeamId
     // Filters
     var filters = ludiFilters()
+    var rosterSizeLimit: Int = 20
     // Mandatory
     var itemTouchHelper: ItemTouchHelper? = null
     // Optional
@@ -112,6 +113,7 @@ class RosterConfig(var teamId: String) {
         rosterId?.let {
             currentRosterId = it
             realmInstance.rosterSessionById(it) { rosterSession ->
+                this.rosterSizeLimit = rosterSession.rosterSizeLimit
                 realmInstance.safeWrite {
                     rosterSession.teamId = teamId
                     rosterSession.tryoutRosterId = this.tryoutRosterId
@@ -136,11 +138,19 @@ class RosterConfig(var teamId: String) {
         filters.clear()
     }
 
-    fun updateRosterSizeLimit(realmInstance: Realm?, rosterId: String?, newSizeLimit: Int){
-        realmInstance?.rosterSessionById(rosterId ?: currentRosterId) { rosterSession ->
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateRosterSizeLimit(newSizeLimit: Int, adapter: RosterListLiveAdapter? = null) {
+        realmInstance.rosterSessionById(currentRosterId) { rosterSession ->
             realmInstance.safeWrite {
                 rosterSession.rosterSizeLimit = newSizeLimit
             }
+        }
+        adapter?.refresh()
+    }
+
+    fun setRosterSizeLimit(){
+        realmInstance.rosterSessionById(currentRosterId) { rosterSession ->
+            this.rosterSizeLimit = rosterSession.rosterSizeLimit
         }
     }
 

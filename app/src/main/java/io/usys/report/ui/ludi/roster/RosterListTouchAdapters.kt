@@ -1,5 +1,6 @@
 package io.usys.report.ui.views.touchAdapters
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.realm.realm
@@ -25,10 +26,11 @@ class RosterLiveDragDropAction(private val adapter: RosterListLiveAdapter) :  It
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         return makeMovementFlags(dragFlags, swipeFlags)
     }
+    @SuppressLint("NotifyDataSetChanged")
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         adapter.updateOrderIndexes()
-        adapter.refresh()
+        adapter.softRefresh()
         log("clearView: RosterId = ${adapter.config.rosterId}")
     }
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {

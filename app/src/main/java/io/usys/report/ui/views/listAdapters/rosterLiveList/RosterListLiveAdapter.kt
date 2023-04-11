@@ -86,6 +86,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     @SuppressLint("NotifyDataSetChanged")
     private fun init() {
         loadRosterById()
+        setRosterSizeLimit()
         realmInstance.rosterSessionById(config.currentRosterId) {
             this.mode = it.mode
             this.layout = it.layout
@@ -119,6 +120,13 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     }
     @SuppressLint("NotifyDataSetChanged")
     fun refresh() {
+        config.selectionCounter = 0
+        setRosterSizeLimit()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun softRefresh() {
         config.selectionCounter = 0
         notifyDataSetChanged()
     }
@@ -208,11 +216,28 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         return false
     }
 
-    fun getRosterSize() : Int {
+    private fun getRosterSize() : Int {
         realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
             return rs.rosterSizeLimit
         }
         return 20
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateRosterSizeLimit(newSizeLimit: Int) {
+        realmInstance.rosterSessionById(config.currentRosterId) { rosterSession ->
+            realmInstance.safeWrite {
+                rosterSession.rosterSizeLimit = newSizeLimit
+            }
+        }
+        this.config.rosterSizeLimit = newSizeLimit
+        this.refresh()
+    }
+
+    fun setRosterSizeLimit() {
+        realmInstance.rosterSessionById(config.currentRosterId) { rosterSession ->
+            this.config.rosterSizeLimit = rosterSession.rosterSizeLimit
+        }
     }
 
 }

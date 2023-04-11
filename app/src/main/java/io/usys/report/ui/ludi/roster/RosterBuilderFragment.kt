@@ -96,7 +96,6 @@ class RosterBuilderFragment : YsrFragment() {
 
 
     private fun setupRosterTypeSpinner() {
-
         _binding?.rosterBuilderLudiSpinRosterType?.setupRosterTypeSpinner(rosterIds) { _, item ->
             rosterIds.forEach { (key, value) ->
                 if (key == item) {
@@ -107,24 +106,6 @@ class RosterBuilderFragment : YsrFragment() {
             _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
             setupRosterList()
         }
-
-//        rosterEntries = rosterIds.keys.toMutableList()
-//        val spinnerAdapter = LudiSpinnerAdapter(requireContext(), rosterEntries)
-//        _binding?.rosterBuilderLudiSpinRosterType?.adapter = spinnerAdapter
-//
-//        // ROSTER SELECTION
-//        _binding?.rosterBuilderLudiSpinRosterType?.onItemSelected { parent, _, position, _ ->
-//            val selectedEntry = parent.getItemAtPosition(position)
-//            rosterIds.forEach { (key, value) ->
-//                if (key == selectedEntry) {
-//                    currentRosterId = value
-//                }
-//            }
-//            rosterType = selectedEntry.toString()
-//            _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
-//            setupRosterList()
-//        }
-
     }
 
     private fun toggleTryoutTools() {
@@ -149,8 +130,8 @@ class RosterBuilderFragment : YsrFragment() {
         // ROSTER SELECTION
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
-            adapter?.config?.updateRosterSizeLimit(realmInstance, teamId, selectedEntry.toString().toInt())
-            adapter?.refresh()
+            adapter?.updateRosterSizeLimit(selectedEntry.toString().toInt())
+//            adapter?.refresh()
         }
     }
     /** Master Roster Setup! **/
@@ -208,32 +189,22 @@ class RosterBuilderFragment : YsrFragment() {
     }
 
     private fun setupRosterList() {
-//        adapter?.disableAndClearRosterList()
         rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
         currentRosterId?.let { rosterId ->
             when (rosterType) {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
-//                    rosterConfig.rosterId = rosterId
-//                    rosterConfig.filters.clear()
-//                    adapter = RosterListLiveAdapter(rosterConfig)
                     adapter?.setupTryoutRoster()
                 }
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
-//                    rosterConfig.rosterId = rosterId
-//                    adapter = RosterListLiveAdapter(rosterConfig)
-//                    adapter?.filterByStatusSelected()
                     adapter?.setupSelectionRoster()
                 }
                 else -> {
-                    toggleTryoutTools()
+                    setupRosterSizeSpinner()
                     detachLudiMenu()
-//                    rosterConfig.rosterId = rosterId
-//                    rosterConfig.filters.clear()
-//                    adapter = RosterListLiveAdapter(rosterConfig)
                     adapter?.setupOfficialRoster()
                 }
             }
