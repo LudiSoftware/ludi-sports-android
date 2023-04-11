@@ -67,6 +67,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         realmInstance.observe<Roster>(config.parentFragment!!.viewLifecycleOwner) { results ->
             results.find { it.id == config.currentRosterId }?.let {
                 log("Roster Session Live Updates")
+                this.setPlayersSelectedCount()
                 this.softReload()
             }
         }
