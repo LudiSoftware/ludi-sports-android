@@ -67,7 +67,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
                     val result = holder.bindTryout(it1, adapter=this, counter=config.selectionCounter)
                     if (result) config.selectionCounter++
                 } else if (mode == RosterType.SELECTED.type) {
-                    holder.bindSelection(it1, position=position, rosterLimit=getRosterSize())
+                    holder.bindSelection(it1, position=position, rosterLimit=config.rosterSizeLimit)
                 } else {
                     holder.bind(it1, position=position)
                 }
@@ -115,6 +115,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun reload() {
+        setRosterSizeLimit()
         loadRosterById()
         notifyDataSetChanged()
     }

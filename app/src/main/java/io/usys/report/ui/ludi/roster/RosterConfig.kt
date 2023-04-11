@@ -138,21 +138,6 @@ class RosterConfig(var teamId: String) {
         filters.clear()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateRosterSizeLimit(newSizeLimit: Int, adapter: RosterListLiveAdapter? = null) {
-        realmInstance.rosterSessionById(currentRosterId) { rosterSession ->
-            realmInstance.safeWrite {
-                rosterSession.rosterSizeLimit = newSizeLimit
-            }
-        }
-        adapter?.refresh()
-    }
-
-    fun setRosterSizeLimit(){
-        realmInstance.rosterSessionById(currentRosterId) { rosterSession ->
-            this.rosterSizeLimit = rosterSession.rosterSizeLimit
-        }
-    }
 
 }
 
