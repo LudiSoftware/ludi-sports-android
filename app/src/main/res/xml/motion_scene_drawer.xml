@@ -39,6 +39,18 @@
             motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation"/>
 
         <Constraint
+            android:id="@+id/formationBuilderRosterTypeLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="2dp"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
+            android:visibility="gone"
+            android:orientation="vertical"/>
+
+        <Constraint
             android:id="@+id/formationRosterTitleOne"
             android:visibility="visible"/>
 
@@ -98,8 +110,10 @@
             motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintLeft_toLeftOf="parent"/>
     </ConstraintSet>
-x
-    <ConstraintSet android:id="@+id/end">
+
+    <!-- END -->
+    <ConstraintSet
+        android:id="@+id/end">
         <!-- Define the constraints for the starting state of the View -->
         <Constraint
             android:id="@+id/formationRosterListsLinearLayout"
@@ -110,6 +124,18 @@ x
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/tryoutsRootViewRosterFormation" />
+
+        <Constraint
+            android:id="@+id/formationBuilderRosterTypeLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="2dp"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
+            android:visibility="visible"
+            android:orientation="vertical"/>
 
         <Constraint
             android:id="@+id/formationRosterTitleOne"

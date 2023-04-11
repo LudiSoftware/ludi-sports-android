@@ -52,14 +52,14 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var deckFilteredRecyclerView: RecyclerView? = null
 
     // Formation Session
-    var floatingMenuButton: FloatingActionButton? = null
+    private var floatingMenuButton: FloatingActionButton? = null
     var floatingPopMenu: PopupMenu? = null
 
     // Player Icons on the field
-    var playerObserver: RealmResults<PlayerRef>? = null
-    var formationPlayerItemViewList = mutableListOf<View>()
-    var formationPlayerItemPositionTextViewList = mutableListOf<TextView>()
-    var formationPlayerColoredBackgroundViews = mutableListOf<CardView>()
+    private var playerObserver: RealmResults<PlayerRef>? = null
+    private var formationPlayerItemViewList = mutableListOf<View>()
+    private var formationPlayerItemPositionTextViewList = mutableListOf<TextView>()
+    private var formationPlayerColoredBackgroundViews = mutableListOf<CardView>()
     // Player Formation
     var onTap: ((String) -> Unit)? = null
     var onLongPress: ((String) -> Unit)? = null
@@ -97,7 +97,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
         bindViews()
         configureDisplay()
-//        setupRosterSession()
         setSoccerFieldLight()
         setupMotionLayoutListener()
         setupDisplay()
