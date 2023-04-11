@@ -122,22 +122,25 @@ class RosterConfig(var teamId: String) {
         }
     }
 
+    /** Helpers **/
+    fun switchToOfficialRoster() {
+        rosterId?.let { currentRosterId = it }
+    }
+    fun switchToTryoutRoster() {
+        tryoutRosterId?.let { currentRosterId = it }
+    }
     fun clearFilters() {
         filters.clear()
     }
-
     fun toPlayerProfile(id: String?) {
         if (id == null) return
         this.parentFragment?.toPlayerProfile(playerId = id)
     }
-
     fun destroy() {
         itemTouchHelper?.attachToRecyclerView(null)
-//        recyclerView = null
         itemTouchHelper = null
         filters.clear()
     }
-
 
 }
 

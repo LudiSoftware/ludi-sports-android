@@ -24,6 +24,10 @@ fun <T:Any> RealmList<T>.safeAdd(item: T?): Boolean {
     return true
 }
 
+fun <T:Any> RealmList<T>.safeAddAll(otherList: Collection<T>) {
+    otherList.forEach { this.safeAdd(it) }
+}
+
 /** -> TRIED AND TRUE! <- */
 fun <T> RealmList<T>?.toMutableList() : MutableList<T> {
     val listOfT = mutableListOf<T>()

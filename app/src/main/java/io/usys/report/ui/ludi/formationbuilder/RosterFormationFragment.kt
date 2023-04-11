@@ -44,8 +44,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         }
     }
 
-    var adapterSubstitutes: RosterFormationListAdapter? = null
-    var adapterFiltered: RosterFormationListAdapter? = null
+    var adapterSubstitutes: RosterFormationListLiveAdapter? = null
+    var adapterFiltered: RosterFormationListLiveAdapter? = null
     var formationRelativeLayout: RelativeLayout? = null
     var deckLinearLayout: LinearLayoutCompat? = null
     var deckSubsRecyclerView: RecyclerView? = null
@@ -88,7 +88,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
         }
 
-        rosterConfig = RosterConfig(teamId!!)
+        rosterConfig = RosterConfig(teamId!!).apply {
+            parentFragment = this@RosterFormationFragment
+        }
 
         realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
             officialRoster = teamSession.rosterId
@@ -201,7 +203,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun setupFilteredList() {
         realmInstance?.teamSessionByTeamId(teamId) { ts ->
             currentWorkingRosterId = ts.rosterId
-            adapterFiltered = RosterFormationListAdapter(teamId!!, realmInstance, findNavController(), ludiFilters("foot" to "left"))
+            rosterConfig.filters = ludiFilters("foot" to "left")
+            adapterFiltered = RosterFormationListLiveAdapter(rosterConfig)
             deckFilteredRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
             deckFilteredRecyclerView?.adapter = adapterFiltered
         }
@@ -318,7 +321,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         safePlayerFromRoster(playerId) { newPlayerRef ->
             if (!loadingFromSession) {
                 realmInstance?.safeWrite { itRealm ->
-                    itRealm.teamSessionByTeamId(teamId) { ts ->
+                    itRealm.rosterSessionById(rosterConfig.currentRosterId) { ts ->
                         ts.formationListIds?.let {
                             if (!it.contains(playerId)) {
                                 it.add(playerId)
@@ -327,7 +330,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 //                        ts.roster.setPlayerAsAccepted(playerId)
                     }
                 }
-                adapterFiltered?.reload()
+//                adapterFiltered?.reload()
             }
 
             formationPlayerItemViewList.removeIf { it.tag == playerId }
@@ -406,7 +409,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         realmInstance?.rosterSessionById(currentWorkingRosterId) { ts ->
             // -> Setup Substitution List
             if (!ts.deckListIds.isNullOrEmpty()) {
-                adapterSubstitutes = RosterFormationListAdapter(teamId!!, realmInstance, findNavController())
+                adapterSubstitutes = RosterFormationListLiveAdapter(rosterConfig)
                 deckSubsRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
                 deckSubsRecyclerView?.adapter = adapterSubstitutes
                 createDeckDragListener()

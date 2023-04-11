@@ -28,7 +28,6 @@ import io.usys.report.utils.log
  */
 open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, RosterPlayerViewHolder>() {
 
-    var rosterId:String? = null
     var mode: String? = null
     var layout: Int = 0
     var touchEnabled: Boolean = false
