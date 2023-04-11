@@ -35,23 +35,10 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     lateinit var config: RosterConfig
     init { realmInstance.isAutoRefresh = true }
 
-    constructor(teamId: String) : this() {
-        this.config = RosterConfig(teamId)
-        this.init()
-    }
     constructor(rosterLayoutConfig: RosterConfig) : this() {
         this.config = rosterLayoutConfig
         (config.currentRosterId)?.let { realmInstance.setupRosterSession(it) }
         this.init()
-    }
-
-    private fun observeRosterPlayers() {
-        realmInstance.observe<RosterSession>(config.parentFragment!!.viewLifecycleOwner) { results ->
-            results.find { it.id == config.currentRosterId }?.let {
-                log("Roster Session Live Updates")
-                this.reload()
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
@@ -75,6 +62,16 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         }
     }
 
+    /** Observe Roster Changes and Update List */
+    private fun observeRosterPlayers() {
+        realmInstance.observe<Roster>(config.parentFragment!!.viewLifecycleOwner) { results ->
+            results.find { it.id == config.currentRosterId }?.let {
+                log("Roster Session Live Updates")
+                this.softReload()
+            }
+        }
+    }
+
     /** Load Roster by ID */
     private fun loadRosterById() {
         realmInstance.findRosterById(config.currentRosterId)?.let { roster ->
@@ -92,30 +89,22 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
             this.layout = it.layout
             this.touchEnabled = it.touchEnabled
         }
-        if (mode == RosterType.TRYOUT.type || mode == RosterType.SELECTED.type) getPlayersSelectedCount()
-        if (touchEnabled) addTouchAdapters()
+        setPlayersSelectedCount()
+        addTouchAdapters()
         attach()
         observeRosterPlayers()
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setup() {
-        disableAndClearRosterList()
+    private fun reload() {
+        setRosterSizeLimit()
+        setPlayersSelectedCount()
         loadRosterById()
-        realmInstance.rosterSessionById(config.currentRosterId) {
-            this.mode = it.mode
-            this.layout = it.layout
-            this.touchEnabled = it.touchEnabled
-        }
-        if (mode == RosterType.TRYOUT.type || mode == RosterType.SELECTED.type) getPlayersSelectedCount()
-        if (touchEnabled) addTouchAdapters()
-        attach()
         notifyDataSetChanged()
     }
     @SuppressLint("NotifyDataSetChanged")
-    private fun reload() {
-        setRosterSizeLimit()
+    private fun softReload() {
         loadRosterById()
         notifyDataSetChanged()
     }
@@ -123,9 +112,9 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     fun refresh() {
         config.selectionCounter = 0
         setRosterSizeLimit()
+        setPlayersSelectedCount()
         notifyDataSetChanged()
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun softRefresh() {
         config.selectionCounter = 0
@@ -140,16 +129,15 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         touchEnabled = false
         reload()
     }
-
     fun setupTryoutRoster() {
-        config.currentRosterId = config.tryoutRosterId
         config.clearFilters()
+        config.currentRosterId = config.tryoutRosterId
         mode = RosterType.TRYOUT.type
         touchEnabled = true
         reload()
     }
-
     fun setupSelectionRoster() {
+        config.clearFilters()
         config.currentRosterId = config.tryoutRosterId
         mode = RosterType.SELECTED.type
         touchEnabled = true
@@ -159,6 +147,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     /** Touch Functions */
     private fun addTouchAdapters() {
+        if (!touchEnabled) return
         config.itemLiveTouchListener = RosterLiveDragDropAction(this)
         config.itemTouchHelper = ItemTouchHelper(config.itemLiveTouchListener!!)
         config.itemTouchHelper?.attachToRecyclerView(config.recyclerView)
@@ -186,15 +175,20 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         notifyDataSetChanged()
     }
 
-    /** Add Functions */
-    private fun getPlayersSelectedCount() {
-        realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
-            realmInstance.findRosterById(rosterId ?: config.rosterId)?.let { roster ->
-                realmInstance.safeWrite {
-                    rs.playersSelectedCount = roster.players?.ludiFilters(ludiFilters("status" to PLAYER_STATUS_SELECTED))?.count() ?: 0
-                }
+    /** Players Selected */
+    private fun setPlayersSelectedCount() {
+        realmInstance.rosterSessionById(config.currentRosterId)?.let { rs ->
+            realmInstance.safeWrite {
+                rs.playersSelectedCount = itemList?.ludiFilters(ludiFilters("status" to PLAYER_STATUS_SELECTED))?.count() ?: 0
             }
         }
+    }
+
+    fun areTooManySelected() : Boolean {
+        realmInstance.rosterSessionById(config.currentRosterId)?.let { rs ->
+            return rs.playersSelectedCount > rs.rosterSizeLimit
+        }
+        return false
     }
 
     /** Update Functions */
@@ -210,19 +204,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     }
 
     /** Helper Functions */
-    fun areTooManySelected() : Boolean {
-        realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
-            return rs.playersSelectedCount > rs.rosterSizeLimit
-        }
-        return false
-    }
 
-    private fun getRosterSize() : Int {
-        realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
-            return rs.rosterSizeLimit
-        }
-        return 20
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateRosterSizeLimit(newSizeLimit: Int) {
@@ -235,7 +217,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         this.refresh()
     }
 
-    fun setRosterSizeLimit() {
+    private fun setRosterSizeLimit() {
         realmInstance.rosterSessionById(config.currentRosterId) { rosterSession ->
             this.config.rosterSizeLimit = rosterSession.rosterSizeLimit
         }
