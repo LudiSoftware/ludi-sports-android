@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import io.realm.*
 import io.usys.report.realm.*
+import io.usys.report.realm.local.RosterSession
+import io.usys.report.realm.local.rosterSessionById
+import io.usys.report.realm.local.setupRosterSession
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
@@ -26,28 +29,33 @@ import io.usys.report.utils.log
 open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, RosterPlayerViewHolder>() {
 
     var rosterId:String? = null
-    var config: RosterConfig = RosterConfig()
+    var mode: String? = null
+    var layout: Int = 0
+    var touchEnabled: Boolean = false
+    lateinit var config: RosterConfig
+    init { realmInstance.isAutoRefresh = true }
 
-    init {
-        realmInstance.isAutoRefresh = true
+    constructor(teamId: String) : this() {
+        this.config = RosterConfig(teamId)
+        this.init()
     }
-
     constructor(rosterLayoutConfig: RosterConfig) : this() {
         this.config = rosterLayoutConfig
-        this.setup()
+        (config.currentRosterId)?.let { realmInstance.setupRosterSession(it) }
+        this.init()
     }
 
     private fun observeRosterPlayers() {
-        results = realmInstance.observeRoster(config.parentFragment!!.viewLifecycleOwner) { results ->
-            results.find { it.id == config.rosterId }?.let {
-                log("Roster Live Updates")
-                loadRosterById()
+        realmInstance.observe<RosterSession>(config.parentFragment!!.viewLifecycleOwner) { results ->
+            results.find { it.id == config.currentRosterId }?.let {
+                log("Roster Session Live Updates")
+                this.reload()
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(config.layout, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return RosterPlayerViewHolder(itemView)
     }
 
@@ -55,11 +63,11 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         println("binding realmlist")
         itemList?.let {
             it[position]?.let { it1 ->
-                if (config.mode == RosterType.TRYOUT.type) {
+                if (mode == RosterType.TRYOUT.type) {
                     val result = holder.bindTryout(it1, adapter=this, counter=config.selectionCounter)
                     if (result) config.selectionCounter++
-                } else if (config.mode == RosterType.SELECTED.type) {
-                    holder.bindSelection(it1, position=position, rosterLimit=config.rosterSizeLimit)
+                } else if (mode == RosterType.SELECTED.type) {
+                    holder.bindSelection(it1, position=position, rosterLimit=getRosterSize())
                 } else {
                     holder.bind(it1, position=position)
                 }
@@ -69,47 +77,100 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     /** Load Roster by ID */
     private fun loadRosterById() {
-        realmInstance.findRosterById(config.rosterId)?.let { roster ->
+        realmInstance.findRosterById(config.currentRosterId)?.let { roster ->
+            this.itemList?.clear()
             this.itemList = roster.players?.ludiFilters(config.filters)?.sortByOrderIndex()
-            notifyDataSetChanged()
         }
     }
 
-    protected fun attach() {
-        config.recyclerView?.layoutManager = GridLayoutManager(config.recyclerView?.context, 2)
-        config.recyclerView?.adapter = this
+    @SuppressLint("NotifyDataSetChanged")
+    private fun init() {
+        loadRosterById()
+        realmInstance.rosterSessionById(config.currentRosterId) {
+            this.mode = it.mode
+            this.layout = it.layout
+            this.touchEnabled = it.touchEnabled
+        }
+        if (mode == RosterType.TRYOUT.type || mode == RosterType.SELECTED.type) getPlayersSelectedCount()
+        if (touchEnabled) addTouchAdapters()
+        attach()
+        observeRosterPlayers()
+        notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setup() {
-        destroyObserver()
-        observeRosterPlayers()
-        if (config.mode == RosterType.TRYOUT.type || config.mode == RosterType.SELECTED.type) getPlayersSelectedCount()
-        if (config.touchEnabled) addTouchAdapters()
+        disableAndClearRosterList()
+        loadRosterById()
+        realmInstance.rosterSessionById(config.currentRosterId) {
+            this.mode = it.mode
+            this.layout = it.layout
+            this.touchEnabled = it.touchEnabled
+        }
+        if (mode == RosterType.TRYOUT.type || mode == RosterType.SELECTED.type) getPlayersSelectedCount()
+        if (touchEnabled) addTouchAdapters()
         attach()
         notifyDataSetChanged()
     }
-
+    @SuppressLint("NotifyDataSetChanged")
+    private fun reload() {
+        loadRosterById()
+        notifyDataSetChanged()
+    }
     @SuppressLint("NotifyDataSetChanged")
     fun refresh() {
         config.selectionCounter = 0
         notifyDataSetChanged()
     }
 
+    /** Pre-Sets */
+    fun setupOfficialRoster() {
+        config.currentRosterId = config.rosterId
+        config.clearFilters()
+        mode = RosterType.OFFICIAL.type
+        touchEnabled = false
+        reload()
+    }
+
+    fun setupTryoutRoster() {
+        config.currentRosterId = config.tryoutRosterId
+        config.clearFilters()
+        mode = RosterType.TRYOUT.type
+        touchEnabled = true
+        reload()
+    }
+
+    fun setupSelectionRoster() {
+        config.currentRosterId = config.tryoutRosterId
+        mode = RosterType.SELECTED.type
+        touchEnabled = true
+        setFilterStatusSelection()
+        reload()
+    }
+
+    /** Touch Functions */
     private fun addTouchAdapters() {
         config.itemLiveTouchListener = RosterLiveDragDropAction(this)
         config.itemTouchHelper = ItemTouchHelper(config.itemLiveTouchListener!!)
         config.itemTouchHelper?.attachToRecyclerView(config.recyclerView)
     }
 
+    private fun attach() {
+        config.recyclerView?.layoutManager = GridLayoutManager(config.recyclerView?.context, 2)
+        config.recyclerView?.adapter = this
+    }
+
     /** Disable Functions */
     fun disableAndClearRosterList() {
         config.destroy()
-        config = RosterConfig()
         this.itemList?.clear()
     }
 
     /** Filter Functions */
+
+    private fun setFilterStatusSelection() {
+        this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
+    }
     fun filterByStatusSelected() {
         this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
         this.itemList = this.itemList?.ludiFilters(this.config.filters)
@@ -118,8 +179,12 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     /** Add Functions */
     private fun getPlayersSelectedCount() {
-        realmInstance.findRosterById(config.rosterId)?.let { roster ->
-            config.playersSelectedCount = roster.players?.ludiFilters(ludiFilters("status" to PLAYER_STATUS_SELECTED))?.count() ?: 0
+        realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
+            realmInstance.findRosterById(rosterId ?: config.rosterId)?.let { roster ->
+                realmInstance.safeWrite {
+                    rs.playersSelectedCount = roster.players?.ludiFilters(ludiFilters("status" to PLAYER_STATUS_SELECTED))?.count() ?: 0
+                }
+            }
         }
     }
 
@@ -137,7 +202,17 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     /** Helper Functions */
     fun areTooManySelected() : Boolean {
-        return config.playersSelectedCount > config.rosterSizeLimit
+        realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
+            return rs.playersSelectedCount > rs.rosterSizeLimit
+        }
+        return false
+    }
+
+    fun getRosterSize() : Int {
+        realmInstance.rosterSessionById(rosterId ?: config.rosterId)?.let { rs ->
+            return rs.rosterSizeLimit
+        }
+        return 20
     }
 
 }

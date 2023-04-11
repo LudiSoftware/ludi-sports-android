@@ -79,11 +79,13 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
 
     private fun setupDisplay() {
         rosterId?.let {
-            val config = RosterConfig()
-            config.parentFragment = this
-            config.rosterId = it
-            config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
-            val adapter = RosterListLiveAdapter(config)
+            teamId?.let { teamId ->
+                val config = RosterConfig(teamId)
+                config.parentFragment = this
+//                config.rosterId = it
+                config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
+                val adapter = RosterListLiveAdapter(config)
+            }
         }
     }
 

@@ -10,13 +10,17 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.realm.*
+import io.usys.report.realm.local.TeamSession
+import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.ui.fragments.bundleStringIds
 import io.usys.report.ui.ludi.player.matchesLudiFilter
+import io.usys.report.ui.ludi.roster.RosterConfig
 import io.usys.report.ui.views.gestures.onDownUpListener
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
+import io.usys.report.utils.log
 import io.usys.report.utils.views.*
 
 /**
@@ -27,43 +31,19 @@ import io.usys.report.utils.views.*
  * 3. Formation Players List (Players Currently Saved to the Formation Screen)
  * 4. Filtered Players List (Players WHO DO match filters BUT NOT in the Formation Screen)
  */
-class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
+class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationListLiveAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
     var teamId: String? = null
     var rosterId: String? = null
     var realmInstance: Realm? = null
     var formationSessionId: String? = null
+    var config: RosterConfig = RosterConfig("")
     // 2. OnDeck Players List (Players Not Saved to the Formation Screen)
     var onDeckPlayerIdList: RealmList<String> = RealmList()
     // 3/4. Filtered Players List (Players WHO DO match filters BUT NOT in the Formation Screen)
     private var filteredOutPlayerIds: RealmList<String> = RealmList()
     private var filters: MutableMap<String, String>? = null
     //
-//    var onItemMoved: ((start: Int, end: Int) -> Unit)? = null
     var navController: NavController? = null
-
-    constructor(teamId: String, realmInstance: Realm?, navController: NavController) : this() {
-        this.teamId = teamId
-        this.realmInstance = realmInstance ?: realm()
-        this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
-        this.navController = navController
-    }
-
-    constructor(teamId: String, rosterId:String, realmInstance: Realm?, navController: NavController) : this() {
-        this.teamId = teamId
-        this.rosterId = rosterId
-        this.realmInstance = realmInstance ?: realm()
-        this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
-        this.navController = navController
-    }
-
-    constructor(teamId: String, realmInstance: Realm?,  navController: NavController, filters:MutableMap<String,String>) : this() {
-        this.teamId = teamId
-        this.realmInstance = realmInstance ?: realm()
-        this.filters = filters
-        this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
-        this.navController = navController
-    }
-
 
     fun reload(filters:MutableMap<String,String>?= null) {
         if (filters != null) {
@@ -72,6 +52,15 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         this.onDeckPlayerIdList = this.loadFormationSessionOnDeckList()
     }
 
+//    private fun observeRosterPlayers() {
+//        realmInstance?.observeRoster(config.parentFragment!!.viewLifecycleOwner) { results ->
+//            results.find { it.id == config.rosterId }?.let {
+//                log("Roster Live Updates")
+//                loadRosterById()
+//            }
+//        }
+//    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
         val view = parent.inflateLayout(R.layout.card_player_tiny_horizontal2)
         return RosterFormationViewHolder(view)
@@ -79,33 +68,30 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
 
     override fun onBindViewHolder(holder: RosterFormationViewHolder, position: Int) {
         val playerId = onDeckPlayerIdList[position] ?: "unknown"
-        realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
-            realmInstance?.findRosterById(rosterId ?: fs.rosterId)?.let { itRoster ->
-                // Filtering System
-                itRoster.players?.find { it.id == playerId }?.let { player ->
-                    //Normal Display Setup
-                    holder.textView?.text = player.name
-                    filters?.let {
-                        holder.filterTextView?.text = player.foot
-                    } ?: run {
-                        holder.filterTextView?.visibility = View.INVISIBLE
-                    }
-                    player.imgUrl?.let { itImgUrl ->
-                        holder.profileImageView?.loadUriIntoImgView(itImgUrl)
-                    }
-                    holder.bannerNameImageView?.setPlayerTeamBackgroundBanner(player.color)
-
-                    holder.itemView.onDownUpListener({
-                        println("onDown")
-                        holder.itemView.wiggleOnce()
-                        holder.startClipDataDragAndDrop(playerId)
-                    }, {
-                        println("onSingleTapUp")
-                        navController?.navigate(R.id.navigation_player_profile, bundleStringIds(teamId, playerId, null))
-                    })
+        realmInstance?.findRosterById(rosterId ?: config.rosterId)?.let { itRoster ->
+            // Filtering System
+            itRoster.players?.find { it.id == playerId }?.let { player ->
+                //Normal Display Setup
+                holder.textView?.text = player.name
+                filters?.let {
+                    holder.filterTextView?.text = player.foot
+                } ?: run {
+                    holder.filterTextView?.visibility = View.INVISIBLE
                 }
-            }
+                player.imgUrl?.let { itImgUrl ->
+                    holder.profileImageView?.loadUriIntoImgView(itImgUrl)
+                }
+                holder.bannerNameImageView?.setPlayerTeamBackgroundBanner(player.color)
 
+                holder.itemView.onDownUpListener({
+                    println("onDown")
+                    holder.itemView.wiggleOnce()
+                    holder.startClipDataDragAndDrop(playerId)
+                }, {
+                    println("onSingleTapUp")
+                    navController?.navigate(R.id.navigation_player_profile, bundleStringIds(teamId, playerId, null))
+                })
+            }
         }
     }
 
@@ -116,7 +102,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         val tempList: RealmList<String> = RealmList()
         this.filteredOutPlayerIds.clear()
         this.onDeckPlayerIdList.clear()
-        this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
+        this.realmInstance?.rosterSessionById(rosterId) { fs ->
             this.formationSessionId = fs.id
             fs.formationListIds?.let { this.filteredOutPlayerIds.addAll(it) }
             //load from full roster
@@ -144,7 +130,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     fun movePlayerToFormation(playerId: String) {
         onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
             this.realmInstance?.safeWrite {
-                it.teamSessionByTeamId(teamId!!) { fs ->
+                it.rosterSessionById(rosterId ?: config.rosterId) { fs ->
                     fs.deckListIds?.remove(playerId)
                     fs.formationListIds?.safeAdd(playerId)
                 }
@@ -157,7 +143,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
     /** Reset OnDeck to Original Roster **/
     fun resetDeckToRoster() {
         this.onDeckPlayerIdList.clear()
-        this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
+        this.realmInstance?.rosterSessionById(rosterId ?: config.rosterId) { fs ->
             this.formationSessionId = fs.id
             this.realmInstance?.safeWrite {
                 fs.deckListIds?.clear()
@@ -174,7 +160,7 @@ class RosterFormationListAdapter() : RecyclerView.Adapter<RosterFormationListAda
         this.notifyDataSetChanged()
     }
     private fun addPlayer(player: PlayerRef) {
-        this.realmInstance?.teamSessionByTeamId(teamId!!) { fs ->
+        this.realmInstance?.rosterSessionById(rosterId ?: config.rosterId) { fs ->
             this.realmInstance?.safeWrite {
                 fs.deckListIds?.safeAdd(player.id)
             }

@@ -134,6 +134,30 @@ class TeamProvider(val teamId: String) {
         }
     }
 
+    fun pushRosterPlayersToFirebase(rosterId: String) {
+        realmInstance.findRosterById(rosterId)?.let { itRoster ->
+            val data = itRoster.players?.toList()
+            firebaseDatabase { itDB ->
+                itDB.child("rosters")
+                    .child(rosterId)
+                    .child("players")
+                    .setValue(data)
+            }
+        }
+    }
+
+}
+
+fun Realm.pushPlayersToRosterInFirebase(rosterId: String) {
+    this.findRosterById(rosterId)?.let { itRoster ->
+        val data = itRoster.players?.toList()
+        firebaseDatabase { itDB ->
+            itDB.child("rosters")
+                .child(rosterId)
+                .child("players")
+                .setValue(data)
+        }
+    }
 }
 fun Realm.pullTeamRosterTryoutFromFirebase(teamId: String) {
     this.findTeamById(teamId)?.let { team ->

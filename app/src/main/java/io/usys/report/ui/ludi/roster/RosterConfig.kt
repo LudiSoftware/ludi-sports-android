@@ -8,11 +8,11 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.realm.findRosterById
+import io.usys.report.realm.*
+import io.usys.report.realm.local.RosterSession
+import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.realm
-import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
@@ -26,7 +26,7 @@ fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String) {
     val roster = realm().findRosterById(id)
     val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
     players.let {
-        val config = RosterConfig()
+        val config = RosterConfig(teamId = roster?.teamId!!)
         config.rosterId = id
         val adapter = RosterListLiveAdapter(config)
         // Drag and Drop
@@ -76,20 +76,53 @@ enum class RosterType(val type: String) {
     UNSELECTED("unselected")
 }
 
-open class ListConfig {
+
+
+class RosterConfig(var teamId: String) {
+
+    // Roster ID
+    var rosterId: String? = null
+    var tryoutRosterId: String? = null
+    var currentRosterId: String? = null
+    val realmInstance: Realm = realm()
     var recyclerView: RecyclerView? = null
     var parentFragment: Fragment? = null
+    // TeamId
     // Filters
     var filters = ludiFilters()
     // Mandatory
-    var layout: Int = R.layout.card_player_medium_grid
-    var type: String = FireTypes.PLAYERS
-    var size: String = "medium_grid"
-    var mode: String = "official"
-    var isOpen: Boolean = true
-    // Click Listeners
-    var touchEnabled: Boolean = true
     var itemTouchHelper: ItemTouchHelper? = null
+    // Optional
+    var selectionCounter = 0
+    // Drag and Drop
+    var itemTouchListener: RosterLiveDragDropAction? = null
+    var itemLiveTouchListener: RosterLiveDragDropAction? = null
+
+    init {
+        realmInstance.findTryOutByTeamId(teamId) { tryout ->
+            tryout.rosterId?.let {
+                this.tryoutRosterId = it
+            }
+        }
+        realmInstance.teamSessionByTeamId(teamId) { teamSession ->
+            this.rosterId = teamSession.rosterId
+            this.currentRosterId = teamSession.rosterId
+        }
+
+        rosterId?.let {
+            currentRosterId = it
+            realmInstance.rosterSessionById(it) { rosterSession ->
+                realmInstance.safeWrite {
+                    rosterSession.teamId = teamId
+                    rosterSession.tryoutRosterId = this.tryoutRosterId
+                }
+            }
+        }
+    }
+
+    fun clearFilters() {
+        filters.clear()
+    }
 
     fun toPlayerProfile(id: String?) {
         if (id == null) return
@@ -98,34 +131,15 @@ open class ListConfig {
 
     fun destroy() {
         itemTouchHelper?.attachToRecyclerView(null)
-        recyclerView = null
+//        recyclerView = null
         itemTouchHelper = null
         filters.clear()
     }
-}
 
-class RosterConfig: ListConfig() {
-    // Roster ID
-    var rosterId: String? = null
-    // Optional
-    var rosterSizeLimit: Int = 20
-    var playersSelectedCount: Int = 0
-    var selectionCounter = 0
-    // Drag and Drop
-    var itemTouchListener: RosterLiveDragDropAction? = null
-    var itemLiveTouchListener: RosterLiveDragDropAction? = null
-
-    fun setRosterSizeLimit(realmInstance: Realm?, teamId: String?){
-        realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
-            this.rosterSizeLimit = teamSession.rosterSizeLimit
-        }
-    }
-
-    fun updateRosterSizeLimit(realmInstance: Realm?, teamId: String?, newSizeLimit: Int){
-        this.rosterSizeLimit = newSizeLimit
-        realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
+    fun updateRosterSizeLimit(realmInstance: Realm?, rosterId: String?, newSizeLimit: Int){
+        realmInstance?.rosterSessionById(rosterId ?: currentRosterId) { rosterSession ->
             realmInstance.safeWrite {
-                teamSession.rosterSizeLimit = newSizeLimit
+                rosterSession.rosterSizeLimit = newSizeLimit
             }
         }
     }

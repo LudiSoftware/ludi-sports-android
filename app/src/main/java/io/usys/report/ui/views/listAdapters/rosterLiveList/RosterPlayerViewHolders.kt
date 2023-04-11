@@ -52,7 +52,7 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
         player?.let { itPlayer ->
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
 
-            val isInTop = counter < adapter.config.rosterSizeLimit
+            val isInTop = counter < adapter.getRosterSize()
             setTryoutColor(isInTop, isSelected)
             // Selected CheckBox
             cardChkSelected?.setOnCheckedChangeListener(null)

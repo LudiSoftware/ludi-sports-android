@@ -49,14 +49,9 @@ fun Realm.findTeamById(teamId:String?): Team? {
 fun Realm.findPlayerRefById(playerId:String?): PlayerRef? {
     return this.where(PlayerRef::class.java).equalTo("playerId", playerId).findFirst()
 }
-
 inline fun Realm.findPlayerRefById(playerId:String?, block: (PlayerRef?) -> Unit?) {
     val result = this.where(PlayerRef::class.java).equalTo("playerId", playerId).findFirst()
     block(result)
-}
-/** TryOut Queries **/
-fun Realm.findTryOutById(tryoutId:String?): TryOut? {
-    return this.where(TryOut::class.java).equalTo("id", tryoutId).findFirst()
 }
 
 /** Roster Queries **/
@@ -65,6 +60,14 @@ fun Realm.findRosterById(rosterId:String?): Roster? {
 }
 fun Realm.findRosterIdByTeamId(teamId:String?): String? {
     return this.findTeamById(teamId)?.rosterId
+}
+fun Realm.findPlayersInRosterById(rosterId:String?): RealmList<PlayerRef>? {
+    return this.findRosterById(rosterId)?.players
+}
+
+/** TryOut Queries **/
+fun Realm.findTryOutById(tryoutId:String?): TryOut? {
+    return this.where(TryOut::class.java).equalTo("id", tryoutId).findFirst()
 }
 fun Realm.findTryOutIdByTeamId(teamId:String?): String? {
     return this.findTeamById(teamId)?.tryoutId
@@ -75,9 +78,15 @@ inline fun Realm.findTryOutIdByTeamId(teamId:String?, crossinline block: (String
         block(tryoutId!!)
     }
 }
-fun Realm.findPlayersInRosterById(rosterId:String?): RealmList<PlayerRef>? {
-    return this.findRosterById(rosterId)?.players
+
+inline fun Realm.findTryOutByTeamId(teamId:String?, crossinline block: (TryOut) -> Unit?) {
+    val tryoutId = this.findTeamById(teamId)?.tryoutId
+    val tryout = this.findTryOutById(tryoutId)
+    tryout?.let {
+        block(it)
+    }
 }
+
 
 /** Sports Queries **/
 fun Realm.findAllSports(): RealmResults<Sport>? {

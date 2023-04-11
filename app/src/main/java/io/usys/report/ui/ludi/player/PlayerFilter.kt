@@ -16,6 +16,11 @@ fun RealmList<PlayerRef>.filterByAttribute(filter: (PlayerRef) -> Boolean): Real
     return filteredList
 }
 
+
+fun rosters(vararg pairs: Pair<String, String>): MutableMap<String, String> {
+    return mutableMapOf(*pairs)
+}
+
 fun ludiFilters(vararg pairs: Pair<String, String>): MutableMap<String, String> {
     return mutableMapOf(*pairs)
 }

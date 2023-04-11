@@ -6,8 +6,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
-import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
+import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.ui.views.LudiPopupMenu
@@ -15,6 +15,7 @@ import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
 import io.usys.report.utils.*
 import io.usys.report.utils.views.onItemSelected
+import io.usys.report.utils.views.setupRosterTypeSpinner
 import io.usys.report.utils.views.wiggleOnce
 
 /**
@@ -28,7 +29,7 @@ class RosterBuilderFragment : YsrFragment() {
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
-    var rosterConfig = RosterConfig()
+    lateinit var rosterConfig: RosterConfig
     var adapter: RosterListLiveAdapter? = null
 
     var teamProvider: TeamProvider? = null
@@ -50,14 +51,12 @@ class RosterBuilderFragment : YsrFragment() {
 
         arguments?.let {
             teamId = it.getString("teamId") ?: "unknown"
+            rosterConfig = RosterConfig(teamId)
         }
 
         ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder_popup, action = { view, _ ->
-
             val layoutOne = view.findViewById<LinearLayout>(R.id.menuRosterBuilderBtnOneLayout)
             val imgBtnOne = view.findViewById<ImageButton>(R.id.menuRosterBuilderBtnOneImgBtn)
-
-
             adapter?.let {
                 if (it.areTooManySelected()) {
                     imgBtnOne.setBackgroundResource(android.R.drawable.ic_delete)
@@ -97,22 +96,34 @@ class RosterBuilderFragment : YsrFragment() {
 
 
     private fun setupRosterTypeSpinner() {
-        rosterEntries = rosterIds.keys.toMutableList()
-        val spinnerAdapter = LudiSpinnerAdapter(requireContext(), rosterEntries)
-        _binding?.rosterBuilderLudiSpinRosterType?.adapter = spinnerAdapter
 
-        // ROSTER SELECTION
-        _binding?.rosterBuilderLudiSpinRosterType?.onItemSelected { parent, _, position, _ ->
-            val selectedEntry = parent.getItemAtPosition(position)
+        _binding?.rosterBuilderLudiSpinRosterType?.setupRosterTypeSpinner(rosterIds) { _, item ->
             rosterIds.forEach { (key, value) ->
-                if (key == selectedEntry) {
+                if (key == item) {
                     currentRosterId = value
                 }
             }
-            rosterType = selectedEntry.toString()
+            rosterType = item
             _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
             setupRosterList()
         }
+
+//        rosterEntries = rosterIds.keys.toMutableList()
+//        val spinnerAdapter = LudiSpinnerAdapter(requireContext(), rosterEntries)
+//        _binding?.rosterBuilderLudiSpinRosterType?.adapter = spinnerAdapter
+//
+//        // ROSTER SELECTION
+//        _binding?.rosterBuilderLudiSpinRosterType?.onItemSelected { parent, _, position, _ ->
+//            val selectedEntry = parent.getItemAtPosition(position)
+//            rosterIds.forEach { (key, value) ->
+//                if (key == selectedEntry) {
+//                    currentRosterId = value
+//                }
+//            }
+//            rosterType = selectedEntry.toString()
+//            _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
+//            setupRosterList()
+//        }
 
     }
 
@@ -133,7 +144,8 @@ class RosterBuilderFragment : YsrFragment() {
         val selectedCounts = generateNumberStrings()
         val spinnerAdapter = LudiSpinnerAdapter(requireContext(), selectedCounts)
         _binding?.rosterBuilderLudiSpinRosterLimit?.adapter = spinnerAdapter
-        _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(rosterConfig.rosterSizeLimit - 1)
+        val rosterSize = realmInstance?.rosterSessionById(currentRosterId)?.rosterSizeLimit ?: 20
+        _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(rosterSize - 1)
         // ROSTER SELECTION
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
@@ -171,11 +183,8 @@ class RosterBuilderFragment : YsrFragment() {
             this.rosterId = currentRosterId
             this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
             this.parentFragment = this@RosterBuilderFragment
-            this.layout = R.layout.card_player_medium_grid
-            this.type = FireTypes.PLAYERS
-            this.size = "medium_grid"
-            this.setRosterSizeLimit(realmInstance, teamId)
         }
+        adapter = RosterListLiveAdapter(rosterConfig)
     }
 
     override fun onStop() {
@@ -199,36 +208,33 @@ class RosterBuilderFragment : YsrFragment() {
     }
 
     private fun setupRosterList() {
-        adapter?.disableAndClearRosterList()
+//        adapter?.disableAndClearRosterList()
         rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
         currentRosterId?.let { rosterId ->
             when (rosterType) {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
-                    rosterConfig.rosterId = rosterId
-                    rosterConfig.mode = RosterType.TRYOUT.type
-                    rosterConfig.touchEnabled = true
-                    rosterConfig.filters.clear()
-                    adapter = RosterListLiveAdapter(rosterConfig)
+//                    rosterConfig.rosterId = rosterId
+//                    rosterConfig.filters.clear()
+//                    adapter = RosterListLiveAdapter(rosterConfig)
+                    adapter?.setupTryoutRoster()
                 }
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
-                    rosterConfig.rosterId = rosterId
-                    rosterConfig.mode = RosterType.SELECTED.type
-                    rosterConfig.touchEnabled = true
-                    adapter = RosterListLiveAdapter(rosterConfig)
-                    adapter?.filterByStatusSelected()
+//                    rosterConfig.rosterId = rosterId
+//                    adapter = RosterListLiveAdapter(rosterConfig)
+//                    adapter?.filterByStatusSelected()
+                    adapter?.setupSelectionRoster()
                 }
                 else -> {
                     toggleTryoutTools()
                     detachLudiMenu()
-                    rosterConfig.rosterId = rosterId
-                    rosterConfig.mode = RosterType.OFFICIAL.type
-                    rosterConfig.touchEnabled = false
-                    rosterConfig.filters.clear()
-                    adapter = RosterListLiveAdapter(rosterConfig)
+//                    rosterConfig.rosterId = rosterId
+//                    rosterConfig.filters.clear()
+//                    adapter = RosterListLiveAdapter(rosterConfig)
+                    adapter?.setupOfficialRoster()
                 }
             }
         }
