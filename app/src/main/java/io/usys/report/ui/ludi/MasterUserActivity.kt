@@ -28,7 +28,7 @@ class MasterUserActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.ysrWindowBackground)
         setContentView(R.layout.activity_main)
         val actionBar = supportActionBar
-        actionBar?.setLogo(R.drawable.ysr_2)
+        actionBar?.setLogo(R.drawable.ludi_icon_one)
         actionBar?.setDisplayUseLogoEnabled(false)
         actionBar?.setDisplayShowHomeEnabled(false)
         actionBar?.setDisplayHomeAsUpEnabled(false)
