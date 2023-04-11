@@ -70,12 +70,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var container: ViewGroup? = null
     var inflater: LayoutInflater? = null
 
-    var currentWorkingRosterId: String? = null
     var officialRoster: String? = null
     var tryoutRoster: String? = null
 
     lateinit var rosterConfig: RosterConfig
-//    lateinit var rosterSession: RosterSession
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -94,7 +92,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
         realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
             officialRoster = teamSession.rosterId
-            currentWorkingRosterId = teamSession.rosterId
             tryoutRoster = teamSession.tryoutRosterId
         }
 
@@ -155,12 +152,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         })
     }
 
-//    private fun setupRosterSession() {
-//        realmInstance?.rosterSessionById(currentWorkingRosterId) { rosterSession ->
-//            this.rosterSession = rosterSession
-//        }
-//    }
-
     private fun setSoccerFieldLight(){
         soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(requireContext(), R.drawable.soccer_field))
         soccerFieldImageView?.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -201,10 +192,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** ON-DECK LAYOUT: SETUP A FILTERED LIST OF PLAYERS ON-DECK - display process function **/
     private fun setupFilteredList() {
-        realmInstance?.teamSessionByTeamId(teamId) { ts ->
-            currentWorkingRosterId = ts.rosterId
+        realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { ts ->
             rosterConfig.filters = ludiFilters("foot" to "left")
             adapterFiltered = RosterFormationListLiveAdapter(rosterConfig)
+            adapterSubstitutes?.switchRosterToTryout()
             deckFilteredRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
             deckFilteredRecyclerView?.adapter = adapterFiltered
         }
@@ -261,7 +252,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                     resetFormationLayout()
                 }
                 R.id.menu_formation_team_color_toggle -> {
-                    realmInstance?.rosterSessionById(currentWorkingRosterId) { rosterSession ->
+                    realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { rosterSession ->
                         realmInstance?.safeWrite {
                             if (rosterSession.teamColorsAreOn) {
                                 menuItem.title = "Turn ON Team Colors"
@@ -377,7 +368,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             newPlayerRef.color?.let {
                 vPlayerCircleLayout.setPlayerFormationBackgroundColor(it)
             }
-            onTap = { playerId ->
+            onTap = { _ ->
                 log("Double Tap")
                 showPlayerMenuPopup(playerRefViewItem, this)
             }
@@ -399,17 +390,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     }
 
-    private fun setupListener() {
-        playerObserver = realmInstance?.observe<PlayerRef>(this.viewLifecycleOwner) { results ->
-            reloadFormation()
-        }
-    }
-
     private fun reloadDeck() {
-        realmInstance?.rosterSessionById(currentWorkingRosterId) { ts ->
+        realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { ts ->
             // -> Setup Substitution List
             if (!ts.deckListIds.isNullOrEmpty()) {
                 adapterSubstitutes = RosterFormationListLiveAdapter(rosterConfig)
+                adapterSubstitutes?.switchRosterToTryout()
                 deckSubsRecyclerView?.layoutManager = linearLayoutManager(requireContext(), isHorizontal = true)
                 deckSubsRecyclerView?.adapter = adapterSubstitutes
                 createDeckDragListener()
@@ -418,7 +404,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
     private fun reloadFormation() {
         // We want to do this all in one instance of getting the session from realm.
-        realmInstance?.rosterSessionById(currentWorkingRosterId) { ts ->
+        realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { ts ->
             // -> Setup Formation Of Players
             ts.formationListIds?.let { formationList ->
                 formationRelativeLayout?.removeAllViews()
@@ -490,19 +476,19 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             popupWindow.dismiss()
         }
 
-        realmInstance?.findPlayerRefById(playerId as String)?.let { itPlayer ->
+        realmInstance?.findPlayerRefById(playerId)?.let { itPlayer ->
             checkBoxIsSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
         }
 
         checkBoxIsSelected.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                safePlayerFromRoster(playerId as String) { playerRef ->
+                safePlayerFromRoster(playerId) { playerRef ->
                     realmInstance?.safeWrite {
                         playerRef.status = PLAYER_STATUS_SELECTED
                     }
                 }
             } else {
-                safePlayerFromRoster(playerId as String) { playerRef ->
+                safePlayerFromRoster(playerId) { playerRef ->
                     realmInstance?.safeWrite {
                         playerRef.status = PLAYER_STATUS_OPEN
                     }
@@ -534,7 +520,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 
     private inline fun safePlayerFromRoster(playerId: String, crossinline block: (PlayerRef) -> Unit) {
-        realmInstance?.findRosterById(currentWorkingRosterId)?.let { roster ->
+        realmInstance?.findRosterById(rosterConfig.currentRosterId)?.let { roster ->
             roster.players?.forEach { playerRef ->
                 if (playerRef.id == playerId) {
                     block(playerRef)

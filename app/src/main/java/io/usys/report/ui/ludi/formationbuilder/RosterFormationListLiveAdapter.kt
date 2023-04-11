@@ -37,7 +37,7 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
     lateinit var realmInstance: Realm
     lateinit var config: RosterConfig
     // 1. OnDeck Players List (Players Not Saved to the Formation Screen)
-    var onDeckPlayerIdList: RealmList<String> = RealmList()
+    private var onDeckPlayerIdList: RealmList<String> = RealmList()
     // 2. Filtered Players List (Players WHO DO match filters BUT NOT in the Formation Screen)
     private var filteredOutPlayerIds: RealmList<String> = RealmList()
 
@@ -96,6 +96,12 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
                 loadFromRosterSession()
             }
         }
+    }
+
+    fun switchRosterToTryout() {
+        this.config.switchToTryoutRoster()
+        config.currentRosterId?.let { this.realmInstance.setupRosterSession(it) }
+        this.init()
     }
 
     /** 1. Load in Deck List and Formation List
