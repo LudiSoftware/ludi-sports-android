@@ -1,14 +1,11 @@
 package io.usys.report.ui.ludi.roster
 
-import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
-import io.usys.report.R
-import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
 import io.usys.report.realm.local.RosterSession
 import io.usys.report.realm.local.rosterSessionById
@@ -18,6 +15,7 @@ import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.touchAdapters.*
+import io.usys.report.utils.capitalizeFirstChar
 
 
 /**
@@ -82,6 +80,7 @@ enum class RosterType(val type: String) {
 class RosterConfig(var teamId: String) {
 
     // Roster ID
+    var rosterIds = mutableMapOf<String,String>()
     var rosterId: String? = null
     var tryoutRosterId: String? = null
     var currentRosterId: String? = null
@@ -103,11 +102,13 @@ class RosterConfig(var teamId: String) {
         realmInstance.findTryOutByTeamId(teamId) { tryout ->
             tryout.rosterId?.let {
                 this.tryoutRosterId = it
+                rosterIds[RosterType.TRYOUT.type] = it
             }
         }
         realmInstance.teamSessionByTeamId(teamId) { teamSession ->
             this.rosterId = teamSession.rosterId
             this.currentRosterId = teamSession.rosterId
+            rosterIds[RosterType.OFFICIAL.type] = teamSession.rosterId ?: "unknown"
         }
 
         rosterId?.let {
@@ -120,6 +121,16 @@ class RosterConfig(var teamId: String) {
                 }
             }
         }
+    }
+
+    fun switchRosterTo(rosterTypeStr:String) {
+        val tt = RosterType.values().find { it.type == rosterTypeStr }
+        val t = RosterType.valueOf(tt.toString()).type
+        currentRosterId = rosterIds[t]
+    }
+
+    fun switchRosterTo(rosterType: RosterType) {
+        currentRosterId = rosterIds[rosterType.type]
     }
 
     /** Helpers **/

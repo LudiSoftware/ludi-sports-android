@@ -17,6 +17,7 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.ludi.player.matchesLudiFilter
 import io.usys.report.ui.ludi.roster.RosterConfig
+import io.usys.report.ui.ludi.roster.RosterType
 import io.usys.report.ui.views.gestures.onDownUpListener
 import io.usys.report.utils.bind
 import io.usys.report.utils.inflateLayout
@@ -98,8 +99,23 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
         }
     }
 
+    fun switchRosterTo(rosterTypeStr:String) {
+        val rawRosType = RosterType.values().find { it.type == rosterTypeStr }
+        when (RosterType.valueOf(rawRosType.toString()).type) {
+            RosterType.TRYOUT.type -> switchRosterToTryout()
+            RosterType.OFFICIAL.type -> switchRosterToOfficial()
+        }
+    }
+
     fun switchRosterToTryout() {
         this.config.switchToTryoutRoster()
+        config.currentRosterId?.let { this.realmInstance.setupRosterSession(it) }
+
+        this.init()
+    }
+
+    fun switchRosterToOfficial() {
+        this.config.switchToOfficialRoster()
         config.currentRosterId?.let { this.realmInstance.setupRosterSession(it) }
         this.init()
     }

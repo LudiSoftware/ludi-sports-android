@@ -11,7 +11,6 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,7 +24,6 @@ import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.ludi.roster.RosterConfig
-import io.usys.report.ui.ludi.team.pushPlayersToRosterInFirebase
 import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
@@ -50,6 +48,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var deckLinearLayout: LinearLayoutCompat? = null
     var deckSubsRecyclerView: RecyclerView? = null
     var deckFilteredRecyclerView: RecyclerView? = null
+    var rosterTypeSpinner: Spinner? = null
 
     // Formation Session
     private var floatingMenuButton: FloatingActionButton? = null
@@ -100,6 +99,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         setSoccerFieldLight()
         setupMotionLayoutListener()
         setupDisplay()
+        setupRosterTypeSpinner()
         return rootView
     }
 
@@ -124,6 +124,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         deckSubsRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
         deckFilteredRecyclerView = rootView.findViewById(R.id.ysrTORecyclerTwo)
         formationRelativeLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
+        rosterTypeSpinner = rootView.findViewById(R.id.formationBuilderRosterTypeSpinner)
     }
 
     /** MOTION LAYOUT: Motion/Transition Listener **/
@@ -151,6 +152,23 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         })
     }
 
+    /** SETUP: Roster Type Spinner **/
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setupRosterTypeSpinner() {
+        rosterTypeSpinner?.setupRosterTypeSpinner(rosterConfig.rosterIds) { _, item ->
+            rosterConfig.rosterIds.forEach { (key, _) ->
+                if (key == item) {
+                    rosterConfig.switchRosterTo(key)
+                    adapterSubstitutes?.switchRosterTo(key)
+                    adapterFiltered?.switchRosterTo(key)
+                    reloadFormation()
+                }
+            }
+            log("RosterTypeSpinner: $item")
+        }
+    }
+
+    /** SETUP: Formation Soccer Field / Background **/
     private fun setSoccerFieldLight(){
         soccerFieldImageView?.setImageDrawable(getBackgroundDrawable(requireContext(), R.drawable.soccer_field))
         soccerFieldImageView?.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -317,10 +335,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                                 it.add(playerId)
                             }
                         }
-//                        ts.roster.setPlayerAsAccepted(playerId)
                     }
                 }
-//                adapterFiltered?.reload()
             }
 
             formationPlayerItemViewList.removeIf { it.tag == playerId }
@@ -389,6 +405,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     }
 
+    /**
+     * Formation / Deck UI Loaders
+     */
     private fun reloadDeck() {
         realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { ts ->
             // -> Setup Substitution List
