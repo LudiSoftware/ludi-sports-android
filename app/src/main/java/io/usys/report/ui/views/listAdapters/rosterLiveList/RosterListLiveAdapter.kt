@@ -48,7 +48,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        return RosterPlayerViewHolder(itemView)
+        return RosterPlayerViewHolder(itemView, this)
     }
 
     override fun onBind(holder: RosterPlayerViewHolder, position: Int) {
@@ -56,10 +56,9 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         itemList?.let {
             it[position]?.let { it1 ->
                 if (mode == RosterType.TRYOUT.type) {
-                    val result = holder.bindTryout(it1, adapter=this, counter=config.selectionCounter)
-                    if (result) config.selectionCounter++
+                    holder.bindTryout(it1)
                 } else if (mode == RosterType.SELECTED.type) {
-                    holder.bindSelection(it1, position=position, rosterLimit=config.rosterSizeLimit)
+                    holder.bindSelection(it1, position=position)
                 } else {
                     holder.bind(it1, position=position)
                 }
@@ -67,6 +66,9 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         }
     }
 
+    override fun onBindFinished() {
+        super.onBindFinished()
+    }
 
     /** Load Roster by ID */
     private fun loadRosterById() {
@@ -107,6 +109,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     @SuppressLint("NotifyDataSetChanged")
     fun refresh() {
         config.selectionCounter = 0
+        config.selectedItemColors.clear()
         setRosterSizeLimit()
         setPlayersSelectedCount()
         notifyDataSetChanged()
@@ -114,6 +117,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     @SuppressLint("NotifyDataSetChanged")
     fun softRefresh() {
         config.selectionCounter = 0
+        config.selectedItemColors.clear()
         notifyDataSetChanged()
     }
 
@@ -157,6 +161,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     /** Disable Functions */
     fun disableAndClearRosterList() {
         config.destroy()
+        config.selectedItemColors.clear()
         this.itemList?.clear()
     }
 

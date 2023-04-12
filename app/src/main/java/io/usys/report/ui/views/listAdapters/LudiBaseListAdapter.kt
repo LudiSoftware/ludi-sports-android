@@ -21,9 +21,9 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
     var parentFragment: Fragment? = null
     var mode: String? = null
     var touchEnabled: Boolean = false
+    var bindCounter: Int = 0
     var layout: Int = 0
-    protected var context: Context? = null
-    protected val realmInstance = realm()
+    val realmInstance = realm()
     var results: RealmResults<R>? = null
     var itemList: RealmList<L>? = RealmList()
 
@@ -34,9 +34,16 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
     abstract fun observeRealmIds()
 
     override fun onBindViewHolder(holder: VH, position: Int) {
+        bindCounter++
         onBind(holder, position)
+        if (bindCounter != itemCount) return
+        bindCounter = 0
+        onBindFinished()
     }
     abstract fun onBind(holder: VH, position: Int)
+    open fun onBindFinished() {
+        log("onBindFinished")
+    }
     override fun getItemCount(): Int {
         return itemList?.size ?: 0
     }

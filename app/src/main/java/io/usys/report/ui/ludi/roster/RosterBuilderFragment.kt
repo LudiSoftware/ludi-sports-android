@@ -25,11 +25,11 @@ import io.usys.report.utils.views.wiggleOnce
 class RosterBuilderFragment : YsrFragment() {
 
     private var ludiPopupMenu: LudiPopupMenu? = null
-    var ludiMenuIsAttached = false
+    private var ludiMenuIsAttached = false
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var rosterConfig: RosterConfig
+    private lateinit var rosterConfig: RosterConfig
     var adapter: RosterListLiveAdapter? = null
 
     var teamProvider: TeamProvider? = null
@@ -130,7 +130,6 @@ class RosterBuilderFragment : YsrFragment() {
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
             val selectedEntry = parent.getItemAtPosition(position)
             adapter?.updateRosterSizeLimit(selectedEntry.toString().toInt())
-//            adapter?.refresh()
         }
     }
     /** Master Roster Setup! **/

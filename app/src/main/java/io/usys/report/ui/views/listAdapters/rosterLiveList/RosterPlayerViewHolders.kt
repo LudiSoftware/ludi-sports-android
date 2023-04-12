@@ -1,17 +1,16 @@
 package io.usys.report.ui.views.listAdapters.rosterLiveList
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.CheckBox
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.usys.report.R
-import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.model.PLAYER_STATUS_OPEN
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.realm
-import io.usys.report.realm.safeWrite
+import io.usys.report.realm.model.updatePlayerStatus
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.makeGone
@@ -21,14 +20,11 @@ import io.usys.report.utils.views.wiggleOnce
 import org.jetbrains.anko.sdk27.coroutines.onLongClick
 
 
-open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(itemView) {
+open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiveAdapter) : RecyclerView.ViewHolder(itemView) {
 
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
-//    var imgIconOne = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconOne)
-//    var imgIconTwo = itemView.bind<ImageView>(R.id.cardPlayerMediumGridImgIconTwo)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
     var txtItemPlayerOne = itemView.bindTextView(R.id.cardPlayerMediumGridTxtOne)
-//    var txtItemPlayerTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTxtTwo)
     var cardBackground = itemView.bind<CardView>(R.id.cardPlayerMediumGridLayout)
     var constraintBackground = itemView.bind<View>(R.id.cardPlayerConstraintLayout)
     var cardChkSelected = itemView.bind<CheckBox>(R.id.cardPlayerMediumGridChkSelected)
@@ -45,30 +41,29 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
                 imgPlayerProfile?.loadUriIntoImgView(url)
             }
 
+            itemView.setOnClickListener {
+                adapter.config.toPlayerProfile(itPlayer.id)
+            }
+
         }
     }
 
-    fun bindTryout(player: PlayerRef?, adapter: RosterListLiveAdapter, counter: Int): Boolean {
+    @SuppressLint("SetTextI18n")
+    fun bindTryout(player: PlayerRef?) {
         player?.let { itPlayer ->
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
+            val isInTop = adapter.config.selectionCounter < adapter.config.rosterSizeLimit
 
-            val isInTop = counter < adapter.config.rosterSizeLimit
-            setTryoutColor(isInTop, isSelected)
+            setTryoutColor(itPlayer.id, isInTop, isSelected)
             // Selected CheckBox
             cardChkSelected?.setOnCheckedChangeListener(null)
             cardChkSelected?.isChecked = isSelected
             cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
                 var newStatus = PLAYER_STATUS_OPEN
                 if (isChecked) newStatus = PLAYER_STATUS_SELECTED
-                val realm = realm()
-                realm.safeWrite {
-                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
-                        playerRef.status = newStatus
-                    }
-                }
+                adapter.realmInstance.updatePlayerStatus(itPlayer.id, newStatus)
                 adapter.refresh()
             }
-
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
@@ -82,29 +77,27 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
             itemView.setOnClickListener {
                 adapter.config.toPlayerProfile(itPlayer.id)
             }
-            return isSelected
+            if (isSelected) {
+                adapter.config.selectionCounter++
+            }
         }
-        return false
     }
 
-    fun bindSelection(player: PlayerRef?, position: Int, rosterLimit:Int) {
+    @SuppressLint("SetTextI18n")
+    fun bindSelection(player: PlayerRef?, position: Int) {
         player?.let { itPlayer ->
+            val playerId = itPlayer.id
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
-            val isInTop = position + 1 <= rosterLimit
-            setSelectionColor(isInTop, isSelected)
+            val isInTop = position + 1 <= adapter.config.rosterSizeLimit
+            setSelectionColor(playerId, isInTop, isSelected)
             // Selected CheckBox
             cardChkSelected?.setOnCheckedChangeListener(null)
             cardChkSelected?.isChecked = isSelected
             cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
                 var newStatus = PLAYER_STATUS_OPEN
                 if (isChecked) newStatus = PLAYER_STATUS_SELECTED
-                val realm = realm()
-                realm.safeWrite {
-                    realm.findPlayerRefById(itPlayer.id)?.let { playerRef ->
-                        playerRef.status = newStatus
-                    }
-                }
-                setSelectionColor(isInTop, isChecked)
+                adapter.realmInstance.updatePlayerStatus(playerId, newStatus)
+                setSelectionColor(playerId, isInTop, isChecked)
             }
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
@@ -117,34 +110,54 @@ open class RosterPlayerViewHolder(var itemView: View) : RecyclerView.ViewHolder(
                 it?.wiggleOnce()
             }
             itemView.setOnClickListener {
-//                toPlayerProfile(teamId = teamId, playerId = (realmObject as PlayerRef).id ?: "unknown")
+                adapter.config.toPlayerProfile(itPlayer.id)
+            }
+
+            if (isSelected) {
+                adapter.config.selectionCounter++
             }
         }
     }
-    private fun setSelectionColor(isInTop: Boolean, isSelected: Boolean) {
+    private fun setSelectionColor(playerId:String?, isInTop: Boolean, isSelected: Boolean) {
         // Player Selection Color
+        if (adapter.config.selectedItemColors.containsKey(playerId)) {
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, adapter.config.selectedItemColors[playerId]!!))
+            return
+        }
         // If in top 20, make green
+        var color = R.color.ludiRosterCardRed
         if (isInTop) {
             constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+            color = R.color.ludiRosterCardSelected
         } else if (isSelected) {
             constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+            color = R.color.ludiRosterCardYellow
         } else {
             constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
+        playerId?.let { adapter.config.selectedItemColors[it] = color }
     }
 
-    private fun setTryoutColor(isInTop: Boolean, isSelected: Boolean) {
+    private fun setTryoutColor(playerId:String?, isInTop: Boolean, isSelected: Boolean) {
         // Player Selection Color
+        if (adapter.config.selectedItemColors.containsKey(playerId)) {
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, adapter.config.selectedItemColors[playerId]!!))
+            return
+        }
         // If in top 20, make green
+        var color = R.color.ludiRosterCardRed
         if (isSelected) {
             if (isInTop) {
                 constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardSelected))
+                color = R.color.ludiRosterCardSelected
             } else {
                 constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardYellow))
+                color = R.color.ludiRosterCardYellow
             }
         } else {
             constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ludiRosterCardRed))
         }
+        playerId?.let { adapter.config.selectedItemColors[it] = color }
     }
 
 }

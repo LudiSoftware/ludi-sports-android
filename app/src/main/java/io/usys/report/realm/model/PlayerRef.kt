@@ -1,7 +1,10 @@
 package io.usys.report.realm.model
 
+import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.realm.findPlayerRefById
+import io.usys.report.realm.safeWrite
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 /**
@@ -57,3 +60,11 @@ open class PlayerRef : RealmObject(), Serializable {
 }
 
 
+fun Realm.updatePlayerStatus(playerId: String?, status: String) {
+    if (playerId == null) return
+    this.safeWrite {
+        this.findPlayerRefById(playerId)?.let { playerRef ->
+            playerRef.status = status
+        }
+    }
+}

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmList
 import io.usys.report.realm.*
-import io.usys.report.realm.local.RosterSession
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.model.PlayerRef
@@ -15,7 +14,6 @@ import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.touchAdapters.*
-import io.usys.report.utils.capitalizeFirstChar
 
 
 /**
@@ -94,6 +92,7 @@ class RosterConfig(var teamId: String) {
     var itemTouchHelper: ItemTouchHelper? = null
     // Optional
     var selectionCounter = 0
+    var selectedItemColors = mutableMapOf<String, Int>() // <playerId, color resource>
     // Drag and Drop
     var itemTouchListener: RosterLiveDragDropAction? = null
     var itemLiveTouchListener: RosterLiveDragDropAction? = null
