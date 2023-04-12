@@ -24,6 +24,7 @@ import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.ludi.roster.RosterConfig
+import io.usys.report.ui.ludi.team.pushPlayersToRosterInFirebase
 import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
@@ -158,14 +159,19 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         rosterTypeSpinner?.setupRosterTypeSpinner(rosterConfig.rosterIds) { _, item ->
             rosterConfig.rosterIds.forEach { (key, _) ->
                 if (key == item) {
-                    rosterConfig.switchRosterTo(key)
-                    adapterSubstitutes?.switchRosterTo(key)
-                    adapterFiltered?.switchRosterTo(key)
-                    reloadFormation()
+                    switchToRoster(key)
                 }
             }
             log("RosterTypeSpinner: $item")
         }
+    }
+
+    /** Master Roster Type Switch **/
+    private fun switchToRoster(rosterType:String) {
+        rosterConfig.switchRosterTo(rosterType)
+        adapterSubstitutes?.switchRosterTo(rosterType)
+        adapterFiltered?.switchRosterTo(rosterType)
+        reloadFormation()
     }
 
     /** SETUP: Formation Soccer Field / Background **/
@@ -254,10 +260,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             //  - if in tryout mode, submit formation as roster.
             //  - Change background image.
             when (menuItem.itemId) {
-                R.id.menu_save_formation -> {
+                R.id.menu_save_roster -> {
                     // Do something
                     log("Save Formation")
-//                    realmInstance?.pushPlayersToRosterInFirebase()
+                    rosterConfig.currentRosterId?.let {
+                        realmInstance?.pushPlayersToRosterInFirebase(it)
+                    }
                 }
                 R.id.menu_submit_roster -> {
                     // Do something
@@ -389,7 +397,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             // Gestures
             playerRefViewItem.onGestureDetectorRosterFormation(
-                teamId= teamId!!,
+                rosterId = rosterConfig.currentRosterId ?: "",
                 playerId=playerId,
                 onSingleTapUp = onTap,
                 onLongPress = onLongPress

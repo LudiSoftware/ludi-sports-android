@@ -5,22 +5,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_save_formation"
+        android:id="@+id/menu_save_roster"
         android:icon="@drawable/ysr_world_icon_red"
-        android:title="Save Formation" />
-    <item
-        android:id="@+id/menu_add_note"
-        android:title="Add Note" />
+        android:title="Save Roster Updates" />
     <item
         android:id="@+id/menu_submit_roster"
         android:title="Submit Roster" />
-    <item
-        android:id="@+id/menu_formation_sync"
-        android:title="Sync Team Data" />
     <item
         android:id="@+id/menu_formation_team_color_toggle"
         android:title="Turn OFF Team Colors" />
     <item
         android:id="@+id/menu_reset"
-        android:title="Reset" />
+        android:title="Reset Formation" />
 </menu>

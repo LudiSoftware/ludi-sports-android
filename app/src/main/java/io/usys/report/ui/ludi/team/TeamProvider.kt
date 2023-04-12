@@ -150,13 +150,17 @@ class TeamProvider(val teamId: String) {
 
 fun Realm.pushPlayersToRosterInFirebase(rosterId: String) {
     this.findRosterById(rosterId)?.let { itRoster ->
-        val data = itRoster.players?.toList()
-        firebaseDatabase { itDB ->
-            itDB.child("rosters")
-                .child(rosterId)
-                .child("players")
-                .setValue(data)
+        itRoster.players?.let {
+            val data = realmListToDataList(it)
+            firebaseDatabase { itDB ->
+                itDB.child("rosters")
+                    .child(rosterId)
+                    .child("players")
+                    .setValue(data)
+            }
+
         }
+
     }
 }
 fun Realm.pullTeamRosterTryoutFromFirebase(teamId: String) {
