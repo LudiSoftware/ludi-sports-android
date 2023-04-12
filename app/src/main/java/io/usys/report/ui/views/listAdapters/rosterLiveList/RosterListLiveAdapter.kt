@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import io.realm.*
 import io.usys.report.realm.*
-import io.usys.report.realm.local.RosterSession
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.setupRosterSession
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
@@ -17,7 +16,7 @@ import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.sortByOrderIndex
 import io.usys.report.ui.ludi.roster.RosterConfig
 import io.usys.report.ui.ludi.roster.RosterType
-import io.usys.report.ui.views.recyclerViews.LudiBaseListAdapter
+import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
 import io.usys.report.ui.views.touchAdapters.RosterLiveDragDropAction
 import io.usys.report.utils.log
 
@@ -28,16 +27,23 @@ import io.usys.report.utils.log
  */
 open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, RosterPlayerViewHolder>() {
 
-    var mode: String? = null
-    var layout: Int = 0
-    var touchEnabled: Boolean = false
     lateinit var config: RosterConfig
-    init { realmInstance.isAutoRefresh = true }
 
     constructor(rosterLayoutConfig: RosterConfig) : this() {
         this.config = rosterLayoutConfig
         (config.currentRosterId)?.let { realmInstance.setupRosterSession(it) }
         this.init()
+    }
+
+    /** Observe Roster Changes and Update List */
+    override fun observeRealmIds() {
+        realmInstance.observe<Roster>(config.parentFragment!!.viewLifecycleOwner) { results ->
+            results.find { it.id == config.currentRosterId }?.let {
+                log("Roster Session Live Updates")
+                this.setPlayersSelectedCount()
+                this.softReload()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
@@ -61,16 +67,6 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         }
     }
 
-    /** Observe Roster Changes and Update List */
-    private fun observeRosterPlayers() {
-        realmInstance.observe<Roster>(config.parentFragment!!.viewLifecycleOwner) { results ->
-            results.find { it.id == config.currentRosterId }?.let {
-                log("Roster Session Live Updates")
-                this.setPlayersSelectedCount()
-                this.softReload()
-            }
-        }
-    }
 
     /** Load Roster by ID */
     private fun loadRosterById() {
@@ -92,7 +88,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         setPlayersSelectedCount()
         addTouchAdapters()
         attach()
-        observeRosterPlayers()
+        observeRealmIds()
         notifyDataSetChanged()
     }
 
@@ -169,6 +165,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     private fun setFilterStatusSelection() {
         this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun filterByStatusSelected() {
         this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
         this.itemList = this.itemList?.ludiFilters(this.config.filters)

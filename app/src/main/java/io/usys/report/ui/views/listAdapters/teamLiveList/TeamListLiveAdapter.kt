@@ -1,5 +1,6 @@
 package io.usys.report.ui.views.listAdapters.teamLiveList
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -9,52 +10,56 @@ import io.usys.report.R
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
+import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
+import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.log
+
+
+fun RecyclerView.loadInTeamIds(realmIds: MutableList<String>?, fragment: Fragment) : TeamListLiveAdapter? {
+    val adapter = realmIds?.let { TeamListLiveAdapter(it, fragment) }
+    this.layoutManager = linearLayoutManager(this.context)
+    this.adapter = adapter
+    return adapter
+}
 
 /**
  * Dynamic Master RecyclerView Adapter
+ *  - Pass in
+ *    - RealmIds
+ *    - Parent Fragment
  */
-open class TeamListLiveAdapter(): RecyclerView.Adapter<TeamSmallViewHolder>() {
-
-    var realmInstance = realm()
-    var parentFragment: Fragment? = null
-    var teamIds = mutableListOf<String>()
-    var teamList: RealmList<Team>? = RealmList()
-
-    init {
-        realmInstance.isAutoRefresh = true
-    }
+open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewHolder>() {
 
     constructor(realmIds: MutableList<String>, fragment: Fragment) : this() {
-        this.teamIds = realmIds
+        this.realmIds = realmIds
         this.parentFragment = fragment
-        loadTeamIds()
+        this.observeRealmIds()
     }
 
-    private fun loadTeamIds() {
-        for (id in teamIds) {
+    /** Team/Object Observer **/
+    @SuppressLint("NotifyDataSetChanged")
+    override fun observeRealmIds() {
+        for (id in realmIds) {
             realmInstance.observeTeam(parentFragment!!.viewLifecycleOwner) { results ->
                 results.find { it.id == id }?.let {
                     log("Team results updated")
-                    teamList?.safeAdd(it)
+                    itemList?.safeAdd(it)
                     notifyDataSetChanged()
                 }
             }
         }
     }
 
+    /** Setup ViewHolder **/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSmallViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.card_team_small, parent, false)
         return TeamSmallViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return teamList?.size ?: 0
-    }
-
-    override fun onBindViewHolder(holder: TeamSmallViewHolder, position: Int) {
-        println("binding realmlist")
-        teamList?.let {
+    /** Bind ViewHolder **/
+    override fun onBind(holder: TeamSmallViewHolder, position: Int) {
+        println("binding realm object")
+        itemList?.let {
             it[position]?.let { it1 ->
                 holder.bind(it1, fragment = parentFragment)
             }

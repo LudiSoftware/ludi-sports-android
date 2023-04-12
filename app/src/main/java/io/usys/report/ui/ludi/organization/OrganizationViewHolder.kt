@@ -12,13 +12,15 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
+import io.usys.report.firebase.toLudiObjects
 import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Sport
+import io.usys.report.realm.model.toRealmList
+import io.usys.report.realm.realm
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
-import io.usys.report.utils.bind
-import io.usys.report.utils.bindTextView
-import io.usys.report.utils.cast
-import io.usys.report.realm.toRealmList
+import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.utils.*
+import kotlin.collections.isNullOrEmpty
 
 /**
  * ORGANIZATION LIST VIEW CONTROLS
@@ -28,10 +30,18 @@ fun RecyclerView?.setupOrganizationList(context: Context, realmObjectArg: RealmO
     // Load Organizations by Sport.name
     val rv = this
     var organizationList: RealmList<Organization>?
-    fireGetOrderByEqualToAsync(FireTypes.ORGANIZATIONS, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
-        organizationList = this?.toRealmList()
-        rv?.loadInCustomAttributes(organizationList, FireTypes.ORGANIZATIONS, onClick)
+
+    val orgs = realm().where(Organization::class.java).findAll().toRealmList()
+    if (orgs.isEmpty()) {
+        fireGetOrderByEqualToAsync(FireTypes.ORGANIZATIONS, Organization.ORDER_BY_SPORTS, realmObjectArg?.cast<Sport>()?.name!!) {
+            organizationList = this?.toLudiObjects<Organization>()
+            rv?.loadInCustomAttributes(organizationList, FireTypes.ORGANIZATIONS, onClick)
+        }
+    } else {
+        var orgIds = orgs.map { it.id }
+        rv?.loadInRealmList(orgs, FireTypes.ORGANIZATIONS, onClick)
     }
+
 }
 
 class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,11 +58,13 @@ class OrgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var cardRatingBarCount: TextView? = includeReviewCard?.bind(R.id.cardRatingTxtCount)
 
     fun bind(org: Organization?) {
-        txtOrgName?.text = org?.name
-        txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
-        txtLeague?.text = org?.leagues?.first()?.leagueName ?: "Alabama State League"
-        cardRatingBar?.rating = org?.ratingScore?.toFloat() ?: 0.0F
-        cardRatingBarScore?.text = org?.ratingScore.toString()
-        cardRatingBarCount?.text = "${org?.ratingCount} Reviews"
+        tryCatch {
+            txtOrgName?.text = org?.name
+            txtWebsite?.text = org?.websiteUrl ?: "www.usysr.io"
+            txtLeague?.text = org?.officeHours ?: "8AM - 5PM"
+            cardRatingBar?.rating = org?.ratingScore?.toFloat() ?: 0.0F
+            cardRatingBarScore?.text = org?.ratingScore.toString()
+            cardRatingBarCount?.text = "${org?.ratingCount} Reviews"
+        }
     }
 }

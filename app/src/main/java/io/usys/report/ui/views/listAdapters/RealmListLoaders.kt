@@ -51,17 +51,9 @@ inline fun <reified T> RecyclerView.loadInCustomAttributes(realmList: RealmList<
 inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
                                                     type: String,
                                                     noinline itemOnClick: ((View, T) -> Unit)?,
-                                                    size:String = "small"
-) : RealmListAdapter<T>? {
+                                                    size:String = "small") : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick, size)
-    this.layoutManager = linearLayoutManager(this.context)
-    this.adapter = adapter
-    return adapter
-}
-
-fun RecyclerView.loadInRealmIds(realmIds: MutableList<String>?, fragment: Fragment) : TeamListLiveAdapter? {
-    val adapter = realmIds?.let { TeamListLiveAdapter(it, fragment) }
     this.layoutManager = linearLayoutManager(this.context)
     this.adapter = adapter
     return adapter

@@ -9,14 +9,13 @@ import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.models.CoachRealmSingleEventListener
 import io.usys.report.realm.findCoachBySafeId
-import io.usys.report.realm.idBundleSession
 import io.usys.report.realm.local.createIdBundleSession
 import io.usys.report.realm.local.updateIdBundleIds
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
-import io.usys.report.ui.views.listAdapters.loadInRealmIds
+import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
 import io.usys.report.utils.*
 
 
@@ -108,7 +107,7 @@ class DashboardHomeFragment : YsrFragment() {
     }
     private fun setupTeamList() {
         _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
-        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInRealmIds(teamIds, this)
+        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInTeamIds(teamIds, this)
     }
     override fun setupOnClickListeners() {
         itemOnClickSportList = { _, obj ->
