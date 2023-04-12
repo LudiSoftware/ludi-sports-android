@@ -33,18 +33,13 @@ class LudiRosterPagerAdapter(private val parentFragment: Fragment) : FragmentSta
             fragmentPairs.add(Pair("Official Roster", ViewRosterListFragment.newRoster(team.rosterId!!, "Official Roster", teamId!!)))
             // TryOut Roster
             team.tryoutId?.let { itToId ->
-                tryoutListener = realmInstance?.observe(parentFragment.viewLifecycleOwner) { results ->
-                    results.find { it.id == itToId }?.let {
-                        log("Team results updated")
-                        realmInstance?.findTryOutById(team.tryoutId)?.let { to ->
-                            to.rosterId?.let { itToRosterId ->
-                                fragmentPairs.add(Pair("TryOut Roster", ViewRosterListFragment.newRoster(itToRosterId, "TryOut", teamId!!)))
-                                tryoutListener?.removeAllChangeListeners()
-                                notifyDataSetChanged()
-                            }
-                            this.tryoutId = team.tryoutId
-                        }
+                realmInstance?.findTryOutById(itToId)?.let { to ->
+                    to.rosterId?.let { itToRosterId ->
+                        fragmentPairs.add(Pair("TryOut Roster", ViewRosterListFragment.newRoster(itToRosterId, "TryOut", teamId!!)))
+                        tryoutListener?.removeAllChangeListeners()
+                        notifyDataSetChanged()
                     }
+                    this.tryoutId = team.tryoutId
                 }
             }
         }

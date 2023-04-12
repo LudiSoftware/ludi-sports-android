@@ -64,6 +64,7 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
         arguments?.let {
             rosterType = it.getString(ARG_ROSTER_TYPE) ?: "Official"
             rosterId = it.getString(ARG_ROSTER_ID) ?: "unknown"
+            teamId = it.getString(ARG_ROSTER_TEAM_ID) ?: "unknown"
             title = it.getString(ARG_ROSTER_TITLE) ?: "No Roster Found!"
             log("Roster type: $rosterType")
         }
@@ -78,14 +79,11 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
     }
 
     private fun setupDisplay() {
-        rosterId?.let {
-            teamId?.let { teamId ->
-                val config = RosterConfig(teamId)
-                config.parentFragment = this
-//                config.rosterId = it
-                config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
-                val adapter = RosterListLiveAdapter(config)
-            }
+        teamId?.let { teamId ->
+            val config = RosterConfig(teamId)
+            config.parentFragment = this
+            config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
+            val adapter = RosterListLiveAdapter(config)
         }
     }
 

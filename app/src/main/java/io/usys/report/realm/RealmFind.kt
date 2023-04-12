@@ -5,6 +5,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.firebase.fireGetTeamProfileInBackground
+import io.usys.report.realm.local.IdBundleSession
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.isNBE
@@ -30,6 +31,17 @@ inline fun <reified T: RealmObject> Realm.findByField(field:String="id", value: 
 }
 inline fun <reified T: RealmObject> Realm.findAllByField(field:String="id", value: String?): RealmResults<T>? {
     return this.where(T::class.java).equalTo(field, value).findAll()
+}
+
+/** IdBundle Queries **/
+inline fun Realm.idBundleSession(isUpdate:Boolean=false, crossinline block: (IdBundleSession) -> Unit) {
+    this.safeUserId {
+        val result = this.where(IdBundleSession::class.java).equalTo("id", it).findFirst()
+        if (result != null) {
+            if (isUpdate) { this.safeWrite { block(result) } }
+            else { block(result) }
+        }
+    }
 }
 
 /** Coach Queries **/

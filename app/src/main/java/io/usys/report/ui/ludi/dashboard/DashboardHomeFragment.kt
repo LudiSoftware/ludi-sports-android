@@ -4,21 +4,18 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
-import io.realm.Realm
-import io.realm.RealmChangeListener
-import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.DefaultFullDashboardBinding
 import io.usys.report.firebase.models.CoachRealmSingleEventListener
 import io.usys.report.realm.findCoachBySafeId
+import io.usys.report.realm.idBundleSession
+import io.usys.report.realm.local.createIdBundleSession
+import io.usys.report.realm.local.updateIdBundleIds
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
-import io.usys.report.ui.ludi.team.TeamProvider
-import io.usys.report.ui.onClickReturnViewRealmObject
 import io.usys.report.ui.views.listAdapters.loadInRealmIds
 import io.usys.report.utils.*
 
@@ -46,6 +43,7 @@ class DashboardHomeFragment : YsrFragment() {
         _binding?.txtWelcomeDashboard?.text = "Please Sign In!"
         setupOnClickListeners()
         realmInstance?.safeUser { itUser ->
+            realmInstance?.createIdBundleSession()
             _binding?.txtWelcomeDashboard?.text = "Welcome, ${itUser.name}"
             // Check For Coach User
             setupCoachDisplay()
@@ -116,10 +114,12 @@ class DashboardHomeFragment : YsrFragment() {
         itemOnClickSportList = { _, obj ->
             toFragmentWithRealmObject(R.id.navigation_org_list, bundleRealmObject(obj))
         }
+
         itemOnClickTeamList = { view, obj ->
             val teamRef = obj as TeamRef
             val id = teamRef.id ?: "unknown"
-            toFragmentWithRealmObject(R.id.navigation_team_profile, bundleStringId(id))
+            realmInstance?.updateIdBundleIds(teamId = id)
+            toFragmentWithRealmObject(TO_TEAM_PROFILE, bundleStringId(id))
         }
     }
 

@@ -87,7 +87,6 @@ class RosterBuilderFragment : YsrFragment() {
         teamProvider = TeamProvider(teamId)
 
         setupRosterIds()
-//        setupTeamRosterRealmListener()
         setupRosterTypeSpinner()
         setupRosterSizeSpinner()
         return rootView
