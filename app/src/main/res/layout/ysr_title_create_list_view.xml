@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ysrMainLayoutTitleListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/ysrWindowBackground">
 
         <include
             android:id="@+id/includeYsrCreateListCreateNote"

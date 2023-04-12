@@ -22,9 +22,17 @@
         <item name="enforceTextAppearance">false</item>
     </style>
 
+    <style name="LudiButton" parent="Widget.AppCompat.Button">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/ludiBlue</item>
+        <item name="android:autoSizeMaxTextSize">20sp</item>
+        <item name="android:autoSizeMinTextSize">10sp</item>
+        <item name="android:autoSizePresetSizes">15sp</item>
+    </style>
+
     <style name="LudiTextViewField" parent="Widget.AppCompat.TextView">
         <!-- Customize your theme here. -->
-        <item name="android:textColor">@color/ysrDarkBlue</item>
+        <item name="android:textColor">@color/ludiBlue</item>
         <item name="android:autoSizeMaxTextSize">20sp</item>
         <item name="android:autoSizeMinTextSize">10sp</item>
         <item name="android:autoSizePresetSizes">15sp</item>
@@ -52,11 +60,11 @@
     <!-- Base application theme. -->
     <style name="YSR" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/ysrFadedWhite</item>
-        <item name="colorPrimaryDark">@color/ysrRed</item>
+        <item name="colorPrimary">@color/ysrWindowBackground</item>
+        <item name="colorPrimaryDark">@color/ludiBlack</item>
         <item name="colorAccent">@color/ysrRed</item>
         <item name="android:windowBackground">@color/ysrWindowBackground</item>
-        <item name="android:textColor">@color/ysrDarkBlue</item>
+        <item name="android:textColor">@color/ludiBlue</item>
         <item name="android:statusBarColor">@color/ysrWindowBackground</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
@@ -68,8 +76,8 @@
 
     <!-- Global Button Theme -->
     <style name="YSR.Button">
-        <item name="android:textColor">@color/ysrFadedWhite</item>
-        <item name="colorButtonNormal">@color/ysrDarkBlue</item>
+        <item name="android:textColor">@color/ludiBlue</item>
+        <item name="colorButtonNormal">@color/ludiWhite</item>
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">50dp</item>
     </style>
@@ -93,6 +101,10 @@
     <style name="FT_Dialog" parent="Theme.AppCompat.Light">
         <item name="android:windowMinWidthMajor">75%</item>
         <item name="android:windowMinWidthMinor">75%</item>
+    </style>
+
+    <style name="YSR.AppBarOverlay." parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">@color/ysrFadedWhite</item>
     </style>
 
     <style name="YSR.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

@@ -21,6 +21,8 @@ import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.userOrLogout
+import io.usys.report.ui.ludi.TO_FORMATION_BUILDER
+import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
 import io.usys.report.utils.YsrMode
 import io.usys.report.utils.log
 
@@ -169,12 +171,12 @@ class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: 
 
         // Set up click listeners for the custom menu items
         popupView.findViewById<LinearLayout>(R.id.option_formation).setOnClickListener {
-            fragment.toFragmentWithIds(R.id.navigation_tryout_frag, teamId)
+            fragment.toFragmentWithIds(TO_FORMATION_BUILDER, teamId)
             popupWindow.dismiss()
         }
 
         popupView.findViewById<LinearLayout>(R.id.option_roster).setOnClickListener {
-            fragment.toFragmentWithIds(R.id.navigation_roster_builder_frag, teamId)
+            fragment.toFragmentWithIds(TO_ROSTER_BUILDER, teamId)
             popupWindow.dismiss()
         }
 

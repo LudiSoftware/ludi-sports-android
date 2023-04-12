@@ -35,6 +35,8 @@ import io.usys.report.ui.fragments.YsrFragment.Companion.PLAYER_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.ROSTER_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TEAM_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TYPE
+import io.usys.report.ui.ludi.TO_PLAYER_PROFILE
+import io.usys.report.ui.ludi.TO_TEAM_PROFILE
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -146,10 +148,10 @@ fun Fragment.toViewRosterFragment(fragId: Int, teamId:String?=null, rosterId:Str
 }
 
 fun Fragment.toTeamProfileVG(teamId: String) {
-    toFragmentWithRealmObject(R.id.navigation_team_profile, bundleStringId(teamId))
+    toFragmentWithRealmObject(TO_TEAM_PROFILE, bundleStringId(teamId))
 }
 fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null) {
-    toFragmentWithIds(R.id.navigation_player_profile, teamId = teamId, playerId = playerId)
+    toFragmentWithIds(TO_PLAYER_PROFILE, teamId = teamId, playerId = playerId)
 }
 fun Fragment.goBack() {
     this.findNavController().navigateUp()
