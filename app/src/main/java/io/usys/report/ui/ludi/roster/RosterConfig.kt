@@ -64,7 +64,6 @@ enum class RosterStatus(val status: String) {
     DEAD("dead")
 }
 
-
 enum class RosterType(val type: String) {
     OFFICIAL("official"),
     OFFICIAL_ARCHIVE("official_archive"),
@@ -72,8 +71,6 @@ enum class RosterType(val type: String) {
     SELECTED("selected"),
     UNSELECTED("unselected")
 }
-
-
 
 class RosterConfig(var teamId: String) {
 

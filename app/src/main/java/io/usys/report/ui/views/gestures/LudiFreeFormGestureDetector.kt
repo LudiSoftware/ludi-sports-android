@@ -15,7 +15,7 @@ fun distance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
     return sqrt((dx * dx + dy * dy).toDouble()).toFloat()
 }
 
-class LudiFreeFormGestureDetector(context: Context, private val actionCallback: (MotionEvent?) -> Unit) :
+open class LudiFreeFormGestureDetector(context: Context, private val actionCallback: (MotionEvent?) -> Unit) :
     View.OnTouchListener {
 
     private val gestureDetector: GestureDetector = GestureDetector(context, GestureListener())

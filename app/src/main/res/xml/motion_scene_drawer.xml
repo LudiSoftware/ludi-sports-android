@@ -12,11 +12,11 @@
             motion:touchAnchorId="@id/formationRosterListsLinearLayout"
             motion:touchAnchorSide="top" />
 
-        <OnClick
-            motion:targetId="@id/formationBtnRosterToggle"
-            motion:dragDirection="dragUp"
-            motion:touchAnchorId="@id/formationRosterListsLinearLayout"
-            motion:touchAnchorSide="top" />
+<!--        <OnClick-->
+<!--            motion:targetId="@id/formationBtnRosterToggle"-->
+<!--            motion:dragDirection="dragUp"-->
+<!--            motion:touchAnchorId="@id/formationRosterListsLinearLayout"-->
+<!--            motion:touchAnchorSide="top" />-->
 
         <KeyFrameSet>
             <KeyAttribute
@@ -70,11 +70,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
-            android:src="@drawable/soccer_ball_icon"
             motion:backgroundTint="@color/transparent"
             motion:fabSize="normal"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"
             motion:maxImageSize="45dp"
             motion:rippleColor="@color/transparent" />
 
@@ -155,11 +152,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
-            android:src="@drawable/soccer_ball_icon"
             motion:backgroundTint="@color/transparent"
             motion:fabSize="normal"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"
             motion:maxImageSize="45dp"
             motion:rippleColor="@color/transparent" />
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- popup_layout.xml -->
-<io.usys.report.ui.views.LudiConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<io.usys.report.ui.views.LudiConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -13,9 +12,9 @@
         android:id="@+id/menuPlayerPlayerProfileLayout"
         android:layout_width="214dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@drawable/border_shape"
         android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,9 +42,9 @@
         android:id="@+id/menuPlayerChangeTeamsLayout"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@drawable/border_shape"
         android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuPlayerPlayerProfileLayout">
@@ -71,42 +70,76 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/menuPlayerIsSelectedLayout"
+        android:id="@+id/menuPlayerReturnToRosterLayout"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@drawable/border_shape"
+        android:layout_height="wrap_content"
         android:layout_margin="3dp"
+        android:layout_weight=".75"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuPlayerChangeTeamsLayout">
+
+        <TextView
+            android:id="@+id/menuPlayerReturnToRosterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:text="Change Teams" />
+
+        <ImageButton
+            android:id="@+id/menuPlayerReturnToRosterImgBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/f_profile_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuPlayerIsSelectedLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerReturnToRosterLayout">
 
         <TextView
             android:id="@+id/menuPlayerTxtIsSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
             android:layout_weight=".75"
+            android:gravity="center"
             android:text="Is Selected" />
 
         <CheckBox
             android:id="@+id/menuPlayerCheckIsSelected"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_weight=".25"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:layout_weight=".25" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_margin="3dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerIsSelectedLayout">
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerIsSelectedLayout"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/textView2"

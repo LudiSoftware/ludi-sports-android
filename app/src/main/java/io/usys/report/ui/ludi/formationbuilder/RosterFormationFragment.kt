@@ -2,6 +2,7 @@ package io.usys.report.ui.ludi.formationbuilder
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -36,13 +37,6 @@ import io.usys.report.utils.views.*
 
 class RosterFormationFragment : LudiStringIdsFragment() {
 
-    companion object {
-        const val TAG = "Formation"
-        fun newInstance(): RosterFormationFragment {
-            return RosterFormationFragment()
-        }
-    }
-
     var adapterSubstitutes: RosterFormationListLiveAdapter? = null
     var adapterFiltered: RosterFormationListLiveAdapter? = null
     var formationRelativeLayout: RelativeLayout? = null
@@ -74,7 +68,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var tryoutRoster: String? = null
 
     lateinit var rosterConfig: RosterConfig
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         this.inflater = inflater
@@ -126,31 +119,41 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         deckFilteredRecyclerView = rootView.findViewById(R.id.ysrTORecyclerTwo)
         formationRelativeLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
         rosterTypeSpinner = rootView.findViewById(R.id.formationBuilderRosterTypeSpinner)
+
+
+
     }
 
     /** MOTION LAYOUT: Motion/Transition Listener **/
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupMotionLayoutListener() {
-        motionConstraintLayout?.addTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
 
-            }
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+        motionConstraintLayout?.let {
+            val formationGestureDetector = FormationBuilderGestureHandler(requireContext(), it)
+            it.setOnTouchListener(formationGestureDetector)
+            formationRelativeLayout?.setOnTouchListener(formationGestureDetector)
+        }
+//        formationRelativeLayout?.setOnClickListener {
+//            if ((motionConstraintLayout?.progress ?: 0.0f) > 0.5f) {
+//                motionConstraintLayout?.transitionToStart()
+//            }
+//        }
 
-            }
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                motionIsUp = !motionIsUp
-
-                if (motionIsUp) {
-                    formationRelativeLayout?.setOnClickListener {
-                        motionConstraintLayout?.transitionToStart()
-                    }
-                }
-                adapterSubstitutes?.notifyDataSetChanged()
-            }
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-            }
-        })
+//        motionConstraintLayout?.addTransitionListener(object : MotionLayout.TransitionListener {
+//            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+//
+//            }
+//            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+//
+//            }
+//            @SuppressLint("NotifyDataSetChanged")
+//            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+//                motionIsUp = !motionIsUp
+//                adapterSubstitutes?.notifyDataSetChanged()
+//            }
+//            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+//            }
+//        })
     }
 
     /** SETUP: Roster Type Spinner **/
@@ -501,11 +504,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             popupWindow.dismiss()
         }
-
         realmInstance?.findPlayerRefById(playerId)?.let { itPlayer ->
             checkBoxIsSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
         }
-
         checkBoxIsSelected.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 safePlayerFromRoster(playerId) { playerRef ->
@@ -521,19 +522,27 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 }
             }
         }
-
         layoutIsSelected.setOnClickListener {
             log("menu_player_is_selected")
             checkBoxIsSelected.toggle()
         }
-
         // Set the fold animation when dismissing the popup
         popupWindow.setOnDismissListener {
             popupView.startAnimation(foldAnimation)
         }
 
-        // Show the PopupWindow below the anchor view (menu item)
-        popupWindow.showAsDropDown(anchorView)
+        //Setup Up/Down Creation
+        val location = IntArray(2)
+        anchorView.getLocationOnScreen(location)
+        val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+        val anchorViewBottom = location[1] + anchorView.height
+        val yOffset = if (anchorViewBottom + popupWindow.contentView.measuredHeight > screenHeight) {
+            -(anchorView.height + popupWindow.contentView.measuredHeight)
+        } else {
+            anchorView.height
+        }
+        // Show PopupMenu
+        popupWindow.showAtLocation(anchorView, Gravity.TOP or Gravity.START, location[0], location[1] + yOffset)
     }
 
     /** FORMATION LAYOUT: Class Helpers Below **/
