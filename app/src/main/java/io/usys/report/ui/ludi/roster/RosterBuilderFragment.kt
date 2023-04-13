@@ -128,8 +128,10 @@ class RosterBuilderFragment : YsrFragment() {
         _binding?.rosterBuilderLudiSpinRosterLimit?.setSelection(rosterSize - 1)
         // ROSTER SELECTION
         _binding?.rosterBuilderLudiSpinRosterLimit?.onItemSelected { parent, _, position, _ ->
-            val selectedEntry = parent.getItemAtPosition(position)
-            adapter?.updateRosterSizeLimit(selectedEntry.toString().toInt())
+            position?.let {
+                val selectedEntry = parent?.getItemAtPosition(it)
+                adapter?.updateRosterSizeLimit(selectedEntry.toString().toInt())
+            }
         }
     }
     /** Master Roster Setup! **/

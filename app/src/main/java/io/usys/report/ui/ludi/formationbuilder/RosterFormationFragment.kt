@@ -74,13 +74,15 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         this.container = container
         if (container == null) {
             val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-            rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait)!!
+            rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait) ?: View(requireContext())
         } else {
             rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
         }
 
-        rosterConfig = RosterConfig(teamId!!).apply {
-            parentFragment = this@RosterFormationFragment
+        teamId?.let {
+            rosterConfig = RosterConfig(it).apply {
+                parentFragment = this@RosterFormationFragment
+            }
         }
 
         realmInstance?.teamSessionByTeamId(teamId) { teamSession ->
@@ -119,9 +121,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         deckFilteredRecyclerView = rootView.findViewById(R.id.ysrTORecyclerTwo)
         formationRelativeLayout = rootView.findViewById(R.id.tryoutsRootViewRosterFormation)
         rosterTypeSpinner = rootView.findViewById(R.id.formationBuilderRosterTypeSpinner)
-
-
-
     }
 
     /** MOTION LAYOUT: Motion/Transition Listener **/

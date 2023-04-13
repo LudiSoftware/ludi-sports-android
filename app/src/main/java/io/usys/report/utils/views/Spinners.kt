@@ -12,16 +12,22 @@ fun getSimpleSpinnerAdapter(context: Context, list:ArrayList<String?>) : ArrayAd
     return ArrayAdapter(context, R.layout.simple_list_item_1, list)
 }
 
-fun Spinner.onItemSelected(onItemSelected: (parent: AdapterView<*>, view: View, position: Int, id: Long) -> Unit) {
-    this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-            onItemSelected(parent, view, position, id)
-        }
 
-        override fun onNothingSelected(parent: AdapterView<*>) {
-            onNothingSelected(parent)
-        }
+class LudiSpinnerOnItemSelected(val itemSelected: (parent: AdapterView<*>?, view: View?, position: Int?, id: Long?) -> Unit) : AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        itemSelected(parent, view, position, id)
     }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        onNothingSelected(parent)
+    }
+
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        itemSelected(p0, p1, p2, p3)
+    }
+}
+fun Spinner.onItemSelected(onItemSelected: (parent: AdapterView<*>?, view: View?, position: Int?, id: Long?) -> Unit) {
+    this.onItemSelectedListener = LudiSpinnerOnItemSelected(onItemSelected)
 }
 
 
@@ -30,10 +36,9 @@ inline fun Spinner.setupRosterTypeSpinner(rosters: MutableMap<String, String>, c
     val spinnerAdapter = LudiSpinnerAdapter(this.context, rosterEntries)
     this.adapter = spinnerAdapter
 
-    // ROSTER SELECTION
-    this.onItemSelected { parent, _, position, _ ->
-        val selectedEntry = parent.getItemAtPosition(position)
-        onItemSelected(position, selectedEntry.toString())
+    val callback: (parent: AdapterView<*>?, view: View?, position: Int?, id: Long?) -> Unit = { _, _, _, _ ->
+        val selectedEntry = this.selectedItem.toString()
+        onItemSelected(this.selectedItemPosition, selectedEntry)
     }
-
+    this.onItemSelectedListener = LudiSpinnerOnItemSelected(callback)
 }

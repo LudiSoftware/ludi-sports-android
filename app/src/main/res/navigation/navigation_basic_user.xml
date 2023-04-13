@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/navigation_player_profile"
-        android:name="io.usys.report.ui.ludi.player.PlayerProfileFragment"
+        android:name="io.usys.report.ui.ludi.player.PlayerProfileFragmentVG"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_user" >
     </fragment>

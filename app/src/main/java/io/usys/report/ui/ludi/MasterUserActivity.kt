@@ -1,9 +1,16 @@
 package io.usys.report.ui.ludi
 
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -43,6 +50,44 @@ class MasterUserActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+}
+
+inline fun FragmentActivity.onBackPressed(crossinline onBackPressed: () -> Unit) {
+    onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    })
+}
+
+inline fun Fragment.onBackPressed(crossinline onBackPressed: () -> Unit) {
+    requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    })
+}
+
+inline fun Fragment.onEnterKeyPressed(editText: EditText, crossinline onEnterPressed: () -> Unit) {
+    editText.setOnEditorActionListener { _: TextView, actionId: Int, event: KeyEvent? ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+            onEnterPressed()
+            true
+        } else {
+            false
+        }
+    }
+}
+
+inline fun EditText.onEnterKeyPressed(crossinline onEnterPressed: () -> Unit) {
+    setOnEditorActionListener { _: TextView, actionId: Int, event: KeyEvent? ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+            onEnterPressed()
+            true
+        } else {
+            false
+        }
+    }
 }
 
 const val TO_DASHBOARD = R.id.navigation_dashboard

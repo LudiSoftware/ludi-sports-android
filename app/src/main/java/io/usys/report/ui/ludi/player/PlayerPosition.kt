@@ -76,13 +76,15 @@ fun Spinner?.setupPlayerPositionSpinner(playerId: String, playerView:TextView?=n
 
     // POSITION SELECTION
     this.onItemSelected { parent, _, position, _ ->
-        val positionName = parent.getItemAtPosition(position)
-        val p2 = getPositionFromDisplay(positionName.toString())
-        val positionNumber = positionMap[p2]
-        realmInstance.safeWrite {
-            it.findPlayerRefById(playerId)?.position = positionNumber.toString()
+        position?.let {
+            val positionName = parent?.getItemAtPosition(it)
+            val p2 = getPositionFromDisplay(positionName.toString())
+            val positionNumber = positionMap[p2]
+            realmInstance.safeWrite { itRealm ->
+                itRealm.findPlayerRefById(playerId)?.position = positionNumber.toString()
+            }
+            playerView?.text = positionNumber.toString()
         }
-        playerView?.text = positionNumber.toString()
     }
 
 }

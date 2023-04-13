@@ -1,7 +1,6 @@
 package io.usys.report.ui.ludi.player
 
 import android.graphics.Color
-import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +14,7 @@ import io.usys.report.realm.findByField
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
+import io.usys.report.ui.ludi.onBackPressed
 import io.usys.report.ui.views.viewGroup.LudiViewGroup
 import io.usys.report.ui.views.viewGroup.ludiPlayerProfileFragments
 import io.usys.report.utils.hideLudiActionBar
@@ -23,7 +23,7 @@ import io.usys.report.utils.views.animateOnClickListener
 import io.usys.report.utils.views.loadUriIntoImgView
 
 
-class PlayerProfileFragment : LudiStringIdsFragment() {
+class PlayerProfileFragmentVG : LudiStringIdsFragment() {
 
     companion object {
         const val DISPLAY_MODE = "display_mode"
@@ -50,6 +50,10 @@ class PlayerProfileFragment : LudiStringIdsFragment() {
 
         hideLudiActionBar()
         requireActivity().window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        onBackPressed {
+            this.goBack()
+        }
 
         //Basic Setup
         setupDisplay()
