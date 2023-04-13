@@ -2,7 +2,10 @@ package io.usys.report.ui.ludi.formationbuilder
 
 import android.view.DragEvent
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -32,19 +35,18 @@ inline fun RelativeLayout.setFormationDropListener(crossinline dropBlock: (Strin
 /**
  * ON-DECK LAYOUT: DRAG LISTENER for when a player is dragged off the deck.
  */
-fun RecyclerView.setDeckDragListener(formationRelativeLayout: RelativeLayout) {
+fun RecyclerView.setDeckDragListener(motionLayout: MotionLayout?=null, linearLayout: LinearLayoutCompat?=null) {
     this.setOnDragListener(object : View.OnDragListener {
         override fun onDrag(v: View, event: DragEvent): Boolean {
             when (event.action) {
                 DragEvent.ACTION_DRAG_LOCATION -> {
-                    // Check if the drag event is over the RelativeLayout
-                    val x = event.x.toInt()
+                    // Check if the drag event is above the LinearLayout
                     val y = event.y.toInt()
-                    if (x >= formationRelativeLayout.left && x <= formationRelativeLayout.right &&
-                        y >= formationRelativeLayout.top && y <= formationRelativeLayout.bottom) {
-                        println("Drop Player")
+                    if (y <= 2) {
+                        println(" !!!! Drop Player Available !!!! Y=[$y], TOP=[$top]")
+                        motionLayout?.transitionToStart()
                     } else {
-                        // Item is not over the RelativeLayout, cancel the drag and drop operation
+                        println(" !!!! Can't Drop Player Here !!!! Y=[$y], TOP=[$top]")
                         return false
                     }
                 }
@@ -54,4 +56,3 @@ fun RecyclerView.setDeckDragListener(formationRelativeLayout: RelativeLayout) {
         }
     })
 }
-

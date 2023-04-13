@@ -127,33 +127,11 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     /** MOTION LAYOUT: Motion/Transition Listener **/
     @SuppressLint("ClickableViewAccessibility")
     private fun setupMotionLayoutListener() {
-
         motionConstraintLayout?.let {
             val formationGestureDetector = FormationBuilderGestureHandler(requireContext(), it)
             it.setOnTouchListener(formationGestureDetector)
             formationRelativeLayout?.setOnTouchListener(formationGestureDetector)
         }
-//        formationRelativeLayout?.setOnClickListener {
-//            if ((motionConstraintLayout?.progress ?: 0.0f) > 0.5f) {
-//                motionConstraintLayout?.transitionToStart()
-//            }
-//        }
-
-//        motionConstraintLayout?.addTransitionListener(object : MotionLayout.TransitionListener {
-//            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-//
-//            }
-//            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-//
-//            }
-//            @SuppressLint("NotifyDataSetChanged")
-//            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-//                motionIsUp = !motionIsUp
-//                adapterSubstitutes?.notifyDataSetChanged()
-//            }
-//            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-//            }
-//        })
     }
 
     /** SETUP: Roster Type Spinner **/
@@ -253,60 +231,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     }
 
     /**
-     * GLOBAL MENU: Floating Action Menu Functions - display process function
-     */
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setupFloatingActionMenu() {
-        floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, _ ->
-            // Handle menu item click events
-            // todo: events to handle:
-            //  - if in tryout mode, submit formation as roster.
-            //  - Change background image.
-            when (menuItem.itemId) {
-                R.id.menu_save_roster -> {
-                    // Do something
-                    log("Save Formation")
-                    rosterConfig.currentRosterId?.let {
-                        realmInstance?.pushPlayersToRosterInFirebase(it)
-                    }
-                }
-                R.id.menu_submit_roster -> {
-                    // Do something
-                    realmInstance?.teamSessionByTeamId(teamId) { ts ->
-                        ts.saveRosterToFirebase()
-                    }
-                }
-                R.id.menu_reset -> {
-                    resetFormationLayout()
-                }
-                R.id.menu_formation_team_color_toggle -> {
-                    realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { rosterSession ->
-                        realmInstance?.safeWrite {
-                            if (rosterSession.teamColorsAreOn) {
-                                menuItem.title = "Turn ON Team Colors"
-                                rosterSession.teamColorsAreOn = false
-                            } else {
-                                menuItem.title = "Turn OFF Team Colors"
-                                rosterSession.teamColorsAreOn = true
-                            }
-                        }
-                    }
-                }
-                else -> {
-                    log("Unknown Touch")
-                }
-            }
-        }
-
-        val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { event ->
-            // Show the PopupMenu when the FloatingActionButton is single-tapped
-            floatingMenuButton?.wiggleShort()
-            floatingPopMenu?.show()
-        }
-        floatingMenuButton?.setOnTouchListener(gestureDetector)
-    }
-
-    /**
      * FORMATION LAYOUT: DRAG LISTENER for when a player is dragged onto the soccer field
      */
     private fun createFormationDragListener() {
@@ -323,10 +247,11 @@ class RosterFormationFragment : LudiStringIdsFragment() {
      * ON-DECK LAYOUT: DRAG LISTENER for when a player is dragged off the deck.
      */
     private fun createDeckDragListener() {
-        formationRelativeLayout?.let { deckSubsRecyclerView?.setDeckDragListener(it) }
+        deckSubsRecyclerView?.setDeckDragListener(motionConstraintLayout, deckLinearLayout)
     }
 
     /** FORMATION LAYOUT: SETTING UP A PLAYER ON THE SOCCER FIELD **/
+    @SuppressLint("SetTextI18n")
     private fun addPlayerToFormation(playerId: String, x:Float?=null, y:Float?=null, loadingFromSession: Boolean = false) {
         // Create New PlayerView for Formation
         val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_formation)
@@ -369,14 +294,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             // Save New X,Y Position in Formation
             if (x != null && y != null) {
-                realmInstance?.teamSessionByTeamId(teamId) { fs ->
-                    playerId.let { itId ->
-                        realmInstance?.findPlayerRefById(itId) { playerRef ->
-                            realmInstance?.safeWrite {
-                                playerRef?.pointX = y.toInt() - 75
-                                playerRef?.pointY = x.toInt() - 75
-                                it.copyToRealmOrUpdate(playerRef)
-                            }
+                realmInstance?.findPlayerRefById(playerId) { playerRef ->
+                    realmInstance?.safeWrite {
+                        playerRef?.pointX = y.toInt() - 75
+                        playerRef?.pointY = x.toInt() - 75
+                        if (playerRef != null) {
+                            it.copyToRealmOrUpdate(playerRef)
                         }
                     }
                 }
@@ -451,7 +374,61 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         return formationPlayerItemViewList.find { it.tag == playerId }
     }
 
-    /** FORMATION LAYOUT: PLAYER POPUP MENU **/
+    /**
+     * GLOBAL MENU: Floating Action Menu Functions - display process function
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupFloatingActionMenu() {
+        floatingPopMenu = floatingMenuButton?.attachAndInflatePopMenu(R.menu.floating_formation_menu) { menuItem, _ ->
+            // Handle menu item click events
+            // todo: events to handle:
+            //  - if in tryout mode, submit formation as roster.
+            //  - Change background image.
+            when (menuItem.itemId) {
+                R.id.menu_save_roster -> {
+                    // Do something
+                    log("Save Formation")
+                    rosterConfig.currentRosterId?.let {
+                        realmInstance?.pushPlayersToRosterInFirebase(it)
+                    }
+                }
+                R.id.menu_submit_roster -> {
+                    // Do something
+                    realmInstance?.teamSessionByTeamId(teamId) { ts ->
+                        ts.saveRosterToFirebase()
+                    }
+                }
+                R.id.menu_reset -> {
+                    resetFormationLayout()
+                }
+                R.id.menu_formation_team_color_toggle -> {
+                    realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { rosterSession ->
+                        realmInstance?.safeWrite {
+                            if (rosterSession.teamColorsAreOn) {
+                                menuItem.title = "Turn ON Team Colors"
+                                rosterSession.teamColorsAreOn = false
+                            } else {
+                                menuItem.title = "Turn OFF Team Colors"
+                                rosterSession.teamColorsAreOn = true
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    log("Unknown Touch")
+                }
+            }
+        }
+
+        val gestureDetector = LudiFreeFormGestureDetector(requireContext()) { event ->
+            // Show the PopupMenu when the FloatingActionButton is single-tapped
+            floatingMenuButton?.wiggleShort()
+            floatingPopMenu?.show()
+        }
+        floatingMenuButton?.setOnTouchListener(gestureDetector)
+    }
+
+    /** PLAYER MENU: PLAYER POPUP MENU **/
     private fun showPlayerMenuPopup(anchorView: View, fragment: Fragment) {
         val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
         val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)

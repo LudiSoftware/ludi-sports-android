@@ -80,6 +80,7 @@
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
+            android:button="@drawable/f_check_dark"
             android:hapticFeedbackEnabled="true"
             android:scaleX=".75"
             android:scaleY=".75"
