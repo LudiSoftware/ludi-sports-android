@@ -39,7 +39,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
         const val TAB = "Notes"
     }
 
-    val noteTypes = listOf("Player", "Team", "TryOut", "General")
+    private val noteTypes = listOf("Player", "Team", "TryOut", "General")
 
     var notesType: String? = "General"
     var notesSubtype: String? = "General"
@@ -48,6 +48,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: DualNoteFragmentBinding? = null
     private val binding get() = _binding!!
+    var notesTitle: String = "Notes"
     // Spinners
     var spinnerType: Spinner? = null
     var adapterType: CustomSpinnerAdapter? = null
@@ -100,8 +101,12 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     private fun setupDisplayNotes() {
         if (notesType == NOTE_PLAYER) {
+            notesTitle = "Player Notes"
+            _binding?.includeNoteList?.root?.hideTitle()
             _binding?.includeNoteList?.root?.setupPlayerNotesList(playerId, onClickReturnViewRealmObject)
         } else {
+            notesTitle = "Team Notes"
+            _binding?.includeNoteList?.root?.hideTitle()
             _binding?.includeNoteList?.root?.setupTeamNotesList(teamId, onClickReturnViewRealmObject)
         }
     }
@@ -164,10 +169,12 @@ class DualNotesFragment : LudiStringIdsFragment() {
     }
 
     private fun toggleCreateMode() {
+        _binding?.dualNotesHeaderTitle?.text = "Leave a Note!"
         _binding?.createNoteMainLayout?.visibility = View.VISIBLE
         _binding?.includeNoteList?.root?.visibility = View.GONE
     }
     private fun toggleViewMode() {
+        _binding?.dualNotesHeaderTitle?.text = notesTitle
         switch?.isChecked = false
         _binding?.createNoteMainLayout?.visibility = View.GONE
         _binding?.includeNoteList?.root?.visibility = View.VISIBLE
