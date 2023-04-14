@@ -1,8 +1,11 @@
 package io.usys.report.utils.views
 
+import android.content.res.ColorStateList
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import androidx.core.content.ContextCompat
+import io.usys.report.R
 
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
@@ -17,3 +20,8 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     })
 }
 
+
+fun EditText.makeRed() {
+    val defaultColor = ContextCompat.getColor(this.context, R.color.ysrFadedRed)
+    this.backgroundTintList = ColorStateList.valueOf(defaultColor)
+}

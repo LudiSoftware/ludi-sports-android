@@ -1,9 +1,13 @@
 package io.usys.report.ui.login
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
@@ -11,9 +15,9 @@ import io.usys.report.R
 import io.usys.report.firebase.fireSyncUserWithDatabase
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.fromFirebaseToRealmUser
-import io.usys.report.utils.launchActivity
-import io.usys.report.utils.log
-import io.usys.report.utils.hideLudiActionBar
+import io.usys.report.ui.ludi.onEnterKeyPressed
+import io.usys.report.utils.*
+import io.usys.report.utils.views.makeRed
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -21,7 +25,11 @@ import io.usys.report.utils.hideLudiActionBar
 
 class LudiLoginActivity : AppCompatActivity() {
 
+    var emailInput: String = ""
+    var passwordInput: String = ""
+
     var auth: FirebaseAuth? = null
+    var progressBar: ProgressBar? = null
     var userName: EditText? = null
     var password: EditText? = null
     var btnSignIn: Button? = null
@@ -33,31 +41,63 @@ class LudiLoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        userName = findViewById<EditText>(R.id.editUsername)
-        password = findViewById<EditText>(R.id.editPassword)
-        btnSignIn = findViewById<Button>(R.id.btnLogin)
-        btnSignUp = findViewById<Button>(R.id.btnLoginSignUp)
-
+        progressBar = findViewById(R.id.loginProgressBar)
+        hideProgressBar()
+        userName = findViewById(R.id.editUsername)
+        password = findViewById(R.id.editPassword)
+        btnSignIn = findViewById(R.id.btnLogin)
+        btnSignUp = findViewById(R.id.btnLoginSignUp)
 
         btnSignUp?.setOnClickListener {
             launchActivity<LudiSignUpActivity>()
         }
 
         btnSignIn?.setOnClickListener {
-            onSignInResult()
-//            if (isUsernamePasswordValid()) {
-//                checkIfEmailExists()
-//            }
+            doLogin()
         }
+
+        password?.onEnterKeyPressed {
+            doLogin()
+        }
+
         supportActionBar?.title = ""
         hideLudiActionBar()
     }
 
-    private fun isUsernamePasswordValid(): Boolean {
-        val email = userName?.text.toString()
-        val passw = password?.text.toString()
+    private fun showProgressBar() {
+        progressBar?.makeVisible()
+    }
+    private fun hideProgressBar() {
+        progressBar?.makeGone()
+    }
 
-        if (email.isBlank() || passw.isBlank()) {
+    private fun doLogin() {
+        showProgressBar()
+        if (isUsernamePasswordValid()) {
+            checkIfEmailExists()
+        } else {
+            hideProgressBar()
+        }
+    }
+
+    private fun isUsernamePasswordValid(): Boolean {
+        emailInput = userName?.text.toString().trim()
+        passwordInput = password?.text.toString().trim()
+
+        if (emailInput == "demo" && passwordInput == "demo") {
+            emailInput = resources?.getString(R.string.demo_e).toString()
+            passwordInput = resources?.getString(R.string.demo_p).toString()
+        }
+
+        if (emailInput.isBlank()) {
+            //todo: pop up message
+            userName?.makeRed()
+            log("Email or Password cannot be empty")
+            return false
+        }
+        if (passwordInput.isBlank()) {
+            //todo: pop up message
+            password?.makeRed()
             log("Email or Password cannot be empty")
             return false
         }
@@ -65,14 +105,15 @@ class LudiLoginActivity : AppCompatActivity() {
     }
 
     private fun checkIfEmailExists() {
-        val email = userName?.text.toString()
-        auth?.fetchSignInMethodsForEmail(email)
+        if (emailInput.isBlank()) return
+        auth?.fetchSignInMethodsForEmail(emailInput)
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val signInMethods = task.result?.signInMethods
                     if (signInMethods != null && signInMethods.isNotEmpty()) {
                         onSignInResult()
                     } else {
+                        hideProgressBar()
                         launchActivity<ProviderLoginActivity>()
                     }
                 } else {
@@ -81,14 +122,13 @@ class LudiLoginActivity : AppCompatActivity() {
             }
     }
 
-    //
+
+
+
     private fun onSignInResult() {
-//        val email = userName?.text.toString()
-//        val passw = password?.text.toString()
-        val email = "ckrphone@gmail.com"
-        val passw = "allensgay"
-        auth?.signInWithEmailAndPassword(email, passw)
+        auth?.signInWithEmailAndPassword(emailInput, passwordInput)
             ?.addOnCompleteListener(this) { task ->
+                hideProgressBar()
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     log("signInWithEmail:success")

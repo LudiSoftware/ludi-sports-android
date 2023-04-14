@@ -58,8 +58,6 @@ open class User : RealmObject(), Serializable {
         return this
     }
 
-
-
 }
 
 fun FirebaseUser?.fromFirebaseToRealmUser() : User {
