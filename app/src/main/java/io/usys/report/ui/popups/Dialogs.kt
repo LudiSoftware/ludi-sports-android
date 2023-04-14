@@ -14,7 +14,7 @@ import io.usys.report.realm.model.Session
 
 inline fun Activity.popupYesNo(title: String, body: String, crossinline block: () -> Unit): Dialog {
     val dialog = Dialog(this)
-    dialog.setContentView(R.layout.dialog_yes_no)
+    dialog.setContentView(R.layout.ludi_dialog_yes_no)
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     val txtTitle = dialog.findViewById(R.id.dialogYesNoTxtTitle) as TextView
     val txtBody = dialog.findViewById(R.id.dialogYesNoTxtBody) as TextView

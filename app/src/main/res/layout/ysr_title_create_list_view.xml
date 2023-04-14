@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/includeYsrCreateListCreateNote"
-            layout="@layout/dual_note_fragment"
+            layout="@layout/note_dual_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/includeYsrCreateListCreateNote"
             app:layout_constraintVertical_bias="0.013"
             tools:itemCount="2"
-            tools:listitem="@layout/card_sport_small">
+            tools:listitem="@layout/sport_card_list_medium">
 
         </androidx.recyclerview.widget.RecyclerView>
 

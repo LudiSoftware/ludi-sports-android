@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.usys.report.R
-import io.usys.report.databinding.FragmentOrgListBinding
+import io.usys.report.databinding.OrganizationsListFragmentBinding
 import io.usys.report.ui.fragments.LudiMiddleFragment
 import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.fragments.toFragmentWithRealmObject
@@ -16,11 +16,11 @@ import io.usys.report.ui.fragments.toFragmentWithRealmObject
 
 class OrganizationListFragment : LudiMiddleFragment() {
 
-    private var _binding: FragmentOrgListBinding? = null
+    private var _binding: OrganizationsListFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentOrgListBinding.inflate(inflater, container, false)
+        _binding = OrganizationsListFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
         setupOnClickListeners()
         setupDisplay()

@@ -27,7 +27,7 @@ fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
     val currentRatingCount = org.ratingCount
 
     val dialog = Dialog(activity)
-    dialog.setContentView(R.layout.dialog_review_org_layout)
+    dialog.setContentView(R.layout.ludi_dialog_review_org_layout)
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     val commentEditTxt = dialog.bind<EditText>(R.id.reviewEditComment)
     val reviewRatingBar = dialog.bind<RatingBar>(R.id.reviewRatingBar)

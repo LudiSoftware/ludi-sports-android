@@ -14,8 +14,6 @@ import io.usys.report.realm.local.RosterSession
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.setupRosterSession
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.Roster
-import io.usys.report.ui.ludi.player.matchesLudiFilter
 import io.usys.report.ui.ludi.roster.RosterConfig
 import io.usys.report.ui.ludi.roster.RosterType
 import io.usys.report.ui.views.gestures.onDownUpListener
@@ -51,7 +49,7 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterFormationViewHolder {
-        val view = parent.inflateLayout(R.layout.card_player_tiny_horizontal2)
+        val view = parent.inflateLayout(R.layout.roster_player_card_substitute)
         return RosterFormationViewHolder(view)
     }
 

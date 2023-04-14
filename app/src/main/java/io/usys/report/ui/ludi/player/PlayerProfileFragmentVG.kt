@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.databinding.DialogPlayerProfileLayoutBinding
+import io.usys.report.databinding.PlayerProfileVgFragmentBinding
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
@@ -33,7 +33,7 @@ class PlayerProfileFragmentVG : LudiStringIdsFragment() {
     var _MODE = DISPLAY_MODE
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: DialogPlayerProfileLayoutBinding? = null
+    private var _binding: PlayerProfileVgFragmentBinding? = null
     private val binding get() = _binding!!
 
     private var playerNotes: RealmList<Note>? = RealmList()
@@ -41,9 +41,9 @@ class PlayerProfileFragmentVG : LudiStringIdsFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         if (container == null) {
-            _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, teamContainer, true)
+            _binding = PlayerProfileVgFragmentBinding.inflate(inflater, teamContainer, true)
         } else {
-            _binding = DialogPlayerProfileLayoutBinding.inflate(inflater, container, false)
+            _binding = PlayerProfileVgFragmentBinding.inflate(inflater, container, false)
         }
 
         rootView = binding.root

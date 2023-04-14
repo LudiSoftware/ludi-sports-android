@@ -52,7 +52,7 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
 
     /** Setup ViewHolder **/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSmallViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.card_team_small, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.team_card_list_medium, parent, false)
         return TeamSmallViewHolder(itemView)
     }
 

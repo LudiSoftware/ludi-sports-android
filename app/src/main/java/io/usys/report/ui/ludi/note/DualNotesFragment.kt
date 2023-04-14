@@ -16,7 +16,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.databinding.DualNoteFragmentBinding
+import io.usys.report.databinding.NoteDualFragmentBinding
 import io.usys.report.firebase.fireludi.fireAddNote
 import io.usys.report.firebase.fireludi.fireGetPlayerNotesInBackground
 import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
@@ -46,7 +46,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: DualNoteFragmentBinding? = null
+    private var _binding: NoteDualFragmentBinding? = null
     private val binding get() = _binding!!
     var notesTitle: String = "Notes"
     // Spinners
@@ -74,7 +74,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = DualNoteFragmentBinding.inflate(inflater, teamContainer, false)
+        _binding = NoteDualFragmentBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
 
         realmInstance?.safeUserId {

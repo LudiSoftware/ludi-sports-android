@@ -17,7 +17,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/default_full_dashboard">
+        tools:layout="@layout/ludi_dashboard_fragment">
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_org_list"
             app:destination="@id/navigation_org_list" />
@@ -41,7 +41,7 @@
         android:id="@+id/navigation_org_list"
         android:name="io.usys.report.ui.ludi.organization.OrganizationListFragment"
         android:label="@string/title_orgs"
-        tools:layout="@layout/fragment_org_list">
+        tools:layout="@layout/organizations_list_fragment">
         <action
             android:id="@+id/action_navigation_org_list_to_navigation_org_profile"
             app:destination="@id/navigation_org_profile" />
@@ -52,7 +52,7 @@
         android:id="@+id/navigation_coaches_list"
         android:name="io.usys.report.ui.ludi.coach.CoachListFragment"
         android:label="@string/title_coaches"
-        tools:layout="@layout/fragment_coaches_list">
+        tools:layout="@layout/coaches_list_fragment">
         <action
             android:id="@+id/action_navigation_coaches_list_to_navigation_review_dialog"
             app:destination="@id/navigation_review_dialog" />
@@ -82,7 +82,7 @@
         android:id="@+id/navigation_team_profile"
         android:name="io.usys.report.ui.ludi.team.TeamProfileFragmentVG"
         android:label="@string/title_team"
-        tools:layout="@layout/profile_team" >
+        tools:layout="@layout/team_vg_fragment" >
         <action
             android:id="@+id/action_navigation_team_profile_to_navigation_formation_builder"
             app:destination="@id/navigation_formation_builder" />
@@ -112,7 +112,7 @@
         android:id="@+id/navigation_dual_notes"
         android:name="io.usys.report.ui.ludi.note.DualNotesFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/dual_note_fragment" >
+        tools:layout="@layout/note_dual_fragment" >
     </fragment>
 
     <!-- Chat Fragment -->
@@ -120,7 +120,7 @@
         android:id="@+id/navigation_chat_fragment"
         android:name="io.usys.report.ui.ludi.chat.ChatFragment"
         android:label="Chat"
-        tools:layout="@layout/dialog_chat">
+        tools:layout="@layout/ludi_chat">
     </fragment>
 
     <!-- COACH PROFILE PAGE -->
@@ -144,7 +144,7 @@
         android:id="@+id/navigation_review_dialog"
         android:name="io.usys.report.ui.ludi.review.coach.ReviewDialogFragment"
         android:label="PopUp"
-        tools:layout="@layout/dialog_review_coach_layout">
+        tools:layout="@layout/ludi_dialog_review_coach_layout">
     </fragment>
 
     <!-- Formation Builder -->
@@ -174,7 +174,7 @@
         android:id="@+id/navigation_roster_vg_frag"
         android:name="io.usys.report.ui.ludi.roster.RosterListFragmentVG"
         android:label="Roster"
-        tools:layout="@layout/fragment_roster_vg">
+        tools:layout="@layout/roster_vg_fragment">
         <action
             android:id="@+id/action_navigation_roster_vg_frag_to_navigation_player_profile"
             app:destination="@id/navigation_player_profile" />
@@ -185,7 +185,7 @@
         android:id="@+id/navigation_base_frag"
         android:name="io.usys.report.ui.fragments.YsrFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_org_list">
+        tools:layout="@layout/organizations_list_fragment">
     </fragment>
 
 </navigation>

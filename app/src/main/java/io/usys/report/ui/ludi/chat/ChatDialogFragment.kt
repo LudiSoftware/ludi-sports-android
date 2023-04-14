@@ -47,7 +47,7 @@ class ChatDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialogFragment = AlertDialog.Builder(requireContext())
-        rootview = this.layoutInflater.inflate(R.layout.dialog_chat, null)
+        rootview = this.layoutInflater.inflate(R.layout.ludi_chat, null)
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         realmInstance = realm()
         arguments?.let {
@@ -81,7 +81,7 @@ class ChatDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_chat, container, false)
+        val view = inflater.inflate(R.layout.ludi_chat, container, false)
         messageListener = ChatFireBaseDatabaseListener(chatAdapter, chatRecyclerView)
         return view
     }

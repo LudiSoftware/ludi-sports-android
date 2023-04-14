@@ -12,7 +12,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/default_full_dashboard" />
+        tools:layout="@layout/ludi_dashboard_fragment" />
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="io.usys.report.coachUser.locManageActivity.CartFragment"

@@ -3,16 +3,10 @@ package io.usys.report.ui.ludi.team
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import io.usys.report.R
-import io.usys.report.databinding.ProfileTeamBinding
+import io.usys.report.databinding.TeamVgFragmentBinding
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
 import io.usys.report.ui.ludi.ludiActionBarTryoutMode
 import io.usys.report.ui.views.*
 import io.usys.report.ui.views.viewGroup.ludiTeamVGFragments
@@ -26,14 +20,14 @@ import io.usys.report.utils.views.loadUriIntoImgView
 class TeamProfileFragmentVG : LudiTeamFragment() {
 
     private var linearLayout: LudiLinearLayout? = null
-    private var _binding: ProfileTeamBinding? = null
+    private var _binding: TeamVgFragmentBinding? = null
     private val binding get() = _binding!!
 
     var isOpen = false
     private var team: Team? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = ProfileTeamBinding.inflate(inflater, container, false)
+        _binding = TeamVgFragmentBinding.inflate(inflater, container, false)
         linearLayout = _binding?.profileTeamRosterRootLinearLayout
         rootView = binding.root
         return rootView

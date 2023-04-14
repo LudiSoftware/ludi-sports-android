@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/includeCardCoach"
-            layout="@layout/card_coach_medium"
+            layout="@layout/coach_card_list_medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -52,7 +52,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCardOne"
-            layout="@layout/card_generic_button_small"
+            layout="@layout/ludi_generic_list_button"
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -62,7 +62,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCardTwo"
-            layout="@layout/card_generic_button_small"
+            layout="@layout/ludi_generic_list_button"
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -72,7 +72,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCardThree"
-            layout="@layout/card_generic_button_small"
+            layout="@layout/ludi_generic_list_button"
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"

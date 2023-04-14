@@ -12,7 +12,7 @@
 
     <include
         android:id="@+id/includeUserProfileHeader"
-        layout="@layout/card_home_banner_large"
+        layout="@layout/ludi_banner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

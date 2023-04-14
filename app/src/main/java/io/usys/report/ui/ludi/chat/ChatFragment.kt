@@ -12,7 +12,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DatabaseReference
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.databinding.DialogChatBinding
+import io.usys.report.databinding.LudiChatBinding
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
@@ -29,7 +29,7 @@ class ChatFragment : LudiStringIdsFragment() {
     }
 
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
-    private var _binding: DialogChatBinding? = null
+    private var _binding: LudiChatBinding? = null
     private val binding get() = _binding!!
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var chatMessages: MutableList<Chat>
@@ -49,7 +49,7 @@ class ChatFragment : LudiStringIdsFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-        _binding = DialogChatBinding.inflate(inflater, teamContainer, false)
+        _binding = LudiChatBinding.inflate(inflater, teamContainer, false)
         rootView = binding.root
         //Basic Setup
         chatId = teamId

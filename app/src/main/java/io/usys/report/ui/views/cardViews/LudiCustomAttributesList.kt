@@ -21,6 +21,9 @@ import io.usys.report.ui.views.listAdapters.CustomAttributesListAdapter
 import io.usys.report.utils.*
 import io.usys.report.utils.views.animateOnClickListener
 
+/**
+ * This is the CustomView Model!
+ */
 class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
                                                          attrs: AttributeSet? = null,
                                                          defStyleAttr: Int = 0) : CardView(context, attrs, defStyleAttr) {
@@ -36,7 +39,7 @@ class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
     var cardView: CardView? = null
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.ysr_add_attributes, this.rootView as ViewGroup)
+        LayoutInflater.from(context).inflate(R.layout.ludi_custom_attributes_list, this.rootView as ViewGroup)
     }
 
     // add any custom methods or properties here

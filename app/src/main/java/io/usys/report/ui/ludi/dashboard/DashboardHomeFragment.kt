@@ -6,7 +6,7 @@ import android.view.*
 import androidx.core.view.MenuProvider
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.databinding.DefaultFullDashboardBinding
+import io.usys.report.databinding.LudiDashboardFragmentBinding
 import io.usys.report.firebase.models.CoachRealmSingleEventListener
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.local.createIdBundleSession
@@ -27,7 +27,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     private var menuIn: SignInMenuProvider? = null
     private var menuOut: SignOutMenuProvider? = null
-    private var _binding: DefaultFullDashboardBinding? = null
+    private var _binding: LudiDashboardFragmentBinding? = null
     private val binding get() = _binding!!
 
     var itemOnClickSportList: ((View, Sport) -> Unit)? = null
@@ -37,7 +37,7 @@ class DashboardHomeFragment : YsrFragment() {
     var teamIds: MutableList<String>? = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = DefaultFullDashboardBinding.inflate(inflater, container, false)
+        _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
         _binding?.txtWelcomeDashboard?.text = "Please Sign In!"
         setupOnClickListeners()

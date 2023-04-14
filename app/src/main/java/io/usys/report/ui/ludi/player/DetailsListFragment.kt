@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.usys.report.R
-import io.usys.report.databinding.DetailsListFragmentBinding
+import io.usys.report.databinding.LudiCustomAttributesFragmentBinding
 import io.usys.report.realm.findByField
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
@@ -18,15 +18,15 @@ class DetailsListFragment : LudiStringIdsFragment() {
         const val EDIT_MODE = "edit_mode"
     }
     var _MODE = DISPLAY_MODE
-    private var _binding: DetailsListFragmentBinding? = null
+    private var _binding: LudiCustomAttributesFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
         if (container == null) {
-            _binding = DetailsListFragmentBinding.inflate(inflater, teamContainer, false)
+            _binding = LudiCustomAttributesFragmentBinding.inflate(inflater, teamContainer, false)
         } else {
-            _binding = DetailsListFragmentBinding.inflate(inflater, container, false)
+            _binding = LudiCustomAttributesFragmentBinding.inflate(inflater, container, false)
         }
 
         rootView = binding.root

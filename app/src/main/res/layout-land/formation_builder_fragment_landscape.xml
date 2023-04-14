@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:itemCount="2"
-        tools:listitem="@layout/card_player_tiny" />
+        tools:listitem="@layout/roster_player_card_formation_deprecated" />
 
     <RelativeLayout
         android:id="@+id/tryoutsRootViewRosterFormation"

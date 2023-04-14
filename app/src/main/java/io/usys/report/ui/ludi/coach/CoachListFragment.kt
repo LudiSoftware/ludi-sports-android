@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.usys.report.R
 import io.realm.RealmObject
-import io.usys.report.databinding.FragmentOrgListBinding
+import io.usys.report.databinding.CoachesListFragmentBinding
 import io.usys.report.ui.fragments.toFragmentWithRealmObject
 import io.usys.report.ui.fragments.unbundleRealmObject
 
@@ -18,7 +18,7 @@ import io.usys.report.ui.fragments.unbundleRealmObject
 class CoachListFragment : Fragment() {
 
     private lateinit var rootView : View
-    private var _binding: FragmentOrgListBinding? = null
+    private var _binding: CoachesListFragmentBinding? = null
     private val binding get() = _binding!!
 
     private var itemOnClick: ((View, RealmObject) -> Unit)? = null
@@ -26,7 +26,7 @@ class CoachListFragment : Fragment() {
 //    private var coachesList: RealmList<Coach>? = RealmList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentOrgListBinding.inflate(inflater, container, false)
+        _binding = CoachesListFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
 
         realmObjectArg = unbundleRealmObject()

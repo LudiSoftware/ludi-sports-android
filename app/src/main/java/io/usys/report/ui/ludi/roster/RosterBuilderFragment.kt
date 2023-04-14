@@ -54,7 +54,7 @@ class RosterBuilderFragment : YsrFragment() {
             rosterConfig = RosterConfig(teamId)
         }
 
-        ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder_popup, action = { view, _ ->
+        ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder, action = { view, _ ->
             val layoutOne = view.findViewById<LinearLayout>(R.id.menuRosterBuilderBtnOneLayout)
             val imgBtnOne = view.findViewById<ImageButton>(R.id.menuRosterBuilderBtnOneImgBtn)
             adapter?.let {

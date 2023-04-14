@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import io.usys.report.R
-import io.usys.report.databinding.FragmentRosterVgBinding
+import io.usys.report.databinding.RosterVgFragmentBinding
 import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
@@ -20,7 +20,7 @@ import io.usys.report.ui.views.viewGroup.LudiViewGroup
 
 class RosterListFragmentVG : LudiStringIdsFragment() {
 
-    private var _binding: FragmentRosterVgBinding? = null
+    private var _binding: RosterVgFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var ludiViewGroupViewModel: LudiViewGroupViewModel
@@ -34,9 +34,9 @@ class RosterListFragmentVG : LudiStringIdsFragment() {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
 
         if (container == null) {
-            _binding = FragmentRosterVgBinding.inflate(inflater, teamContainer, false)
+            _binding = RosterVgFragmentBinding.inflate(inflater, teamContainer, false)
         } else {
-            _binding = FragmentRosterVgBinding.inflate(inflater, container, false)
+            _binding = RosterVgFragmentBinding.inflate(inflater, container, false)
         }
 
         rootView = binding.root

@@ -8,11 +8,8 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findRosterById
 import io.usys.report.realm.ifObjectDoesNotExist
-import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.TryOut
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -36,7 +33,7 @@ open class RosterSession : RealmObject(), Serializable {
     var formationListIds: RealmList<String>? = RealmList()
     var deckListIds: RealmList<String>? = RealmList()
     // Layout
-    var layout: Int = R.layout.card_player_medium_grid
+    var layout: Int = R.layout.roster_player_card_grid_medium
     var type: String = FireTypes.PLAYERS
     var size: String = "medium_grid"
     var mode: String = "official"

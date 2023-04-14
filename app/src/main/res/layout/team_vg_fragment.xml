@@ -18,7 +18,7 @@
 
         <include
             android:id="@+id/includeTeamProfileCard"
-            layout="@layout/card_team_medium"
+            layout="@layout/team_header_card_large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"

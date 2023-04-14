@@ -36,7 +36,7 @@ class ReviewDialogFragment(var currentCoach: Coach) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialogFragment = AlertDialog.Builder(requireContext())
 
-        rootview = this.layoutInflater.inflate(R.layout.dialog_review_coach_layout, null)
+        rootview = this.layoutInflater.inflate(R.layout.ludi_dialog_review_coach_layout, null)
         ysrCoachReviewObj = rootview?.findViewById(R.id.reviewCoachRootCard)
         ysrCoachReviewObj?.currentCoach = currentCoach
         cancelButton = rootview?.bind(R.id.reviewBtnCancel)

@@ -74,9 +74,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         this.container = container
         if (container == null) {
             val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-            rootView = teamContainer?.inflateLayout(R.layout.fragment_list_formations_portrait) ?: View(requireContext())
+            rootView = teamContainer?.inflateLayout(R.layout.formation_builder_fragment_portrait) ?: View(requireContext())
         } else {
-            rootView = container.inflateLayout(R.layout.fragment_list_formations_portrait)
+            rootView = container.inflateLayout(R.layout.formation_builder_fragment_portrait)
         }
 
         teamId?.let {
@@ -221,10 +221,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            this.inflater?.inflate(R.layout.fragment_list_formations_landscape, container, false)
+            this.inflater?.inflate(R.layout.formation_builder_fragment_landscape, container, false)
             setupDisplay()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            this.inflater?.inflate(R.layout.fragment_list_formations_portrait, container, false)
+            this.inflater?.inflate(R.layout.formation_builder_fragment_portrait, container, false)
             setupDisplay()
         }
     }
@@ -253,7 +253,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     @SuppressLint("SetTextI18n")
     private fun addPlayerToFormation(playerId: String, x:Float?=null, y:Float?=null, loadingFromSession: Boolean = false) {
         // Create New PlayerView for Formation
-        val playerRefViewItem = inflateView(requireContext(), R.layout.card_player_formation)
+        val playerRefViewItem = inflateView(requireContext(), R.layout.roster_player_card_formation)
         // Bind PlayerView's
         val vPlayerName = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtName)
         val vPlayerTryOutTag = playerRefViewItem.findViewById<TextView>(R.id.cardPlayerFormationTxtTag)
@@ -429,7 +429,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** PLAYER MENU: PLAYER POPUP MENU **/
     private fun showPlayerMenuPopup(anchorView: View, fragment: Fragment) {
-        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_position_popup, null)
+        val popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.menu_player_options, null)
         val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         val playerId = anchorView.tag

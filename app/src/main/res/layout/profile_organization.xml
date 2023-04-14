@@ -28,7 +28,7 @@
 
         <include
             android:id="@+id/includeGenericButtonCard"
-            layout="@layout/card_generic_button_small"
+            layout="@layout/ludi_generic_list_button"
             android:layout_width="0dp"
             android:layout_height="65dp"
             android:layout_marginStart="10dp"
