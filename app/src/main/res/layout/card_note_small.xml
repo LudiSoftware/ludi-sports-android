@@ -10,10 +10,9 @@
     android:layout_marginTop="3dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="3dp"
-    app:cardBackgroundColor="@color/transparent"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp"
-    app:cardMaxElevation="0dp">
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp"
+    app:cardMaxElevation="3dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,79 +23,78 @@
             android:id="@+id/cardNoteSmallImgProfile"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ysr_empty_profile_icon_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cardNoteSmallImgIconDate"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ysr_empty_profile_icon_blue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallImgProfile" />
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ysr_clock_icon_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/cardNoteSmallTxtDate"
+            app:layout_constraintEnd_toStartOf="@+id/cardNoteSmallTxtDate"
+            app:layout_constraintTop_toTopOf="@+id/cardNoteSmallTxtDate"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/cardNoteSmallTxtUserName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
             android:drawablePadding="25dp"
             android:text="Chazz Romeo"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/cardNoteSmallImgProfile"
             app:layout_constraintStart_toEndOf="@+id/cardNoteSmallImgProfile"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toTopOf="@+id/cardNoteSmallImgProfile"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cardNoteSmallTxtDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:text="Tuesday, May 16th 2023"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardNoteSmallImgIconDate"
+            android:textColor="#484849"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardNoteSmallTxtUserName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/cardNoteSmallImgIconDate"
-            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallTxtUserName"
+            app:layout_constraintTop_toTopOf="@+id/cardNoteSmallTxtUserName"
             app:layout_constraintVertical_bias="1.0" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/cardNoteSmallTxtMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="25dp"
-            android:background="@drawable/ft_border_rounded_creme"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:gravity="top"
-            android:orientation="vertical"
+            android:inputType="textShortMessage|textLongMessage|textMultiLine|textPersonName|text"
+            android:maxLines="50"
+            android:text="This is a message"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallTxtDate"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintEnd_toEndOf="@+id/divider2"
+            app:layout_constraintStart_toStartOf="@+id/divider2"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
-            <TextView
-                android:id="@+id/cardNoteSmallTxtMessage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="top"
-                android:inputType="textShortMessage|textLongMessage|textMultiLine|textPersonName|text"
-                android:maxLines="50"
-                android:text="This is a message"
-                android:textSize="14sp" />
-        </LinearLayout>
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNoteSmallImgProfile" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

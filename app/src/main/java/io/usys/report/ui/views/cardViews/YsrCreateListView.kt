@@ -1,6 +1,7 @@
 package io.usys.report.ui.views.cardViews
 
 import android.content.Context
+import android.media.Image
 import android.util.AttributeSet
 import android.view.View
 import android.widget.*
@@ -19,7 +20,7 @@ class YsrCreateListView(context: Context) : CardView(context) {
 
     var txtTitle: TextView? = null
     var recyclerView: RecyclerView? = null
-    var btnCreate: TextView? = null
+    var btnCreate: ImageButton? = null
     var createLayout: View? = null
 
     override fun onViewAdded(child: View?) {
@@ -29,7 +30,7 @@ class YsrCreateListView(context: Context) : CardView(context) {
     private fun bindChildren() {
         txtTitle = this.rootView.bind(R.id.ysrCreateListTxtTitle)
         recyclerView = this.rootView.bind(R.id.ysrCreateListRecycler)
-        btnCreate = this.rootView.bind(R.id.ysrCreateListTxtBtnCreate)
+        btnCreate = this.rootView.bind(R.id.ysrCreateListImgBtnCreate)
         createLayout = this.rootView.bind(R.id.includeYsrCreateListCreateNote)
         createLayout?.makeGone()
 

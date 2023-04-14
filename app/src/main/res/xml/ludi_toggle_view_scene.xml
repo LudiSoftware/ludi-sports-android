@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetStart="@id/start"
+        motion:constraintSetEnd="@id/end"
+        motion:duration="600">
+        <OnClick
+            motion:targetId="@+id/ludiToggleViewSwitch"
+            motion:clickAction="toggle" />
+    </Transition>
+
+    <!-- START (CLOSED) -->
+    <ConstraintSet
+        android:id="@+id/start">
+
+        <Constraint
+            android:id="@+id/ludiToggleViewSwitch"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"/>
+
+        <Constraint
+            android:id="@+id/ludiToggleViewMotionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            motion:layoutDescription="@xml/ludi_toggle_view_scene"/>
+
+        <Constraint
+            android:id="@+id/ludiToggleViewTxtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:text="Leave a Note"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            motion:layout_constraintBottom_toTopOf="@+id/ludiToggleViewDividerHeader"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintVertical_bias="0.695" />
+
+        <Constraint
+            android:id="@+id/ludiToggleViewDividerHeader"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            motion:layout_constraintTop_toBottomOf="@+id/ludiToggleViewSwitch"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent" />
+
+        <Constraint
+            android:id="@+id/ludiToggleViewFragmentContainer"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/ludiToggleViewDividerHeader"
+            motion:defaultNavHost="true"
+            motion:navGraph="@navigation/navigation_ludi" />
+
+    </ConstraintSet>
+
+    <!-- END (OPEN) -->
+    <ConstraintSet
+        android:id="@+id/end">
+
+        <!-- Switch Toggle -->
+        <Constraint
+            android:id="@id/ludiToggleViewSwitch"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+<!-- Motion Layout -->
+        <Constraint
+            android:id="@+id/ludiToggleViewMotionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00FFFFFF"
+            motion:layoutDescription="@xml/ludi_toggle_view_scene"/>
+
+        <Constraint
+            android:id="@+id/ludiToggleViewTxtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:text="Leave a Note"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            motion:layout_constraintBottom_toTopOf="@+id/ludiToggleViewDividerHeader"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintVertical_bias="0.695" />
+
+        <Constraint
+            android:id="@+id/ludiToggleViewDividerHeader"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/ludiToggleViewSwitch"
+            motion:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/ludiToggleViewFragmentContainer"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_marginTop="45dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/ludiToggleViewDividerHeader"
+            motion:defaultNavHost="true"
+            motion:navGraph="@navigation/navigation_ludi" />
+    </ConstraintSet>
+
+
+</MotionScene>

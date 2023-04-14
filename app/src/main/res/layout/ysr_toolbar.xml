@@ -12,5 +12,6 @@
         android:id="@+id/ysrToolBarIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ysr_2"></ImageView>
+        android:src="@drawable/ysr_2">
+    </ImageView>
 </androidx.appcompat.widget.Toolbar>

@@ -12,12 +12,6 @@
             motion:touchAnchorId="@id/formationRosterListsLinearLayout"
             motion:touchAnchorSide="top" />
 
-<!--        <OnClick-->
-<!--            motion:targetId="@id/formationBtnRosterToggle"-->
-<!--            motion:dragDirection="dragUp"-->
-<!--            motion:touchAnchorId="@id/formationRosterListsLinearLayout"-->
-<!--            motion:touchAnchorSide="top" />-->
-
         <KeyFrameSet>
             <KeyAttribute
                 motion:motionTarget="@id/formationBtnRosterToggle"
@@ -27,6 +21,11 @@
 
     <ConstraintSet android:id="@+id/start">
         <!-- Define the constraints for the ending state of the View -->
+<!--        <Constraint-->
+<!--            android:id="@+id/formationMotionRootLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"/>-->
+
         <Constraint
             android:id="@+id/formationRosterListsLinearLayout"
             motion:layout_editor_absoluteX="138dp"
@@ -112,6 +111,11 @@
     <ConstraintSet
         android:id="@+id/end">
         <!-- Define the constraints for the starting state of the View -->
+
+<!--        <Constraint-->
+<!--            android:id="@+id/formationMotionRootLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"/>-->
         <Constraint
             android:id="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintWidth="match_parent"

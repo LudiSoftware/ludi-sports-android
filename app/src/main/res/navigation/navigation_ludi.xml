@@ -4,30 +4,37 @@
 
 <!-- FOOD TRUCK MANAGER NAVIGATION -->
 
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_master"
     app:startDestination="@+id/navigation_dashboard">
 
 
+    <!-- DASHBOARD PAGE -->
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/default_full_dashboard">
         <action
-            android:id="@+id/action_pop"
-            app:destination="@id/navigation_pop_frag"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigation_pop_frag"
-            app:popUpToInclusive="true">
-        </action>
+            android:id="@+id/action_navigation_dashboard_to_navigation_org_list"
+            app:destination="@id/navigation_org_list" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_team_profile"
+            app:destination="@id/navigation_team_profile" />
     </fragment>
-
+<!--    <action-->
+<!--        android:id="@+id/action_pop"-->
+<!--        app:destination="@id/navigation_review_dialog"-->
+<!--        app:enterAnim="@anim/nav_default_enter_anim"-->
+<!--        app:exitAnim="@anim/nav_default_exit_anim"-->
+<!--        app:popEnterAnim="@anim/nav_default_pop_enter_anim"-->
+<!--        app:popExitAnim="@anim/nav_default_pop_exit_anim"-->
+<!--        app:popUpTo="@+id/navigation_review_dialog"-->
+<!--        app:popUpToInclusive="true">-->
+<!--    </action>-->
 
     <!-- ORGANIZATION LIST PAGE -->
     <fragment
@@ -35,6 +42,9 @@
         android:name="io.usys.report.ui.ludi.organization.OrganizationListFragment"
         android:label="@string/title_orgs"
         tools:layout="@layout/fragment_org_list">
+        <action
+            android:id="@+id/action_navigation_org_list_to_navigation_org_profile"
+            app:destination="@id/navigation_org_profile" />
     </fragment>
 
     <!-- COACHES LIST PAGE -->
@@ -43,6 +53,12 @@
         android:name="io.usys.report.ui.ludi.coach.CoachListFragment"
         android:label="@string/title_coaches"
         tools:layout="@layout/fragment_coaches_list">
+        <action
+            android:id="@+id/action_navigation_coaches_list_to_navigation_review_dialog"
+            app:destination="@id/navigation_review_dialog" />
+        <action
+            android:id="@+id/action_navigation_coaches_list_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
     </fragment>
 
     <!-- ORGANIZATION PROFILE PAGE -->
@@ -51,13 +67,28 @@
         android:name="io.usys.report.ui.ludi.organization.OrganizationProfileFragment"
         android:label="@string/title_org"
         tools:layout="@layout/profile_organization" >
+        <action
+            android:id="@+id/action_navigation_org_profile_to_navigation_coaches_list"
+            app:destination="@id/navigation_coaches_list" />
+        <action
+            android:id="@+id/action_navigation_org_profile_to_navigation_review_dialog"
+            app:destination="@id/navigation_review_dialog" />
+        <action
+            android:id="@+id/action_navigation_org_profile_to_navigation_team_profile"
+            app:destination="@id/navigation_team_profile" />
     </fragment>
-    <!-- TEAM PROFILE PAGE -->
+    <!-- TEAM PROFILE VG -->
     <fragment
         android:id="@+id/navigation_team_profile"
         android:name="io.usys.report.ui.ludi.team.TeamProfileFragmentVG"
         android:label="@string/title_team"
         tools:layout="@layout/profile_team" >
+        <action
+            android:id="@+id/action_navigation_team_profile_to_navigation_formation_builder"
+            app:destination="@id/navigation_formation_builder" />
+        <action
+            android:id="@+id/action_navigation_team_profile_to_navigation_roster_builder_frag"
+            app:destination="@id/navigation_roster_builder_frag" />
     </fragment>
 
     <!-- USER PROFILE PAGE -->
@@ -68,6 +99,7 @@
         tools:layout="@layout/profile_user" >
     </fragment>
 
+    <!-- Player Profile VG -->
     <fragment
         android:id="@+id/navigation_player_profile"
         android:name="io.usys.report.ui.ludi.player.PlayerProfileFragmentVG"
@@ -75,11 +107,20 @@
         tools:layout="@layout/profile_user" >
     </fragment>
 
+    <!-- Dual Notes Fragment -->
     <fragment
-        android:id="@+id/navigation_create_note"
+        android:id="@+id/navigation_dual_notes"
         android:name="io.usys.report.ui.ludi.note.DualNotesFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/dual_note_fragment" >
+    </fragment>
+
+    <!-- Chat Fragment -->
+    <fragment
+        android:id="@+id/navigation_chat_fragment"
+        android:name="io.usys.report.ui.ludi.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/dialog_chat">
     </fragment>
 
     <!-- COACH PROFILE PAGE -->
@@ -90,6 +131,7 @@
         tools:layout="@layout/profile_user" >
     </fragment>
 
+    <!-- Service Details -->
     <fragment
         android:id="@+id/navigation_service_details"
         android:name="io.usys.report.ui.ludi.service.ServiceDetailsFragment"
@@ -97,33 +139,45 @@
         tools:layout="@layout/default_full_home" >
     </fragment>
 
+    <!-- Review Dialog -->
     <fragment
-        android:id="@+id/navigation_pop_frag"
+        android:id="@+id/navigation_review_dialog"
         android:name="io.usys.report.ui.ludi.review.coach.ReviewDialogFragment"
         android:label="PopUp"
         tools:layout="@layout/dialog_review_coach_layout">
     </fragment>
 
-    <!-- TRY-OUT TESTING PAGE -->
+    <!-- Formation Builder -->
     <fragment
         android:id="@+id/navigation_formation_builder"
         android:name="io.usys.report.ui.ludi.formationbuilder.RosterFormationFragment"
         android:label="Tryouts"
         tools:layout="@layout/fragment_home_tryouts">
+        <action
+            android:id="@+id/action_navigation_formation_builder_to_navigation_player_profile"
+            app:destination="@id/navigation_player_profile" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_roster_vg_frag"
-        android:name="io.usys.report.ui.ludi.roster.RosterListFragmentVG"
-        android:label="Roster"
-        tools:layout="@layout/fragment_roster_vg">
-    </fragment>
-
+    <!-- Roster Builder -->
     <fragment
         android:id="@+id/navigation_roster_builder_frag"
         android:name="io.usys.report.ui.ludi.roster.RosterBuilderFragment"
         android:label="Build Roster"
         tools:layout="@layout/roster_builder_fragment">
+        <action
+            android:id="@+id/action_navigation_roster_builder_frag_to_navigation_player_profile"
+            app:destination="@id/navigation_player_profile" />
+    </fragment>
+
+    <!-- Roster VG -->
+    <fragment
+        android:id="@+id/navigation_roster_vg_frag"
+        android:name="io.usys.report.ui.ludi.roster.RosterListFragmentVG"
+        android:label="Roster"
+        tools:layout="@layout/fragment_roster_vg">
+        <action
+            android:id="@+id/action_navigation_roster_vg_frag_to_navigation_player_profile"
+            app:destination="@id/navigation_player_profile" />
     </fragment>
 
     <!-- BASE FRAGMENT -->

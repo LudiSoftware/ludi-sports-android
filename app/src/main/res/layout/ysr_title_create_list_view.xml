@@ -40,14 +40,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/ysrCreateListTxtBtnCreate"
+        <ImageButton
+            android:id="@+id/ysrCreateListImgBtnCreate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Create"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:background="#00FFFFFF"
+            android:src="@drawable/ysr_edit_write_icon_blue"
             app:layout_constraintBottom_toBottomOf="@+id/ysrCreateListTxtTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ysrCreateListTxtTitle" />
@@ -60,10 +59,10 @@
             android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/includeYsrCreateListCreateNote"
-            app:layout_constraintVertical_bias="0.038"
+            app:layout_constraintVertical_bias="0.013"
             tools:itemCount="2"
             tools:listitem="@layout/card_sport_small">
 
