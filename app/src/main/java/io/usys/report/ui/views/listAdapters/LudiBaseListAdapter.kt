@@ -1,18 +1,10 @@
 package io.usys.report.ui.views.listAdapters
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
-import io.realm.RealmObject
 import io.realm.RealmResults
-import io.usys.report.realm.observe
-import io.usys.report.realm.observeTeam
 import io.usys.report.realm.realm
-import io.usys.report.realm.safeAdd
-import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
 import io.usys.report.utils.log
 
 /** Live List Model/Base Adapter **/

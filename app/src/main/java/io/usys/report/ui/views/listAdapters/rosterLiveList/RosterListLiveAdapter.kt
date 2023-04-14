@@ -31,6 +31,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     constructor(rosterLayoutConfig: RosterConfig) : this() {
         this.config = rosterLayoutConfig
+        this.layout = io.usys.report.R.layout.roster_player_card_grid_medium
         (config.currentRosterId)?.let { realmInstance.setupRosterSession(it) }
         this.init()
     }
@@ -47,7 +48,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RosterPlayerViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(io.usys.report.R.layout.roster_player_card_grid_medium, parent, false)
         return RosterPlayerViewHolder(itemView, this)
     }
 

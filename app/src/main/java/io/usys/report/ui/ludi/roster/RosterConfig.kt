@@ -82,6 +82,7 @@ class RosterConfig(var teamId: String) {
     val realmInstance: Realm = realm()
     var recyclerView: RecyclerView? = null
     var parentFragment: Fragment? = null
+    var playerViewModelLayout = null
     // Filters
     var filters = ludiFilters()
     var rosterSizeLimit: Int = 20
