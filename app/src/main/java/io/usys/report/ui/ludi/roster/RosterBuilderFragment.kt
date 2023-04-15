@@ -6,8 +6,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
-import io.usys.report.providers.pushRosterToFirebase
-import io.usys.report.providers.syncTeamDataFromFirebase
+import io.usys.report.providers.*
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
@@ -65,18 +64,11 @@ class RosterBuilderFragment : YsrFragment() {
                 } else {
                     imgBtnOne.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp)
                     layoutOne.attachViewsToOnClickListener(imgBtnOne) {
-                        realmInstance?.findRosterById(currentRosterId)?.let { roster ->
-                            realmInstance?.safeWrite {
-                                roster.status = RosterStatus.PENDING.status
-                            }
-                        }
-                        realmInstance?.findTeamById(teamId)?.let { team ->
-                            realmInstance?.safeWrite {
-                                team.mode = TeamStatus.PENDING.status
-                            }
-                        }
+                        realmInstance?.tryoutChangeModeToPendingRoster(teamId)
                         currentRosterId?.let { it1 ->
-                            realmInstance?.pushRosterToFirebase(it1)
+                            realmInstance?.fireUpdateTeamMode(teamId)
+                            realmInstance?.fireUpdateTryoutMode(teamId)
+                            realmInstance?.fireUpdateRosterStatus(currentRosterId)
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package io.usys.report.realm.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.providers.TryoutMode
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -44,6 +45,31 @@ self.sport = tryout_obj.get('sport', "soccer")
 self.chatEnabled = tryout_obj.get('chatEnabled', True)
  */
 
+/** TEAM MODE FLOW (TEAM, TRYOUT, ROSTER, PLAYER)
+ * 1. Team
+ *      a. "tryout"
+ *      b. "pending_roster"
+ *      c. "off_season"
+ * 2. TryOut
+ *      a. "registration"
+ *      b. "tryout"
+ *      c. "pending_roster"
+ *      d. "complete"
+ * 3. Roster
+ *      a. "registration"
+ *      b. "tryout"
+ *      c. "pending_roster"
+ *      d. "complete"
+ * 4. Player
+ *     a. "pending_registration"
+ *     b. "registered"
+ *     c. "pending_approval"
+ *     d. "approved"
+ *     e. "rejected"
+ */
+
+
+
 open class TryOut : RealmObject(), Serializable {
     // Primary (5) -> 28
     @PrimaryKey
@@ -79,11 +105,9 @@ open class TryOut : RealmObject(), Serializable {
     var details: String? = null
     var isFree: Boolean = false
     var status: String? = null
-    var mode: String? = null
+    var mode: String = TryoutMode.REGISTRATION.mode
     var imgUrl: String? = null
     var sport: String? = null
     var chatEnabled: Boolean = false
-    //todo: save tryout to firebase/realm
-    //todo: create note
-    //todo: register player
 }
+

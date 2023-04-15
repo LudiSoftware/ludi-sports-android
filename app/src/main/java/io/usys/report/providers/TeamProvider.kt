@@ -22,6 +22,21 @@ fun Realm.pushRosterToFirebase(rosterId: String?) {
     }
 }
 
+fun Realm.fireUpdateTeamMode(teamId: String?) {
+    teamId?.let { itTeamId ->
+        this.findTeamById(teamId)?.let { itTeam ->
+            firebaseDatabase { itDB ->
+                itDB.child("teams")
+                    .child(itTeamId)
+                    .child("mode")
+                    .setValue(itTeam.mode)
+            }
+        }
+    }
+}
+
+
+
 /** Push Players to Firebase Roster **/
 fun Realm.pushPlayersToRosterInFirebase(rosterId: String) {
     this.findRosterById(rosterId)?.let { itRoster ->

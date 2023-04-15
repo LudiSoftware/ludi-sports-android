@@ -3,6 +3,8 @@ package io.usys.report.realm.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.usys.report.providers.TeamMode
+import io.usys.report.providers.TeamStatus
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -11,10 +13,7 @@ import java.io.Serializable
  * Created by ChazzCoin : November 2022.
  */
 
-const val TEAM_MODE_CREATION = "creation"
-const val TEAM_MODE_IN_SEASON = "in_season"
-const val TEAM_MODE_OFF_SEASON = "off_season"
-const val TEAM_MODE_TRYOUT = "tryout"
+
 
 open class TeamRef : RealmObject(), Serializable {
     @PrimaryKey
@@ -29,7 +28,7 @@ open class TeamRef : RealmObject(), Serializable {
     var ageGroup: String? = "null"
     var gender: String? = "null"
     var sport: String? = "null"
-    var status: String? = TEAM_MODE_CREATION
+    var status: String? = TeamMode.TRYOUT.mode
     var imgUrl: String? = "null"
 }
 
@@ -40,8 +39,8 @@ open class Team : RealmObject(), Serializable {
     var headCoachId: String? = "null"
     var headCoachName: String? = "null"
     var coaches: RealmList<CoachRef>? = RealmList()
-//    var managers: RealmList<ParentRef>? = RealmList()
-//    var organizations: RealmList<OrganizationRef>? = RealmList()
+//    var managers: RealmList<String>? = RealmList()
+//    var organizations: RealmList<String>? = RealmList()
     var rosterId: String? = "null"
     var tryoutId: String? = "null"
     var season: String? = "null"
@@ -60,8 +59,8 @@ open class Team : RealmObject(), Serializable {
     var subType: String? = "null"
     var details: String? = "null"
     var isFree: Boolean = false
-    var status: String? = TEAM_MODE_CREATION
-    var mode: String? = TEAM_MODE_CREATION
+    var status: String? = TeamStatus.TRYOUT.status
+    var mode: String? = TeamMode.TRYOUT.mode
     var imgUrl: String? = "null"
     var sport: String? = "null"
     var chatEnabled: Boolean = false
