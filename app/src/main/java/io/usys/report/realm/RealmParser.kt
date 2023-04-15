@@ -1,11 +1,7 @@
 package io.usys.report.realm
 
 import com.google.firebase.database.DataSnapshot
-import com.google.gson.Gson
 import io.realm.*
-import io.realm.annotations.RealmClass
-import io.usys.report.firebase.hashMapKeysMatch
-import io.usys.report.utils.tryCatch
 
 
 fun <T:Any> RealmResults<T>?.toSafeRealmList(): RealmList<T>? {

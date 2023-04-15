@@ -8,7 +8,7 @@ import io.usys.report.realm.model.Review
 inline fun getOrgRatingAsync(objId: String, isScore:Boolean=false, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(FireTypes.ORGANIZATIONS).child(objId).child(if (isScore) Review.RATING_SCORE else Review.RATING_COUNT)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 block(ds)
             }
     }

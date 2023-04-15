@@ -6,10 +6,11 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import io.usys.report.R
 import io.usys.report.databinding.RosterBuilderFragmentBinding
+import io.usys.report.providers.pushRosterToFirebase
+import io.usys.report.providers.syncTeamDataFromFirebase
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.ui.views.menus.LudiPopupMenu
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
@@ -32,7 +33,6 @@ class RosterBuilderFragment : YsrFragment() {
     private lateinit var rosterConfig: RosterConfig
     var adapter: RosterListLiveAdapter? = null
 
-    var teamProvider: TeamProvider? = null
     var teamId: String = "unknown"
 
     var rosterType: String = RosterType.OFFICIAL.type
@@ -77,14 +77,14 @@ class RosterBuilderFragment : YsrFragment() {
                             }
                         }
                         currentRosterId?.let { it1 ->
-                            teamProvider?.pushOfficialRosterToFirebase()
+                            realmInstance?.pushRosterToFirebase(it1)
                         }
                     }
                 }
             }
         })
 
-        teamProvider = TeamProvider(teamId)
+        realmInstance?.syncTeamDataFromFirebase(teamId)
 
         setupRosterIds()
         setupRosterTypeSpinner()

@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
 import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
+import io.usys.report.providers.UserProvider
 
 
 /**
@@ -26,6 +27,8 @@ import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
  */
 
 class MasterUserActivity : AppCompatActivity() {
+
+    var userProvider: UserProvider? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,7 @@ class MasterUserActivity : AppCompatActivity() {
 
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()
+        userProvider = UserProvider()
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = ludiNavController()

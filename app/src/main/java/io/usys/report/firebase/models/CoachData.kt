@@ -5,6 +5,7 @@ import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.usys.report.firebase.coreFirebaseUserUid
+import io.usys.report.firebase.fireGetCoachProfileCustom
 import io.usys.report.realm.model.Coach
 import io.usys.report.realm.model.users.getUserId
 import io.usys.report.realm.model.users.safeUserId
@@ -63,14 +64,37 @@ fun Coach.mapToCoachData(): CoachData {
     coachData.sport = this.sport
     return coachData
 }
-fun DataSnapshot.toRealmCoach(): Coach {
-    val coach = Coach()
-    val realm = realm()
 
-    coach.id = this.child("id").getValue(String::class.java) ?: realm.getUserId() ?: coreFirebaseUserUid() ?: "unassigned"
-    coach.userId = this.child("userId").getValue(String::class.java)
-    coach.name = this.child("name").getValue(String::class.java) ?: "unassigned"
-    coach.title = this.child("title").getValue(String::class.java)
+fun DataSnapshot?.getString(key: String): String? {
+    return this?.child(key)?.getValue(String::class.java)
+}
+// get Int
+fun DataSnapshot?.getInt(key: String): Int? {
+    return this?.child(key)?.getValue(Int::class.java)
+}
+// get Boolean
+fun DataSnapshot?.getBoolean(key: String): Boolean? {
+    return this?.child(key)?.getValue(Boolean::class.java)
+}
+// get Long
+fun DataSnapshot?.getLong(key: String): Long? {
+    return this?.child(key)?.getValue(Long::class.java)
+}
+// get Double
+fun DataSnapshot?.getDouble(key: String): Double? {
+    return this?.child(key)?.getValue(Double::class.java)
+}
+// get Float
+fun DataSnapshot?.getFloat(key: String): Float? {
+    return this?.child(key)?.getValue(Float::class.java)
+}
+fun DataSnapshot.toRealmCoach(realm: Realm): Coach {
+    val coach = Coach()
+
+    coach.id = this.getString("id") ?: realm.getUserId() ?: coreFirebaseUserUid() ?: "unassigned"
+    coach.userId = this.getString("userId")
+    coach.name = this.getString("name") ?: "unassigned"
+    coach.title = this.getString("title")
 
     this.child("organizationIds").value?.let { organizationIds ->
         val tempList = (organizationIds as? ArrayList<*>)
@@ -106,19 +130,22 @@ fun DataSnapshot.toRealmCoach(): Coach {
         }
     }
 
-    coach.dateCreated = this.child("dateCreated").getValue(String::class.java)
-    coach.dateUpdated = this.child("dateUpdated").getValue(String::class.java)
-    coach.firstName = this.child("firstName").getValue(String::class.java)
-    coach.lastName = this.child("lastName").getValue(String::class.java)
-    coach.type = this.child("type").getValue(String::class.java)
-    coach.subType = this.child("subType").getValue(String::class.java)
-    coach.details = this.child("details").getValue(String::class.java)
-    coach.isFree = this.child("isFree").getValue(Boolean::class.java) ?: true
-    coach.status = this.child("status").getValue(String::class.java)
-    coach.mode = this.child("mode").getValue(String::class.java)
-    coach.imgUrl = this.child("imgUrl").getValue(String::class.java)
-    coach.sport = this.child("sport").getValue(String::class.java)
+    coach.dateCreated = this.getString("dateCreated")
+    coach.dateUpdated = this.getString("dateUpdated")
+    coach.firstName = this.getString("firstName")
+    coach.lastName = this.getString("lastName")
+    coach.type = this.getString("type")
+    coach.subType = this.getString("subType")
+    coach.details = this.getString("details")
+    coach.isFree = this.getBoolean("isFree") ?: true
+    coach.status = this.getString("status")
+    coach.mode = this.getString("mode")
+    coach.imgUrl = this.getString("imgUrl")
+    coach.sport = this.getString("sport")
 
+    realm.safeWrite {
+        realm.insertOrUpdate(coach)
+    }
     return coach
 }
 

@@ -20,7 +20,7 @@ inline fun <reified T> fireGetBaseYsrObjects(dbName:String, crossinline block: R
 inline fun fireGetSingleValueAsync(collection:String, objId: String, singleAttribute: String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(collection).child(objId).child(singleAttribute)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 block(ds)
             }
     }
@@ -30,7 +30,7 @@ inline fun fireGetSingleValueAsync(collection:String, objId: String, singleAttri
 inline fun fireGetOrderByEqualToAsync(dbName:String, orderBy: String, equalTo: String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 block(ds)
             }
     }
@@ -41,7 +41,7 @@ fun fireGetOrderByEqualToCallback(dbName:String, orderBy: String, equalTo: Strin
                                   callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebaseDatabase {
         it.child(dbName).orderByChild(orderBy).equalTo(equalTo)
-            .fairAddListenerForSingleValueEvent(callbackFunction)
+            .singleValueEventCallBack(callbackFunction)
     }
 }
 
@@ -50,7 +50,7 @@ fun fireGetOrderByEqualToCallback(collection:String, childOwnerId:String, orderB
                                   callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebaseDatabase(collection) {
         it.child(childOwnerId).orderByChild(orderBy).equalTo(equalTo)
-            .fairAddListenerForSingleValueEvent(callbackFunction)
+            .singleValueEventCallBack(callbackFunction)
     }
 }
 

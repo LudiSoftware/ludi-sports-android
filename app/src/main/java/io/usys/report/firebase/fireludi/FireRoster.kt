@@ -6,19 +6,17 @@ import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
 import io.usys.report.realm.findPlayersInRosterById
 import io.usys.report.realm.model.*
-import io.usys.report.realm.realm
-import io.usys.report.realm.safeWrite
 import io.usys.report.utils.log
 
 /**
  * Get Roster
  */
-fun fireGetRosterInBackground(rosterId:String) {
+fun fireGetRosterInBackground(rosterId:String, realm: Realm?=null) {
     firebaseDatabase {
-        it.child(DatabasePaths.ROSTERS.path).orderByChild("id").equalTo(rosterId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toLudiObjects<Roster>()
-                log("Roster Updated")
+        it.child(DatabasePaths.ROSTERS.path).child(rosterId)
+            .singleValueEvent { ds ->
+                ds?.toLudiObject<Roster>(realm)
+                log("Roster $rosterId Pulled")
             }
     }
 }

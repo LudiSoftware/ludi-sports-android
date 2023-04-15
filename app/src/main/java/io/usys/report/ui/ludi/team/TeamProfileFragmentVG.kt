@@ -3,6 +3,7 @@ package io.usys.report.ui.ludi.team
 import android.os.Bundle
 import android.view.*
 import io.usys.report.databinding.TeamVgFragmentBinding
+import io.usys.report.providers.syncTeamDataFromFirebase
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
@@ -39,9 +40,9 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         //Basic Setup
         teamId?.let {
             // 1. Get Team Profile from Firebase
-            val tp = TeamProvider(it)
-            tp.pullTeamAndDetailsFromFirebase()
+            realmInstance?.syncTeamDataFromFirebase(it)
         }
+        // Setup Team Menu
         teamId?.let {
             menu = TeamMenuPopupProvider(this, it)
             requireActivity().addMenuProvider(menu ?: return@let)

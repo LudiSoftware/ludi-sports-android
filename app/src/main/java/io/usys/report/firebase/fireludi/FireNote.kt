@@ -1,7 +1,7 @@
 package io.usys.report.firebase.fireludi
 
 import io.usys.report.firebase.DatabasePaths
-import io.usys.report.firebase.fairAddListenerForSingleValueEvent
+import io.usys.report.firebase.singleValueEvent
 import io.usys.report.firebase.firebaseDatabase
 import io.usys.report.firebase.toLudiObjects
 import io.usys.report.realm.model.Note
@@ -14,7 +14,7 @@ fun fireGetTeamNotesInBackground(teamId:String?) {
     if (teamId == null) return
     firebaseDatabase {
         it.child(DatabasePaths.NOTES.path).orderByChild("aboutTeamId").equalTo(teamId)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 ds?.toLudiObjects<Note>()
                 log("Notes Updated")
             }
@@ -25,7 +25,7 @@ fun fireGetPlayerNotesInBackground(teamId:String?) {
     if (teamId == null) return
     firebaseDatabase {
         it.child(DatabasePaths.NOTES.path).orderByChild("aboutPlayerId").equalTo(teamId)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 ds?.toLudiObjects<Note>()
                 log("Notes Updated")
             }

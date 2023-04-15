@@ -36,8 +36,8 @@ open class User : RealmObject(), Serializable {
     var parent: Boolean = false
     var player: Boolean = false
     var coach: Boolean = false
-    var coachUser: Coach? = null
-    var playerUser: Player? = null
+    var coachUser: Boolean = false
+    var playerUser: Boolean = false
     // Base -> YsrRealmObject
     var dateCreated: String = getTimeStamp()
     var dateUpdated: String = getTimeStamp()

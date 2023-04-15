@@ -11,8 +11,7 @@ import io.usys.report.utils.tryCatch
 
 
 
-// Original Basic Parser to RealmObject
-// Still Being used by User Object.
+@Deprecated("Use toLudiObject() instead")
 inline fun <reified T : Any> DataSnapshot?.toObject(): T? {
     this?.let {
         val hashmap = it.toHashMap()
@@ -22,7 +21,7 @@ inline fun <reified T : Any> DataSnapshot?.toObject(): T? {
     return null
 }
 
-// -> Well this is legit.
+@Deprecated("Use toLudiObject() instead")
 inline fun <reified T> HashMap<*, *>.toObject(): T {
     val obj = T::class.java.newInstance()
     val properties = T::class.java.declaredFields.map { it.name to it }.toMap()
@@ -53,18 +52,7 @@ inline fun <reified T> HashMap<*, *>.toObject(): T {
  * 1. Master Parsing Function Part 1
  *    - From Firebase Object to Realm Object
  */
-
-inline fun <reified T:RealmObject> DataSnapshot?.toLudiObject(): RealmObject? {
-    this?.let {
-        var temp: RealmObject? = null
-        val hashmap = it.toHashMap()
-        temp = hashmap.toRealmObject<T>()
-        return temp
-    }
-    return null
-}
-
-inline fun <reified T:RealmObject> DataSnapshot?.toLudiObject(realm: Realm): RealmObject? {
+inline fun <reified T:RealmObject> DataSnapshot?.toLudiObject(realm: Realm?=null): T? {
     this?.let {
         var temp: RealmObject? = null
         val hashmap = it.toHashMap()
@@ -77,7 +65,7 @@ inline fun <reified T:RealmObject> DataSnapshot?.toLudiObject(realm: Realm): Rea
 /**
  * The Master List Of Firebase Objects Parser
  */
-inline fun <reified T:RealmObject> DataSnapshot?.toLudiObjects(): RealmList<T>? {
+inline fun <reified T:RealmObject> DataSnapshot?.toLudiObjects(realm: Realm?=null): RealmList<T>? {
     this?.let {
         val realmList = RealmList<T>()
         val hashmap = it.toHashMap()
@@ -87,7 +75,7 @@ inline fun <reified T:RealmObject> DataSnapshot?.toLudiObjects(): RealmList<T>? 
             for ((_,value) in hashmap) {
                 if (value is HashMap<*,*>) {
                     val tempHash = value as HashMap<String, Any>
-                    temp = tempHash.toRealmObject<T>()
+                    temp = tempHash.toRealmObject(realm)
                     temp?.let { itTemp ->
                         realmList.add(itTemp)
                     }
@@ -129,34 +117,20 @@ fun DataSnapshot.toHashMap(): HashMap<String, Any> {
     }
     return hashMap
 }
-/** Master Helpers **/
-inline fun <reified T:RealmObject> HashMap<String, Any>.toRealmObject(): T? {
+/** Master Universal Realm Parser **/
+inline fun <reified T:RealmObject> HashMap<String, Any>.toRealmObject(realm: Realm?=null): T? {
     val jsonString = Gson().toJson(this)
     var result: Any? = null
-    writeToRealm {
-        result = it.createOrUpdateObjectFromJson(T::class.java, jsonString)
-    }
-    return result as? T
-}
-
-inline fun <reified T:RealmObject> HashMap<String, Any>.toRealmObject(realm: Realm): T? {
-    val jsonString = Gson().toJson(this)
-    var result: Any? = null
-    realm.safeWrite {
-        result = realm.createOrUpdateObjectFromJson(T::class.java, jsonString)
-    }
-    return result as? T
-}
-
-// all keys in hashmap HAVE to appear in keys
-fun hashMapKeysMatch(keys: List<String>, hashMap2: HashMap<String, Any>): Boolean {
-    tryCatch {
-        for (key in hashMap2.keys) {
-            if (!keys.contains(key)) {
-                return false
-            }
+    realm?.let {
+        it.safeWrite { itRealm ->
+            result = itRealm.createOrUpdateObjectFromJson(T::class.java, jsonString)
         }
-        return true
+        it.refresh()
+    } ?: kotlin.run {
+        writeToRealm {
+            result = it.createOrUpdateObjectFromJson(T::class.java, jsonString)
+        }
     }
-    return false
+
+    return result as? T
 }

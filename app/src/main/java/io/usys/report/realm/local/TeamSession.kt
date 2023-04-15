@@ -4,9 +4,6 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.realm.model.Roster
-import io.usys.report.realm.model.TryOut
-import io.usys.report.ui.ludi.team.TeamProvider
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
@@ -33,15 +30,6 @@ open class TeamSession : RealmObject(), Serializable {
 inline fun Realm.teamSessionByTeamId(teamId:String?, crossinline block: (TeamSession) -> Unit) {
     this.where(TeamSession::class.java).equalTo("teamId", teamId).findFirst()?.let {
         block(it)
-    }
-}
-
-fun TeamSession?.saveRosterToFirebase() {
-    this?.let { ts ->
-        ts.teamId?.let { teamId: String ->
-            val tp = TeamProvider(teamId)
-            tp.pushOfficialRosterToFirebase()
-        }
     }
 }
 

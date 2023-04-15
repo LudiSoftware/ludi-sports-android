@@ -30,7 +30,7 @@ fun <TResult> Task<TResult>.fairAddFailureListener(block: (Exception) -> Unit): 
 }
 
 // Verified
-fun Query.fairAddListenerForSingleValueEvent(callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
+fun Query.singleValueEventCallBack(callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     return this.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             callbackFunction?.invoke(dataSnapshot)
@@ -41,8 +41,7 @@ fun Query.fairAddListenerForSingleValueEvent(callbackFunction: ((dataSnapshot: D
     })
 }
 
-@JvmName("fairAddYsrListenerForSingleValueEvent1")
-fun Query.fairAddListenerForSingleValueEvent(block: (DataSnapshot?) -> Unit) {
+inline fun Query.singleValueEvent(crossinline block: (DataSnapshot?) -> Unit) {
     return this.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             block(dataSnapshot)
@@ -62,6 +61,22 @@ inline fun <reified T> Query.fairAddParsedListenerForSingleValueEvent(crossinlin
             block(null)
         }
     })
+}
+
+
+/** Observe a firebase value event */
+fun Query.observeValueEvent(block: (DataSnapshot?, ValueEventListener) -> Unit): ValueEventListener {
+    val listener = object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            block(dataSnapshot, this)
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            block(null, this)
+        }
+    }
+    this.addValueEventListener(listener)
+    return listener
 }
 
 fun <TResult> Task<TResult>.fairAddOnSuccessCallback(callbackFunction: ((Boolean, String) -> Unit)?) {

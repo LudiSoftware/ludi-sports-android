@@ -1,10 +1,11 @@
 package io.usys.report.firebase
 
-import io.usys.report.realm.findByField
 import io.usys.report.realm.model.users.User
+import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
 import io.usys.report.realm.updateFieldsAndSave
-
+import io.usys.report.utils.log
+import io.usys.report.utils.tryCatch
 
 /**
  * USER Login Handling
@@ -12,30 +13,23 @@ import io.usys.report.realm.updateFieldsAndSave
  * 1. check if user exists in firebase.
  *      a. IF EXISTS: make user the realm user.
  *      b. IF DOES NOT EXIST: save new user.
- *
- *
  */
 
 inline fun fireSyncUserWithDatabase(coreFireUser: User, crossinline block: (User?) -> Unit) {
     val tempRealm = realm()
     firebaseDatabase { itFB ->
-        itFB.child(FireTypes.USERS).child(coreFireUser.id).fairAddListenerForSingleValueEvent { itDb ->
-            var userProfile = itDb?.toObject<User>()
-            userProfile?.let { itUpdatedUser ->
-                // DOES EXIST: Firebase User Was Found
-                coreFireUser.updateFieldsAndSave(itUpdatedUser, tempRealm)
+        itFB.child(FireTypes.USERS).child(coreFireUser.id).singleValueEvent { itDb ->
+            itDb?.toLudiObject<User>(tempRealm)
+            tempRealm.safeUser {
+                log("User Found: ${it.id}")
+                tryCatch { it.updateFieldsAndSave(coreFireUser, tempRealm) }
                 // Check if is Coach.
-                if (coreFireUser.coach && coreFireUser.coachUser == null) {
-                    tempRealm.fireGetCoachProfileCustom(coreFireUser.id)
-                }
-                block(coreFireUser)
-                return@fairAddListenerForSingleValueEvent
+                if (it.coach) { tempRealm.fireGetCoachProfileCustom(it.id) }
+                // todo: parent, player
+                block(it)
+                return@singleValueEvent
             }
-            // DOES NOT EXIST: Firebase User Was Not Found
-            userProfile = coreFireUser
-            userProfile.saveToFirebase()
-            block(userProfile)
-            return@fairAddListenerForSingleValueEvent
+            return@singleValueEvent
         }
     }
 }

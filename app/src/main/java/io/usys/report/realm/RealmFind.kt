@@ -4,7 +4,6 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
-import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.realm.local.IdBundleSession
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUserId
@@ -43,6 +42,7 @@ inline fun Realm.idBundleSession(isUpdate:Boolean=false, crossinline block: (IdB
         }
     }
 }
+
 
 /** Coach Queries **/
 fun Realm.findCoachBySafeId(): Coach? {
@@ -91,12 +91,13 @@ inline fun Realm.findTryOutIdByTeamId(teamId:String?, crossinline block: (String
     }
 }
 
-inline fun Realm.findTryOutByTeamId(teamId:String?, crossinline block: (TryOut) -> Unit?) {
+inline fun Realm.findTryOutByTeamId(teamId:String?, crossinline block: (TryOut) -> Unit?): Unit? {
     val tryoutId = this.findTeamById(teamId)?.tryoutId
     val tryout = this.findTryOutById(tryoutId)
     tryout?.let {
         block(it)
     }
+    return null
 }
 
 

@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.RealmResults
 import io.usys.report.R
+import io.usys.report.providers.pushRosterToFirebase
+import io.usys.report.providers.pushPlayersToRosterInFirebase
 import io.usys.report.realm.*
 import io.usys.report.realm.local.*
 import io.usys.report.realm.model.*
@@ -25,7 +27,6 @@ import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.ludi.roster.RosterConfig
-import io.usys.report.ui.ludi.team.pushPlayersToRosterInFirebase
 import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
@@ -394,9 +395,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                 }
                 R.id.menu_submit_roster -> {
                     // Do something
-                    realmInstance?.teamSessionByTeamId(teamId) { ts ->
-                        ts.saveRosterToFirebase()
-                    }
+                    realmInstance?.pushRosterToFirebase(teamId)
                 }
                 R.id.menu_reset -> {
                     resetFormationLayout()

@@ -1,6 +1,5 @@
 package io.usys.report.realm
 
-import com.google.firebase.database.DataSnapshot
 import io.realm.*
 import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.firebase.fireForceGetNameOfRealmObject
@@ -66,10 +65,6 @@ inline fun <reified R> RealmObject.getValue(fieldName: String, defaultValue: R):
         else -> defaultValue
     }
 }
-// Untested
-fun <T> DataSnapshot.toClass(clazz: Class<T>): T? {
-    return this.getValue(clazz)
-}
 
 inline fun session(block: (Session) -> Unit) {
     Session.session?.let { block(it) }
@@ -90,11 +85,4 @@ inline fun sessionTeams(block: (RealmList<Team>) -> Unit) {
         if (!it.isNullOrEmpty()) { block(it) }
     }
 }
-
-
-
-inline fun sessionOrganizationList(block: (RealmList<Organization>) -> Unit) {
-    Session.session?.organizations?.let { block(it) }
-}
-
 

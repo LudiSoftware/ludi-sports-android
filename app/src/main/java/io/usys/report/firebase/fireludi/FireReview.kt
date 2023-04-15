@@ -9,7 +9,7 @@ import io.usys.report.realm.model.ReviewTemplate
 inline fun fireGetReviewTemplateAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(FireTypes.REVIEW_TEMPLATES).child(templateType)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 block(ds)
             }
     }
@@ -18,7 +18,7 @@ inline fun fireGetReviewTemplateAsync(templateType:String, crossinline block: Da
 inline fun fireGetReviewTemplateQuestionsAsync(templateType:String, crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(FireTypes.REVIEW_TEMPLATES).child(templateType).child("master").child("questions")
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 block(ds)
             }
     }
@@ -72,6 +72,6 @@ fun fireAddUpdateCoachReviewDBAsync(obj: ReviewTemplate): Boolean {
 fun fireGetReviewsByReceiverIdToCallback(receiverId:String, callbackFunction: ((dataSnapshot: DataSnapshot?) -> Unit)?) {
     firebaseDatabase {
         it.child(FireTypes.REVIEWS).child(receiverId)
-            .fairAddListenerForSingleValueEvent(callbackFunction)
+            .singleValueEventCallBack(callbackFunction)
     }
 }

@@ -8,7 +8,7 @@ import com.google.firebase.database.DataSnapshot
 inline fun fireGetAllServicesAsync(crossinline block: DataSnapshot?.() -> Unit) {
     firebaseDatabase {
         it.child(FireTypes.SERVICES)
-            .fairAddListenerForSingleValueEvent { ds ->
+            .singleValueEvent { ds ->
                 block(ds)
             }
     }

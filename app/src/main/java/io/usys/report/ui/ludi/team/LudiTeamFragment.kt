@@ -148,7 +148,6 @@ class TeamMenuPopupProvider(private val fragment: Fragment, private val teamId: 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.top_team_menu_dropdown, menu)
     }
-
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menuitem_options -> {

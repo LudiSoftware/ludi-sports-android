@@ -3,11 +3,7 @@ package io.usys.report.realm.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.realm.writeToRealm
-import io.usys.report.realm.realm
-import io.usys.report.realm.session
 import io.usys.report.utils.getTimeStamp
-import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 

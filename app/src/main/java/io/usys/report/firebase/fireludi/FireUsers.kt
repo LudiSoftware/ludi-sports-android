@@ -1,5 +1,8 @@
 package io.usys.report.firebase
 
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
 import io.usys.report.firebase.models.toRealmCoach
 import io.usys.report.realm.model.*
@@ -34,38 +37,15 @@ fun fireSaveCoachToFirebaseAsync(coach: Coach?) {
     }
 }
 
-
-fun fireGetCoachProfileInBackground(userId:String) {
-    firebaseDatabase {
-        it.child(FireTypes.COACHES).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toLudiObject<Coach>()
-                log("Coach Updated")
-            }
-    }
-}
-fun Realm.fireGetCoachProfileInBackground(userId:String) {
-    firebaseDatabase {
-        it.child(FireTypes.COACHES).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                ds?.toLudiObject<Coach>(this)
-                log("Coach Updated")
-            }
-    }
-}
-
 fun Realm.fireGetCoachProfileCustom(userId:String) {
     firebaseDatabase {
         it.child(FireTypes.COACHES).child(userId)
-            .fairAddListenerForSingleValueEvent { ds ->
-                this.safeWrite {
-                    val coach = ds?.toRealmCoach()
-                    if (coach != null) {
-                        this.insertOrUpdate(coach)
-                        coach.teams?.let { teams ->
-                            for (teamId in teams) {
-                                this.fireGetTeamProfileInBackground(teamId)
-                            }
+            .singleValueEvent { ds ->
+                val coach = ds?.toRealmCoach(this)
+                if (coach != null) {
+                    coach.teams?.let { teams ->
+                        for (teamId in teams) {
+                            this.fireGetTeamProfileInBackground(teamId)
                         }
                     }
                 }
@@ -74,3 +54,13 @@ fun Realm.fireGetCoachProfileCustom(userId:String) {
     }
 }
 
+class CoachFireListener(val realm: Realm): ValueEventListener {
+    override fun onDataChange(dataSnapshot: DataSnapshot) {
+        dataSnapshot.toLudiObject<Coach>(realm)
+        log("Roster Updated")
+    }
+
+    override fun onCancelled(databaseError: DatabaseError) {
+        log("Error: ${databaseError.message}")
+    }
+}
