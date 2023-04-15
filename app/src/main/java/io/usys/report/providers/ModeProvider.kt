@@ -1,13 +1,15 @@
 package io.usys.report.providers
 
+import io.usys.report.R
+
 /** Team Modes */
-enum class TeamMode(val mode: String) {
-    CREATION("creation"),
-    PRE_SEASON("pre_season"),
-    IN_SEASON("in_season"),
-    OFF_SEASON("off_season"),
-    TRYOUT("tryout"),
-    PENDING_ROSTER("pending_roster")
+enum class TeamMode(val mode: String, val color: Int, val title: String) {
+    CREATION("creation", R.color.ludiRosterCardSelected, "Team Creation"),
+    PRE_SEASON("pre_season", R.color.ludiRosterCardSelected, "Pre-Season"),
+    IN_SEASON("in_season", R.color.ludiRosterCardSelected, "In-Season"),
+    OFF_SEASON("off_season", R.color.ludiWhite, "Off-Season"),
+    TRYOUT("tryout", R.color.ludiRosterCardRed, "Tryout"),
+    PENDING_ROSTER("pending_roster", R.color.ludiRosterCardYellow, "Pending Roster"),
 }
 
 /** Tryout Modes */

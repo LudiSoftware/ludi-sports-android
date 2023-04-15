@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
 import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
+import io.usys.report.providers.TeamMode
 import io.usys.report.providers.UserProvider
 
 
@@ -110,7 +111,7 @@ fun Fragment.ludiStatusBarColorWhite(@ColorRes color: Int= R.color.ysrWindowBack
         it.window.statusBarColor = ContextCompat.getColor(it, color)
     }
 }
-fun Fragment.ludiStatusBarTeamTryoutMode() {
+fun Fragment.ludiStatusBarTeamMode() {
     (requireActivity() as AppCompatActivity).let {
         it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedRed)
     }
@@ -123,8 +124,17 @@ fun Fragment.ludiStatusBarTeamInSeasonMode() {
 fun AppCompatActivity.ludiStatusBarColorWhite(@ColorRes color: Int= R.color.ysrWindowBackground) {
     window.statusBarColor = ContextCompat.getColor(this, color)
 }
-fun AppCompatActivity.ludiStatusBarTeamTryoutMode() {
-    window.statusBarColor = ContextCompat.getColor(this, R.color.ysrFadedRed)
+fun AppCompatActivity.ludiStatusBarTeamMode(teamMode: String) {
+    val modeColor = when (teamMode) {
+        TeamMode.CREATION.mode -> TeamMode.CREATION.color
+        TeamMode.PRE_SEASON.mode -> TeamMode.PRE_SEASON.color
+        TeamMode.IN_SEASON.mode -> TeamMode.IN_SEASON.color
+        TeamMode.OFF_SEASON.mode -> TeamMode.OFF_SEASON.color
+        TeamMode.TRYOUT.mode -> TeamMode.TRYOUT.color
+        TeamMode.PENDING_ROSTER.mode -> TeamMode.PENDING_ROSTER.color
+        else -> TeamMode.CREATION.color
+    }
+    window.statusBarColor = ContextCompat.getColor(this, modeColor)
 }
 fun AppCompatActivity.ludiStatusBarTeamInSeasonMode() {
     window.statusBarColor = ContextCompat.getColor(this, R.color.ysrFadedBlue)

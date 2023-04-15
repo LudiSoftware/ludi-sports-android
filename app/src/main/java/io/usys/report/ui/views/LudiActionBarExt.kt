@@ -7,9 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import io.usys.report.R
+import io.usys.report.providers.TeamMode
 import io.usys.report.ui.ludi.ludiStatusBarColorWhite
 import io.usys.report.ui.ludi.ludiStatusBarTeamInSeasonMode
-import io.usys.report.ui.ludi.ludiStatusBarTeamTryoutMode
+import io.usys.report.ui.ludi.ludiStatusBarTeamMode
 
 
 /** Ludi Action Bar **/
@@ -44,10 +45,10 @@ fun ActionBar.resetColor(@ColorRes color: Int= R.color.ludiWhite) {
     this.setBackgroundDrawable(ContextCompat.getDrawable(this.themedContext, color))
 }
 
-fun AppCompatActivity.ludiActionBarTryoutMode() {
-    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.ysrFadedRed))
-    this.ludiActionBarTitle("Tryout Mode")
-    this.ludiStatusBarTeamTryoutMode()
+fun AppCompatActivity.ludiActionBarTeamMode(teamMode:TeamMode) {
+    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, teamMode.color))
+    this.ludiActionBarTitle(teamMode.title)
+    this.ludiStatusBarTeamMode(teamMode.mode)
 }
 fun AppCompatActivity.ludiActionBarInSeasonMode() {
     supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.ysrFadedBlue))

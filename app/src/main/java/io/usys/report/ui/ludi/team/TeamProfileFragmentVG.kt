@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import io.usys.report.databinding.TeamVgFragmentBinding
+import io.usys.report.providers.TeamMode
 import io.usys.report.providers.syncTeamDataFromFirebase
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
@@ -56,11 +57,11 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     }
 
     private fun setupTryoutMode() {
-        (requireActivity() as AppCompatActivity).ludiActionBarTryoutMode()
+        (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(TeamMode.TRYOUT)
     }
 
     private fun setupInSeasonMode() {
-        (requireActivity() as AppCompatActivity).ludiActionBarInSeasonMode()
+        (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(TeamMode.IN_SEASON)
     }
 
     private fun setupTeamViewPager() {

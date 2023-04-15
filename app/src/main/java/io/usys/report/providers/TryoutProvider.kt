@@ -29,8 +29,19 @@ fun Realm.fireUpdateRosterStatus(rosterId: String?) {
     }
 }
 
+/** Full Mode Update of
+ * Team,
+ * Tryout,
+ * Roster ,
+ * */
+fun Realm.fireTryoutFullModeUpdate(teamId: String?, rosterId: String?) {
+    this.fireUpdateTeamMode(teamId)
+    this.fireUpdateTryoutMode(teamId)
+    this.fireUpdateRosterStatus(rosterId)
+}
+
 /** 1. Registration */
-fun Realm.tryoutChangeModeToRegistration(teamId:String) {
+fun Realm.tryoutChangeModeToRegistration(teamId:String, syncFire:Boolean = false) {
     val team = this.findTeamById(teamId)
     val tryout = this.findTryOutById(team?.tryoutId)
     val roster = this.findRosterById(tryout?.rosterId)
@@ -40,10 +51,11 @@ fun Realm.tryoutChangeModeToRegistration(teamId:String) {
         roster?.status = RosterMode.REGISTRATION.mode
     }
     this.refresh()
+    if (syncFire) this.fireTryoutFullModeUpdate(teamId, tryout?.rosterId ?: "")
 }
 
 /** 2. Tryout */
-fun Realm.tryoutChangeModeToTryout(teamId:String) {
+fun Realm.tryoutChangeModeToTryout(teamId:String, syncFire:Boolean = false) {
     val team = this.findTeamById(teamId)
     val tryout = this.findTryOutById(team?.tryoutId)
     val roster = this.findRosterById(tryout?.rosterId)
@@ -53,10 +65,11 @@ fun Realm.tryoutChangeModeToTryout(teamId:String) {
         roster?.status = RosterMode.TRYOUT.mode
     }
     this.refresh()
+    if (syncFire) this.fireTryoutFullModeUpdate(teamId, tryout?.rosterId ?: "")
 }
 
 /** 3. Pending Roster */
-fun Realm.tryoutChangeModeToPendingRoster(teamId:String) {
+fun Realm.tryoutChangeModeToPendingRoster(teamId:String, syncFire:Boolean = false) {
     val team = this.findTeamById(teamId)
     val tryout = this.findTryOutById(team?.tryoutId)
     val roster = this.findRosterById(tryout?.rosterId)
@@ -66,13 +79,14 @@ fun Realm.tryoutChangeModeToPendingRoster(teamId:String) {
         roster?.status = RosterMode.PENDING_ROSTER.mode
     }
     this.refresh()
+    if (syncFire) this.fireTryoutFullModeUpdate(teamId, tryout?.rosterId ?: "")
 }
 
 /** 4. Complete
  * TODO: Change Team Roster to new Roster ID
  * TODO: Change Old Roster to Archive
  * */
-fun Realm.tryoutChangeModeToComplete(teamId:String) {
+fun Realm.tryoutChangeModeToComplete(teamId:String, syncFire:Boolean = false) {
     val team = this.findTeamById(teamId)
     val tryout = this.findTryOutById(team?.tryoutId)
     val roster = this.findRosterById(tryout?.rosterId)
@@ -82,4 +96,5 @@ fun Realm.tryoutChangeModeToComplete(teamId:String) {
         roster?.status = RosterMode.COMPLETE.mode
     }
     this.refresh()
+    if (syncFire) this.fireTryoutFullModeUpdate(teamId, tryout?.rosterId ?: "")
 }

@@ -64,12 +64,7 @@ class RosterBuilderFragment : YsrFragment() {
                 } else {
                     imgBtnOne.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp)
                     layoutOne.attachViewsToOnClickListener(imgBtnOne) {
-                        realmInstance?.tryoutChangeModeToPendingRoster(teamId)
-                        currentRosterId?.let { it1 ->
-                            realmInstance?.fireUpdateTeamMode(teamId)
-                            realmInstance?.fireUpdateTryoutMode(teamId)
-                            realmInstance?.fireUpdateRosterStatus(currentRosterId)
-                        }
+                        realmInstance?.tryoutChangeModeToPendingRoster(teamId, syncFire = true)
                     }
                 }
             }
