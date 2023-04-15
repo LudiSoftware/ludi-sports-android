@@ -27,6 +27,7 @@ import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
 import io.usys.report.ui.ludi.roster.RosterConfig
 import io.usys.report.ui.ludi.team.pushPlayersToRosterInFirebase
 import io.usys.report.ui.views.gestures.LudiFreeFormGestureDetector
+import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
 import io.usys.report.utils.views.*

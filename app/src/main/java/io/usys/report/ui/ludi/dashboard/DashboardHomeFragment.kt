@@ -16,6 +16,9 @@ import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
 import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
+import io.usys.report.ui.views.ludiActionBar
+import io.usys.report.ui.views.resetColor
+import io.usys.report.ui.views.tryoutMode
 import io.usys.report.utils.*
 
 
@@ -39,6 +42,9 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
+
+        ludiActionBar()?.resetColor()
+
         _binding?.txtWelcomeDashboard?.text = "Please Sign In!"
         setupOnClickListeners()
         realmInstance?.safeUser { itUser ->
@@ -47,7 +53,6 @@ class DashboardHomeFragment : YsrFragment() {
             // Check For Coach User
             setupCoachDisplay()
         }
-//        NewEvaluationDialog().show(childFragmentManager, "NewEvaluationDialog")
         user?.let {
 //            setupRealmCoachListener()
         } ?: kotlin.run {

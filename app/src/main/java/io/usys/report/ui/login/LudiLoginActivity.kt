@@ -1,13 +1,10 @@
 package io.usys.report.ui.login
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
@@ -15,9 +12,10 @@ import io.usys.report.R
 import io.usys.report.firebase.fireSyncUserWithDatabase
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.fromFirebaseToRealmUser
-import io.usys.report.ui.ludi.onEnterKeyPressed
+import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.utils.*
 import io.usys.report.utils.views.makeRed
+import io.usys.report.utils.views.onEnterKeyPressed
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -90,13 +88,11 @@ class LudiLoginActivity : AppCompatActivity() {
         }
 
         if (emailInput.isBlank()) {
-            //todo: pop up message
             userName?.makeRed()
             log("Email or Password cannot be empty")
             return false
         }
         if (passwordInput.isBlank()) {
-            //todo: pop up message
             password?.makeRed()
             log("Email or Password cannot be empty")
             return false
@@ -121,9 +117,6 @@ class LudiLoginActivity : AppCompatActivity() {
                 }
             }
     }
-
-
-
 
     private fun onSignInResult() {
         auth?.signInWithEmailAndPassword(emailInput, passwordInput)

@@ -16,10 +16,9 @@ import io.usys.report.R
 import io.usys.report.firebase.fireSyncUserWithDatabase
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.fromFirebaseToRealmUser
+import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
-import io.usys.report.utils.fairRegisterActivityResult
-import io.usys.report.utils.hideLudiActionBar
 
 /**
  * Created by ChazzCoin : October 2022.

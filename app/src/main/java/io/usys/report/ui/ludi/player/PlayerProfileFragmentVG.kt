@@ -15,9 +15,9 @@ import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
 import io.usys.report.ui.fragments.goBack
 import io.usys.report.ui.ludi.onBackPressed
+import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.viewGroup.LudiViewGroup
 import io.usys.report.ui.views.viewGroup.ludiPlayerProfileFragments
-import io.usys.report.utils.hideLudiActionBar
 import io.usys.report.utils.log
 import io.usys.report.utils.views.animateOnClickListener
 import io.usys.report.utils.views.loadUriIntoImgView

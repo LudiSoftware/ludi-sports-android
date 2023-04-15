@@ -8,6 +8,9 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -127,6 +130,24 @@ abstract class YsrFragment : Fragment() {
 
 }
 
+/** Ludi Status Bar **/
+fun Fragment.ludiStatusBarColor(@ColorRes color: Int= R.color.ysrWindowBackground) {
+    (requireActivity() as AppCompatActivity).let {
+        it.window.statusBarColor = ContextCompat.getColor(it, color)
+    }
+}
+fun Fragment.ludiStatusBarTeamTryoutMode() {
+    (requireActivity() as AppCompatActivity).let {
+        it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedRed)
+    }
+}
+fun Fragment.ludiStatusBarTeamInSeasonMode() {
+    (requireActivity() as AppCompatActivity).let {
+        it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedBlue)
+    }
+}
+
+/** NAVIGATION **/
 fun Fragment.toFragmentWithRealmObject(fragId: Int, bundle: Bundle = bundleOf()) {
     this.findNavController().navigate(fragId, bundle)
 }

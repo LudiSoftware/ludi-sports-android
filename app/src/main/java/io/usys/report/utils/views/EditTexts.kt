@@ -3,7 +3,10 @@ package io.usys.report.utils.views
 import android.content.res.ColorStateList
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import io.usys.report.R
 
@@ -24,4 +27,15 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 fun EditText.makeRed() {
     val defaultColor = ContextCompat.getColor(this.context, R.color.ysrFadedRed)
     this.backgroundTintList = ColorStateList.valueOf(defaultColor)
+}
+
+inline fun EditText.onEnterKeyPressed(crossinline onEnterPressed: () -> Unit) {
+    setOnEditorActionListener { _: TextView, actionId: Int, event: KeyEvent? ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+            onEnterPressed()
+            true
+        } else {
+            false
+        }
+    }
 }

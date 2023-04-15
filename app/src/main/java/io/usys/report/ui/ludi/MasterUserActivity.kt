@@ -30,7 +30,7 @@ class MasterUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ludiStatusBarColor()
+        ludiStatusBarColorWhite()
         setContentView(R.layout.activity_main)
 
 //        val toolbar = LayoutInflater.from(this).inflate(R.layout.ysr_toolbar, null)
@@ -42,7 +42,6 @@ class MasterUserActivity : AppCompatActivity() {
 //        actionBar?.setDisplayUseLogoEnabled(false)
 //        actionBar?.setDisplayShowHomeEnabled(false)
 //        actionBar?.setDisplayHomeAsUpEnabled(false)
-
 
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()
@@ -85,16 +84,6 @@ inline fun Fragment.onEnterKeyPressed(editText: EditText, crossinline onEnterPre
     }
 }
 
-inline fun EditText.onEnterKeyPressed(crossinline onEnterPressed: () -> Unit) {
-    setOnEditorActionListener { _: TextView, actionId: Int, event: KeyEvent? ->
-        if (actionId == EditorInfo.IME_ACTION_DONE || (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-            onEnterPressed()
-            true
-        } else {
-            false
-        }
-    }
-}
 
 const val TO_DASHBOARD = R.id.navigation_dashboard
 const val TO_MANAGEMENT = R.id.navigation_management
@@ -106,24 +95,7 @@ const val TO_ROSTER_BUILDER = R.id.navigation_roster_builder_frag
 const val TO_FORMATION_BUILDER = R.id.navigation_formation_builder
 const val TO_CREATE_NOTE = R.id.navigation_dual_notes
 
-/** Ludi Action Bar **/
-fun AppCompatActivity.ludiActionBarColor(@ColorRes color: Int= R.color.ludiWhite) {
-    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, color))
-    this.ludiStatusBarColor(color)
-}
-fun AppCompatActivity.ludiActionBarTryoutMode() {
-    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.ysrFadedRed))
-    this.ludiActionBarTitle("Tryout Mode")
-    this.ludiStatusBarTeamTryoutMode()
-}
-fun AppCompatActivity.ludiActionBarInSeasonMode() {
-    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.ysrFadedBlue))
-    this.ludiActionBarTitle("In Season Mode")
-    this.ludiStatusBarTeamInSeasonMode()
-}
-fun AppCompatActivity.ludiActionBarTitle(title: String) {
-    supportActionBar?.title = title
-}
+
 
 /** Ludi Nav Controller **/
 fun AppCompatActivity.ludiNavController() : NavController {
@@ -140,7 +112,22 @@ fun createBasicAppBarNavigation(): AppBarConfiguration {
 }
 
 /** Ludi Status Bar **/
-fun AppCompatActivity.ludiStatusBarColor(@ColorRes color: Int= R.color.ysrWindowBackground) {
+fun Fragment.ludiStatusBarColorWhite(@ColorRes color: Int= R.color.ysrWindowBackground) {
+    (requireActivity() as AppCompatActivity).let {
+        it.window.statusBarColor = ContextCompat.getColor(it, color)
+    }
+}
+fun Fragment.ludiStatusBarTeamTryoutMode() {
+    (requireActivity() as AppCompatActivity).let {
+        it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedRed)
+    }
+}
+fun Fragment.ludiStatusBarTeamInSeasonMode() {
+    (requireActivity() as AppCompatActivity).let {
+        it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedBlue)
+    }
+}
+fun AppCompatActivity.ludiStatusBarColorWhite(@ColorRes color: Int= R.color.ysrWindowBackground) {
     window.statusBarColor = ContextCompat.getColor(this, color)
 }
 fun AppCompatActivity.ludiStatusBarTeamTryoutMode() {

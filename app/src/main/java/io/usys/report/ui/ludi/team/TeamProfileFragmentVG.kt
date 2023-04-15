@@ -2,12 +2,10 @@ package io.usys.report.ui.ludi.team
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import io.usys.report.databinding.TeamVgFragmentBinding
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.ludiActionBarTryoutMode
 import io.usys.report.ui.views.*
 import io.usys.report.ui.views.viewGroup.ludiTeamVGFragments
 import io.usys.report.utils.*
@@ -37,7 +35,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         super.onStart()
         hideLudiNavView()
         showLudiActionBar()
-        (requireActivity() as? AppCompatActivity)?.ludiActionBarTryoutMode()
 
         //Basic Setup
         teamId?.let {
@@ -56,6 +53,14 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         setupHeader(refresh = true)
     }
 
+    private fun setupTryoutMode() {
+        ludiActionBar()?.tryoutMode()
+    }
+
+    private fun setupInSeasonMode() {
+        ludiActionBar()?.inSeasonMode()
+    }
+
     private fun setupTeamViewPager() {
         linearLayout.addLudiViewGroup(this, ludiTeamVGFragments(), teamId, null)
     }
@@ -72,9 +77,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         if (refresh) { realmInstance?.findTeamById(teamId)?.let { this.team = it } }
         else { this.team = team }
 
-//        tryCatch {
-//            requireActivity().ludiActionBar()?.title = this.team?.name
-//        }
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtCoachesName?.text = this.team?.headCoachName
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtAgeGroup?.text = "${this.team?.year} - ${this.team?.ageGroup}"
