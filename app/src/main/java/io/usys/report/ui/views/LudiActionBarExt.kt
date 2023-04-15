@@ -43,12 +43,7 @@ fun Fragment.ludiActionBar() : ActionBar? {
 fun ActionBar.resetColor(@ColorRes color: Int= R.color.ludiWhite) {
     this.setBackgroundDrawable(ContextCompat.getDrawable(this.themedContext, color))
 }
-fun ActionBar.tryoutMode(@ColorRes color: Int= R.color.ludiWhite) {
-    this.setBackgroundDrawable(ContextCompat.getDrawable(this.themedContext, color))
-}
-fun ActionBar.inSeasonMode(@ColorRes color: Int= R.color.ludiWhite) {
-    this.setBackgroundDrawable(ContextCompat.getDrawable(this.themedContext, color))
-}
+
 fun AppCompatActivity.ludiActionBarTryoutMode() {
     supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.ysrFadedRed))
     this.ludiActionBarTitle("Tryout Mode")

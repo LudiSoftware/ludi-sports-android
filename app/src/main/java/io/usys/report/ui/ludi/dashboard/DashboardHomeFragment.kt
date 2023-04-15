@@ -3,6 +3,7 @@ package io.usys.report.ui.ludi
 import android.app.Activity
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import io.realm.RealmObject
 import io.usys.report.R
@@ -17,8 +18,8 @@ import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
 import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
 import io.usys.report.ui.views.ludiActionBar
+import io.usys.report.ui.views.ludiActionBarTitle
 import io.usys.report.ui.views.resetColor
-import io.usys.report.ui.views.tryoutMode
 import io.usys.report.utils.*
 
 
@@ -28,8 +29,8 @@ import io.usys.report.utils.*
 
 class DashboardHomeFragment : YsrFragment() {
 
-    private var menuIn: SignInMenuProvider? = null
-    private var menuOut: SignOutMenuProvider? = null
+    private var menuIn: SignInOutMenuProvider? = null
+    private var menuOut: SignInOutMenuProvider? = null
     private var _binding: LudiDashboardFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -43,16 +44,8 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
 
-        ludiActionBar()?.resetColor()
-
-        _binding?.txtWelcomeDashboard?.text = "Please Sign In!"
         setupOnClickListeners()
-        realmInstance?.safeUser { itUser ->
-            realmInstance?.createIdBundleSession()
-            _binding?.txtWelcomeDashboard?.text = "Welcome, ${itUser.name}"
-            // Check For Coach User
-            setupCoachDisplay()
-        }
+
         user?.let {
 //            setupRealmCoachListener()
         } ?: kotlin.run {
@@ -64,11 +57,18 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onResume() {
         super.onResume()
         // todo: if user is logged in...
+        (requireActivity() as AppCompatActivity).ludiActionBarTitle("Please Sign In!")
+        realmInstance?.safeUser { itUser ->
+            realmInstance?.createIdBundleSession()
+            (requireActivity() as AppCompatActivity).ludiActionBarTitle("Welcome, ${itUser.name}")
+            // Check For Coach User
+            setupCoachDisplay()
+        }
         if (user == null) {
-            menuIn = SignInMenuProvider(requireActivity())
+            menuIn = SignInOutMenuProvider(requireActivity())
             requireActivity().addMenuProvider(menuIn ?: return)
         } else {
-            menuOut = SignOutMenuProvider(requireActivity())
+            menuOut = SignInOutMenuProvider(requireActivity(), isSignIn = false)
             requireActivity().addMenuProvider(menuOut ?: return)
         }
     }
@@ -129,33 +129,26 @@ class DashboardHomeFragment : YsrFragment() {
 
 }
 
-class SignInMenuProvider(private val activity: Activity) : MenuProvider {
+class SignInOutMenuProvider(private val activity: Activity, val isSignIn:Boolean=true) : MenuProvider {
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.sign_in_menu, menu)
+        if (isSignIn) {
+            menuInflater.inflate(R.menu.sign_in_menu, menu)
+        } else {
+            menuInflater.inflate(R.menu.sign_out_menu, menu)
+        }
     }
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menuitem_signin -> {
                 activity.launchActivity<LudiLoginActivity>()
                 return true
-            }else -> {}
-        }
-        return true
-    }
-}
-
-class SignOutMenuProvider(private val activity: Activity) : MenuProvider {
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.sign_out_menu, menu)
-    }
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
+            }
             R.id.menuitem_signout -> {
-                activity.popupYesNo("Sign Out.", "Are you sure you want to sign out?") {
-                    Session.logoutAndRestartApplication(activity)
-                }
-                return true
-            }else -> {}
+            activity.popupYesNo("Sign Out.", "Are you sure you want to sign out?") {
+                Session.logoutAndRestartApplication(activity)
+            }
+            return true
+        }else -> {}
         }
         return true
     }

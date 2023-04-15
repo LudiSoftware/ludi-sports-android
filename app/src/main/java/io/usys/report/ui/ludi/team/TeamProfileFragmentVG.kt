@@ -2,6 +2,7 @@ package io.usys.report.ui.ludi.team
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import io.usys.report.databinding.TeamVgFragmentBinding
 import io.usys.report.providers.syncTeamDataFromFirebase
 import io.usys.report.realm.findTeamById
@@ -55,11 +56,11 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     }
 
     private fun setupTryoutMode() {
-        ludiActionBar()?.tryoutMode()
+        (requireActivity() as AppCompatActivity).ludiActionBarTryoutMode()
     }
 
     private fun setupInSeasonMode() {
-        ludiActionBar()?.inSeasonMode()
+        (requireActivity() as AppCompatActivity).ludiActionBarInSeasonMode()
     }
 
     private fun setupTeamViewPager() {
@@ -77,6 +78,13 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 
         if (refresh) { realmInstance?.findTeamById(teamId)?.let { this.team = it } }
         else { this.team = team }
+
+        if (this.team?.tryoutId != null) {
+            setupTryoutMode()
+        }
+        else {
+            setupInSeasonMode()
+        }
 
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtCoachesName?.text = this.team?.headCoachName

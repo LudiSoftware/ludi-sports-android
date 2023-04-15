@@ -38,7 +38,6 @@ class RosterBuilderFragment : YsrFragment() {
     var rosterType: String = RosterType.OFFICIAL.type
     var title: String = "No Roster Found!"
     var rosterIds = mutableMapOf<String,String>()
-    private var rosterEntries = mutableListOf<String>()
     var currentRosterId: String? = null
     var tryoutId: String? = null
     override fun setupOnClickListeners() {
