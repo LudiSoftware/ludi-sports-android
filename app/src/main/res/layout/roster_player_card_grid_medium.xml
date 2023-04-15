@@ -76,14 +76,12 @@
 
         <CheckBox
             android:id="@+id/cardPlayerMediumGridChkSelected"
-            style="@android:style/Widget.CompoundButton.CheckBox"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            android:button="@drawable/f_check_dark"
+            android:button="@android:drawable/btn_star_big_on"
+            android:checked="true"
             android:hapticFeedbackEnabled="true"
-            android:scaleX=".75"
-            android:scaleY=".75"
             android:textAlignment="viewStart"
             android:textColor="#000000"
             android:textSize="12sp"

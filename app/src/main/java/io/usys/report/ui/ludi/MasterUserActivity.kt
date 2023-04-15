@@ -33,16 +33,6 @@ class MasterUserActivity : AppCompatActivity() {
         ludiStatusBarColorWhite()
         setContentView(R.layout.activity_main)
 
-//        val toolbar = LayoutInflater.from(this).inflate(R.layout.ysr_toolbar, null)
-//        val tb = toolbar.findViewById<androidx.appcompat.widget.Toolbar>(R.id.ysrToolBar)
-//        setSupportActionBar(tb)
-
-//        val actionBar = supportActionBar
-//        actionBar?.setLogo(R.drawable.ludi_icon_one)
-//        actionBar?.setDisplayUseLogoEnabled(false)
-//        actionBar?.setDisplayShowHomeEnabled(false)
-//        actionBar?.setDisplayHomeAsUpEnabled(false)
-
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()
 

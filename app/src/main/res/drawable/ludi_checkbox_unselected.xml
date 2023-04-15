@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#D3D3D3"/>
+            <size android:width="24dp" android:height="24dp"/>
+        </shape>
+    </item>
+    <item>
+        <inset
+            android:insetLeft="6dp"
+            android:insetTop="6dp"
+            android:insetRight="6dp"
+            android:insetBottom="6dp">
+            <vector
+                android:width="12dp"
+                android:height="12dp"
+                android:viewportWidth="24"
+                android:viewportHeight="24"
+                android:tint="#A9A9A9">
+                <path
+                    android:fillColor="@android:color/black"
+                    android:pathData="M9,16.2L4.8,12l-1.4,1.4L9,19 21,7l-1.4,-1.4L9,16.2z" />
+            </vector>
+        </inset>
+    </item>
+<!--    <item>-->
+<!--        <bitmap-->
+<!--            android:src="@drawable/ludi_icon_one"-->
+<!--            android:tint="#A9A9A9"-->
+<!--            android:gravity="center" />-->
+<!--    </item>-->
+</layer-list>
