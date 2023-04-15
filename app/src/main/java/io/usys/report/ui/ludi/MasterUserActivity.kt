@@ -96,7 +96,6 @@ const val TO_FORMATION_BUILDER = R.id.navigation_formation_builder
 const val TO_CREATE_NOTE = R.id.navigation_dual_notes
 
 
-
 /** Ludi Nav Controller **/
 fun AppCompatActivity.ludiNavController() : NavController {
     return findNavController(R.id.nav_host_fragment)

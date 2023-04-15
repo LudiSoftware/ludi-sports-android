@@ -1,4 +1,4 @@
-package io.usys.report.ui.views
+package io.usys.report.ui.views.menus
 
 import android.view.*
 import android.view.animation.AnimationUtils

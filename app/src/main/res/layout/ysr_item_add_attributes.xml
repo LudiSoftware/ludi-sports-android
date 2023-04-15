@@ -1,50 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ysrCardViewRootLayout"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:layout_margin="2dp">
+    android:layout_margin="5dp">
 
-    <EditText
-        android:id="@+id/ysrTxtItemFieldName"
-        android:layout_width="197dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:gravity="center_vertical"
-        android:singleLine="false"
-        android:text="Field Name"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:background="@color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/ysrEditItemFieldValue"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/transparent"
-        android:gravity="center_vertical"
-        android:inputType="textPersonName"
-        android:lines="1"
-        android:singleLine="false"
-        android:text="Value"
-        android:textAllCaps="false"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ysrTxtItemFieldName"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/divider"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ysrCardViewConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="45dp">
+
+        <EditText
+            android:id="@+id/ysrTxtItemFieldName"
+            android:layout_width="197dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:autoSizeMaxTextSize="22sp"
+            android:autoSizeMinTextSize="14sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoText="true"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:singleLine="false"
+            android:text="Field Name"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/ysrEditItemFieldValue"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:inputType="textPersonName"
+            android:lines="1"
+            android:singleLine="false"
+            android:text="Value"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ysrTxtItemFieldName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

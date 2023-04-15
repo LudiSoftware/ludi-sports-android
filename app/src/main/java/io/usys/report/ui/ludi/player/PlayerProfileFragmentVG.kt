@@ -62,21 +62,6 @@ class PlayerProfileFragmentVG : LudiStringIdsFragment() {
 
     private fun setupDisplay() {
         // Buttons
-        _binding?.btnPlayerDialogCreateEval?.setOnClickListener {
-            log("Create Evaluation")
-            this.goBack()
-        }
-        _binding?.btnPlayerDialogSendOffer?.setOnClickListener {
-            log("Send Offer")
-        }
-        _binding?.btnEditModePlayerProfile?.animateOnClickListener {
-            log("Edit Mode")
-            if (_MODE == DISPLAY_MODE) {
-                _MODE = EDIT_MODE
-            } else {
-                _MODE = DISPLAY_MODE
-            }
-        }
 
         val ll = _binding?.playerProfileLinearLayout
         val lvg = ll?.let {
