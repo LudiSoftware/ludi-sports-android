@@ -1,7 +1,25 @@
 package io.usys.report.providers
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
 import io.usys.report.firebase.firebaseDatabase
+import io.usys.report.firebase.toLudiObject
 import io.usys.report.realm.*
+import io.usys.report.realm.model.TryOut
+import io.usys.report.utils.log
+
+
+class TryoutFireListener(val realm: Realm): ValueEventListener {
+    override fun onDataChange(dataSnapshot: DataSnapshot) {
+        dataSnapshot.toLudiObject<TryOut>(realm)
+        log("Roster Updated")
+    }
+
+    override fun onCancelled(databaseError: DatabaseError) {
+        log("Error: ${databaseError.message}")
+    }
+}
 
 fun Realm.fireUpdateTryoutMode(teamId: String?) {
     teamId?.let { itTeamId ->
@@ -11,19 +29,6 @@ fun Realm.fireUpdateTryoutMode(teamId: String?) {
                     .child(tryout.id)
                     .child("mode")
                     .setValue(tryout.mode)
-            }
-        }
-    }
-}
-
-fun Realm.fireUpdateRosterStatus(rosterId: String?) {
-    rosterId?.let { itRosterId ->
-        this.findRosterById(itRosterId)?.let { roster ->
-            firebaseDatabase { itDB ->
-                itDB.child("rosters")
-                    .child(itRosterId)
-                    .child("status")
-                    .setValue(roster.status)
             }
         }
     }

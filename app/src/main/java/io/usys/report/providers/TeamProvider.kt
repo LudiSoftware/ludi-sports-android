@@ -1,58 +1,33 @@
 package io.usys.report.providers
 
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
 import io.usys.report.firebase.*
-import io.usys.report.firebase.models.convertForFirebase
+import io.usys.report.firebase.fireludi.fireGetTeamById
+import io.usys.report.firebase.fireludi.fireGetTryOutById
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
+import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
 import io.usys.report.utils.log
 
-/** PUSH ROSTERS **/
-fun Realm.pushRosterToFirebase(rosterId: String?) {
-    rosterId?.let { itRosterId ->
-        this.findRosterById(itRosterId)?.let { itRoster ->
-            val data = itRoster.convertForFirebase()
-            firebaseDatabase { itDB ->
-                itDB.child("rosters")
-                    .child(itRosterId)
-                    .setValue(data)
-            }
-        }
+class TeamFireListener(val realm: Realm): ValueEventListener {
+    override fun onDataChange(dataSnapshot: DataSnapshot) {
+        dataSnapshot.toLudiObject<Team>(realm)
+        log("Roster Updated")
     }
-}
 
-fun Realm.fireUpdateTeamMode(teamId: String?) {
-    teamId?.let { itTeamId ->
-        this.findTeamById(teamId)?.let { itTeam ->
-            firebaseDatabase { itDB ->
-                itDB.child("teams")
-                    .child(itTeamId)
-                    .child("mode")
-                    .setValue(itTeam.mode)
-            }
-        }
+    override fun onCancelled(databaseError: DatabaseError) {
+        log("Error: ${databaseError.message}")
     }
 }
 
 
-
-/** Push Players to Firebase Roster **/
-fun Realm.pushPlayersToRosterInFirebase(rosterId: String) {
-    this.findRosterById(rosterId)?.let { itRoster ->
-        itRoster.players?.let {
-            val data = realmListToDataList(it)
-            firebaseDatabase { itDB ->
-                itDB.child("rosters")
-                    .child(rosterId)
-                    .child("players")
-                    .setValue(data)
-            }
-        }
-    }
-}
-
-/** Pull Team Details from Firebase **/
+/** Master
+ *  -> Full Team Pull
+ **/
 fun Realm.syncTeamDataFromFirebase(teamId: String?, depth: Int = 0) {
     if (teamId == null) return
     if (depth > 5) {
@@ -81,7 +56,24 @@ fun Realm.syncTeamDataFromFirebase(teamId: String?, depth: Int = 0) {
     }
 }
 
+/** Update Team Mode **/
+fun Realm.fireUpdateTeamMode(teamId: String?) {
+    teamId?.let { itTeamId ->
+        this.findTeamById(teamId)?.let { itTeam ->
+            firebaseDatabase { itDB ->
+                itDB.child("teams")
+                    .child(itTeamId)
+                    .child("mode")
+                    .setValue(itTeam.mode)
+            }
+        }
+    }
+}
+
+/** Helpers **/
 inline fun Realm.ifRosterDoesNotExist(rosterId: String?, crossinline block: (String) -> Unit?) {
     if (rosterId == null) return
     this.ifObjectDoesNotExist<Roster>(rosterId) { block(rosterId) }
 }
+
+

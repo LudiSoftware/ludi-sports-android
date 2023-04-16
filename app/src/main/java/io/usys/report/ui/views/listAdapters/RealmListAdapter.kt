@@ -7,19 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.realm.Realm
-import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.fireGetTeamProfileInBackground
 import io.usys.report.realm.*
-import io.usys.report.realm.model.Team
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewT
-import io.usys.report.utils.log
-import java.util.*
 
 /**
  * Dynamic Master RecyclerView Adapter

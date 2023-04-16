@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.RealmResults
 import io.usys.report.R
-import io.usys.report.providers.pushRosterToFirebase
-import io.usys.report.providers.pushPlayersToRosterInFirebase
+import io.usys.report.providers.fireRosterUpdateRoster
+import io.usys.report.providers.fireRosterUpdatePlayers
 import io.usys.report.realm.*
 import io.usys.report.realm.local.*
 import io.usys.report.realm.model.*
@@ -390,12 +390,12 @@ class RosterFormationFragment : LudiStringIdsFragment() {
                     // Do something
                     log("Save Formation")
                     rosterConfig.currentRosterId?.let {
-                        realmInstance?.pushPlayersToRosterInFirebase(it)
+                        realmInstance?.fireRosterUpdatePlayers(it)
                     }
                 }
                 R.id.menu_submit_roster -> {
                     // Do something
-                    realmInstance?.pushRosterToFirebase(teamId)
+                    realmInstance?.fireRosterUpdateRoster(teamId)
                 }
                 R.id.menu_reset -> {
                     resetFormationLayout()

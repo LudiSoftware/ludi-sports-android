@@ -4,10 +4,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
+import io.usys.report.firebase.fireludi.fireGetTeamProfileInBackground
 import io.usys.report.firebase.models.toRealmCoach
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.User
-import io.usys.report.realm.safeWrite
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 
