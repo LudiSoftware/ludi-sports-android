@@ -9,6 +9,7 @@ import io.usys.report.providers.syncTeamDataFromFirebase
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.ludi.onBackPressed
 import io.usys.report.ui.views.*
 import io.usys.report.ui.views.viewGroup.ludiTeamVGFragments
 import io.usys.report.utils.*
@@ -37,6 +38,10 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         super.onStart()
         hideLudiNavView()
         showLudiActionBar()
+
+        onBackPressed {
+            goBack()
+        }
 
         //Basic Setup
         teamId?.let {
@@ -71,11 +76,18 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         if (refresh) { realmInstance?.findTeamById(teamId)?.let { this.team = it } }
         else { this.team = team }
 
-        TeamMode.parse(this.team?.mode).let {
-            (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(it)
+        try {
+            TeamMode.parse(this.team?.mode).let {
+                (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(it, this.team?.name)
+                _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.makeGone()
+            }
+        } catch (e:Exception) {
+            log("Error: ${e.message}")
+            _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.makeVisible()
+            _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
+
         }
 
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtCoachesName?.text = this.team?.headCoachName
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtAgeGroup?.text = "${this.team?.year} - ${this.team?.ageGroup}"
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = this.team?.gender

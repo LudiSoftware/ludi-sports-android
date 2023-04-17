@@ -17,9 +17,8 @@ import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.login.LudiLoginActivity
 import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
-import io.usys.report.ui.views.ludiActionBar
 import io.usys.report.ui.views.ludiActionBarTitle
-import io.usys.report.ui.views.resetColor
+import io.usys.report.ui.views.ludiActionBarResetColor
 import io.usys.report.utils.*
 
 
@@ -44,6 +43,10 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
 
+        onBackPressed {
+            log("Ignoring Back Press")
+        }
+
         setupOnClickListeners()
 
         user?.let {
@@ -57,6 +60,8 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onResume() {
         super.onResume()
         // todo: if user is logged in...
+        (requireActivity() as AppCompatActivity).ludiStatusBarColorWhite()
+        (requireActivity() as AppCompatActivity).ludiActionBarResetColor()
         (requireActivity() as AppCompatActivity).ludiActionBarTitle("Please Sign In!")
         realmInstance?.safeUser { itUser ->
             realmInstance?.createIdBundleSession()
@@ -72,6 +77,7 @@ class DashboardHomeFragment : YsrFragment() {
             requireActivity().addMenuProvider(menuOut ?: return)
         }
     }
+
     override fun onPause() {
         super.onPause()
         requireActivity().removeMenuProvider(menuIn ?: menuOut ?: return)

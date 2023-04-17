@@ -41,13 +41,13 @@ fun Fragment.ludiActionBar() : ActionBar? {
     return this.requireActivity().ludiActionBar()
 }
 
-fun ActionBar.resetColor(@ColorRes color: Int= R.color.ludiWhite) {
-    this.setBackgroundDrawable(ContextCompat.getDrawable(this.themedContext, color))
+fun AppCompatActivity.ludiActionBarResetColor(@ColorRes color: Int= R.color.ludiWhite) {
+    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, color))
 }
 
-fun AppCompatActivity.ludiActionBarTeamMode(teamMode:TeamMode) {
+fun AppCompatActivity.ludiActionBarTeamMode(teamMode:TeamMode, title: String?=null) {
     supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, teamMode.color))
-    this.ludiActionBarTitle(teamMode.title)
+    this.ludiActionBarTitle(title ?: teamMode.title)
     this.ludiStatusBarTeamMode(teamMode.mode)
 }
 fun AppCompatActivity.ludiActionBarInSeasonMode() {
