@@ -10,8 +10,10 @@ import io.usys.report.providers.*
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.menus.LudiPopupMenu
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
+import io.usys.report.ui.views.showLudiActionBar
 import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
 import io.usys.report.utils.*
 import io.usys.report.utils.views.onItemSelected
@@ -78,8 +80,6 @@ class RosterBuilderFragment : YsrFragment() {
         return rootView
     }
 
-
-
     private fun setupRosterTypeSpinner() {
         _binding?.rosterBuilderLudiSpinRosterType?.setupRosterTypeSpinner(rosterIds) { _, item ->
             rosterIds.forEach { (key, value) ->
@@ -98,10 +98,12 @@ class RosterBuilderFragment : YsrFragment() {
             _binding?.rosterBuilderLudiSubTxt?.makeVisible()
             _binding?.rosterBuilderLudiSpinRosterSizeText?.makeVisible()
             _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
+            showLudiActionBar()
         } else {
             _binding?.rosterBuilderLudiSubTxt?.makeGone()
             _binding?.rosterBuilderLudiSpinRosterSizeText?.makeGone()
             _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
+            hideLudiActionBar()
         }
     }
 
@@ -182,11 +184,13 @@ class RosterBuilderFragment : YsrFragment() {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
                     adapter?.setupTryoutRoster()
+                    setSubText()
                 }
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
                     adapter?.setupSelectionRoster()
+                    setSubText()
                 }
                 else -> {
                     setupRosterSizeSpinner()
@@ -198,11 +202,12 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeTitle()
     }
 
-}
+    fun setSubText() {
+        val size = adapter?.config?.rosterSizeLimit
+        val selected = adapter?.config?.selectionCounter
+        _binding?.rosterBuilderLudiSubTxt?.text = "You've selected, ($selected) out of ($size)"
+    }
 
-
-fun generateNumbers(): List<Int> {
-    return (1..100).toList()
 }
 fun generateNumberStrings(): List<String> {
     return (1..100).map { it.toString() }

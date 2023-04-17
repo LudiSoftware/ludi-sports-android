@@ -24,7 +24,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     private var _binding: TeamVgFragmentBinding? = null
     private val binding get() = _binding!!
 
-    var isOpen = false
     private var team: Team? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -56,14 +55,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         setupHeader(refresh = true)
     }
 
-    private fun setupTryoutMode() {
-        (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(TeamMode.TRYOUT)
-    }
-
-    private fun setupInSeasonMode() {
-        (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(TeamMode.IN_SEASON)
-    }
-
     private fun setupTeamViewPager() {
         linearLayout.addLudiViewGroup(this, ludiTeamVGFragments(), teamId, null)
     }
@@ -80,7 +71,7 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         if (refresh) { realmInstance?.findTeamById(teamId)?.let { this.team = it } }
         else { this.team = team }
 
-        TeamMode.parse(this.team?.mode!!)?.let {
+        TeamMode.parse(this.team?.mode).let {
             (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(it)
         }
 
@@ -100,3 +91,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 
 }
 
+fun String?.safe(default:String="") : String {
+    return this ?: default
+}

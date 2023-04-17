@@ -12,8 +12,8 @@ enum class TeamMode(val mode: String, val color: Int, val title: String) {
     PENDING_ROSTER("pending_roster", R.color.ludiRosterCardYellow, "Pending Roster");
 
     companion object {
-        fun parse(mode: String): TeamMode? {
-            return values().find { it.mode == mode }
+        fun parse(mode: String?): TeamMode {
+            return values().find { it.mode == mode } ?: CREATION
         }
     }
 }
