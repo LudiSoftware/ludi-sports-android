@@ -20,6 +20,30 @@ fun <T:Any> RealmList<T>.safeAdd(item: T?): Boolean {
     return true
 }
 
+fun <T:Any> MutableList<T>?.safeAdd(item: T?): Boolean {
+    if (this == null) return false
+    if (item == null) return false
+    if (this.contains(item)) return false
+    this.add(item)
+    return true
+}
+
+fun <T : Any> MutableList<T>?.safeReplace(item: T?): Boolean {
+    if (this == null || item == null) return false
+
+    val existingItemIndex = this.indexOfFirst { it == item }
+
+    return if (existingItemIndex != -1) {
+        this.removeAt(existingItemIndex)
+        this.add(existingItemIndex, item)
+        true
+    } else {
+        this.add(item)
+        true
+    }
+}
+
+
 fun <T:Any> RealmList<T>.safeAddAll(otherList: Collection<T>) {
     otherList.forEach { this.safeAdd(it) }
 }

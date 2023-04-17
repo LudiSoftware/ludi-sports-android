@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.*
 import io.usys.report.R
+import io.usys.report.providers.liveData.TeamLiveData
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
@@ -30,24 +31,40 @@ fun RecyclerView.loadInTeamIds(realmIds: MutableList<String>?, fragment: Fragmen
  */
 open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewHolder>() {
 
+    private var teamLiveData: TeamLiveData? = null
+
     constructor(realmIds: MutableList<String>, fragment: Fragment) : this() {
         this.realmIds = realmIds
         this.parentFragment = fragment
-        this.observeRealmIds()
+        setupLiveData()
     }
 
-    /** Team/Object Observer **/
-    @SuppressLint("NotifyDataSetChanged")
-    override fun observeRealmIds() {
-        for (id in realmIds) {
-            realmInstance.observeTeam(parentFragment!!.viewLifecycleOwner) { results ->
-                results.find { it.id == id }?.let {
-                    log("Team results updated")
-                    itemList?.safeAdd(it)
-                    notifyDataSetChanged()
-                }
+    /** Firebase/Realm: Team LiveData **/
+    private fun setupLiveData() {
+        parentFragment?.let { fragment ->
+            teamLiveData = TeamLiveData(realmIds, realmInstance, fragment.viewLifecycleOwner).apply {
+                enable()
             }
         }
+        observeFirebaseTeams()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeFirebaseTeams() {
+        parentFragment?.let { fragment ->
+            teamLiveData?.observe(fragment.viewLifecycleOwner) { teams ->
+                log("Team results updated")
+                teams.forEach {
+                    itemList?.safeAdd(it)
+                }
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    /** Realm: Team Observer **/
+    override fun observeRealmIds() {
+        log("observeRealmIds")
     }
 
     /** Setup ViewHolder **/
