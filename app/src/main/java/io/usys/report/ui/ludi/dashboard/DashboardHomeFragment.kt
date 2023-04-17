@@ -43,38 +43,27 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
 
-        onBackPressed {
-            log("Ignoring Back Press")
-        }
-
+        onBackPressed { log("Ignoring Back Press") }
         setupOnClickListeners()
-
-        user?.let {
-//            setupRealmCoachListener()
-        } ?: kotlin.run {
-            _binding?.includeYsrListViewTeams?.root?.makeInVisible()
-        }
+        ifNull(user) { _binding?.includeYsrListViewTeams?.root?.makeInVisible() }
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        // todo: if user is logged in...
         (requireActivity() as AppCompatActivity).ludiStatusBarColorWhite()
         (requireActivity() as AppCompatActivity).ludiActionBarResetColor()
         (requireActivity() as AppCompatActivity).ludiActionBarTitle("Please Sign In!")
         realmInstance?.safeUser { itUser ->
             realmInstance?.createIdBundleSession()
             (requireActivity() as AppCompatActivity).ludiActionBarTitle("Welcome, ${itUser.name}")
-            // Check For Coach User
-            setupCoachDisplay()
-        }
-        if (user == null) {
-            menuIn = SignInOutMenuProvider(requireActivity())
-            requireActivity().addMenuProvider(menuIn ?: return)
-        } else {
             menuOut = SignInOutMenuProvider(requireActivity(), isSignIn = false)
             requireActivity().addMenuProvider(menuOut ?: return)
+            // Check For Coach User
+            setupCoachDisplay()
+        } ?: run {
+            menuIn = SignInOutMenuProvider(requireActivity())
+            requireActivity().addMenuProvider(menuIn ?: return)
         }
     }
 

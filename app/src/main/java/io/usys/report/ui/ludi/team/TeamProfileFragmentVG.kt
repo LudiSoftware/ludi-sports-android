@@ -90,8 +90,8 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtCoachesName?.text = this.team?.headCoachName
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtAgeGroup?.text = "${this.team?.year} - ${this.team?.ageGroup}"
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = this.team?.gender
-        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = this.team?.mode
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtOne?.text = this.team?.gender?.capitalizeFirstChar()
+        _binding?.includeTeamProfileCard?.cardTeamMediumTxtTwo?.text = TeamMode.parse(this.team?.mode).title
         this.team?.imgUrl?.let {
             _binding?.includeTeamProfileCard?.cardTeamMediumImgMainIcon?.loadUriIntoImgView(it)
         }

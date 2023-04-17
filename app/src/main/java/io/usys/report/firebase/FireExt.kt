@@ -5,6 +5,29 @@ import com.google.firebase.database.*
 import io.realm.*
 import io.usys.report.realm.toRealmList
 
+fun DataSnapshot?.getString(key: String): String? {
+    return this?.child(key)?.getValue(String::class.java)
+}
+// get Int
+fun DataSnapshot?.getInt(key: String): Int? {
+    return this?.child(key)?.getValue(Int::class.java)
+}
+// get Boolean
+fun DataSnapshot?.getBoolean(key: String): Boolean? {
+    return this?.child(key)?.getValue(Boolean::class.java)
+}
+// get Long
+fun DataSnapshot?.getLong(key: String): Long? {
+    return this?.child(key)?.getValue(Long::class.java)
+}
+// get Double
+fun DataSnapshot?.getDouble(key: String): Double? {
+    return this?.child(key)?.getValue(Double::class.java)
+}
+// get Float
+fun DataSnapshot?.getFloat(key: String): Float? {
+    return this?.child(key)?.getValue(Float::class.java)
+}
 
 // Verified
 inline fun firebaseDatabase(block: (DatabaseReference) -> Unit) {

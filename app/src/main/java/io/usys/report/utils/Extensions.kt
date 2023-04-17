@@ -28,6 +28,14 @@ inline fun tryCatch(block:() -> Unit) {
     }
 }
 
+inline fun ifNull(obj: Any?, block: () -> Unit) {
+    if (obj == null) { block() }
+}
+
+inline fun ifNotNull(obj: Any?, block: (Any) -> Unit) {
+    if (obj != null) { block(obj) }
+}
+
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.cast(): T? {
     tryCatch {
