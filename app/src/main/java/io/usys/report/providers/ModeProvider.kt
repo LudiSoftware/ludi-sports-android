@@ -9,7 +9,13 @@ enum class TeamMode(val mode: String, val color: Int, val title: String) {
     IN_SEASON("in_season", R.color.ludiRosterCardSelected, "In-Season"),
     OFF_SEASON("off_season", R.color.ludiWhite, "Off-Season"),
     TRYOUT("tryout", R.color.ludiRosterCardRed, "Tryout"),
-    PENDING_ROSTER("pending_roster", R.color.ludiRosterCardYellow, "Pending Roster"),
+    PENDING_ROSTER("pending_roster", R.color.ludiRosterCardYellow, "Pending Roster");
+
+    companion object {
+        fun parse(mode: String): TeamMode? {
+            return values().find { it.mode == mode }
+        }
+    }
 }
 
 /** Tryout Modes */

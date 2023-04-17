@@ -46,11 +46,13 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
                 enable()
             }
         }
-        observeFirebaseTeams()
+        observeRealmIds()
     }
 
+    /** Realm: Team Observer **/
     @SuppressLint("NotifyDataSetChanged")
-    private fun observeFirebaseTeams() {
+    override fun observeRealmIds() {
+        log("observeRealmIds")
         parentFragment?.let { fragment ->
             teamLiveData?.observe(fragment.viewLifecycleOwner) { teams ->
                 log("Team results updated")
@@ -60,11 +62,6 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
                 notifyDataSetChanged()
             }
         }
-    }
-
-    /** Realm: Team Observer **/
-    override fun observeRealmIds() {
-        log("observeRealmIds")
     }
 
     /** Setup ViewHolder **/

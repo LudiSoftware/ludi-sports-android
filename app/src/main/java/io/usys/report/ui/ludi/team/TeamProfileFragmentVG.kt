@@ -80,11 +80,8 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
         if (refresh) { realmInstance?.findTeamById(teamId)?.let { this.team = it } }
         else { this.team = team }
 
-        if (this.team?.tryoutId != null) {
-            setupTryoutMode()
-        }
-        else {
-            setupInSeasonMode()
+        TeamMode.parse(this.team?.mode!!)?.let {
+            (requireActivity() as AppCompatActivity).ludiActionBarTeamMode(it)
         }
 
         _binding?.includeTeamProfileCard?.cardTeamMediumTxtTitle?.text = this.team?.name
