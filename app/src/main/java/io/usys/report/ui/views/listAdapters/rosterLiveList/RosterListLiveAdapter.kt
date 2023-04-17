@@ -67,8 +67,10 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         }
     }
 
+
     override fun onBindFinished() {
         super.onBindFinished()
+        config.setBuilderSubText()
     }
 
     /** Load Roster by ID */
@@ -114,6 +116,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         setRosterSizeLimit()
         setPlayersSelectedCount()
         notifyDataSetChanged()
+        config.setBuilderSubText()
     }
     @SuppressLint("NotifyDataSetChanged")
     fun softRefresh() {
@@ -187,13 +190,6 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         }
     }
 
-    fun areTooManySelected() : Boolean {
-        realmInstance.rosterSessionById(config.currentRosterId)?.let { rs ->
-            return rs.playersSelectedCount > rs.rosterSizeLimit
-        }
-        return false
-    }
-
     /** Update Functions */
     fun updateOrderIndexes() {
         itemList?.let { list ->
@@ -207,8 +203,6 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     }
 
     /** Helper Functions */
-
-
     @SuppressLint("NotifyDataSetChanged")
     fun updateRosterSizeLimit(newSizeLimit: Int) {
         realmInstance.rosterSessionById(config.currentRosterId) { rosterSession ->

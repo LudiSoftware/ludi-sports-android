@@ -1,5 +1,6 @@
 package io.usys.report.ui.ludi.roster
 
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -68,6 +69,8 @@ class RosterConfig(var teamId: String) {
     // Drag and Drop
     var itemTouchListener: RosterLiveDragDropAction? = null
     var itemLiveTouchListener: RosterLiveDragDropAction? = null
+    // Update TextViews
+    var textViewOne: TextView? = null
 
     init {
         realmInstance.findTryOutByTeamId(teamId) { tryout ->
@@ -105,6 +108,44 @@ class RosterConfig(var teamId: String) {
     }
 
     /** Helpers **/
+    fun updateTextViewOne(text: String) {
+        textViewOne?.text = text
+    }
+    fun setBuilderSubText() {
+        if (selectedTooMany()) {
+            textViewOne?.text = "Roster has too many players. ($selectionCounter)/($rosterSizeLimit)"
+            return
+        }
+        else if (selectedNotEnough()) {
+            textViewOne?.text = "Roster is short (${rosterSizeLimit-selectionCounter}) players."
+            return
+        }
+        else if (selectedIsEqual()) {
+            textViewOne?.text = "Roster is Ready to Submit!"
+            return
+        }
+    }
+
+    fun selectedTooMany() : Boolean {
+        realmInstance.rosterSessionById(currentRosterId)?.let { rs ->
+            return rs.playersSelectedCount > rs.rosterSizeLimit
+        }
+        return false
+    }
+
+    fun selectedNotEnough() : Boolean {
+        realmInstance.rosterSessionById(currentRosterId)?.let { rs ->
+            return rs.playersSelectedCount < rs.rosterSizeLimit
+        }
+        return false
+    }
+
+    fun selectedIsEqual() : Boolean {
+        realmInstance.rosterSessionById(currentRosterId)?.let { rs ->
+            return rs.playersSelectedCount == rs.rosterSizeLimit
+        }
+        return false
+    }
     fun switchToOfficialRoster() {
         rosterId?.let { currentRosterId = it }
     }

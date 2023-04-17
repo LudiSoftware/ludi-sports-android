@@ -58,15 +58,19 @@ class RosterBuilderFragment : YsrFragment() {
             val layoutOne = view.findViewById<LinearLayout>(R.id.menuRosterBuilderBtnOneLayout)
             val imgBtnOne = view.findViewById<ImageButton>(R.id.menuRosterBuilderBtnOneImgBtn)
             adapter?.let {
-                if (it.areTooManySelected()) {
+                if (it.config.selectedTooMany()) {
                     imgBtnOne.setBackgroundResource(android.R.drawable.ic_delete)
                     layoutOne.attachViewsToOnClickListener(imgBtnOne) {
                         layoutOne.wiggleOnce()
                     }
                 } else {
-                    imgBtnOne.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp)
-                    layoutOne.attachViewsToOnClickListener(imgBtnOne) {
-                        realmInstance?.tryoutChangeModeToPendingRoster(teamId, syncFire = true)
+                    if (it.config.selectedNotEnough()) {
+                        // todo: show a message that to verify user is okay with a short roster
+                    } else {
+                        imgBtnOne.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp)
+                        layoutOne.attachViewsToOnClickListener(imgBtnOne) {
+                            realmInstance?.tryoutChangeModeToPendingRoster(teamId, syncFire = true)
+                        }
                     }
                 }
             }
@@ -152,6 +156,7 @@ class RosterBuilderFragment : YsrFragment() {
             this.rosterId = currentRosterId
             this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
             this.parentFragment = this@RosterBuilderFragment
+            this.textViewOne = _binding?.rosterBuilderLudiSubTxt
         }
         adapter = RosterListLiveAdapter(rosterConfig)
     }
@@ -184,13 +189,11 @@ class RosterBuilderFragment : YsrFragment() {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
                     adapter?.setupTryoutRoster()
-                    setSubText()
                 }
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
                     adapter?.setupSelectionRoster()
-                    setSubText()
                 }
                 else -> {
                     setupRosterSizeSpinner()
@@ -200,12 +203,6 @@ class RosterBuilderFragment : YsrFragment() {
             }
         }
         setupRosterTypeTitle()
-    }
-
-    fun setSubText() {
-        val size = adapter?.config?.rosterSizeLimit
-        val selected = adapter?.config?.selectionCounter
-        _binding?.rosterBuilderLudiSubTxt?.text = "You've selected, ($selected) out of ($size)"
     }
 
 }

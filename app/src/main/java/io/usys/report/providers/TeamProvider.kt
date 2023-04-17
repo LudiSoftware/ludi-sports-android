@@ -40,6 +40,16 @@ fun Realm.syncTeamDataFromFirebase(teamId: String?, depth: Int = 0) {
     }
 }
 
+fun Realm.syncTeamDataFromFirebaseForce(teamId: String?) {
+    if (teamId == null) return
+    this.fireGetTeamById(teamId) { itTeam ->
+        itTeam?.rosterId?.let { fireGetRosterInBackground(it, this) }
+        this.fireGetTryOutById(itTeam?.tryoutId) { itTryout ->
+            itTryout?.rosterId?.let { fireGetRosterInBackground(it, this) }
+        }
+    }
+}
+
 /** Update Team Mode **/
 fun Realm.fireUpdateTeamMode(teamId: String?) {
     teamId?.let { itTeamId ->
