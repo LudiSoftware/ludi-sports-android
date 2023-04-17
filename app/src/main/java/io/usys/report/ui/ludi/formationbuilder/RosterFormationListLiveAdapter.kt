@@ -144,19 +144,7 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
     }
 
 
-    /** HELPER: Move Player  **/
-    fun movePlayerToFormation(playerId: String) {
-        onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
-            this.realmInstance.safeWrite {
-                it.rosterSessionById(config.currentRosterId) { fs ->
-                    fs.deckListIds?.remove(playerId)
-                    fs.formationListIds?.safeAdd(playerId)
-                }
-            }
-            onDeckPlayerIdList.remove(playerId)
-            notifyItemRemoved(itIndex)
-        }
-    }
+
 
     /** Reset OnDeck to Original Roster **/
     @SuppressLint("NotifyDataSetChanged")
@@ -177,14 +165,39 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
         }
         this.notifyDataSetChanged()
     }
-    private fun addPlayerToDeck(player: PlayerRef) {
-        this.realmInstance.rosterSessionById(config.currentRosterId) { fs ->
+
+    /** HELPER: Move Player  **/
+    fun movePlayerToFormation(playerId: String) {
+        onDeckPlayerIdList.indexOf(playerId).let { itIndex ->
             this.realmInstance.safeWrite {
-                fs.deckListIds?.safeAdd(player.id)
+                it.rosterSessionById(config.currentRosterId) { fs ->
+                    fs.deckListIds?.remove(playerId)
+                    fs.formationListIds?.safeAdd(playerId)
+                }
+            }
+            onDeckPlayerIdList.remove(playerId)
+            notifyItemRemoved(itIndex)
+        }
+    }
+
+    fun movePlayerToDeck(playerId: String) {
+        this.realmInstance.safeWrite {
+            it.rosterSessionById(config.currentRosterId) { fs ->
+                fs.formationListIds?.remove(playerId)
+                fs.deckListIds?.safeAdd(playerId)
             }
         }
-        onDeckPlayerIdList.add(player.id)
+        onDeckPlayerIdList.safeAdd(playerId)
     }
+    private fun addPlayerToDeck(player: PlayerRef?, playerId: String? = null) {
+        this.realmInstance.rosterSessionById(config.currentRosterId) { fs ->
+            this.realmInstance.safeWrite {
+                fs.deckListIds?.safeAdd(player?.id ?: playerId ?: "unknown")
+            }
+        }
+        onDeckPlayerIdList.add(player?.id ?: playerId ?: "unknown")
+    }
+
 
     override fun getItemCount() = onDeckPlayerIdList.size
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {

@@ -61,7 +61,9 @@ class DashboardHomeFragment : YsrFragment() {
             requireActivity().addMenuProvider(menuOut ?: return)
             // Check For Coach User
             setupCoachDisplay()
-        } ?: run {
+        }
+
+        if (user == null) {
             menuIn = SignInOutMenuProvider(requireActivity())
             requireActivity().addMenuProvider(menuIn ?: return)
         }

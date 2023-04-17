@@ -34,7 +34,7 @@
             android:layout_height="50dp"
             android:layout_weight=".25"
             android:background="#00FFFFFF"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/f_profile_dark" />
     </LinearLayout>
 
@@ -65,8 +65,8 @@
             android:layout_height="50dp"
             android:layout_weight=".25"
             android:background="#00FFFFFF"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/f_profile_dark" />
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/player_name_banner_red" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +89,7 @@
             android:layout_weight=".75"
             android:gravity="center"
             android:hapticFeedbackEnabled="true"
-            android:text="Change Teams" />
+            android:text="Return to Substitutes" />
 
         <ImageButton
             android:id="@+id/menuPlayerReturnToRosterImgBtn"
@@ -97,8 +97,8 @@
             android:layout_height="50dp"
             android:layout_weight=".25"
             android:background="#00FFFFFF"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/f_profile_dark" />
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ft_people_icon_30dp" />
     </LinearLayout>
 
     <LinearLayout

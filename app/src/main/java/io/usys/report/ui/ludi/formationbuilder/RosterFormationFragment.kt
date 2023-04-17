@@ -176,16 +176,24 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         formationRelativeLayout?.removeAllViews()
     }
 
+    private fun movePlayerToDeck(playerId: String) {
+        formationPlayerItemViewList.find { it.tag == playerId }?.let { view ->
+            formationPlayerItemViewList.remove(view)
+            formationRelativeLayout?.removeView(view)
+            adapterSubstitutes?.movePlayerToDeck(playerId)
+        }
+    }
+
 
     /** GLOBAL/FRAGMENT DISPLAY ORDER/PROCESS HANDLING
      *      Display Process Functions
      */
     private fun setupDisplay() {
         activity?.window?.let {
+            setupFloatingActionMenu()
             setupFullDisplay()
             setupFilteredList()
             setupFormationList()
-            setupFloatingActionMenu()
         }
     }
 
@@ -435,6 +443,8 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         val playerId = anchorView.tag
         val layoutPlayerProfile = popupView.findViewById<LinearLayout>(R.id.menuPlayerPlayerProfileLayout)
         val layoutChangeTeams = popupView.findViewById<LinearLayout>(R.id.menuPlayerChangeTeamsLayout)
+        val layoutReturnToDeck = popupView.findViewById<LinearLayout>(R.id.menuPlayerReturnToRosterLayout)
+        val imgReturnToDeck = popupView.findViewById<ImageView>(R.id.menuPlayerReturnToRosterImgBtn)
         val layoutIsSelected = popupView.findViewById<LinearLayout>(R.id.menuPlayerIsSelectedLayout)
         val checkBoxIsSelected = popupView.findViewById<CheckBox>(R.id.menuPlayerCheckIsSelected)
         val btnProfile = popupView.findViewById<ImageButton>(R.id.menuPlayerBtnProfile)
@@ -480,6 +490,13 @@ class RosterFormationFragment : LudiStringIdsFragment() {
             }
             popupWindow.dismiss()
         }
+
+        layoutReturnToDeck.attachViewsToOnClickListener(imgReturnToDeck) {
+            log("menu_player_return_to_deck")
+            movePlayerToDeck(playerId)
+            popupWindow.dismiss()
+        }
+
         realmInstance?.findPlayerRefById(playerId)?.let { itPlayer ->
             checkBoxIsSelected.isChecked = itPlayer.status == PLAYER_STATUS_SELECTED
         }
