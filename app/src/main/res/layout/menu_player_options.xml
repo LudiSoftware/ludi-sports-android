@@ -9,7 +9,7 @@
     android:padding="8dp">
 
     <LinearLayout
-        android:id="@+id/menuPlayerPlayerProfileLayout"
+        android:id="@+id/menuPlayerLayoutPlayerProfile"
         android:layout_width="214dp"
         android:layout_height="50dp"
         android:layout_margin="3dp"
@@ -47,7 +47,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerPlayerProfileLayout">
+        app:layout_constraintTop_toBottomOf="@+id/menuFormationSaveData">
 
         <TextView
             android:id="@+id/textView5"

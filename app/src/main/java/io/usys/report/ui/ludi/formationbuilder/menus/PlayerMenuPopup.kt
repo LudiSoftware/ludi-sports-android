@@ -25,7 +25,7 @@ fun RosterFormationFragment.showPlayerMenuPopup(anchorView: View) {
     val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
     val playerId = anchorView.tag.toString()
-    val layoutPlayerProfile = popupView.findViewById<LinearLayout>(R.id.menuPlayerPlayerProfileLayout)
+    val layoutPlayerProfile = popupView.findViewById<LinearLayout>(R.id.menuPlayerLayoutPlayerProfile)
     val layoutChangeTeams = popupView.findViewById<LinearLayout>(R.id.menuPlayerChangeTeamsLayout)
     val layoutReturnToDeck = popupView.findViewById<LinearLayout>(R.id.menuPlayerReturnToRosterLayout)
     val imgReturnToDeck = popupView.findViewById<ImageView>(R.id.menuPlayerReturnToRosterImgBtn)

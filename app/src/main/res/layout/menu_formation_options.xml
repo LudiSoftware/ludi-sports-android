@@ -9,7 +9,7 @@
     android:padding="8dp">
 
     <LinearLayout
-        android:id="@+id/menuPlayerPlayerProfileLayout"
+        android:id="@+id/menuFormationSaveDataLayout"
         android:layout_width="214dp"
         android:layout_height="50dp"
         android:layout_margin="3dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/menuPlayerTVplayerProfile"
+            android:id="@+id/menuFormationSaveDataTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -29,7 +29,7 @@
             android:text="Save Player Data" />
 
         <ImageButton
-            android:id="@+id/menuPlayerBtnProfile"
+            android:id="@+id/menuFormationSaveDataBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight=".25"
@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/menuPlayerChangeTeamsLayout"
+        android:id="@+id/menuFormationSubmitRosterLayout"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_margin="3dp"
@@ -47,52 +47,21 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerPlayerProfileLayout">
+        app:layout_constraintTop_toBottomOf="@+id/menuFormationSaveDataLayout"
+        tools:visibility="visible">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/menuFormationSubmitRosterTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight=".75"
             android:gravity="center"
             android:hapticFeedbackEnabled="true"
-            android:text="Change Teams" />
+            android:text="Submit Roster" />
 
         <ImageButton
-            android:id="@+id/menuPlayerBtnChangeTeams"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight=".25"
-            android:background="#00FFFFFF"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/player_name_banner_red" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/menuPlayerReturnToRosterLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:layout_weight=".75"
-        android:background="@drawable/border_shape"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerChangeTeamsLayout">
-
-        <TextView
-            android:id="@+id/menuPlayerReturnToRosterTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".75"
-            android:gravity="center"
-            android:hapticFeedbackEnabled="true"
-            android:text="Return to Substitutes" />
-
-        <ImageButton
-            android:id="@+id/menuPlayerReturnToRosterImgBtn"
+            android:id="@+id/menuFormationSubmitRosterImgBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight=".25"
@@ -102,7 +71,36 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/menuPlayerIsSelectedLayout"
+        android:id="@+id/menuFormationToggleTeamColorsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_weight=".75"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuFormationSubmitRosterLayout">
+
+        <TextView
+            android:id="@+id/menuFormationToggleTeamColorsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:text="Toggle Team Colors" />
+
+        <CheckBox
+            android:id="@+id/menuFormationToggleTeamColorsCheckBox"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuFormationResetPlayersLayout"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_margin="3dp"
@@ -110,52 +108,25 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerReturnToRosterLayout">
+        app:layout_constraintTop_toBottomOf="@+id/menuFormationToggleTeamColorsLayout">
 
         <TextView
-            android:id="@+id/menuPlayerTxtIsSelected"
+            android:id="@+id/menuFormationResetPlayersTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight=".75"
             android:gravity="center"
-            android:text="Is Selected" />
+            android:text="Reset Formation" />
 
-        <CheckBox
-            android:id="@+id/menuPlayerCheckIsSelected"
+        <ImageButton
+            android:id="@+id/menuFormationResetPlayersImgBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight=".25" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuPlayerIsSelectedLayout"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".75"
-            android:text="Change Position" />
-
-        <Spinner
-            android:id="@+id/menuPlayerPositionSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="4dp"
             android:layout_weight=".25"
-            android:background="@drawable/ft_border_rounded_creme" />
-
+            android:background="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ft_people_icon_30dp" />
     </LinearLayout>
 
 </io.usys.report.ui.views.LudiConstraintLayout>
