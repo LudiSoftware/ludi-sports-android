@@ -11,7 +11,7 @@
 
     <!-- Global Soccer Ball Menu -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/tryoutFormationFloatingActionButton"
+        android:id="@+id/formationBuilderFloatingActionButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"

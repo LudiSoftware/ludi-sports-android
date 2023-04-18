@@ -21,10 +21,6 @@
 
     <ConstraintSet android:id="@+id/start">
         <!-- Define the constraints for the ending state of the View -->
-<!--        <Constraint-->
-<!--            android:id="@+id/formationMotionRootLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"/>-->
 
         <Constraint
             android:id="@+id/formationRosterListsLinearLayout"
@@ -63,12 +59,9 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/tryoutFormationFloatingActionButton"
+            android:id="@id/formationBuilderFloatingActionButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
             motion:backgroundTint="@color/transparent"
             motion:fabSize="normal"
             motion:maxImageSize="45dp"
@@ -112,10 +105,6 @@
         android:id="@+id/end">
         <!-- Define the constraints for the starting state of the View -->
 
-<!--        <Constraint-->
-<!--            android:id="@+id/formationMotionRootLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"/>-->
         <Constraint
             android:id="@+id/formationRosterListsLinearLayout"
             motion:layout_constraintWidth="match_parent"
@@ -150,12 +139,9 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/tryoutFormationFloatingActionButton"
+            android:id="@id/formationBuilderFloatingActionButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
             motion:backgroundTint="@color/transparent"
             motion:fabSize="normal"
             motion:maxImageSize="45dp"

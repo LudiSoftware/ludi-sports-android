@@ -115,7 +115,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
 
     /** GLOBAL/FRAGMENT DISPLAY SETUP - onCreate process function **/
     private fun bindViews() {
-        floatingMenuButton = rootView.findViewById(R.id.tryoutFormationFloatingActionButton)
+        floatingMenuButton = rootView.findViewById(R.id.formationBuilderFloatingActionButton)
         soccerFieldImageView = rootView.findViewById(R.id.soccerfield)
         motionConstraintLayout = rootView.findViewById(R.id.formationMotionRootLayout)
         deckLinearLayout = rootView.findViewById(R.id.formationRosterListsLinearLayout)
