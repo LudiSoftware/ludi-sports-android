@@ -16,7 +16,6 @@ import org.jetbrains.anko.backgroundColor
 /** FORMATION LAYOUT: Layout Params **/
 fun preparePlayerLayoutParamsForFormation(loadingFromSession: Boolean=false): RelativeLayout.LayoutParams {
     val layoutParams = getRelativeLayoutParams()
-//    if (!loadingFromSession) layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT)
     layoutParams.width = RelativeLayout.LayoutParams.WRAP_CONTENT
     layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT
     return layoutParams

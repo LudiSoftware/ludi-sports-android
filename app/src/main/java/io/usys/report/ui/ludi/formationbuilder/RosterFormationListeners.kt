@@ -15,7 +15,7 @@ import io.usys.report.utils.views.getRelativeLayoutParams
 import kotlin.math.max
 import kotlin.math.min
 
-fun View?.onGestureDetectorRosterFormation(rosterId:String, playerId:String?=null,
+fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:String?=null,
                                            onSingleTapUp:((String) -> Unit)?=null,
                                            onLongPress:((String) -> Unit)?=null) {
     val tempRealm = realm()
@@ -98,7 +98,6 @@ fun View?.onGestureDetectorRosterFormation(rosterId:String, playerId:String?=nul
                     }
                 }
             }
-
             // Save the last touch position
             lastX = e2.rawX.toInt()
             lastY = e2.rawY.toInt()

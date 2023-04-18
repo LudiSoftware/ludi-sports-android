@@ -9,21 +9,7 @@
     app:layoutDescription="@xml/motion_scene_drawer"
     tools:ignore="MissingDefaultResource">
 
-    <!-- Global Soccer Ball Menu -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/formationBuilderFloatingActionButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/soccer_ball_icon"
-        app:backgroundTint="@color/transparent"
-        app:fabSize="normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:maxImageSize="45dp"
-        app:rippleColor="@color/transparent" />
+
 
     <!-- The Soccer Field -->
     <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -47,18 +33,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Global Soccer Ball Menu -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/formationBuilderFloatingActionButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="345dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/soccer_ball_icon"
+            app:backgroundTint="@color/transparent"
+            app:fabSize="normal"
+            app:maxImageSize="45dp"
+            app:rippleColor="@color/transparent" />
+
 
     </RelativeLayout>
 
     <!-- The Roster List -->
-    <androidx.constraintlayout.utils.widget.ImageFilterButton
-        android:id="@+id/formationBtnRosterToggle"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/add_light"
-        app:altSrc="@drawable/add_light" />
 
     <LinearLayout
         android:id="@+id/formationBuilderRosterTypeLinearLayout"

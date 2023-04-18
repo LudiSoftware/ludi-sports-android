@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- popup_layout.xml -->
+<io.usys.report.ui.views.LudiConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/menuPlayerPlayerProfileLayout"
+        android:layout_width="214dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/menuPlayerTVplayerProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:text="Save Player Data" />
+
+        <ImageButton
+            android:id="@+id/menuPlayerBtnProfile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/f_profile_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuPlayerChangeTeamsLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerPlayerProfileLayout">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:text="Change Teams" />
+
+        <ImageButton
+            android:id="@+id/menuPlayerBtnChangeTeams"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/player_name_banner_red" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuPlayerReturnToRosterLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_weight=".75"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerChangeTeamsLayout">
+
+        <TextView
+            android:id="@+id/menuPlayerReturnToRosterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:text="Return to Substitutes" />
+
+        <ImageButton
+            android:id="@+id/menuPlayerReturnToRosterImgBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight=".25"
+            android:background="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ft_people_icon_30dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuPlayerIsSelectedLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/border_shape"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerReturnToRosterLayout">
+
+        <TextView
+            android:id="@+id/menuPlayerTxtIsSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75"
+            android:gravity="center"
+            android:text="Is Selected" />
+
+        <CheckBox
+            android:id="@+id/menuPlayerCheckIsSelected"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight=".25" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuPlayerIsSelectedLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".75"
+            android:text="Change Position" />
+
+        <Spinner
+            android:id="@+id/menuPlayerPositionSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="4dp"
+            android:layout_weight=".25"
+            android:background="@drawable/ft_border_rounded_creme" />
+
+    </LinearLayout>
+
+</io.usys.report.ui.views.LudiConstraintLayout>

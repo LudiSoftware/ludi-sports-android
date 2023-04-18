@@ -12,11 +12,7 @@
             motion:touchAnchorId="@id/formationRosterListsLinearLayout"
             motion:touchAnchorSide="top" />
 
-        <KeyFrameSet>
-            <KeyAttribute
-                motion:motionTarget="@id/formationBtnRosterToggle"
-                android:rotation="45" />
-        </KeyFrameSet>
+        <KeyFrameSet></KeyFrameSet>
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -50,18 +46,13 @@
             android:visibility="visible"/>
 
         <Constraint
-            android:id="@+id/formationBtnRosterToggle"
-            motion:animateCircleAngleTo="clockwise">
-
-            <CustomAttribute
-                motion:attributeName="backgroundColor"
-                motion:customColorValue="#00D81B60" />
-        </Constraint>
-
-        <Constraint
             android:id="@id/formationBuilderFloatingActionButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="345dp"
+            android:layout_marginBottom="16dp"
             motion:backgroundTint="@color/transparent"
             motion:fabSize="normal"
             motion:maxImageSize="45dp"
@@ -92,12 +83,6 @@
                 motion:customColorValue="#006C6C6C" />
         </Constraint>
 
-        <Constraint
-            android:id="@+id/formationBtnRosterToggle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
-            motion:layout_constraintLeft_toLeftOf="parent"/>
     </ConstraintSet>
 
     <!-- END -->
@@ -132,16 +117,13 @@
             android:visibility="gone"/>
 
         <Constraint
-            android:id="@+id/formationBtnRosterToggle">
-            <CustomAttribute
-                motion:attributeName="backgroundColor"
-                motion:customColorValue="#00D81B60" />
-        </Constraint>
-
-        <Constraint
             android:id="@id/formationBuilderFloatingActionButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="345dp"
+            android:layout_marginBottom="16dp"
             motion:backgroundTint="@color/transparent"
             motion:fabSize="normal"
             motion:maxImageSize="45dp"
@@ -174,12 +156,6 @@
                 motion:customColorValue="#6D6C6C6C" />
         </Constraint>
 
-        <Constraint
-            android:id="@+id/formationBtnRosterToggle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            motion:layout_constraintBottom_toTopOf="@+id/formationRosterListsLinearLayout"
-            motion:layout_constraintLeft_toLeftOf="parent" />
     </ConstraintSet>
 
 </MotionScene>
