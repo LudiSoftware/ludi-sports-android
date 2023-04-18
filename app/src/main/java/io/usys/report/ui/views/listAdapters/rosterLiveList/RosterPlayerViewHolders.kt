@@ -2,7 +2,10 @@ package io.usys.report.ui.views.listAdapters.rosterLiveList
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -14,6 +17,7 @@ import io.usys.report.realm.model.updatePlayerStatus
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.makeGone
+import io.usys.report.utils.makeVisible
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce
@@ -25,18 +29,24 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
     var imgPlayerProfile = itemView.bind<CircleImageView>(R.id.cardPlayerMediumGridImgProfile)
     var txtItemPlayerName = itemView.bindTextView(R.id.cardPlayerMediumGridTxtName)
     var txtItemPlayerOne = itemView.bindTextView(R.id.cardPlayerMediumGridTxtOne)
+    var txtItemTwo = itemView.bindTextView(R.id.cardPlayerMediumGridTextViewTwo)
     var cardBackground = itemView.bind<CardView>(R.id.cardPlayerMediumGridLayout)
     var constraintBackground = itemView.bind<View>(R.id.cardPlayerConstraintLayout)
     var cardChkSelected = itemView.bind<CheckBox>(R.id.cardPlayerMediumGridChkSelected)
+    var cardChkSelectedTxt = itemView.bind<TextView>(R.id.cardPlayerSelectedTxtView)
+    var txtOrderIndex = itemView.bind<TextView>(R.id.cardPlayerMediumGridOrderIndex)
+    var btnNotes = itemView.bind<ImageButton>(R.id.cardPlayerMediumGridBtnNotes)
 
+    @SuppressLint("SetTextI18n")
     fun bind(player: PlayerRef?, position: Int?= null) {
         player?.let { itPlayer ->
 
             cardChkSelected?.makeGone()
+            cardChkSelectedTxt?.makeGone()
 
             txtItemPlayerName?.text = itPlayer.name
-            txtItemPlayerOne?.text = "Position: ${position.toString()}"
-//            txtItemPlayerTwo?.text = itPlayer.orderIndex.toString()
+            txtItemPlayerOne?.text = "Position: ${itPlayer.position}"
+            txtOrderIndex?.text = itPlayer.orderIndex.toString()
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile?.loadUriIntoImgView(url)
             }
@@ -44,7 +54,7 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             itemView.setOnClickListener {
                 adapter.config.toPlayerProfile(itPlayer.id)
             }
-
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ysrFadedWhite))
         }
     }
 
@@ -53,6 +63,9 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
         player?.let { itPlayer ->
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
             val isInTop = adapter.config.selectionCounter < adapter.config.rosterSizeLimit
+
+            cardChkSelected?.makeVisible()
+            cardChkSelectedTxt?.makeVisible()
 
             setTryoutColor(itPlayer.id, isInTop, isSelected)
             // Selected CheckBox
@@ -67,6 +80,8 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
+            txtItemTwo?.text = "Position: ${itPlayer.position}"
+            txtOrderIndex?.text = itPlayer.orderIndex.toString()
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile?.loadUriIntoImgView(url)
@@ -90,6 +105,10 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             val isSelected = itPlayer.status == PLAYER_STATUS_SELECTED
             val isInTop = position + 1 <= adapter.config.rosterSizeLimit
             setSelectionColor(playerId, isInTop, isSelected)
+
+            cardChkSelected?.makeVisible()
+            cardChkSelectedTxt?.makeVisible()
+
             // Selected CheckBox
             cardChkSelected?.setOnCheckedChangeListener(null)
             cardChkSelected?.isChecked = isSelected
@@ -102,6 +121,8 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             // Basic Tryout Attributes
             txtItemPlayerName?.text = itPlayer.name
             txtItemPlayerOne?.text = "Tag: ${itPlayer.tryoutTag.toString()}"
+            txtItemTwo?.text = "Position: ${itPlayer.position}"
+            txtOrderIndex?.text = itPlayer.orderIndex.toString()
             // Image Profile
             itPlayer.imgUrl?.let { url ->
                 imgPlayerProfile?.loadUriIntoImgView(url)
