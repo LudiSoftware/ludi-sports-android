@@ -117,10 +117,8 @@ class DashboardHomeFragment : YsrFragment() {
         }
 
         itemOnClickTeamList = { view, obj ->
-            val teamRef = obj as TeamRef
-            val id = teamRef.id ?: "unknown"
-            realmInstance?.updateIdBundleIds(teamId = id)
-            toFragmentWithRealmObject(TO_TEAM_PROFILE, bundleStringId(id))
+            realmInstance?.updateIdBundleIds(teamId = obj.toString())
+            toFragmentWithRealmObject(TO_TEAM_PROFILE, bundleStringId(obj.toString()))
         }
     }
 

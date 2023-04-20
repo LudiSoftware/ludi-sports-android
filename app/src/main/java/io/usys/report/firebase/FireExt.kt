@@ -86,22 +86,6 @@ inline fun <reified T> Query.fairAddParsedListenerForSingleValueEvent(crossinlin
     })
 }
 
-
-/** Observe a firebase value event */
-fun Query.observeValueEvent(block: (DataSnapshot?, ValueEventListener) -> Unit): ValueEventListener {
-    val listener = object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            block(dataSnapshot, this)
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {
-            block(null, this)
-        }
-    }
-    this.addValueEventListener(listener)
-    return listener
-}
-
 fun <TResult> Task<TResult>.fairAddOnSuccessCallback(callbackFunction: ((Boolean, String) -> Unit)?) {
     this.addOnSuccessListener {
         callbackFunction?.invoke(true, "success")

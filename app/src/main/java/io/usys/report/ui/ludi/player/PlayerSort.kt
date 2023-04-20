@@ -2,7 +2,7 @@ package io.usys.report.ui.ludi.player
 
 import io.realm.RealmList
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.realm.model.toRealmList
+import io.usys.report.realm.toRealmList
 import io.usys.report.utils.splitFullName
 import kotlin.reflect.full.memberProperties
 

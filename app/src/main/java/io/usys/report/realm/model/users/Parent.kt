@@ -10,31 +10,16 @@ import java.io.Serializable
 /**
  * Created by ChazzCoin : November 2022.
  */
-open class ParentRef : RealmObject(), Serializable {
-    @PrimaryKey
-    var id: String? = newUUID()
-    var parentId: String? = newUUID()
-    var name: String? = null
-    var isManager: Boolean = false
-    var players: RealmList<PlayerRef>? = null
-    var teams: RealmList<TeamRef>? = null
-    var organizations: RealmList<OrganizationRef>? = null
-
-    fun getParent(): Parent? {
-        return null
-    }
-
-}
 open class Parent : RealmObject() {
 
     @PrimaryKey
     var id: String = ""
     var userId: String? = "unassigned"
     var hasPlayer: Boolean = false
-    var players: RealmList<PlayerRef>? = null
+    var players: RealmList<String>? = null
     var team: Boolean = false
-    var teams: RealmList<TeamRef>? = null
-    var organizations: RealmList<OrganizationRef>? = null
+    var teams: RealmList<String>? = null
+    var organizations: RealmList<String>? = null
     // base
     var dateCreated: String? = getTimeStamp()
     var dateUpdated: String? = getTimeStamp()

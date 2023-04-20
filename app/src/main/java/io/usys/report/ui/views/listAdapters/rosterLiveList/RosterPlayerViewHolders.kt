@@ -54,7 +54,7 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             itemView.setOnClickListener {
                 adapter.config.toPlayerProfile(itPlayer.id)
             }
-            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.ysrFadedWhite))
+            constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.white))
         }
     }
 

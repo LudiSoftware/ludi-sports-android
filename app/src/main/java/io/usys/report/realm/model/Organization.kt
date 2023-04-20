@@ -32,13 +32,13 @@ open class Organization : RealmObject(), Serializable {
     var estStaffCount: Int? = 0
     var estTeamCount: Int? = 0
     // References (5)
-    var staff: RealmList<CoachRef>? = null
-    var coaches: RealmList<CoachRef>? = null
-    var leagues: RealmList<LeagueRef>? = null
-    var teams: RealmList<TeamRef>? = null
+    var staff: RealmList<String>? = null
+    var coaches: RealmList<String>? = null
+    var leagues: RealmList<String>? = null
+    var teams: RealmList<String>? = null
     var regions: RealmList<String>? = null
     // Locations (1)
-    var locations: RealmList<LocationRef>? = null
+    var locations: RealmList<String>? = null
     // Images (2)
     var imgUris: RealmList<String>? = null
     var imgOrgIconUri: String? = null

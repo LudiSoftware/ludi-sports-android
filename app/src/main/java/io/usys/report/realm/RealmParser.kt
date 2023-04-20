@@ -72,7 +72,11 @@ inline fun <reified T> DataSnapshot.toRealmList(): RealmList<T> {
 }
 
 
-
+fun <T> List<T>.toRealmList(): RealmList<T> {
+    val realmList = RealmList<T>()
+    realmList.addAll(this)
+    return realmList
+}
 
 
 

@@ -8,7 +8,7 @@ import io.realm.RealmList
  */
 
 /** Get List of ALL Base Objects */
-inline fun <reified T> fireGetBaseYsrObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
+inline fun <reified T> fireGetBaseLudiObjects(dbName:String, crossinline block: RealmList<T>?.() -> Unit) {
     firebaseDatabase {
         it.child(dbName).fairAddParsedListenerForSingleValueEvent<T> { realmList ->
             block(realmList)

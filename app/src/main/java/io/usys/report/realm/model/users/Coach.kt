@@ -4,26 +4,12 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.firebase.fireSaveCoachToFirebaseAsync
 import io.usys.report.realm.findCoachBySafeId
-import io.usys.report.realm.model.users.User
-import io.usys.report.realm.model.users.realmUser
-import io.usys.report.realm.writeToRealm
-import io.usys.report.realm.realm
 import io.usys.report.utils.*
-import java.io.Serializable
 
 /**
  * Created by ChazzCoin : October 2022.
  */
-open class CoachRef : RealmObject(), Serializable {
-    @PrimaryKey
-    var id: String? = newUUID()
-    var coachId: String? = ""
-    var name: String? = null
-    var isHeadCoach: Boolean = false
-    var title: String? = null
-}
 open class Coach : RealmObject() {
 
     companion object {

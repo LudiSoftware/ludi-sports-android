@@ -5,7 +5,6 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
-import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.model.TryOut
 import io.usys.report.utils.getTimeStamp
 import io.usys.report.utils.newUUID
@@ -17,9 +16,6 @@ open class CoachSession : RealmObject(), Serializable {
     var id: String = newUUID()
     var dateCreated: String = getTimeStamp()
     var teamIds: RealmList<String>? = RealmList()
-
-
-    var teamRef: TeamRef? = null
     var team: Team? = null
     var rosterId: String? = "null"
     var roster: Roster? = null

@@ -24,7 +24,7 @@ open class League : RealmObject() {
     @PrimaryKey
     var id: String = newUUID()
     var name: String? = null
-    var organizationRefs: RealmList<OrganizationRef>? = null
+    var organizationIds: RealmList<String>? = null
     var hasReview: Boolean = false
     var reviews: ReviewBundle? = null
     // base

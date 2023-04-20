@@ -8,10 +8,7 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.fireSaveUserToFirebaseAsync
 import io.usys.report.realm.writeToRealm
-import io.usys.report.realm.model.Coach
-import io.usys.report.realm.model.Player
 import io.usys.report.realm.model.Session
-import io.usys.report.realm.realm
 import io.usys.report.utils.*
 import io.usys.report.utils.AuthTypes.Companion.BASIC_USER
 import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED

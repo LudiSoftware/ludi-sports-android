@@ -9,8 +9,15 @@ import io.usys.report.realm.safeWrite
 import io.usys.report.realm.writeToRealm
 import io.usys.report.utils.tryCatch
 
+/** Helpers **/
+fun DataSnapshot.addChildStringList(childName: String, targetList: RealmList<String>?) {
+    this.child(childName).value?.let { childValue ->
+        val tempList = (childValue as? ArrayList<*>)
+        tempList?.forEach { targetList?.add(it as? String) }
+    }
+}
 
-
+/** Main Parsers **/
 @Deprecated("Use toLudiObject() instead")
 inline fun <reified T : Any> DataSnapshot?.toObject(): T? {
     this?.let {

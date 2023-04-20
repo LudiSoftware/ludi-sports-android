@@ -37,7 +37,12 @@ inline fun Realm.idBundleSession(isUpdate:Boolean=false, crossinline block: (IdB
     this.safeUserId {
         val result = this.where(IdBundleSession::class.java).equalTo("id", it).findFirst()
         if (result != null) {
-            if (isUpdate) { this.safeWrite { block(result) } }
+            if (isUpdate) {
+                this.safeWrite {
+                    block(result)
+                    this.refresh()
+                }
+            }
             else { block(result) }
         }
     }

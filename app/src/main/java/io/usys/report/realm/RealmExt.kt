@@ -86,3 +86,4 @@ inline fun sessionTeams(block: (RealmList<Team>) -> Unit) {
     }
 }
 
+

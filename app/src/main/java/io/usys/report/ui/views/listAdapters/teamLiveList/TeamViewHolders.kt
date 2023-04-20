@@ -3,7 +3,6 @@ package io.usys.report.ui.ludi.team.viewholders
 
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
 import io.realm.RealmList
@@ -11,7 +10,6 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
-import io.usys.report.realm.model.TeamRef
 import io.usys.report.realm.realm
 import io.usys.report.realm.sessionTeams
 import io.usys.report.ui.fragments.toTeamProfileVG

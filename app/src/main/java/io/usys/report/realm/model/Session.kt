@@ -2,12 +2,12 @@ package io.usys.report.realm.model
 
 import android.app.Activity
 import androidx.core.app.ActivityCompat
-import io.realm.Realm
 import io.usys.report.ui.AuthControllerActivity
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFireLogoutAsync
+import io.usys.report.realm.model.users.Player
 import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.realm
@@ -71,22 +71,6 @@ open class Session : RealmObject() {
             return false
         }
 
-        fun addUserToSession(user: User) {
-            writeToRealm { itRealm ->
-                session { itSession ->
-                    itSession.user = user
-                    itRealm.copyToRealmOrUpdate(itSession)
-                }
-            }
-        }
-
-        fun Realm.addCoachToSession(coach: Coach) {
-            session { itSession ->
-                itSession.coach = coach
-                this.copyToRealmOrUpdate(itSession)
-            }
-        }
-
         //Must Have.
         fun createObjects() {
             writeToRealm { itRealm ->
@@ -113,7 +97,6 @@ open class Session : RealmObject() {
                 it.where(Review::class.java).findAll().deleteAllFromRealm()
                 it.where(Service::class.java).findAll().deleteAllFromRealm()
                 it.where(Team::class.java).findAll().deleteAllFromRealm()
-                it.where(TeamRef::class.java).findAll().deleteAllFromRealm()
                 it.where(PlayerRef::class.java).findAll().deleteAllFromRealm()
                 it.where(Roster::class.java).findAll().deleteAllFromRealm()
                 it.where(TryOut::class.java).findAll().deleteAllFromRealm()
@@ -181,27 +164,6 @@ open class Session : RealmObject() {
             }
         }
 
-    }
-}
-
-inline fun <reified T> addObjectToSessionList2(objectToAdd: T) {
-    val objectClassName = T::class.getClassName()
-    writeToRealm { itRealm ->
-        session { itSession ->
-            when (objectClassName) {
-                "sports" -> itSession.sports?.add(objectToAdd as Sport)
-                "services" -> itSession.services?.add(objectToAdd as Service)
-                "organizations" -> itSession.organizations?.add(objectToAdd as Organization)
-                "teams" -> itSession.teams?.add(objectToAdd as Team)
-                "coaches" -> itSession.coaches?.add(objectToAdd as Coach)
-                "players" -> itSession.players?.add(objectToAdd as Player)
-                "parents" -> itSession.parents?.add(objectToAdd as Parent)
-                "leagues" -> itSession.leagues?.add(objectToAdd as League)
-                "locations" -> itSession.locations?.add(objectToAdd as Location)
-                else -> throw IllegalArgumentException("List name not found")
-            }
-            itRealm.insertOrUpdate(itSession)
-        }
     }
 }
 

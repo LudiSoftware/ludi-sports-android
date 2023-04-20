@@ -8,7 +8,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.fireGetBaseYsrObjects
+import io.usys.report.firebase.fireGetBaseLudiObjects
 import io.usys.report.realm.model.Service
 import io.usys.report.realm.model.addToSession
 import io.usys.report.ui.views.listAdapters.loadInRealmListGrid
@@ -30,7 +30,7 @@ fun RecyclerView?.setupServiceList(context: Context, onClickReturnViewRealmObjec
 
     //Load Fresh From Firebase
     var serviceList: RealmList<Service>?
-    fireGetBaseYsrObjects<Service>(FireTypes.SERVICES) {
+    fireGetBaseLudiObjects<Service>(FireTypes.SERVICES) {
         serviceList = (this ?: RealmList())
         serviceList.addToSession()
         rv?.loadInRealmListGrid(serviceList, FireTypes.SERVICES, onClickReturnViewRealmObject)
