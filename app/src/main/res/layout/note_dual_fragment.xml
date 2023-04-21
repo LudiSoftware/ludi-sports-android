@@ -104,18 +104,21 @@
 
             <Button
                 android:id="@+id/createNoteBtnSubmit"
+                style="@style/LudiButton"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="24dp"
                 android:layout_weight="1"
                 android:text="Submit"
+                android:textColor="@color/ludiBlue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/createNoteBtnCancel" />
 
             <Button
                 android:id="@+id/createNoteBtnCancel"
+                style="@style/LudiButton"
                 android:layout_width="150dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="24dp"
@@ -131,7 +134,7 @@
             <EditText
                 android:id="@+id/createNoteEditComment"
                 android:layout_width="0dp"
-                android:layout_height="96dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"

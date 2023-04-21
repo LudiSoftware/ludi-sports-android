@@ -11,24 +11,22 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.constraintlayout.widget.ConstraintSet
-import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.NoteDualFragmentBinding
 import io.usys.report.firebase.fireludi.doubleId
 import io.usys.report.firebase.fireludi.fireAddNote
-import io.usys.report.firebase.fireludi.fireGetPlayerNotesInBackground
 import io.usys.report.firebase.fireludi.fireGetNotesByDoubleId
 import io.usys.report.providers.liveData.NoteLiveData
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.model.users.safeUserId
-import io.usys.report.realm.safeAdd
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
+import io.usys.report.ui.views.spinners.setupSpinner
 import io.usys.report.utils.isKeyboardVisible
 import io.usys.report.utils.log
+import io.usys.report.utils.views.onItemSelected
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -85,10 +83,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
             coachId = it
         }
 
-
-
         bindViews()
-        setupTeamNoteRealmListener()
         loadNotes()
         //Basic Setup
         setupDisplay()
@@ -97,20 +92,19 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     private fun loadNotes() {
         if (!playerId.isNullOrEmpty()) {
-            noteLiveData = NoteLiveData(playerId!!, "player", realmInstance!!, viewLifecycleOwner).apply {
+            noteLiveData = NoteLiveData(user!!.id, playerId!!, realmInstance!!, viewLifecycleOwner).apply {
                 enable()
             }
             notesType = NOTE_PLAYER
             realmInstance?.fireGetNotesByDoubleId(user!!.id, playerId)
         } else {
-            noteLiveData = NoteLiveData(teamId!!, "player", realmInstance!!, viewLifecycleOwner).apply {
+            noteLiveData = NoteLiveData(user!!.id, teamId!!, realmInstance!!, viewLifecycleOwner).apply {
                 enable()
             }
             notesType = NOTE_TEAM
             realmInstance?.fireGetNotesByDoubleId(user!!.id, teamId)
         }
-
-        noteLiveData?.observe(viewLifecycleOwner) { notes ->
+        noteLiveData?.observe(viewLifecycleOwner) { _ ->
             log("Notes results updated")
             setupDisplayNotes()
         }
@@ -137,10 +131,14 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     private fun setupSpinners() {
         // Spinners
-        adapterType = CustomSpinnerAdapter(requireContext(), noteTypes)
-        spinnerType?.adapter = adapterType
-        adapterSubtype = CustomSpinnerAdapter(requireContext(), noteTypes)
-        spinnerSubtype?.adapter = adapterSubtype
+        spinnerType?.setupSpinner(noteTypes) {
+            notesType = it
+            log("Notes Type: $notesType")
+        }
+        spinnerSubtype.setupSpinner(noteTypes) {
+            notesSubtype = it
+            log("Notes Type: $notesType")
+        }
     }
 
     private fun setupDisplay() {
@@ -161,7 +159,6 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
         setupSpinners()
         toggleViewMode()
-        // Notes Setup
         setupDisplayNotes()
 
         // Toggle Switch between View/Create Note
@@ -174,7 +171,6 @@ class DualNotesFragment : LudiStringIdsFragment() {
                 toggleViewMode()
             }
         }
-
         submitButton()
     }
 
@@ -202,49 +198,37 @@ class DualNotesFragment : LudiStringIdsFragment() {
     /** Create Note **/
     private fun addNoteToFirebase() {
         val noteMessage = _binding?.createNoteEditComment?.text.toString()
-        val type = spinnerType?.selectedItem.toString()
-        val subtype = spinnerSubtype?.selectedItem.toString()
         val noteObject = Note()
-        noteObject.type = type
-        noteObject.subtype = subtype
+        noteObject.type = notesType
+        noteObject.subtype = notesSubtype
         noteObject.coachId = coachId
-        noteObject.ownerId = doubleId(coachId!!, teamId ?: playerId ?: "private")
+        noteObject.ownerId = user?.id
+        noteObject.doubleId = doubleId(coachId!!, teamId ?: playerId ?: "private")
         noteObject.ownerName = user?.name
         noteObject.aboutTeamId = teamId
         noteObject.aboutCoachId = "unassigned"
         noteObject.aboutPlayerId = playerId
         noteObject.message = noteMessage
         fireAddNote(noteObject)
+        clearScreen()
         toggleViewMode()
+    }
+
+    // clear screen after submit
+    private fun clearScreen() {
+        _binding?.createNoteEditComment?.text?.clear()
+        requireActivity().dismissKeyboardShortcutsHelper()
     }
 
     private fun moveLayoutUpwards() {
         // Adjust the layout as needed when the keyboard is shown.
         val translateY = -resources.getDimensionPixelSize(R.dimen.translate_y_value)
         _binding?.createNoteEditComment?.animate()?.translationY(translateY.toFloat())?.setDuration(0)?.start()
-//        _binding?.createNoteMainLayout?.animate()?.translationY(translateY.toFloat())?.setDuration(250)?.start()
     }
 
     private fun resetLayoutPosition() {
         // Reset the layout position when the keyboard is hidden.
-        val translateY = resources.getDimensionPixelSize(R.dimen.translate_y_value)
         _binding?.createNoteEditComment?.animate()?.translationY(0f)?.setDuration(0)?.start()
-    }
-
-    /** Get Notes **/
-    private fun setupTeamNoteRealmListener() {
-        val noteListener = RealmChangeListener<RealmResults<Note>> { itResults ->
-            // Handle changes to the Realm data here
-            log("Note listener called")
-            for (note in itResults) {
-                log("Note: ${note}")
-                notes?.safeAdd(note)
-            }
-            if (!notes.isNullOrEmpty()) {
-                setupDisplayNotes()
-            }
-        }
-        realmInstance?.where(Note::class.java)?.findAllAsync()?.addChangeListener(noteListener)
     }
 
     override fun onPause() {

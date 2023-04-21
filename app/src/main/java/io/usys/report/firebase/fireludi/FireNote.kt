@@ -36,17 +36,6 @@ fun Realm.fireGetNotesByDoubleId(ownerId:String?, aboutId:String?) {
     }
 }
 
-fun Realm.fireGetPlayerNotesInBackground(teamId:String?) {
-    if (teamId == null) return
-    firebaseDatabase {
-        it.child(DatabasePaths.NOTES.path).orderByChild("aboutPlayerId").equalTo(teamId)
-            .singleValueEvent { ds ->
-                ds?.toLudiObjects<Note>(this)
-                log("Notes Updated")
-            }
-    }
-}
-
 fun fireAddNote(note:Note) {
     firebaseDatabase {
         it.child(DatabasePaths.NOTES.path).child(note.id).setValue(note)

@@ -18,6 +18,7 @@ open class Note : RealmObject(), Serializable {
     var ownerId: String? = "null"
     var ownerName: String? = "null"
     var coachId: String? = "null"
+    var doubleId: String? = "null"
     var dateCreated: String = getTimeStamp()
     var dateUpdated: String = getTimeStamp()
     var aboutTeamId: String? = "null"

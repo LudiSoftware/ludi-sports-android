@@ -31,7 +31,7 @@ class NoteLiveData(ownerId: String, aboutId:String, private val realmInstance: R
 
     /** Create Observer Pairs **/
     private fun createObservers() {
-        fireReferences = reference.orderByChild("ownerId").equalTo(doubleId)
+        fireReferences = reference.orderByChild("doubleId").equalTo(doubleId)
         fireListeners= this
         if (enabled) {
             fireReferences?.addValueEventListener(fireListeners ?: return)
