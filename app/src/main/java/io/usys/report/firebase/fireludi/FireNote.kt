@@ -1,5 +1,6 @@
 package io.usys.report.firebase.fireludi
 
+import io.realm.Realm
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.firebase.singleValueEvent
 import io.usys.report.firebase.firebaseDatabase
@@ -7,26 +8,40 @@ import io.usys.report.firebase.toLudiObjects
 import io.usys.report.realm.model.Note
 import io.usys.report.utils.log
 
+
+fun doubleId(ownerId:String, aboutId:String):String {
+    return "${ownerId}:${aboutId}"
+}
+
+fun parseDoubleId(combinedId: String): Pair<String, String> {
+    val ids = combinedId.split(":")
+    if (ids.size != 2) {
+        throw IllegalArgumentException("Invalid input format. Expected 'idOne:idTwo'.")
+    }
+    return Pair(ids[0], ids[1])
+}
+
+
 /**
  * Notes
  */
-fun fireGetTeamNotesInBackground(teamId:String?) {
-    if (teamId == null) return
+fun Realm.fireGetNotesByDoubleId(ownerId:String?, aboutId:String?) {
+    if (ownerId == null || aboutId == null) return
     firebaseDatabase {
-        it.child(DatabasePaths.NOTES.path).orderByChild("aboutTeamId").equalTo(teamId)
+        it.child(DatabasePaths.NOTES.path).orderByChild("ownerId").equalTo(doubleId(ownerId, aboutId))
             .singleValueEvent { ds ->
-                ds?.toLudiObjects<Note>()
+                ds?.toLudiObjects<Note>(this)
                 log("Notes Updated")
             }
     }
 }
 
-fun fireGetPlayerNotesInBackground(teamId:String?) {
+fun Realm.fireGetPlayerNotesInBackground(teamId:String?) {
     if (teamId == null) return
     firebaseDatabase {
         it.child(DatabasePaths.NOTES.path).orderByChild("aboutPlayerId").equalTo(teamId)
             .singleValueEvent { ds ->
-                ds?.toLudiObjects<Note>()
+                ds?.toLudiObjects<Note>(this)
                 log("Notes Updated")
             }
     }

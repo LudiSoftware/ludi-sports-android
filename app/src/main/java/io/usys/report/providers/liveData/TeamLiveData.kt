@@ -15,6 +15,20 @@ import io.usys.report.realm.observe
 import io.usys.report.realm.safeReplace
 import io.usys.report.utils.log
 
+/**
+ * Setup:
+    teamLiveData = TeamLiveData(realmIds, realmInstance, fragment.viewLifecycleOwner).apply {
+        enable()
+    }
+ * Usage:
+    teamLiveData?.observe(fragment.viewLifecycleOwner) { teams ->
+        log("Team results updated")
+        teams.forEach {
+            itemList?.safeAdd(it)
+        }
+        notifyDataSetChanged()
+    }
+ */
 class TeamLiveData(private val realmIds: List<String>,
                    private val realmInstance: Realm,
                    private val lifecycleOwner: LifecycleOwner) : LiveData<List<Team>>(), ValueEventListener {

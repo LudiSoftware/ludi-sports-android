@@ -11,15 +11,18 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.constraintlayout.widget.ConstraintSet
 import io.realm.RealmChangeListener
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.R
 import io.usys.report.databinding.NoteDualFragmentBinding
+import io.usys.report.firebase.fireludi.doubleId
 import io.usys.report.firebase.fireludi.fireAddNote
 import io.usys.report.firebase.fireludi.fireGetPlayerNotesInBackground
-import io.usys.report.firebase.fireludi.fireGetTeamNotesInBackground
+import io.usys.report.firebase.fireludi.fireGetNotesByDoubleId
+import io.usys.report.providers.liveData.NoteLiveData
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.safeAdd
@@ -39,6 +42,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
         const val TAB = "Notes"
     }
 
+    private var noteLiveData: NoteLiveData? = null
     private val noteTypes = listOf("Player", "Team", "TryOut", "General")
 
     var notesType: String? = "General"
@@ -81,6 +85,8 @@ class DualNotesFragment : LudiStringIdsFragment() {
             coachId = it
         }
 
+
+
         bindViews()
         setupTeamNoteRealmListener()
         loadNotes()
@@ -91,12 +97,24 @@ class DualNotesFragment : LudiStringIdsFragment() {
 
     private fun loadNotes() {
         if (!playerId.isNullOrEmpty()) {
+            noteLiveData = NoteLiveData(playerId!!, "player", realmInstance!!, viewLifecycleOwner).apply {
+                enable()
+            }
             notesType = NOTE_PLAYER
-            fireGetPlayerNotesInBackground(playerId)
+            realmInstance?.fireGetNotesByDoubleId(user!!.id, playerId)
         } else {
+            noteLiveData = NoteLiveData(teamId!!, "player", realmInstance!!, viewLifecycleOwner).apply {
+                enable()
+            }
             notesType = NOTE_TEAM
-            fireGetTeamNotesInBackground(teamId)
+            realmInstance?.fireGetNotesByDoubleId(user!!.id, teamId)
         }
+
+        noteLiveData?.observe(viewLifecycleOwner) { notes ->
+            log("Notes results updated")
+            setupDisplayNotes()
+        }
+
     }
 
     private fun setupDisplayNotes() {
@@ -190,7 +208,7 @@ class DualNotesFragment : LudiStringIdsFragment() {
         noteObject.type = type
         noteObject.subtype = subtype
         noteObject.coachId = coachId
-        noteObject.ownerId = coachId
+        noteObject.ownerId = doubleId(coachId!!, teamId ?: playerId ?: "private")
         noteObject.ownerName = user?.name
         noteObject.aboutTeamId = teamId
         noteObject.aboutCoachId = "unassigned"
@@ -203,12 +221,14 @@ class DualNotesFragment : LudiStringIdsFragment() {
     private fun moveLayoutUpwards() {
         // Adjust the layout as needed when the keyboard is shown.
         val translateY = -resources.getDimensionPixelSize(R.dimen.translate_y_value)
-        _binding?.createNoteMainLayout?.animate()?.translationY(translateY.toFloat())?.setDuration(250)?.start()
+        _binding?.createNoteEditComment?.animate()?.translationY(translateY.toFloat())?.setDuration(0)?.start()
+//        _binding?.createNoteMainLayout?.animate()?.translationY(translateY.toFloat())?.setDuration(250)?.start()
     }
 
     private fun resetLayoutPosition() {
         // Reset the layout position when the keyboard is hidden.
-        _binding?.createNoteMainLayout?.animate()?.translationY(0f)?.setDuration(250)?.start()
+        val translateY = resources.getDimensionPixelSize(R.dimen.translate_y_value)
+        _binding?.createNoteEditComment?.animate()?.translationY(0f)?.setDuration(0)?.start()
     }
 
     /** Get Notes **/

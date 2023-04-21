@@ -40,7 +40,7 @@
             android:name="io.usys.report.ui.ludi.MasterUserActivity"
             android:label="Main Ludi Activity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -8,5 +8,5 @@
     <!-- Tab text sizes -->
     <dimen name="tabTextSize">14sp</dimen>
     <dimen name="keyboard_visibility_margin">150dp</dimen>
-    <dimen name="translate_y_value">200dp</dimen>
+    <dimen name="translate_y_value">100dp</dimen>
 </resources>
