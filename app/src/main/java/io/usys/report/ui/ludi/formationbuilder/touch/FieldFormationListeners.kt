@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.formationbuilder
+package io.usys.report.ui.ludi.formationbuilder.touch
 
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -6,19 +6,20 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.RelativeLayout
 import io.usys.report.realm.findPlayersInRosterById
-import io.usys.report.realm.findRosterById
-import io.usys.report.realm.local.rosterSessionById
-import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.views.getRelativeLayoutParams
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
 fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:String?=null,
                                            onSingleTapUp:((String) -> Unit)?=null,
-                                           onLongPress:((String) -> Unit)?=null) {
+                                           onLongPress:((String) -> Unit)?=null,
+                                           onFullSwipeLeftToRight:(() -> Unit)?=null) {
     val tempRealm = realm()
+    val swipeThreshold = 100
+    val swipeVelocityThreshold = 100
     // Window Height and Width
     var lastX = 0
     var lastY = 0
@@ -69,7 +70,16 @@ fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:Strin
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            return super.onFling(e1, e2, velocityX, velocityY)
+            val deltaX = e2!!.x - e1!!.x
+            val deltaY = e2.y - e1.y
+
+            if (abs(deltaX) > abs(deltaY) && abs(deltaX) > swipeThreshold && abs(velocityX) > swipeVelocityThreshold) {
+                if (e1.x < 10 && deltaX > 0) { // Swipe started from left edge and went to the right
+                    onFullSwipeLeftToRight?.invoke()
+                    return true
+                }
+            }
+            return false
         }
 
         override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {

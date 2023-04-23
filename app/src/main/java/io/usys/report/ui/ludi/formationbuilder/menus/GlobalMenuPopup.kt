@@ -1,6 +1,5 @@
 package io.usys.report.ui.ludi.formationbuilder.menus
 
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -10,11 +9,9 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import io.usys.report.R
 import io.usys.report.providers.fireRosterUpdatePlayers
-import io.usys.report.providers.fireRosterUpdateRoster
 import io.usys.report.realm.local.rosterSessionById
-import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.formationbuilder.RosterFormationFragment
-import io.usys.report.ui.ludi.formationbuilder.onGestureDetectorRosterFormation
+import io.usys.report.ui.ludi.formationbuilder.touch.onGestureDetectorRosterFormation
 import io.usys.report.ui.ludi.formationbuilder.preparePlayerLayoutParamsForFormation
 import io.usys.report.utils.attachViewsToOnClickListener
 import io.usys.report.utils.inflateView

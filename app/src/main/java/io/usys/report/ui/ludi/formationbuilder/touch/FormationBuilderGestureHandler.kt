@@ -9,6 +9,10 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.GestureDetectorCompat
+import io.usys.report.ui.views.gestures.isDownScroll
+import io.usys.report.ui.views.gestures.isSwipeLeftToRight
+import io.usys.report.ui.views.gestures.isSwipeRightToLeft
+import io.usys.report.ui.views.gestures.isUpScroll
 import kotlin.math.abs
 import kotlin.math.atan2
 
@@ -19,7 +23,9 @@ import kotlin.math.atan2
  * @param motionLayout The MotionLayout
  *
  */
-class FormationBuilderGestureHandler(context: Context, private val motionLayout: MotionLayout) : View.OnTouchListener {
+class FormationBuilderGestureHandler(context: Context,
+                                     private val motionLayout: MotionLayout,
+                                     onNavSwipe: (() -> Unit)?) : View.OnTouchListener {
 
     private val gestureDetector: GestureDetectorCompat =
         GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
@@ -44,6 +50,12 @@ class FormationBuilderGestureHandler(context: Context, private val motionLayout:
             override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
                 e1?.let { event1 ->
                     e2?.let { event2 ->
+
+                        if (isSwipeRightToLeft(event1, event2, velocityX, null)) {
+                            onNavSwipe?.invoke()
+                            return true
+                        }
+
                         val deltaY = event2.y - event1.y
                         val deltaX = event2.x - event1.x
                         val isVerticalSwipe = abs(deltaY) > abs(deltaX)
@@ -69,34 +81,3 @@ class FormationBuilderGestureHandler(context: Context, private val motionLayout:
 }
 
 
-/**
- * Helpers to:
- *      Return the scroll direction of the MotionEvent
- */
-fun MotionEvent.getScrollDirection(event2: MotionEvent): String {
-    val deltaX = event2.x - x
-    val deltaY = event2.y - y
-    val angle = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble()))
-    return when {
-        angle > -45 && angle <= 45 -> "right" // Right
-        angle > 45 && angle <= 135 -> "up" // Up
-        angle > 135 || angle <= -135 -> "left" // Left
-        else -> "down" // Down
-    }
-}
-
-fun MotionEvent.isUpScroll(): Boolean {
-    return getScrollDirection(this) == "up"
-}
-
-fun MotionEvent.isDownScroll(): Boolean {
-    return getScrollDirection(this) == "down"
-}
-
-fun MotionEvent.isLeftScroll(): Boolean {
-    return getScrollDirection(this) == "left"
-}
-
-fun MotionEvent.isRightScroll(): Boolean {
-    return getScrollDirection(this) == "right"
-}

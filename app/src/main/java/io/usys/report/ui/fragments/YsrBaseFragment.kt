@@ -38,7 +38,9 @@ import io.usys.report.ui.fragments.YsrFragment.Companion.PLAYER_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.ROSTER_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TEAM_ID
 import io.usys.report.ui.fragments.YsrFragment.Companion.TYPE
+import io.usys.report.ui.ludi.TO_FORMATION_BUILDER
 import io.usys.report.ui.ludi.TO_PLAYER_PROFILE
+import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
 import io.usys.report.ui.ludi.TO_TEAM_PROFILE
 import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
@@ -174,6 +176,15 @@ fun Fragment.toTeamProfileVG(teamId: String) {
 fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null) {
     toFragmentWithIds(TO_PLAYER_PROFILE, teamId = teamId, playerId = playerId)
 }
+
+fun Fragment.toFormationBuilder(teamId:String?=null) {
+    toFragmentWithIds(TO_FORMATION_BUILDER, teamId = teamId)
+}
+
+fun Fragment.toRosterBuilder(teamId:String?=null) {
+    toFragmentWithIds(TO_ROSTER_BUILDER, teamId = teamId)
+}
+
 fun Fragment.goBack() {
     this.findNavController().navigateUp()
 }

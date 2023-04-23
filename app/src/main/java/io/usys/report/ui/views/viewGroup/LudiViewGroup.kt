@@ -9,7 +9,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.usys.report.R
 import io.usys.report.ui.fragments.LudiPagerAdapter
-import io.usys.report.ui.fragments.LudiRosterPagerAdapter
 import io.usys.report.ui.ludi.chat.ChatFragment
 import io.usys.report.ui.ludi.evaluation.CreateEvaluationFragment
 import io.usys.report.ui.ludi.note.DualNotesFragment

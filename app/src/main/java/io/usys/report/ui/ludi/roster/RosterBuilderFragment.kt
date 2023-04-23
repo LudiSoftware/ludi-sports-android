@@ -1,5 +1,6 @@
 package io.usys.report.ui.ludi.roster
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
@@ -10,6 +11,7 @@ import io.usys.report.providers.*
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.views.gestures.HorizontalFlingDetector
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.menus.LudiPopupMenu
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
@@ -45,6 +47,7 @@ class RosterBuilderFragment : YsrFragment() {
         TODO("Not yet implemented")
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = RosterBuilderFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
@@ -81,6 +84,19 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterIds()
         setupRosterTypeSpinner()
         setupRosterSizeSpinner()
+
+        val onNavFling = { _: String ->
+            //todo:
+            toFormationBuilder(teamId)
+        }
+
+        val flingNavGestures = HorizontalFlingDetector(requireContext(), onNavFling)
+        _binding?.rosterBuilderLudiInnerConstraintLayout?.setOnTouchListener(flingNavGestures)
+
+
+        _binding?.rosterBuilderLudiRosterView?.ludiRosterView?.onFlingListener = {
+            toFormationBuilder(teamId)
+        }
         return rootView
     }
 

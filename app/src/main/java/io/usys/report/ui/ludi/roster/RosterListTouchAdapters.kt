@@ -33,6 +33,7 @@ class RosterLiveDragDropAction(private val adapter: RosterListLiveAdapter) :  It
         adapter.softRefresh()
         log("clearView: RosterId = ${adapter.config.rosterId}")
     }
+
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
         log("onSelectedChanged: RosterId = ${adapter.config.rosterId}")

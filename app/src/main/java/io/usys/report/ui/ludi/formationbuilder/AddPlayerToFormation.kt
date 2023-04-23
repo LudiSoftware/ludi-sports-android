@@ -8,6 +8,7 @@ import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.ludi.formationbuilder.menus.showPlayerMenuPopup
+import io.usys.report.ui.ludi.formationbuilder.touch.onGestureDetectorRosterFormation
 import io.usys.report.utils.inflateView
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log

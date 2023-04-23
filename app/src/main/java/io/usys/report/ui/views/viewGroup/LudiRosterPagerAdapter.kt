@@ -1,4 +1,4 @@
-package io.usys.report.ui.fragments
+package io.usys.report.ui.views.viewGroup
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -7,7 +7,6 @@ import io.realm.RealmResults
 import io.usys.report.realm.*
 import io.usys.report.realm.model.TryOut
 import io.usys.report.ui.ludi.roster.ViewRosterListFragment
-import io.usys.report.utils.log
 
 class LudiRosterPagerAdapter(private val parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
 

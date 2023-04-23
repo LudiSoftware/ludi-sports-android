@@ -18,6 +18,7 @@ import io.usys.report.realm.*
 import io.usys.report.realm.local.*
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
+import io.usys.report.ui.fragments.toRosterBuilder
 import io.usys.report.ui.ludi.formationbuilder.menus.createGlobalMenuButton
 import io.usys.report.ui.ludi.formationbuilder.touch.FormationBuilderGestureHandler
 import io.usys.report.ui.ludi.player.ludiFilters
@@ -36,7 +37,7 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     var adapterSubstitutes: RosterFormationListLiveAdapter? = null
     var adapterFiltered: RosterFormationListLiveAdapter? = null
     var formationRelativeLayout: RelativeLayout? = null
-    var deckLinearLayout: LinearLayoutCompat? = null
+    private var deckLinearLayout: LinearLayoutCompat? = null
     var deckSubsRecyclerView: RecyclerView? = null
     var deckFilteredRecyclerView: RecyclerView? = null
     var rosterTypeSpinner: Spinner? = null
@@ -114,6 +115,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun bindViews() {
         floatingMenuButton = rootView.findViewById(R.id.formationBuilderFloatingActionButton)
         soccerFieldImageView = rootView.findViewById(R.id.soccerfield)
+//        soccerFieldImageView.addOnNavigationFling {
+//            log("SoccerField: Nav Fling!")
+//            toRosterBuilder(teamId)
+//        }
         motionConstraintLayout = rootView.findViewById(R.id.formationMotionRootLayout)
         deckLinearLayout = rootView.findViewById(R.id.formationRosterListsLinearLayout)
         deckSubsRecyclerView = rootView.findViewById(R.id.ysrTORecycler)
@@ -126,7 +131,13 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setupMotionLayoutListener() {
         motionConstraintLayout?.let {
-            val formationGestureDetector = FormationBuilderGestureHandler(requireContext(), it)
+
+            val onNavFling = {
+                log("MotionLayout: Nav Fling!")
+                toRosterBuilder(teamId)
+            }
+
+            val formationGestureDetector = FormationBuilderGestureHandler(requireContext(), it, onNavSwipe = onNavFling)
             it.setOnTouchListener(formationGestureDetector)
             formationRelativeLayout?.setOnTouchListener(formationGestureDetector)
         }

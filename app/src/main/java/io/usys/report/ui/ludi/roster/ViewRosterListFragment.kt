@@ -42,12 +42,6 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
 
 
     /**
-     * TODO:
-     *      1. Validate drag and drop works.
-     *      2. Update list with new order in Realm.
-     *      2. Sort List by Order.
-     *      3. Create different Sort Functions like sort by Name.
-     *
      * What Other Modifications or Tools would we need for this page?
      *
      */

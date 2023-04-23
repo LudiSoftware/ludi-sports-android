@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/roster_builder_fragment_scene">
 
-    <io.usys.report.ui.views.LudiConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rosterBuilderLudiInnerConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -78,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rosterBuilderLudiSpinRosterType"
             app:layout_constraintTop_toTopOf="@+id/rosterBuilderLudiSpinRosterType" />
-    </io.usys.report.ui.views.LudiConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/rosterBuilderLudiRosterView"
