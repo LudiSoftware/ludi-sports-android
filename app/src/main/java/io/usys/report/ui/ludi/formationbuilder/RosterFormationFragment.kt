@@ -115,10 +115,6 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     private fun bindViews() {
         floatingMenuButton = rootView.findViewById(R.id.formationBuilderFloatingActionButton)
         soccerFieldImageView = rootView.findViewById(R.id.soccerfield)
-//        soccerFieldImageView.addOnNavigationFling {
-//            log("SoccerField: Nav Fling!")
-//            toRosterBuilder(teamId)
-//        }
         motionConstraintLayout = rootView.findViewById(R.id.formationMotionRootLayout)
         deckLinearLayout = rootView.findViewById(R.id.formationRosterListsLinearLayout)
         deckSubsRecyclerView = rootView.findViewById(R.id.ysrTORecycler)

@@ -152,6 +152,7 @@ class RosterBuilderFragment : YsrFragment() {
             realmInstance?.findTryOutById(tryoutId)?.let { to ->
                 to.rosterId?.let {
                     // tryout roster
+                    rosterIds.clear()
                     rosterIds[RosterType.TRYOUT.type] = it
                     rosterIds[RosterType.SELECTED.type] = it
                     currentRosterId = it
