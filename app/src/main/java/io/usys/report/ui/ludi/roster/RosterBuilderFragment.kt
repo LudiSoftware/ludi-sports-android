@@ -85,13 +85,13 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeSpinner()
         setupRosterSizeSpinner()
 
-        val onNavFling = { _: String ->
-            //todo:
-            toFormationBuilder(teamId)
-        }
-
-        val flingNavGestures = HorizontalFlingDetector(requireContext(), onNavFling)
-        _binding?.rosterBuilderLudiInnerConstraintLayout?.setOnTouchListener(flingNavGestures)
+//        val onNavFling = { _: String ->
+//            //todo:
+//            toFormationBuilder(teamId)
+//        }
+//
+//        val flingNavGestures = HorizontalFlingDetector(requireContext(), onNavFling)
+//        _binding?.rosterBuilderLudiInnerConstraintLayout?.setOnTouchListener(flingNavGestures)
 
 
         _binding?.rosterBuilderLudiRosterView?.ludiRosterView?.onFlingListener = {

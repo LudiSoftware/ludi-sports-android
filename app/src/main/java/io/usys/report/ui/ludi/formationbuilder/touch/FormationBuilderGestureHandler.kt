@@ -10,11 +10,11 @@ import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.GestureDetectorCompat
 import io.usys.report.ui.views.gestures.isDownScroll
+import io.usys.report.ui.views.gestures.isRightScroll
 import io.usys.report.ui.views.gestures.isSwipeLeftToRight
 import io.usys.report.ui.views.gestures.isSwipeRightToLeft
 import io.usys.report.ui.views.gestures.isUpScroll
 import kotlin.math.abs
-import kotlin.math.atan2
 
 
 /**
@@ -52,6 +52,11 @@ class FormationBuilderGestureHandler(context: Context,
                     e2?.let { event2 ->
 
                         if (isSwipeRightToLeft(event1, event2, velocityX, null)) {
+                            onNavSwipe?.invoke()
+                            return true
+                        }
+
+                        if (isSwipeLeftToRight(event1, event2)) {
                             onNavSwipe?.invoke()
                             return true
                         }

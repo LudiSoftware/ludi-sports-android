@@ -36,18 +36,9 @@ fun MotionEvent.isRightScroll(): Boolean {
     return getScrollDirection(this) == "right"
 }
 
-fun isSwipeLeftToRight(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, callback:(()-> Unit)?) : Boolean {
-    val swipeThreshold = 100
-    val swipeVelocityThreshold = 100
-    val deltaX = e2!!.x - e1!!.x
-    val deltaY = e2.y - e1.y
-    if (abs(deltaX) > abs(deltaY) && abs(deltaX) > swipeThreshold && abs(velocityX) > swipeVelocityThreshold) {
-        // Swipe started from left edge and went to the right
-        if (e1.x < 100 && deltaX > 0) {
-            callback?.invoke()
-            return true
-        }
-    }
+fun isSwipeLeftToRight(e1: MotionEvent?, e2: MotionEvent?) : Boolean {
+    if (e1 == null || e2 == null) return false
+    if (e1.isRightScroll() && e2.isRightScroll()) { return true }
     return false
 }
 

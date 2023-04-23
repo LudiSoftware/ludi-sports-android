@@ -19,6 +19,13 @@
         <!-- Define the constraints for the ending state of the View -->
 
         <Constraint
+            android:id="@+id/formationBuilderUserHelpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/formationBuilderRosterTypeLinearLayout"/>
+
+        <Constraint
             android:id="@+id/formationRosterListsLinearLayout"
             motion:layout_editor_absoluteX="138dp"
             motion:layout_constraintWidth="match_parent"
@@ -89,6 +96,13 @@
     <ConstraintSet
         android:id="@+id/end">
         <!-- Define the constraints for the starting state of the View -->
+
+        <Constraint
+            android:id="@+id/formationBuilderUserHelpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/formationBuilderRosterTypeLinearLayout"/>
 
         <Constraint
             android:id="@+id/formationRosterListsLinearLayout"

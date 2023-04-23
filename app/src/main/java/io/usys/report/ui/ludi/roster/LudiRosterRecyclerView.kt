@@ -7,6 +7,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import io.usys.report.ui.views.gestures.isRightScroll
 import io.usys.report.ui.views.gestures.isSwipeLeftToRight
 import io.usys.report.ui.views.gestures.isSwipeRightToLeft
 import io.usys.report.utils.log
@@ -27,7 +28,7 @@ class LudiRosterRecyclerView @JvmOverloads constructor(context: Context, attrs: 
                     onFlingListener?.invoke("left")
                     return true
                 }
-                if (isSwipeLeftToRight(e1, e2, velocityX, null)) {
+                if (isSwipeLeftToRight(e1, e2)) {
                     onFlingListener?.invoke("right")
                     return true
                 }
