@@ -7,14 +7,13 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import io.usys.report.ui.views.gestures.isRightScroll
 import io.usys.report.ui.views.gestures.isSwipeLeftToRight
 import io.usys.report.ui.views.gestures.isSwipeRightToLeft
 import io.usys.report.utils.log
 
 class LudiRosterRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RecyclerView(context, attrs, defStyle) {
 
-    private var gestureDetector: GestureDetector
+    private var gestureDetector: GestureDetector? = null
 
     // Define your onFlingListener here
     var onFlingListener: ((String) -> Unit)? = null
@@ -23,12 +22,12 @@ class LudiRosterRecyclerView @JvmOverloads constructor(context: Context, attrs: 
     init {
         onFlinger()
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
                 if (isSwipeRightToLeft(e1, e2, velocityX, null)) {
                     onFlingListener?.invoke("left")
                     return true
                 }
-                if (isSwipeLeftToRight(e1, e2)) {
+                if (isSwipeLeftToRight(e1, e2, velocityX, null)) {
                     onFlingListener?.invoke("right")
                     return true
                 }
@@ -46,7 +45,7 @@ class LudiRosterRecyclerView @JvmOverloads constructor(context: Context, attrs: 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(e: MotionEvent): Boolean {
         // Detect the fling gesture without interrupting the drag listener
-        gestureDetector.onTouchEvent(e)
+        if (gestureDetector != null) gestureDetector?.onTouchEvent(e)
         return super.onTouchEvent(e)
     }
 }

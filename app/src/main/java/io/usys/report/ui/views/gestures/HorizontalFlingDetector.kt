@@ -20,7 +20,7 @@ class HorizontalFlingDetector(context: Context, onNavSwipe: ((String) -> Unit)?)
                             return true
                         }
 
-                        if (isSwipeLeftToRight(event1, event2)) {
+                        if (isSwipeLeftToRight(event1, event2, velocityX, null)) {
                             onNavSwipe?.invoke("right")
                             return true
                         }

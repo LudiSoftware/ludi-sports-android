@@ -85,15 +85,6 @@ class RosterBuilderFragment : YsrFragment() {
         setupRosterTypeSpinner()
         setupRosterSizeSpinner()
 
-//        val onNavFling = { _: String ->
-//            //todo:
-//            toFormationBuilder(teamId)
-//        }
-//
-//        val flingNavGestures = HorizontalFlingDetector(requireContext(), onNavFling)
-//        _binding?.rosterBuilderLudiInnerConstraintLayout?.setOnTouchListener(flingNavGestures)
-
-
         _binding?.rosterBuilderLudiRosterView?.ludiRosterView?.onFlingListener = {
             toFormationBuilder(teamId)
         }
@@ -163,6 +154,7 @@ class RosterBuilderFragment : YsrFragment() {
                     // tryout roster
                     rosterIds[RosterType.TRYOUT.type] = it
                     rosterIds[RosterType.SELECTED.type] = it
+                    currentRosterId = it
                 }
                 this.tryoutId = tryoutId
             }
@@ -199,7 +191,7 @@ class RosterBuilderFragment : YsrFragment() {
 
     private fun setupRosterList() {
         rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
-        currentRosterId?.let { rosterId ->
+        currentRosterId?.let {
             when (rosterType) {
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
