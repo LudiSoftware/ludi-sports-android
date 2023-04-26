@@ -26,10 +26,10 @@ fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:Strin
     var topMargin = 0
     var leftMargin = 0
     val viewObject: View? = this
-    val scaleGestureDetector = ScaleGestureDetector(this?.context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    val scaleGestureDetector = ScaleGestureDetector(this!!.context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         var scaleFactor = 1.0f
-        override fun onScale(detector: ScaleGestureDetector?): Boolean {
-            scaleFactor *= detector?.scaleFactor ?: 1.0f
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            scaleFactor *= detector.scaleFactor
             scaleFactor = max(0.1f, min(scaleFactor, 5.0f))
             viewObject?.scaleX = scaleFactor
             viewObject?.scaleY = scaleFactor
@@ -37,7 +37,7 @@ fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:Strin
         }
     })
     // Create the gesture detector
-    val gestureDetector = GestureDetector(this?.context, object : GestureDetector.SimpleOnGestureListener() {
+    val gestureDetector = GestureDetector(this.context, object : GestureDetector.SimpleOnGestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             lastX = e.rawX.toInt()
             lastY = e.rawY.toInt()
@@ -47,30 +47,30 @@ fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:Strin
             return true
         }
 
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             if (playerId != null) {
                 onSingleTapUp?.invoke(playerId)
             }
             return true
         }
 
-        override fun onDoubleTap(e: MotionEvent?): Boolean {
+        override fun onDoubleTap(e: MotionEvent): Boolean {
 
             return true
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
             if (playerId != null) {
                 onLongPress?.invoke(playerId)
             }
         }
 
-        override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
+        override fun onDoubleTapEvent(e: MotionEvent): Boolean {
             return super.onDoubleTapEvent(e)
         }
 
-        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            val deltaX = e2!!.x - e1!!.x
+        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+            val deltaX = e2.x - e1.x
             val deltaY = e2.y - e1.y
 
             if (abs(deltaX) > abs(deltaY) && abs(deltaX) > swipeThreshold && abs(velocityX) > swipeVelocityThreshold) {
@@ -117,7 +117,7 @@ fun View?.onGestureDetectorRosterFormation(rosterId:String?=null, playerId:Strin
     })
 
     // Set the touch listener to pass events to the gesture detector
-    this?.setOnTouchListener { _, event ->
+    this.setOnTouchListener { _, event ->
         scaleGestureDetector.onTouchEvent(event)
         gestureDetector.onTouchEvent(event)
         true

@@ -78,7 +78,7 @@ fun getLatLngFromCityState(context:Context, city: String, state: String): Pair<D
     val address = "$city, $state"
     val location = geocoder.getFromLocationName(address, 1)
 
-    if (location.isNotEmpty()) {
+    if (location!!.isNotEmpty()) {
         val latitude = location[0].latitude
         val longitude = location[0].longitude
         return Pair(latitude, longitude)

@@ -47,7 +47,7 @@ open class LudiFreeFormGestureDetector(context: Context, private val actionCallb
         return true
     }
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             actionCallback(e)
             return super.onSingleTapUp(e)
         }
@@ -57,11 +57,11 @@ open class LudiFreeFormGestureDetector(context: Context, private val actionCallb
 @SuppressLint("ClickableViewAccessibility")
 inline fun View.onDownUpListener(crossinline onDown: () -> Unit, crossinline onSingleTap: () -> Unit) {
     val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             onSingleTap()
             return true
         }

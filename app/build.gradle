@@ -10,7 +10,7 @@ android {
         applicationId "io.usys.report"
         minSdkVersion 26
         targetSdkVersion 33
-        compileSdkVersion 31
+        compileSdkVersion 33
         versionCode 4
         versionName "0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -27,19 +27,20 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         apiVersion = "1.4"
         languageVersion = "1.4"
         freeCompilerArgs = ['-Xinline-classes']
     }
+
+
 }
 
-def roomVersion = '2.2.2'
 def retrofitVersion = '2.3.0'
 
 dependencies {

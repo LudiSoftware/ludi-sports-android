@@ -28,7 +28,7 @@ class FormationBuilderGestureHandler(context: Context,
 
     private val gestureDetector: GestureDetectorCompat =
         GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 // Handle single tap event here
                 if (motionLayout.progress > 0.8f) {
                     motionLayout.transitionToStart()
@@ -36,7 +36,7 @@ class FormationBuilderGestureHandler(context: Context,
                 return true
             }
 
-            override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+            override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
                 // Handle scroll events (swipe up/down) here
                 if (e1!!.isUpScroll()) {
                     motionLayout.transitionToEnd()
@@ -46,32 +46,27 @@ class FormationBuilderGestureHandler(context: Context,
                 return true
             }
 
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-                e1?.let { event1 ->
-                    e2?.let { event2 ->
+            override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (isSwipeRightToLeft(e1, e2, velocityX, null)) {
+                    onNavSwipe?.invoke()
+                    return true
+                }
 
-                        if (isSwipeRightToLeft(event1, event2, velocityX, null)) {
-                            onNavSwipe?.invoke()
-                            return true
-                        }
+                if (isSwipeLeftToRight(e1, e1, velocityX, null)) {
+                    onNavSwipe?.invoke()
+                    return true
+                }
 
-                        if (isSwipeLeftToRight(event1, event2, velocityX, null)) {
-                            onNavSwipe?.invoke()
-                            return true
-                        }
-
-                        val deltaY = event2.y - event1.y
-                        val deltaX = event2.x - event1.x
-                        val isVerticalSwipe = abs(deltaY) > abs(deltaX)
-                        if (isVerticalSwipe) {
-                            if (deltaY < 0) {
-                                // Handle fling up
-                                motionLayout.transitionToEnd()
-                            } else {
-                                // Handle fling down
-                                motionLayout.transitionToStart()
-                            }
-                        }
+                val deltaY = e2.y - e1.y
+                val deltaX = e2.x - e1.x
+                val isVerticalSwipe = abs(deltaY) > abs(deltaX)
+                if (isVerticalSwipe) {
+                    if (deltaY < 0) {
+                        // Handle fling up
+                        motionLayout.transitionToEnd()
+                    } else {
+                        // Handle fling down
+                        motionLayout.transitionToStart()
                     }
                 }
                 return true

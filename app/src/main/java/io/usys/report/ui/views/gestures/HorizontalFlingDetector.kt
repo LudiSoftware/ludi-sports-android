@@ -11,20 +11,15 @@ class HorizontalFlingDetector(context: Context, onNavSwipe: ((String) -> Unit)?)
 
     private val gestureDetector: GestureDetectorCompat =
         GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-                e1?.let { event1 ->
-                    e2?.let { event2 ->
+            override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (isSwipeRightToLeft(e1, e2, velocityX, null)) {
+                    onNavSwipe?.invoke("left")
+                    return true
+                }
 
-                        if (isSwipeRightToLeft(event1, event2, velocityX, null)) {
-                            onNavSwipe?.invoke("left")
-                            return true
-                        }
-
-                        if (isSwipeLeftToRight(event1, event2, velocityX, null)) {
-                            onNavSwipe?.invoke("right")
-                            return true
-                        }
-                    }
+                if (isSwipeLeftToRight(e1, e2, velocityX, null)) {
+                    onNavSwipe?.invoke("right")
+                    return true
                 }
                 return true
             }

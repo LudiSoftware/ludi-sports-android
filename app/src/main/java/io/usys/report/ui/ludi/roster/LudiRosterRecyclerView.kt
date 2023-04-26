@@ -22,7 +22,7 @@ class LudiRosterRecyclerView @JvmOverloads constructor(context: Context, attrs: 
     init {
         onFlinger()
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
                 if (isSwipeRightToLeft(e1, e2, velocityX, null)) {
                     onFlingListener?.invoke("left")
                     return true
@@ -45,7 +45,7 @@ class LudiRosterRecyclerView @JvmOverloads constructor(context: Context, attrs: 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(e: MotionEvent): Boolean {
         // Detect the fling gesture without interrupting the drag listener
-        if (gestureDetector != null) gestureDetector?.onTouchEvent(e)
+//        if (gestureDetector != null) gestureDetector?.onTouchEvent(e)
         return super.onTouchEvent(e)
     }
 }
