@@ -29,3 +29,4 @@ open class Roster : RealmObject(), Serializable {
 }
 
 
+//create a new object for a player

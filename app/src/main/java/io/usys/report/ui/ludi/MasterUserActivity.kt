@@ -18,7 +18,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
-import io.usys.report.firebase.fireGetAndLoadSportsIntoSessionAsync
+import io.usys.report.firebase.fireludi.fireGetAndLoadSportsIntoSessionAsync
 import io.usys.report.providers.TeamMode
 import io.usys.report.providers.UserProvider
 
