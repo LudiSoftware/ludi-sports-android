@@ -16,28 +16,54 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".ui.login.LudiSignUpActivity">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/signUpImgProfile"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ysr_empty_profile_icon_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/signUpEditUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
 
+        android:layout_marginEnd="24dp"
         android:background="@drawable/ft_border_rounded_creme"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpEditName" />
+
+    <EditText
+        android:id="@+id/signUpEditName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/ft_border_rounded_creme"
+        android:hint="@string/prompt_name"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpImgProfile" />
 
     <EditText
         android:id="@+id/signUpEditPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
 
         android:background="@drawable/ft_border_rounded_creme"
@@ -47,7 +73,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintHorizontal_bias="0.781"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpEditUsername" />
 
@@ -59,7 +85,7 @@
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="152dp"
         android:enabled="true"
         android:text="@string/action_sign_up"
         android:textColor="#3F51B5"
@@ -72,6 +98,7 @@
         android:id="@+id/signUpCheckCoach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="40dp"
         android:text="Coach?"
         android:textSize="16sp"
@@ -98,13 +125,42 @@
         android:id="@+id/signUpCheckParent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:text="Parent?"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/signUpCheckCoach"
         app:layout_constraintStart_toEndOf="@+id/signUpCheckCoach"
         app:layout_constraintTop_toTopOf="@+id/signUpCheckCoach"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/signUpBtnImgProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Profile Image"
+        android:textColor="@color/ludiBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/signUpImgProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintStart_toEndOf="@+id/signUpImgProfile"
+        app:layout_constraintTop_toTopOf="@+id/signUpImgProfile"
+        app:layout_constraintVertical_bias="0.588" />
+
+    <TextView
+        android:id="@+id/signUpHeaderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Ludi Sign Up!"
+        android:textAlignment="center"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/signUpBtnImgProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

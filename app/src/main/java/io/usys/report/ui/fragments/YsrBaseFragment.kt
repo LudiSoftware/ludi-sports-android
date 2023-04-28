@@ -99,8 +99,10 @@ abstract class YsrFragment : Fragment() {
         //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
-            itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS, realmInstance?.getUserId() ?: return@fairGetPickImageFromGalleryIntent))
+            itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS))
         }
+
+//        setupMenu()
     }
 
     override fun onAttach(context: Context) {

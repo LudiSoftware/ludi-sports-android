@@ -25,6 +25,7 @@
     <string name="title_calendar">Calendar</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
+    <string name="prompt_name">Name</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign In</string>
     <string name="action_sign_up">Sign Up</string>

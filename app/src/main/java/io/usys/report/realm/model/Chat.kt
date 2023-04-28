@@ -78,14 +78,9 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
 
         if (chatMessage.senderId == userId) {
             holder.messageContainer.layoutParams = (holder.messageContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
-                startToEnd = R.id.chat_image
+                startToEnd = ConstraintLayout.LayoutParams.UNSET
                 endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                leftToRight = ConstraintLayout.LayoutParams.UNSET
-                leftToLeft = ConstraintLayout.LayoutParams.UNSET
-                startToStart = ConstraintLayout.LayoutParams.UNSET
-                endToStart = ConstraintLayout.LayoutParams.UNSET
                 marginEnd = 0
-                leftMargin = 0
             }
             holder.messageContainer.setBackgroundResource(R.drawable.ft_border_rounded_creme)
             holder.messageText.text = chatMessage.messageText
@@ -96,11 +91,8 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
             holder.messageContainer.layoutParams = (holder.messageContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
                 startToEnd = R.id.chat_image
                 endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                bottomToTop = R.id.message_time
-                topToBottom = R.id.message_sender
-                startToStart = ConstraintLayout.LayoutParams.UNSET
-                endToStart = ConstraintLayout.LayoutParams.UNSET
-                width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
+                topToTop = R.id.chat_image
+                horizontalBias = 0f
             }
             holder.messageContainer.setBackgroundResource(R.drawable.ft_border_rounded_creme)
             holder.messageUserImage.makeVisible()

@@ -6,12 +6,14 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.view.View
+import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -126,6 +128,13 @@ inline fun <reified T> T.fairPickImageFromGalleryTest(crossinline block: (Uri?) 
     }
 }
 inline fun Fragment.fairGetPickImageFromGalleryIntent(crossinline block: (Uri?) -> Unit): ActivityResultLauncher<PickVisualMediaRequest> {
+    return registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        block(uri)
+    }
+}
+
+
+inline fun AppCompatActivity.fairGetPickImageFromGalleryIntent(crossinline block: (Uri?) -> Unit): ActivityResultLauncher<PickVisualMediaRequest> {
     return registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         block(uri)
     }

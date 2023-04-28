@@ -39,7 +39,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/chat_image"
         app:layout_constraintTop_toTopOf="@+id/chat_image">
 
@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/message_sender"
         tools:srcCompat="@tools:sample/avatars"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

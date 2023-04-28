@@ -98,6 +98,7 @@ class ChatFragment : LudiStringIdsFragment() {
                 val chatMessage = Chat().apply {
                     this.messageText = message
                     this.senderId = userId
+                    this.senderImage = user?.imgUrl ?: user?.photoUrl
                     this.senderName = userName
                     this.timestamp = System.currentTimeMillis()
                 }

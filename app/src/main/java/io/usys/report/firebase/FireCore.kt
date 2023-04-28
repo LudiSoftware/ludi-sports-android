@@ -2,6 +2,7 @@ package io.usys.report.firebase
 
 import android.content.Context
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
@@ -11,6 +12,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.User
 import io.usys.report.utils.log
+import io.usys.report.utils.toast
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -76,7 +78,7 @@ class FirePaths {
         // FIRESTORE ROUTES
         const val PROFILE = "profile"
         // Profile Images
-        var PROFILE_IMAGE_PATH_BY_ID : (String, String) -> String = { FireType,id -> "$FireType/$id/$PROFILE/$PROFILE_FILE_NAME"}
+        var PROFILE_IMAGE_PATH_BY_ID : (String) -> String = { id -> "${DatabasePaths.USERS.path}/$id/$PROFILE/$PROFILE_FILE_NAME"}
         // Icon Images
         var ICON_IMAGE_PATH_BY_ID : (String, String) -> String = { FireType,id -> "$FireType/$id/$PROFILE/$ICON_FILE_NAME"}
     }
@@ -96,13 +98,13 @@ fun coreFireLogoutAsync(context: Context): Task<Void> {
     return AuthUI.getInstance().signOut(context)
 }
 
-fun coreFireUpdateProfileImageUri(imgUri: Uri) {
+fun AppCompatActivity.coreFireUpdateProfileImageUri(imgUri: Uri) {
     val userChangeRequest = UserProfileChangeRequest.Builder().apply {
         photoUri = imgUri
     }.build()
     coreFirebaseUser()?.updateProfile(userChangeRequest)?.addOnCompleteListener {
         if (it.isSuccessful) {
-            log("Photo has been successfully updated in User Profile.")
+            this.toast("Photo has been successfully updated in User Profile.")
         }
     }
 }

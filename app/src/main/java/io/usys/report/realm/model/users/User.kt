@@ -70,29 +70,7 @@ fun FirebaseUser?.fromFirebaseToRealmUserLogin() : User {
     }
     return user
 }
-fun FirebaseUser?.fromFirebaseToRealmUserSignUp(isCoach:Boolean=false, isParent:Boolean=false, isPlayer:Boolean=false) : User {
-    if (this.isNullOrEmpty()) return User()
-    val uid = this?.uid ?: "UNKNOWN"
-    val email = this?.email ?: "UNKNOWN"
-    val name = this?.displayName ?: "UNKNOWN"
-    val photoUrl = this?.photoUrl ?: "UNKNOWN"
-    val emailVerified = this?.isEmailVerified ?: false
-    executeCreateUserObject(uid)
-    val user = User()
-    user.apply {
-        this.id = uid
-        this.email = email
-        this.name = name
-        this.photoUrl = photoUrl.toString()
-        this.imgUrl = photoUrl.toString()
-        this.emailVerified = emailVerified
-        this.coach = isCoach
-        this.parent = isParent
-        this.player = isPlayer
-    }
-    fireSaveUserToFirebaseAsync(user)
-    return user
-}
+
 
 /**
  * Key User Functions
