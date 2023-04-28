@@ -94,10 +94,13 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
             holder.messageTime.makeGone()
         } else {
             holder.messageContainer.layoutParams = (holder.messageContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
-                startToEnd = ConstraintLayout.LayoutParams.UNSET
-                endToEnd = ConstraintLayout.LayoutParams.UNSET
-                startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                endToStart = R.id.chat_image
+                startToEnd = R.id.chat_image
+                endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                bottomToTop = R.id.message_time
+                topToBottom = R.id.message_sender
+                startToStart = ConstraintLayout.LayoutParams.UNSET
+                endToStart = ConstraintLayout.LayoutParams.UNSET
+                width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
             }
             holder.messageContainer.setBackgroundResource(R.drawable.ft_border_rounded_creme)
             holder.messageUserImage.makeVisible()
@@ -105,6 +108,8 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
 
             holder.messageSender.makeVisible()
             holder.messageTime.makeVisible()
+            holder.messageText.makeVisible()
+            holder.messageContainer.makeVisible()
             holder.messageText.text = chatMessage.messageText
             holder.messageSender.text = chatMessage.senderName
             holder.messageTime.text = DateFormat.getTimeInstance(DateFormat.SHORT).format(chatMessage.timestamp)
