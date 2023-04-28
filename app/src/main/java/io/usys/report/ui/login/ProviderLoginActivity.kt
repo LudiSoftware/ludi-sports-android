@@ -8,9 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.firebase.fireSyncUserWithDatabase
+import io.usys.report.firebase.fireludi.fireSyncUserWithDatabase
 import io.usys.report.realm.model.users.User
-import io.usys.report.realm.model.users.fromFirebaseToRealmUser
+import io.usys.report.realm.model.users.fromFirebaseToRealmUserSignUp
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
@@ -58,7 +58,7 @@ class ProviderLoginActivity : AppCompatActivity() {
     }
 
     private fun handleFireUserLogin(firebaseUser: FirebaseUser?) {
-        val user = firebaseUser.fromFirebaseToRealmUser()
+        val user = firebaseUser.fromFirebaseToRealmUserSignUp()
         saveProfileToFirebaseUI(user)
     }
 

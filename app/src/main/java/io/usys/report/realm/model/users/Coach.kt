@@ -1,10 +1,12 @@
-package io.usys.report.realm.model
+package io.usys.report.realm.model.users
 
+import com.google.firebase.auth.FirebaseUser
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.realm.findCoachBySafeId
+import io.usys.report.firebase.fireludi.fireSaveCoachToFirebaseAsync
+import io.usys.report.realm.safeWrite
 import io.usys.report.utils.*
 
 /**
@@ -40,12 +42,19 @@ open class Coach : RealmObject() {
 
 }
 
-/**
- * USER COACH
- */
-inline fun Realm.safeCoach(block: (Coach) -> Unit) {
-    val coach = this.findCoachBySafeId()
-    coach?.let {
-        block(it)
+fun Realm.createCoach(user:User, saveToFirebase:Boolean=false) : Coach {
+    if (user.isNullOrEmpty()) return Coach()
+    val coach = Coach()
+    this.safeWrite {
+        coach.apply {
+            this.id = user.id
+            this.name = user.name ?: user.firstName ?: user.lastName ?: "UNKNOWN"
+            this.imgUrl = user.photoUrl
+            this.teams = RealmList("0")
+            this.organizationIds = RealmList("0")
+        }
+        it.insertOrUpdate(coach)
     }
+    if (saveToFirebase) fireSaveCoachToFirebaseAsync(coach)
+    return coach
 }

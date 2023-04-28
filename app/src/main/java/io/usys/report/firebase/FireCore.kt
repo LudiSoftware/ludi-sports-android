@@ -8,6 +8,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.database.*
 import io.realm.RealmList
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.User
 import io.usys.report.utils.log
 

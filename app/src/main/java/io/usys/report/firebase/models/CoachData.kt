@@ -6,7 +6,7 @@ import io.realm.RealmChangeListener
 import io.usys.report.firebase.coreFirebaseUserUid
 import io.usys.report.firebase.getBoolean
 import io.usys.report.firebase.getString
-import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.getUserId
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.safeWrite

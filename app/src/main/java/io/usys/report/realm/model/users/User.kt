@@ -6,7 +6,7 @@ import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFirebaseUserUid
-import io.usys.report.firebase.fireSaveUserToFirebaseAsync
+import io.usys.report.firebase.fireludi.fireSaveUserToFirebaseAsync
 import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.Session
 import io.usys.report.utils.*
@@ -50,14 +50,8 @@ open class User : RealmObject(), Serializable {
     var imgUrl: String? = null
     var sport: String? = null
 
-    fun saveToFirebase(): User {
-        fireSaveUserToFirebaseAsync(this)
-        return this
-    }
-
 }
-
-fun FirebaseUser?.fromFirebaseToRealmUser() : User {
+fun FirebaseUser?.fromFirebaseToRealmUserLogin() : User {
     if (this.isNullOrEmpty()) return User()
     val uid = this?.uid ?: "UNKNOWN"
     val email = this?.email ?: "UNKNOWN"
@@ -74,6 +68,29 @@ fun FirebaseUser?.fromFirebaseToRealmUser() : User {
         this.imgUrl = photoUrl.toString()
         this.emailVerified = emailVerified
     }
+    return user
+}
+fun FirebaseUser?.fromFirebaseToRealmUserSignUp(isCoach:Boolean=false, isParent:Boolean=false, isPlayer:Boolean=false) : User {
+    if (this.isNullOrEmpty()) return User()
+    val uid = this?.uid ?: "UNKNOWN"
+    val email = this?.email ?: "UNKNOWN"
+    val name = this?.displayName ?: "UNKNOWN"
+    val photoUrl = this?.photoUrl ?: "UNKNOWN"
+    val emailVerified = this?.isEmailVerified ?: false
+    executeCreateUserObject(uid)
+    val user = User()
+    user.apply {
+        this.id = uid
+        this.email = email
+        this.name = name
+        this.photoUrl = photoUrl.toString()
+        this.imgUrl = photoUrl.toString()
+        this.emailVerified = emailVerified
+        this.coach = isCoach
+        this.parent = isParent
+        this.player = isPlayer
+    }
+    fireSaveUserToFirebaseAsync(user)
     return user
 }
 

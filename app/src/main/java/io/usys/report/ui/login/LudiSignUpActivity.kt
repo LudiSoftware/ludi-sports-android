@@ -4,21 +4,20 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.firebase.fireSyncUserWithDatabase
+import io.usys.report.firebase.fireludi.fireSyncUserWithDatabase
 import io.usys.report.realm.model.users.User
-import io.usys.report.realm.model.users.fromFirebaseToRealmUser
+import io.usys.report.realm.model.users.createCoach
+import io.usys.report.realm.model.users.fromFirebaseToRealmUserSignUp
+import io.usys.report.realm.realm
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.utils.launchActivity
 import io.usys.report.utils.log
+import io.usys.report.utils.toast
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -33,8 +32,11 @@ class LudiSignUpActivity : AppCompatActivity() {
 
     private var userTypeSelection: String = ""
     var checkCoach: CheckBox? = null
+    var isCoach: Boolean = false
     var checkParent: CheckBox? = null
+    var isParent: Boolean = false
     var checkBasic: CheckBox? = null
+    var isBasic: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,9 @@ class LudiSignUpActivity : AppCompatActivity() {
 
         btnSignIn?.setOnClickListener {
             if (isUsernamePasswordValid()) {
-                checkIfEmailExists()
+                onSignUpAndSignInResult()
+            } else {
+                toast("Please enter a valid email and password")
             }
         }
         supportActionBar?.title = ""
@@ -68,6 +72,7 @@ class LudiSignUpActivity : AppCompatActivity() {
                 checkParent?.isChecked = false
                 checkBasic?.isChecked = false
                 userTypeSelection = "Coach"
+                isCoach = true
             } else if (!checkParent!!.isChecked && !checkBasic!!.isChecked) {
                 userTypeSelection = ""
             }
@@ -78,6 +83,7 @@ class LudiSignUpActivity : AppCompatActivity() {
                 checkCoach?.isChecked = false
                 checkBasic?.isChecked = false
                 userTypeSelection = "Parent"
+                isParent = true
             } else if (!checkCoach!!.isChecked && !checkBasic!!.isChecked) {
                 userTypeSelection = ""
             }
@@ -88,6 +94,7 @@ class LudiSignUpActivity : AppCompatActivity() {
                 checkCoach?.isChecked = false
                 checkParent?.isChecked = false
                 userTypeSelection = "Basic"
+                isBasic = true
             } else if (!checkCoach!!.isChecked && !checkParent!!.isChecked) {
                 userTypeSelection = ""
             }
@@ -112,7 +119,7 @@ class LudiSignUpActivity : AppCompatActivity() {
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val signInMethods = task.result?.signInMethods
-                    if (signInMethods != null && signInMethods.isNotEmpty()) {
+                    if (!signInMethods.isNullOrEmpty()) {
                         onSignUpAndSignInResult()
                     } else {
                         launchActivity<ProviderLoginActivity>()
@@ -138,7 +145,7 @@ class LudiSignUpActivity : AppCompatActivity() {
                             if (signInTask.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
                                 log("signInWithEmail:success")
-                                handleFireUserLogin(auth?.currentUser)
+                                handleFireUserSignUp(auth?.currentUser)
                             } else {
                                 // If sign in fails, display a message to the user.
                                 log("signInWithEmail:failure")
@@ -156,13 +163,14 @@ class LudiSignUpActivity : AppCompatActivity() {
     }
 
 
-    private fun handleFireUserLogin(firebaseUser: FirebaseUser?) {
-        val user = firebaseUser.fromFirebaseToRealmUser()
-        saveProfileToFirebaseUI(user)
+    private fun handleFireUserSignUp(firebaseUser: FirebaseUser?) {
+        val user = firebaseUser.fromFirebaseToRealmUserSignUp(isCoach = isCoach)
+        if (userTypeSelection == "Coach") realm().createCoach(user, saveToFirebase = true)
+        launchActivity<AuthControllerActivity>()
     }
 
     //SAVE PROFILE
-    private fun saveProfileToFirebaseUI(user: User?) {
+    private fun syncProfileAndNavigateUser(user: User?) {
         if (user == null) launchActivity<AuthControllerActivity>()
         fireSyncUserWithDatabase(user!!) {
             launchActivity<AuthControllerActivity>()

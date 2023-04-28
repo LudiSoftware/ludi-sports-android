@@ -9,7 +9,7 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
-import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.Organization
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.toRealmList

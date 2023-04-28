@@ -2,8 +2,9 @@ package io.usys.report.providers
 
 import com.google.firebase.database.DatabaseReference
 import io.usys.report.firebase.*
+import io.usys.report.firebase.fireludi.CoachFireListener
 import io.usys.report.realm.*
-import io.usys.report.realm.model.Coach
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.model.users.safeUserId

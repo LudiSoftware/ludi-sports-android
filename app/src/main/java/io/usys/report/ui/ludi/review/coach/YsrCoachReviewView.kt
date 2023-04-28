@@ -13,6 +13,7 @@ import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetReviewTemplateQuestionsAsync
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.ui.onClickReturnEmpty
 import io.usys.report.ui.onClickReturnStringString
 import io.usys.report.ui.onClickReturnViewRealmObject

@@ -6,6 +6,7 @@ import io.realm.RealmObject
 import io.realm.RealmResults
 import io.usys.report.realm.local.IdBundleSession
 import io.usys.report.realm.model.*
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.isNBE
 import io.usys.report.utils.isNotNBE

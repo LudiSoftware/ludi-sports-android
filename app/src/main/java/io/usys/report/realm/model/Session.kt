@@ -7,6 +7,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFireLogoutAsync
+import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.Player
 import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.users.User
