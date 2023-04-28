@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DatabaseReference
@@ -17,6 +16,8 @@ import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
+import io.usys.report.utils.toast
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -24,24 +25,20 @@ import io.usys.report.ui.fragments.*
 
 class ChatFragment : LudiStringIdsFragment() {
 
-    companion object {
-        const val TAB = "Chat"
-    }
-
     var onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)? = null
     private var _binding: LudiChatBinding? = null
     private val binding get() = _binding!!
-    private lateinit var chatAdapter: ChatAdapter
-    private lateinit var chatMessages: MutableList<Chat>
+    private var chatAdapter: ChatAdapter? = null
+    private var chatMessages: MutableList<Chat>? = null
 
-    private lateinit var database: DatabaseReference
-    private lateinit var messageListener: ChildEventListener
+    private var database: DatabaseReference? = null
+    private var messageListener: ChildEventListener? = null
 
-    private lateinit var sender: String
+    private var sender: String? = null
 
-    private lateinit var messageEditText: EditText
-    private lateinit var sendButton: Button
-    private lateinit var chatRecyclerView: RecyclerView
+    private var messageEditText: EditText? = null
+    private var sendButton: Button? = null
+    private var chatRecyclerView: RecyclerView? = null
 
     var chatId: String? = null
     private var userId: String? = null
@@ -59,32 +56,44 @@ class ChatFragment : LudiStringIdsFragment() {
             userName = user.name ?: "Anonymous"
             sender = user.name ?: "Anonymous"
         }
-        chatId?.let {
-            database = getFireDBChat().child(chatId!!)
-        } ?: run {
-            Toast.makeText(context, "ChatId is null", Toast.LENGTH_SHORT).show()
-        }
 
-        chatMessages = mutableListOf()
-        chatAdapter = ChatAdapter()
+        bindViews()
+        setupDatabaseReference()
+        setupChatAdapter()
+        setupMessageListener()
+        setupRecyclerView()
+        setupUserInputs()
+        return rootView
+    }
 
-
+    private fun bindViews() {
         messageEditText = _binding?.chatEditText!!
         sendButton = _binding?.chatSendButton!!
         chatRecyclerView =_binding?.chatRecyclerView!!
-        chatRecyclerView.layoutManager = linearLayoutManager(requireContext())
-        chatRecyclerView.adapter = chatAdapter
-        messageListener = ChatFireBaseDatabaseListener(chatAdapter, chatRecyclerView)
-        database.addChildEventListener(messageListener)
-        sendButton.setOnClickListener {
-            sendMessage()
-        }
-
-        return rootView
     }
+    private fun setupDatabaseReference() {
+        chatId?.let { database = getFireDBChat().child(it) }
+            ?: run { requireContext().toast("ChatId is null") }
+    }
+    private fun setupChatAdapter() {
+        chatMessages = mutableListOf()
+        chatAdapter = ChatAdapter(requireContext())
+    }
+    private fun setupMessageListener() {
+        messageListener = chatAdapter?.let { ChatFireBaseDatabaseListener(it, chatRecyclerView!!) }
+        messageListener?.let { database?.addChildEventListener(it) }
+    }
+    private fun setupRecyclerView() {
+        chatRecyclerView?.layoutManager = linearLayoutManager(requireContext())
+        chatRecyclerView?.adapter = chatAdapter
+    }
+    private fun setupUserInputs() {
+        sendButton?.setOnClickListener { sendMessage() }
+    }
+
     private fun sendMessage() {
         chatId?.let {
-            val message = messageEditText.text.toString().trim()
+            val message = messageEditText?.text.toString().trim()
             if (message.isNotEmpty()) {
                 val chatMessage = Chat().apply {
                     this.messageText = message
@@ -92,14 +101,13 @@ class ChatFragment : LudiStringIdsFragment() {
                     this.senderName = userName
                     this.timestamp = System.currentTimeMillis()
                 }
-                database.push().setValue(chatMessage)
-                messageEditText.text.clear()
+                database?.push()?.setValue(chatMessage)
+                messageEditText?.text?.clear()
+            } else {
+                //Add Toast for empty message
+                toast("Please enter a message")
             }
-            //Add Toast for empty message
-//            Toast.makeText(context, "Please enter a message", Toast.LENGTH_SHORT).show()
-        } ?: run {
-            Toast.makeText(context, "ChatId is null", Toast.LENGTH_SHORT).show()
-        }
+        } ?: run { toast("ChatId is null") }
     }
 
     override fun onStart() {
@@ -109,13 +117,14 @@ class ChatFragment : LudiStringIdsFragment() {
             userName = user.name ?: "Anonymous"
             sender = user.name ?: "Anonymous"
         }
-//        database.addChildEventListener(messageListener)
     }
 
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
-        database.removeEventListener(messageListener)
+        messageListener?.let { database?.removeEventListener(it) }
     }
 
 }
+
+

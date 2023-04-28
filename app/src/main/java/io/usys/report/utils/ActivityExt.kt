@@ -140,7 +140,6 @@ inline fun FragmentActivity.fairRequestPermission(permission:String= Manifest.pe
 }
 
 inline fun Fragment.fairRequestPermissions(permissions:Array<String>, crossinline block: (Map<String,Boolean>) -> Unit) {
-    // Registers a photo picker activity launcher in single-select mode.
     val perms = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         block(it)
     }

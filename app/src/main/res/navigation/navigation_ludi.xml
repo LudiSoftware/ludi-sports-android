@@ -15,7 +15,7 @@
     <!-- DASHBOARD PAGE -->
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="io.usys.report.ui.ludi.DashboardHomeFragment"
+        android:name="io.usys.report.ui.ludi.dashboard.DashboardHomeFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/ludi_dashboard_fragment">
         <action

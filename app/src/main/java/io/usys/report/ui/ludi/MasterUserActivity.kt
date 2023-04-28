@@ -21,6 +21,7 @@ import io.usys.report.R
 import io.usys.report.firebase.fireludi.fireGetAndLoadSportsIntoSessionAsync
 import io.usys.report.providers.TeamMode
 import io.usys.report.providers.UserProvider
+import io.usys.report.providers.notifications.createNotificationChannel
 
 
 /**
@@ -36,6 +37,7 @@ class MasterUserActivity : AppCompatActivity() {
 
         ludiStatusBarColorWhite()
         setContentView(R.layout.activity_main)
+        createNotificationChannel(this)
 
         // -> Base Loading of Data for the user.
         fireGetAndLoadSportsIntoSessionAsync()

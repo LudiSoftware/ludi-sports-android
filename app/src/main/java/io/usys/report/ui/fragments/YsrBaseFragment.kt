@@ -3,12 +3,15 @@ package io.usys.report.ui.fragments
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -79,19 +82,25 @@ abstract class YsrFragment : Fragment() {
 
     abstract fun setupOnClickListeners()
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Request Permissions...
-        fairRequestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) { mapOfResults ->
+
+        val permissions = mutableListOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.VIBRATE,
+            Manifest.permission.SYSTEM_ALERT_WINDOW
+        )
+        fairRequestPermissions(permissions = permissions.toTypedArray()) { mapOfResults ->
             log(mapOfResults.toString())
         }
+
         //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
             itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS, realmInstance?.getUserId() ?: return@fairGetPickImageFromGalleryIntent))
         }
-//        setupMenu()
-
     }
 
     override fun onAttach(context: Context) {
@@ -101,7 +110,6 @@ abstract class YsrFragment : Fragment() {
             user = it
             userId = it.id
         }
-//        realmInstance?.userOrLogout(requireActivity()) { user = it }
         storage = Firebase.storage
         realmObjectArg = unbundleRealmObject()
     }
