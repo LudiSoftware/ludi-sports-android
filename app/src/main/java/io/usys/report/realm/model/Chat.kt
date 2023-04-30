@@ -93,6 +93,7 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
                 endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                 topToTop = R.id.chat_image
                 horizontalBias = 0f
+                width = ConstraintLayout.LayoutParams.WRAP_CONTENT
             }
             holder.messageContainer.setBackgroundResource(R.drawable.ft_border_rounded_creme)
             holder.messageUserImage.makeVisible()
@@ -123,7 +124,13 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
         chatMessages.add(chatMessage)
         notifyItemInserted(chatMessages.size - 1)
         this.notifyDataSetChanged()
-        showNotification(chatMessage.messageText ?: "Oops! Something went wrong.")
+
+        realmInstance.safeUserId {
+            if (chatMessage.senderId != it) {
+                showNotification(chatMessage.messageText ?: "Oops! Something went wrong.")
+            }
+        }
+
     }
 
     private fun showNotification(message: String) {

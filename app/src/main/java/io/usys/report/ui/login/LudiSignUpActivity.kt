@@ -14,17 +14,10 @@ import com.google.firebase.auth.FirebaseUser
 import de.hdodenhof.circleimageview.CircleImageView
 import io.usys.report.ui.AuthControllerActivity
 import io.usys.report.R
-import io.usys.report.firebase.FirePaths
-import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.coreFireUpdateProfileImageUri
-import io.usys.report.firebase.fireUploadToStorage
 import io.usys.report.firebase.fireludi.fireSaveUserToFirebaseAsync
-import io.usys.report.firebase.getUserProfileImgRef
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.createCoach
 import io.usys.report.realm.model.users.executeCreateUserObject
-import io.usys.report.realm.model.users.getUserId
-import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.views.hideLudiActionBar

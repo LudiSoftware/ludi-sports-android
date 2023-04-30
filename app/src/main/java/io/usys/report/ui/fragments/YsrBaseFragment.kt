@@ -1,9 +1,7 @@
 package io.usys.report.ui.fragments
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -17,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -26,14 +23,11 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.firebase.FirePaths
-import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.fireUploadToStorage
+import io.usys.report.firebase.uploadImageToFirebaseStorage
 import io.usys.report.realm.model.Sport
 import io.usys.report.realm.model.users.User
-import io.usys.report.realm.model.users.getUserId
 import io.usys.report.realm.model.users.safeUser
-import io.usys.report.realm.model.users.userOrLogout
+import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.ui.fragments.YsrFragment.Companion.ARG
 import io.usys.report.ui.fragments.YsrFragment.Companion.ORG_ID
@@ -49,6 +43,7 @@ import io.usys.report.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -86,6 +81,10 @@ abstract class YsrFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        realmInstance?.safeUserId {
+            userId = it
+        }
+
         val permissions = mutableListOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -99,10 +98,13 @@ abstract class YsrFragment : Fragment() {
         //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
-            itUri.fireUploadToStorage(requireContext(), FirePaths.PROFILE_IMAGE_PATH_BY_ID(FireTypes.USERS))
+            itUri?.uploadImageToFirebaseStorage(userId!!) {
+                toast("Image Uploaded Successfully!")
+            }
         }
 
-//        setupMenu()
+        // Testing Uploading Image to Firebase Storage
+//        setupUploadPhotoMenu()
     }
 
     override fun onAttach(context: Context) {
@@ -117,7 +119,7 @@ abstract class YsrFragment : Fragment() {
     }
 
 
-    private fun setupMenu() {
+    private fun setupUploadPhotoMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.general_top_menu, menu)

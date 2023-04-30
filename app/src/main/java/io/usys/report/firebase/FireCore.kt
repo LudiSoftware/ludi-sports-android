@@ -70,7 +70,7 @@ class FireTypes {
     }
 }
 
-class FirePaths {
+class FireStoragePaths {
     companion object {
         // FIRESTORE FILE NAMES
         const val PROFILE_FILE_NAME = "profile_image.jpg"
