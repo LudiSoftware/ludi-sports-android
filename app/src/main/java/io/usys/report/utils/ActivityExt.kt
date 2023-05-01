@@ -112,46 +112,4 @@ fun Fragment.showLudiNavView() {
 fun Activity.changeStatusBarColor() {
     this.window.statusBarColor = this.getColorCompat(android.R.color.black)
 }
-inline fun <reified T> T.fairPickImageFromGalleryTest(crossinline block: (Uri?) -> Unit) {
-    if (!isFragment<T>() && !isFragmentActivity<T>()) return
-    if (isFragment<T>()) {
-        val pickMedia = (this as? Fragment)?.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                block(uri)
-            }
-        pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-    else if (isFragmentActivity<T>()) {
-        val pickMedia = (this as? FragmentActivity)?.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            block(uri)
-        }
-        pickMedia?.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-}
-inline fun Fragment.fairGetPickImageFromGalleryIntent(crossinline block: (Uri?) -> Unit): ActivityResultLauncher<PickVisualMediaRequest> {
-    return registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        block(uri)
-    }
-}
-
-
-inline fun AppCompatActivity.fairGetPickImageFromGalleryIntent(crossinline block: (Uri?) -> Unit): ActivityResultLauncher<PickVisualMediaRequest> {
-    return registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        block(uri)
-    }
-}
-
-inline fun FragmentActivity.fairRequestPermission(permission:String= Manifest.permission.WRITE_EXTERNAL_STORAGE, crossinline block: (Boolean) -> Unit) {
-    // Registers a photo picker activity launcher in single-select mode.
-    val perms = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        block(isGranted)
-    }
-    perms.launch(permission)
-}
-
-inline fun Fragment.fairRequestPermissions(permissions:Array<String>, crossinline block: (Map<String,Boolean>) -> Unit) {
-    val perms = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        block(it)
-    }
-    perms.launch(permissions)
-}
 

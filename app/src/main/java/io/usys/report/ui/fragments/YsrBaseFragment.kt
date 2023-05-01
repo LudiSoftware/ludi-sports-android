@@ -1,6 +1,5 @@
 package io.usys.report.ui.fragments
 
-import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -20,11 +19,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import io.realm.Realm
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.uploadImageToFirebaseStorage
-import io.usys.report.realm.model.Sport
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.model.users.safeUserId
@@ -40,9 +37,6 @@ import io.usys.report.ui.ludi.TO_PLAYER_PROFILE
 import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
 import io.usys.report.ui.ludi.TO_TEAM_PROFILE
 import io.usys.report.utils.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.jetbrains.anko.support.v4.toast
 
 /**
@@ -69,10 +63,8 @@ abstract class YsrFragment : Fragment() {
 
     var user: User? = null
     var userId: String? = null
-    val main = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     var realmInstance: Realm? = null
-    var sportList : RealmList<Sport> = RealmList()
     var realmObjectArg: RealmObject? = null
 
     abstract fun setupOnClickListeners()
@@ -85,13 +77,7 @@ abstract class YsrFragment : Fragment() {
             userId = it
         }
 
-        val permissions = mutableListOf(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.VIBRATE,
-            Manifest.permission.SYSTEM_ALERT_WINDOW
-        )
-        fairRequestPermissions(permissions = permissions.toTypedArray()) { mapOfResults ->
+        fairRequestPermissions(permissions = ludiSystemPermissionList.toTypedArray()) { mapOfResults ->
             log(mapOfResults.toString())
         }
 
