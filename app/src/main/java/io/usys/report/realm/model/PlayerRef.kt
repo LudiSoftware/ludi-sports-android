@@ -38,6 +38,7 @@ open class PlayerRef : RealmObject(), Serializable {
     var userId: String? = "unassigned"
     var parentId: String? = "unassigned"
     var orderIndex: Int? = 0
+    var selectedNumber: String = "0"
     // play metrics
     var team: String? = "unassigned"
     var season: String? = "unassigned"

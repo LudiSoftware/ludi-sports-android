@@ -78,6 +78,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         realmInstance.findRosterById(config.currentRosterId)?.let { roster ->
             this.itemList?.clear()
             this.itemList = roster.players?.ludiFilters(config.filters)?.sortByOrderIndex()
+            log("Roster List Size: ${this.itemList?.size}")
         }
     }
 
@@ -140,12 +141,12 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
         touchEnabled = true
         reload()
     }
-    fun setupSelectionRoster() {
+    fun setupSelectionRoster(split:Int=0) {
         config.clearFilters()
         config.currentRosterId = config.tryoutRosterId
         mode = RosterType.SELECTED.type
         touchEnabled = true
-        setFilterStatusSelection()
+        setFilterStatusSelection(split)
         reload()
     }
 
@@ -171,8 +172,12 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     /** Filter Functions */
 
-    private fun setFilterStatusSelection() {
-        this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED)
+    private fun setFilterStatusSelection(split:Int=0) {
+        if (split > 1) {
+            this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED, "selectedNumber" to split.toString())
+        } else {
+            this.config.filters = ludiFilters("status" to PLAYER_STATUS_SELECTED, "selectedNumber" to "0")
+        }
     }
     @SuppressLint("NotifyDataSetChanged")
     fun filterByStatusSelected() {

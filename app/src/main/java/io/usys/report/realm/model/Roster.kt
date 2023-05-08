@@ -23,6 +23,7 @@ open class Roster : RealmObject(), Serializable {
     var year: String? = "unassigned"
     var gender: String? = "unassigned"
     var isLocked: Boolean = false
+    var size: Int? = 25
     var status: String? = "open"
     var sport: String? = "unassigned"
     var players: RealmList<PlayerRef>? = RealmList()

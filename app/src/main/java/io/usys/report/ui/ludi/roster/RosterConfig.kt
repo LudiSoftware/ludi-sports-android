@@ -2,42 +2,15 @@ package io.usys.report.ui.ludi.roster
 
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
-import io.realm.RealmList
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.teamSessionByTeamId
-import io.usys.report.realm.model.PlayerRef
 import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
-import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.touchAdapters.*
-
-
-/**
- * Custom Roster Setups
- */
-fun LudiRosterRecyclerView?.setupRosterGridArrangable(id: String) {
-    val roster = realm().findRosterById(id)
-    val players: RealmList<PlayerRef> = roster?.players?.sortByOrderIndex() ?: RealmList()
-    players.let {
-        val config = RosterConfig(teamId = roster?.teamId!!)
-        config.rosterId = id
-        val adapter = RosterListLiveAdapter(config)
-        // Drag and Drop
-        val itemTouchListener = RosterLiveDragDropAction(adapter)
-        val itemTouchHelper = ItemTouchHelper(itemTouchListener)
-        //Attachments
-        itemTouchHelper.attachToRecyclerView(this)
-        // RecyclerView
-        this?.layoutManager = GridLayoutManager(this!!.context, 2)
-        this.adapter = adapter
-    }
-}
-
 
 enum class RosterType(val type: String) {
     OFFICIAL("official"),

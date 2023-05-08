@@ -74,9 +74,9 @@ class RosterFormationFragment : LudiStringIdsFragment() {
         this.container = container
         if (container == null) {
             val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
-            rootView = teamContainer?.inflateLayout(R.layout.formation_builder_fragment_portrait) ?: View(requireContext())
+            rootView = teamContainer?.inflateLayout(R.layout.formation_builder_fragment) ?: View(requireContext())
         } else {
-            rootView = container.inflateLayout(R.layout.formation_builder_fragment_portrait)
+            rootView = container.inflateLayout(R.layout.formation_builder_fragment)
         }
 
         teamId?.let {
@@ -235,10 +235,10 @@ class RosterFormationFragment : LudiStringIdsFragment() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            this.inflater?.inflate(R.layout.formation_builder_fragment_landscape, container, false)
+            this.inflater?.inflate(R.layout.formation_builder_fragment, container, false)
             setupDisplay()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            this.inflater?.inflate(R.layout.formation_builder_fragment_portrait, container, false)
+            this.inflater?.inflate(R.layout.formation_builder_fragment, container, false)
             setupDisplay()
         }
     }

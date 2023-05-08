@@ -1,5 +1,6 @@
 package io.usys.report.utils
 
+import androidx.core.text.isDigitsOnly
 import java.util.*
 
 fun String.capitalizeFirstChar(): String {
@@ -9,6 +10,14 @@ fun String.capitalizeFirstChar(): String {
     return this.substring(0, 1).toUpperCase(Locale.ROOT) + this.substring(1)
 }
 
+fun String.extractSelectionSplitNumber(): Int? {
+    val lastDigits = this.takeLastWhile { it.isDigit() }
+    return if (lastDigits.isDigitsOnly() && lastDigits.isNotEmpty()) {
+        lastDigits.toInt()
+    } else {
+        null
+    }
+}
 fun String.splitFullName(): Pair<String, String> {
     val names = this.split(" ")
     val firstName = names.firstOrNull() ?: ""

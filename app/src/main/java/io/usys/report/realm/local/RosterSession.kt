@@ -26,6 +26,7 @@ open class RosterSession : RealmObject(), Serializable {
     var rosterSizeLimit: Int = 20
     var playersSelectedCount: Int = 0
     var playerIds: RealmList<String>? = RealmList()
+    var rosterSplits: Int = 0
     //formation
     var teamColorsAreOn: Boolean = true
     var currentLayout: Int = 0
@@ -49,6 +50,7 @@ inline fun Realm.rosterSessionById(rosterId:String?, crossinline block: (RosterS
 }
 
 fun Realm.rosterSessionById(rosterId:String?): RosterSession? {
+    if (rosterId.isNullOrEmpty()) return null
     return this.where(RosterSession::class.java).equalTo("id", rosterId).findFirst()
 }
 

@@ -11,7 +11,6 @@ import io.usys.report.providers.*
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.views.gestures.HorizontalFlingDetector
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.menus.LudiPopupMenu
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
@@ -91,6 +90,7 @@ class RosterBuilderFragment : YsrFragment() {
         return rootView
     }
 
+    /** Spinners **/
     private fun setupRosterTypeSpinner() {
         _binding?.rosterBuilderLudiSpinRosterType?.setupRosterTypeSpinner(rosterIds) { _, item ->
             rosterIds.forEach { (key, value) ->
@@ -101,20 +101,6 @@ class RosterBuilderFragment : YsrFragment() {
             rosterType = item
             _binding?.rosterBuilderLudiTxtRosterType?.text = rosterType
             setupRosterList()
-        }
-    }
-
-    private fun toggleTryoutTools() {
-        if (rosterType != RosterType.OFFICIAL.type) {
-            _binding?.rosterBuilderLudiSubTxt?.makeVisible()
-            _binding?.rosterBuilderLudiSpinRosterSizeText?.makeVisible()
-            _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
-            showLudiActionBar()
-        } else {
-            _binding?.rosterBuilderLudiSubTxt?.makeGone()
-            _binding?.rosterBuilderLudiSpinRosterSizeText?.makeGone()
-            _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
-            hideLudiActionBar()
         }
     }
 
@@ -133,6 +119,22 @@ class RosterBuilderFragment : YsrFragment() {
             }
         }
     }
+
+    private fun toggleTryoutTools() {
+        if (rosterType != RosterType.OFFICIAL.type) {
+            _binding?.rosterBuilderLudiSubTxt?.makeVisible()
+            _binding?.rosterBuilderLudiSpinRosterSizeText?.makeVisible()
+            _binding?.rosterBuilderLudiSpinRosterLimit?.makeVisible()
+            showLudiActionBar()
+        } else {
+            _binding?.rosterBuilderLudiSubTxt?.makeGone()
+            _binding?.rosterBuilderLudiSpinRosterSizeText?.makeGone()
+            _binding?.rosterBuilderLudiSpinRosterLimit?.makeGone()
+            hideLudiActionBar()
+        }
+    }
+
+
     /** Master Roster Setup! **/
     private fun setupRosterTypeTitle() {
         val rosterTitle = "Roster: ${rosterType.capitalizeFirstChar()} (${adapter?.itemCount})"
@@ -140,34 +142,19 @@ class RosterBuilderFragment : YsrFragment() {
     }
 
     private fun setupRosterIds() {
-        // Official Roster
-        realmInstance?.findRosterIdByTeamId(teamId)?.let { rosterId ->
-            // official roster
-            rosterIds[RosterType.OFFICIAL.type] = rosterId
-            currentRosterId = rosterId
-            _binding?.rosterBuilderLudiTxtRosterType?.text = "Official Roster"
-        }
-        // TryOut Roster
-        realmInstance?.findTryOutIdByTeamId(teamId) { tryoutId ->
-            realmInstance?.findTryOutById(tryoutId)?.let { to ->
-                to.rosterId?.let {
-                    // tryout roster
-                    rosterIds.clear()
-                    rosterIds[RosterType.TRYOUT.type] = it
-                    rosterIds[RosterType.SELECTED.type] = it
-                    currentRosterId = it
-                }
-                this.tryoutId = tryoutId
+        realmInstance?.rosterPairFactory(teamId)?.let {
+            // Roster Holder
+            rosterIds = it.first
+            // Roster Config
+            rosterConfig = it.second
+            rosterConfig.apply {
+                this.rosterId = rosterIds[RosterType.OFFICIAL.type] ?: "unknown"
+                this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
+                this.parentFragment = this@RosterBuilderFragment
+                this.textViewOne = _binding?.rosterBuilderLudiSubTxt
             }
+            adapter = RosterListLiveAdapter(rosterConfig)
         }
-
-        rosterConfig.apply {
-            this.rosterId = currentRosterId
-            this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
-            this.parentFragment = this@RosterBuilderFragment
-            this.textViewOne = _binding?.rosterBuilderLudiSubTxt
-        }
-        adapter = RosterListLiveAdapter(rosterConfig)
     }
 
     override fun onStop() {
@@ -194,6 +181,11 @@ class RosterBuilderFragment : YsrFragment() {
         rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
         currentRosterId?.let {
             when (rosterType) {
+                RosterType.OFFICIAL.type -> {
+                    setupRosterSizeSpinner()
+                    detachLudiMenu()
+                    adapter?.setupOfficialRoster()
+                }
                 RosterType.TRYOUT.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
@@ -202,12 +194,18 @@ class RosterBuilderFragment : YsrFragment() {
                 RosterType.SELECTED.type -> {
                     setupRosterSizeSpinner()
                     attachLudiMenu()
-                    adapter?.setupSelectionRoster()
+                    adapter?.setupSelectionRoster(0)
                 }
                 else -> {
-                    setupRosterSizeSpinner()
-                    detachLudiMenu()
-                    adapter?.setupOfficialRoster()
+                    if (rosterType.startsWith(RosterType.SELECTED.type)) {
+                        val splitNumber = rosterType.extractSelectionSplitNumber() ?: 0
+                        setupRosterSizeSpinner()
+                        attachLudiMenu()
+                        adapter?.setupSelectionRoster(splitNumber)
+                        log("setupRosterList: $rosterType")
+                    } else
+                        log("No Roster Found For: $rosterType")
+
                 }
             }
         }

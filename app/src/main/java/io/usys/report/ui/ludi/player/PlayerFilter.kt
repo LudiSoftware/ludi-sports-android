@@ -30,13 +30,28 @@ fun RealmList<PlayerRef>.ludiFilters(ludiFilters: MutableMap<String, String>?): 
     if (ludiFilters.isNullOrEmpty()) return this
     val filteredList = RealmList<PlayerRef>()
     for (playerRef in this) {
-        if (playerRef.matchesLudiFilter(ludiFilters)) {
+        if (playerRef.matchesLudiFilters(ludiFilters)) {
             filteredList.add(playerRef)
         }
     }
     return filteredList
 }
 
+fun PlayerRef.matchesLudiFilters(ludiFilters: MutableMap<String,String>): Boolean {
+    val filterCount = ludiFilters.size
+    var filterMatchCount = 0
+    for (filter in ludiFilters) {
+        if (this.matchesLudiFilter(filter.key, filter.value)) {
+            filterMatchCount++
+        }
+    }
+
+    if (filterCount == filterMatchCount) {
+        return true
+    }
+
+    return false
+}
 
 fun PlayerRef.matchesLudiFilter(ludiFilters: MutableMap<String,String>): Boolean {
     for (filter in ludiFilters) {
@@ -47,6 +62,7 @@ fun PlayerRef.matchesLudiFilter(ludiFilters: MutableMap<String,String>): Boolean
     return false
 }
 
+/** BASE FILTER **/
 fun PlayerRef.matchesLudiFilter(filterKey:String, filterValue:String): Boolean {
     when (filterKey.toLowerCase(Locale.getDefault())) {
         "status" -> {
@@ -61,6 +77,11 @@ fun PlayerRef.matchesLudiFilter(filterKey:String, filterValue:String): Boolean {
         }
         "foot" -> {
             if (this.foot.equals(filterValue, ignoreCase = true)) {
+                return true
+            }
+        }
+        "selectednumber" -> {
+            if (this.selectedNumber == filterValue) {
                 return true
             }
         }
