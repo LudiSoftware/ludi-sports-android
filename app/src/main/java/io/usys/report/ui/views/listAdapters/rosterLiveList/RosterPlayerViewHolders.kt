@@ -14,6 +14,7 @@ import io.usys.report.realm.model.PLAYER_STATUS_OPEN
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.updatePlayerStatus
+import io.usys.report.ui.views.dialogs.TeamSelectionDialog
 import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 import io.usys.report.utils.makeGone
@@ -113,6 +114,9 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             cardChkSelected?.setOnCheckedChangeListener(null)
             cardChkSelected?.isChecked = isSelected
             cardChkSelected?.setOnCheckedChangeListener { _, isChecked ->
+                val teamSelectionDialog = TeamSelectionDialog()
+                teamSelectionDialog.show(adapter.config.parentFragment!!.childFragmentManager, "team_selection_dialog")
+
                 var newStatus = PLAYER_STATUS_OPEN
                 if (isChecked) newStatus = PLAYER_STATUS_SELECTED
                 adapter.realmInstance.updatePlayerStatus(playerId, newStatus)

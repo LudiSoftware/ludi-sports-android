@@ -32,7 +32,3 @@ open class Sport : RealmObject(), Serializable {
     var sport: String? = null
 
 }
-
-fun Sport.fireAddUpdateToDB(): Boolean {
-    return fireAddUpdateDBAsync(FireTypes.SPORTS, this.id, this)
-}

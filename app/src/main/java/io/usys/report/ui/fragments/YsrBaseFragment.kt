@@ -69,7 +69,6 @@ abstract class YsrFragment : Fragment() {
 
     abstract fun setupOnClickListeners()
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

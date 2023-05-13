@@ -69,3 +69,23 @@ fun Realm.updatePlayerStatus(playerId: String?, status: String) {
         }
     }
 }
+
+fun Realm.updatePlayerSelectionTeam(playerId: String?, selectionTeamNumber: String) {
+    if (playerId == null) return
+    this.safeWrite {
+        this.findPlayerRefById(playerId)?.let { playerRef ->
+            playerRef.status = PLAYER_STATUS_SELECTED
+            playerRef.selectedNumber = selectionTeamNumber
+        }
+    }
+}
+
+fun Realm.updatePlayerSelectionTeamToNone(playerId: String?) {
+    if (playerId == null) return
+    this.safeWrite {
+        this.findPlayerRefById(playerId)?.let { playerRef ->
+            playerRef.status = PLAYER_STATUS_SELECTED
+            playerRef.selectedNumber = "0"
+        }
+    }
+}
