@@ -87,20 +87,20 @@ class LudiRecyclerCardView(context: Context) : CardView(context) {
         setTitle("Session Roster")
         recyclerView?.setupPlayerListFromTeamSession(id, onClickReturnViewRealmObject)
     }
-    fun setupTeamNotesList(teamId: String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+    fun setupTeamNotesList(ownerId:String, teamId: String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         if (teamId == null) {
             setTitle("Uh Oh! No Data Found.")
             return
         }
         setTitle("Team Notes")
-        recyclerView?.setupTeamNoteList(teamId, onClickReturnViewRealmObject)
+        recyclerView?.setupTeamNoteList(ownerId, teamId, onClickReturnViewRealmObject)
     }
-    fun setupPlayerNotesList(playerId: String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
+    fun setupPlayerNotesList(ownerId:String, playerId: String?, onClickReturnViewRealmObject: ((View, RealmObject) -> Unit)?) {
         if (playerId == null) {
             setTitle("Uh Oh! No Data Found.")
             return
         }
         setTitle("Player Notes")
-        recyclerView?.setupPlayerNoteList(playerId, onClickReturnViewRealmObject)
+        recyclerView?.setupPlayerNoteList(ownerId, playerId, onClickReturnViewRealmObject)
     }
 }

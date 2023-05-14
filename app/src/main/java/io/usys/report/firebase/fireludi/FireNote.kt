@@ -28,7 +28,7 @@ fun parseDoubleId(combinedId: String): Pair<String, String> {
 fun Realm.fireGetNotesByDoubleId(ownerId:String?, aboutId:String?) {
     if (ownerId == null || aboutId == null) return
     firebaseDatabase {
-        it.child(DatabasePaths.NOTES.path).orderByChild("ownerId").equalTo(doubleId(ownerId, aboutId))
+        it.child(DatabasePaths.NOTES.path).orderByChild("doubleId").equalTo(doubleId(ownerId, aboutId))
             .singleValueEvent { ds ->
                 ds?.toLudiObjects<Note>(this)
                 log("Notes Updated")

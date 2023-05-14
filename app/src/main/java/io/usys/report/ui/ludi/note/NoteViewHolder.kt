@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
+import io.usys.report.firebase.fireludi.doubleId
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Note
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
@@ -13,18 +14,18 @@ import io.usys.report.utils.bind
 import io.usys.report.utils.bindTextView
 
 
-fun RecyclerView?.setupTeamNoteList(teamId: String, onClick: ((View, RealmObject) -> Unit)? ) {
+fun RecyclerView?.setupTeamNoteList(ownerId: String, teamId: String, onClick: ((View, RealmObject) -> Unit)? ) {
     // Load Organizations by Sport.name
     val rv = this
-    realm().findAllByField<Note>("aboutTeamId", teamId)?.let { notes ->
+    realm().findAllByField<Note>("doubleId", doubleId(ownerId, teamId))?.let { notes ->
         rv?.loadInCustomAttributes(notes.toSafeRealmList(), DatabasePaths.NOTES.path, onClick)
     }
 }
 
-fun RecyclerView?.setupPlayerNoteList(playerId: String, onClick: ((View, RealmObject) -> Unit)? ) {
+fun RecyclerView?.setupPlayerNoteList(ownerId: String, playerId: String, onClick: ((View, RealmObject) -> Unit)? ) {
     // Load Organizations by Sport.name
     val rv = this
-    realm().findAllByField<Note>("aboutPlayerId", playerId)?.let { notes ->
+    realm().findAllByField<Note>("doubleId", doubleId(ownerId, playerId))?.let { notes ->
         rv?.loadInCustomAttributes(notes.toSafeRealmList(), DatabasePaths.NOTES.path, onClick)
     }
 }
