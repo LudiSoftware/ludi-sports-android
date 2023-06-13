@@ -10,8 +10,8 @@ import io.usys.report.firebase.fireludi.doubleId
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Note
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
-import io.usys.report.utils.bind
-import io.usys.report.utils.bindTextView
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.bindTextView
 
 
 fun RecyclerView?.setupTeamNoteList(ownerId: String, teamId: String, onClick: ((View, RealmObject) -> Unit)? ) {

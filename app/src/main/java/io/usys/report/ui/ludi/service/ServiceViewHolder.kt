@@ -14,7 +14,8 @@ import io.usys.report.realm.model.addToSession
 import io.usys.report.ui.views.listAdapters.loadInRealmListGrid
 import io.usys.report.ui.views.listAdapters.loadInRealmListHorizontal
 import io.usys.report.realm.sessionServices
-import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.bindTextView
 
 /**
  * SERVICES LIST VIEW CONTROLS

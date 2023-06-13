@@ -13,8 +13,8 @@ import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.ludi.formationbuilder.RosterFormationFragment
 import io.usys.report.ui.ludi.formationbuilder.touch.onGestureDetectorRosterFormation
 import io.usys.report.ui.ludi.formationbuilder.preparePlayerLayoutParamsForFormation
-import io.usys.report.utils.attachViewsToOnClickListener
-import io.usys.report.utils.inflateView
+import io.usys.report.utils.views.attachViewsToOnClickListener
+import io.usys.report.utils.views.inflateView
 import io.usys.report.utils.log
 
 /**

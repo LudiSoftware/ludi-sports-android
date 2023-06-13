@@ -14,11 +14,11 @@ import io.usys.report.realm.local.RosterSession
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.setupRosterSession
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.ui.ludi.roster.RosterConfig
-import io.usys.report.ui.ludi.roster.RosterType
+import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterType
 import io.usys.report.ui.views.gestures.onDownUpListener
-import io.usys.report.utils.bind
-import io.usys.report.utils.inflateLayout
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.inflateLayout
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
 import io.usys.report.utils.views.*

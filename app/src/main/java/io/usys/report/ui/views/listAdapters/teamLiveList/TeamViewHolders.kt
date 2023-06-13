@@ -15,6 +15,8 @@ import io.usys.report.realm.sessionTeams
 import io.usys.report.ui.fragments.toTeamProfileVG
 import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.bindTextView
 import io.usys.report.utils.views.loadUriIntoImgView
 
 /**

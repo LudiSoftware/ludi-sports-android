@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.views.listAdapters.HideShowScrollListener
+import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.views.listAdapters.HeaderViewScrollListener
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.utils.log
 
@@ -81,7 +82,7 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
             config.parentFragment = this
             config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
             val adapter = RosterListLiveAdapter(config)
-            headerView?.let { HideShowScrollListener(it) }?.let {
+            headerView?.let { HeaderViewScrollListener(it) }?.let {
                 _binding?.includeTeamRosterLudiListViewTeams?.root?.addOnScrollListener(it)
             }
         }

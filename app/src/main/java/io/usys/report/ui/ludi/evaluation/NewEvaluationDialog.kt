@@ -10,7 +10,7 @@ import io.usys.report.R
 import io.usys.report.realm.model.PEval
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
-import io.usys.report.utils.inflateView
+import io.usys.report.utils.views.inflateView
 
 class NewEvaluationDialog : DialogFragment() {
 

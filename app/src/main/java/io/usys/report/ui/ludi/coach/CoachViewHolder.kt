@@ -14,6 +14,8 @@ import io.usys.report.realm.model.Organization
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.realm.toRealmList
 import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.bindTextView
 import io.usys.report.utils.views.loadUriIntoImgView
 
 /**

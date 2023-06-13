@@ -20,7 +20,8 @@ import io.usys.report.realm.toRealmList
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
 import io.usys.report.ui.views.listAdapters.loadInRealmList
 import io.usys.report.utils.*
-import kotlin.collections.isNullOrEmpty
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.bindTextView
 
 /**
  * ORGANIZATION LIST VIEW CONTROLS

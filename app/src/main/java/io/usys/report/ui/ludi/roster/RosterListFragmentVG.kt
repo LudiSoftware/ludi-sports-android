@@ -11,6 +11,7 @@ import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.ludi.roster.config.RosterType
 import io.usys.report.utils.ludi.LudiViewGroupViewModel
 import io.usys.report.ui.views.viewGroup.LudiViewGroup
 

@@ -2,7 +2,6 @@ package io.usys.report.ui.views.listAdapters.rosterLiveList
 
 import android.annotation.SuppressLint
 import android.view.View
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
@@ -15,10 +14,10 @@ import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.updatePlayerStatus
 import io.usys.report.ui.views.dialogs.TeamSelectionDialog
-import io.usys.report.utils.bind
-import io.usys.report.utils.bindTextView
-import io.usys.report.utils.makeGone
-import io.usys.report.utils.makeVisible
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.bindTextView
+import io.usys.report.utils.views.makeGone
+import io.usys.report.utils.views.makeVisible
 import io.usys.report.utils.views.getColor
 import io.usys.report.utils.views.loadUriIntoImgView
 import io.usys.report.utils.views.wiggleOnce

@@ -10,7 +10,7 @@ import io.usys.report.R
 import io.usys.report.realm.model.users.Coach
 import io.usys.report.utils.ludi.onClickReturnAnyAny
 import io.usys.report.utils.ludi.onClickReturnEmpty
-import io.usys.report.utils.bind
+import io.usys.report.utils.views.bind
 import io.usys.report.utils.log
 
 /**

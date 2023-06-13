@@ -1,5 +1,6 @@
-package io.usys.report.ui.ludi.roster
+package io.usys.report.ui.ludi.roster.config
 
+import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -10,7 +11,12 @@ import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.teamSessionByTeamId
 import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
+import io.usys.report.ui.views.listAdapters.HeaderViewScrollListener
 import io.usys.report.ui.views.touchAdapters.*
+import io.usys.report.utils.ludi.PlayerID
+import io.usys.report.utils.ludi.RosterID
+import io.usys.report.utils.ludi.RosterIDs
+import io.usys.report.utils.ludi.RosterTypeName
 
 enum class RosterType(val type: String) {
     OFFICIAL("official"),
@@ -20,30 +26,56 @@ enum class RosterType(val type: String) {
     UNSELECTED("unselected")
 }
 
-class RosterConfig(var teamId: String) {
+open class RosterListeners {
+    var itemTouchHelper: ItemTouchHelper? = null
+    // Drag and Drop
+    var itemTouchListener: RosterLiveDragDropAction? = null
+    var itemLiveTouchListener: RosterLiveDragDropAction? = null
+    var headerViewScrollListener: HeaderViewScrollListener? = null
+}
 
+open class RosterViews {
+    var recyclerView: RecyclerView? = null
+    var headerView: View? = null
+    var playerViewModelLayout: View? = null
+    var textViewOne: TextView? = null
+
+    fun addRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
+    }
+    fun addHeaderView(headerView: View) {
+        this.headerView = headerView
+    }
+    fun addPlayerViewModelLayout(playerViewModelLayout: View) {
+        this.playerViewModelLayout = playerViewModelLayout
+    }
+    fun addTextViewOne(textViewOne: TextView) {
+        this.textViewOne = textViewOne
+    }
+}
+
+class RosterTryout() {
+    // Optional
+    var selectionCounter = 0
+    var selectedItemColors = mutableMapOf<String, Int>() // <playerId, color resource>
+}
+
+open class RosterConfig(var teamId: String) : RosterViews() {
+
+    var rosterListeners = RosterListeners()
     // Roster ID
     var rosterIds = mutableMapOf<String,String>()
     var rosterId: String? = null
     var tryoutRosterId: String? = null
     var currentRosterId: String? = null
     val realmInstance: Realm = realm()
-    var recyclerView: RecyclerView? = null
     var parentFragment: Fragment? = null
-    var playerViewModelLayout = null
     // Filters
     var filters = ludiFilters()
     var rosterSizeLimit: Int = 20
-    // Mandatory
-    var itemTouchHelper: ItemTouchHelper? = null
     // Optional
     var selectionCounter = 0
     var selectedItemColors = mutableMapOf<String, Int>() // <playerId, color resource>
-    // Drag and Drop
-    var itemTouchListener: RosterLiveDragDropAction? = null
-    var itemLiveTouchListener: RosterLiveDragDropAction? = null
-    // Update TextViews
-    var textViewOne: TextView? = null
 
     init {
         realmInstance.findTryOutByTeamId(teamId) { tryout ->
@@ -70,7 +102,7 @@ class RosterConfig(var teamId: String) {
         }
     }
 
-    fun switchRosterTo(rosterTypeStr:String) {
+    fun switchRosterTo(rosterTypeStr:RosterTypeName) {
         val tt = RosterType.values().find { it.type == rosterTypeStr }
         val t = RosterType.valueOf(tt.toString()).type
         currentRosterId = rosterIds[t]
@@ -128,14 +160,19 @@ class RosterConfig(var teamId: String) {
     fun clearFilters() {
         filters.clear()
     }
-    fun toPlayerProfile(id: String?, rosterID:String) {
+    fun toPlayerProfile(id:PlayerID?, rosterID:RosterID) {
         if (id == null) return
         this.parentFragment?.toPlayerProfile(playerId = id, rosterId = rosterID)
     }
     fun destroy() {
-        itemTouchHelper?.attachToRecyclerView(null)
-        itemTouchHelper = null
+        rosterListeners.itemTouchHelper?.attachToRecyclerView(null)
+        rosterListeners.itemTouchHelper = null
         filters.clear()
+    }
+
+    // Configurations
+    fun addHeaderScrollListener(headerV: View?=null) {
+        recyclerView?.addOnScrollListener(HeaderViewScrollListener(headerV ?: headerView ?: return))
     }
 
 }

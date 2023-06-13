@@ -21,7 +21,7 @@ import io.usys.report.realm.model.ChatFireBaseDatabaseListener
 import io.usys.report.realm.model.getFireDBChat
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
-import io.usys.report.utils.bind
+import io.usys.report.utils.views.bind
 
 class ChatDialogFragment : DialogFragment() {
 

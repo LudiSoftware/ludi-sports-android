@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.roster
+package io.usys.report.ui.ludi.roster.config
 
 import android.annotation.SuppressLint
 import android.content.Context

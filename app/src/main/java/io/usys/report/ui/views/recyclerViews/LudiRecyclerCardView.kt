@@ -20,7 +20,8 @@ import io.usys.report.ui.ludi.sport.setupSportList
 import io.usys.report.ui.ludi.team.viewholders.setupTeamListFromSession
 import io.usys.report.ui.views.listAdapters.RealmListAdapter
 import io.usys.report.ui.views.listAdapters.loadInRealmListArrangable
-import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.makeGone
 
 class LudiRecyclerCardView(context: Context) : CardView(context) {
     constructor(context: Context, attrs: AttributeSet) : this(context)

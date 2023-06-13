@@ -17,7 +17,7 @@ import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.A
 import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.B
 import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.C
 import io.usys.report.ui.ludi.review.coach.YsrCoachReviewView.Companion.D
-import io.usys.report.utils.bind
+import io.usys.report.utils.views.bind
 import io.usys.report.utils.log
 
 /**

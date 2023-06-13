@@ -1,14 +1,8 @@
 package io.usys.report.ui.ludi.team
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.*
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
 import io.usys.report.databinding.TeamVgFragmentBinding
 import io.usys.report.providers.TeamMode
 import io.usys.report.providers.syncTeamDataFromFirebase
@@ -22,6 +16,8 @@ import io.usys.report.utils.*
 import io.usys.report.utils.androidx.hideLudiNavView
 import io.usys.report.utils.ludi.addLudiViewGroup
 import io.usys.report.utils.views.loadUriIntoImgView
+import io.usys.report.utils.views.makeGone
+import io.usys.report.utils.views.makeVisible
 
 /**
  * Created by ChazzCoin : October 2022.
@@ -71,7 +67,6 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     }
 
     private fun setupTeamViewPager() {
-//        setupLudiTabs(ludiTeamVGFragments())
         linearLayout.addLudiViewGroup(this, ludiTeamVGFragments(_binding?.profileTeamRosterConstraintLayout), teamId, null, headerView = _binding?.includeTeamProfileCard?.root)
     }
 

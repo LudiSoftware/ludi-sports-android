@@ -23,6 +23,7 @@ import io.usys.report.realm.realm
 import io.usys.report.realm.toRealmList
 import io.usys.report.ui.ludi.review.engine.*
 import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
 
 class YsrCoachReviewView(context: Context, attrs: AttributeSet) : CardView(context, attrs) {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : this(context, attrs)

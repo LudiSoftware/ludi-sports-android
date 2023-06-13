@@ -5,22 +5,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import io.realm.RealmList
-import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.ui.ludi.TO_CREATE_NOTE
-import io.usys.report.ui.ludi.TO_FORMATION_BUILDER
 import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
-import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
-import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
 
 class LudiToggleView(context: Context) : MotionLayout(context) {
     constructor(context: Context, attrs: AttributeSet) : this(context)

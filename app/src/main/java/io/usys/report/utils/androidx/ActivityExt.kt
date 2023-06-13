@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
-import io.usys.report.utils.getColorCompat
+import io.usys.report.utils.views.getColorCompat
 
 /** startActivity **/
 inline fun <reified TO> Activity.launchActivity() {

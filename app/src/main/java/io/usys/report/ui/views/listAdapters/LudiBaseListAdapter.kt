@@ -8,8 +8,8 @@ import io.realm.RealmList
 import io.realm.RealmResults
 import io.usys.report.realm.realm
 import io.usys.report.utils.log
-import io.usys.report.utils.slideDown
-import io.usys.report.utils.slideUp
+import io.usys.report.utils.views.slideDown
+import io.usys.report.utils.views.slideUp
 
 /** Live List Model/Base Adapter **/
 abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
@@ -17,7 +17,7 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
     var parentFragment: Fragment? = null
     var mode: String? = null
     var touchEnabled: Boolean = false
-    var bindCounter: Int = 0
+    private var bindCounter: Int = 0
     var layout: Int = 0
     val realmInstance = realm()
     var results: RealmResults<R>? = null
@@ -28,8 +28,6 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
     init { realmInstance.isAutoRefresh = true }
 
     abstract fun observeRealmIds()
-
-
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         bindCounter++
@@ -71,20 +69,17 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
 
 }
 
-class HideShowScrollListener(private val hideShowView: View) : RecyclerView.OnScrollListener() {
-    private var isShown = true
+class HeaderViewScrollListener(private val hideShowView: View) : RecyclerView.OnScrollListener() {
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
         // Check if the first item is visible and user is scrolling up
         if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0 && dy < 0) {
             hideShowView.slideDown()
-            isShown = true
         }
         // Check if the first item is visible and user is scrolling down
         else if (layoutManager.findFirstCompletelyVisibleItemPosition() >= 2 && dy > 0) {
             hideShowView.slideUp()
-            isShown = false
         }
     }
 }

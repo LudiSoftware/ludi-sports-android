@@ -1,7 +1,6 @@
 package io.usys.report.ui.views.cardViews
 
 import android.content.Context
-import android.media.Image
 import android.util.AttributeSet
 import android.view.View
 import android.widget.*
@@ -12,7 +11,9 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
-import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.makeGone
+import io.usys.report.utils.views.makeVisible
 
 class YsrCreateListView(context: Context) : CardView(context) {
     constructor(context: Context, attrs: AttributeSet) : this(context)

@@ -22,7 +22,7 @@ import io.usys.report.ui.fragments.toRosterBuilder
 import io.usys.report.ui.ludi.formationbuilder.menus.createGlobalMenuButton
 import io.usys.report.ui.ludi.formationbuilder.touch.FormationBuilderGestureHandler
 import io.usys.report.ui.ludi.player.ludiFilters
-import io.usys.report.ui.ludi.roster.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterConfig
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*

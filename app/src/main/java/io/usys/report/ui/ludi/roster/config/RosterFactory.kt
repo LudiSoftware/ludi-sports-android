@@ -1,8 +1,10 @@
-package io.usys.report.ui.ludi.roster
+package io.usys.report.ui.ludi.roster.config
 
 import io.realm.Realm
 import io.usys.report.realm.findRosterIdByTeamId
 import io.usys.report.realm.findTryOutByTeamId
+import io.usys.report.utils.ludi.RosterHolderConfig
+import io.usys.report.utils.ludi.RosterID
 
 
 /**
@@ -18,7 +20,7 @@ import io.usys.report.realm.findTryOutByTeamId
  *      -
  */
 
-fun Realm.rosterPairFactory(teamId:String) : Pair<RosterHolder, RosterConfig> {
+fun Realm.rosterViewFactory(teamId:String) : RosterHolderConfig {
     val rosterConfig = RosterConfig(teamId)
     val rosterHolder = RosterHolder()
     // Official Roster
@@ -44,41 +46,17 @@ fun Realm.rosterPairFactory(teamId:String) : Pair<RosterHolder, RosterConfig> {
     rosterConfig.apply {
         this.rosterId = currentRosterId
     }
-    return Pair(rosterHolder, rosterConfig)
+    return RosterHolderConfig(rosterHolder, rosterConfig)
 }
 
-
-fun Realm.rosterHolderFactory(teamId:String) : RosterHolder {
-    val rosterHolder = RosterHolder()
-    // Official Roster
-    this.findRosterIdByTeamId(teamId)?.let { rosterId ->
-        rosterHolder[RosterType.OFFICIAL.type] = rosterId
-    }
-    // TryOut Roster
-    this.findTryOutByTeamId(teamId) { to ->
-        to.rosterId?.let {
-            // Full Roster
-            rosterHolder[RosterType.TRYOUT.type] = it
-            // Splits (Selected + selectedNumber)
-            if (to.splits > 1) {
-                for (i in 1..to.splits) {
-                    rosterHolder[RosterType.SELECTED.type + i] = it
-                }
-            } else {
-                rosterHolder[RosterType.SELECTED.type] = it
-            }
-        }
-    }
-    return rosterHolder
-}
 
 /** Custom Roster HashMap
  * <RosterType, RosterId>
  */
-class RosterHolder : MutableMap<String, String> {
-    private val rosterMap: MutableMap<String, String> = LinkedHashMap()
+class RosterHolder : MutableMap<String, RosterID> {
+    private val rosterMap: MutableMap<String, RosterID> = LinkedHashMap()
 
-    override val entries: MutableSet<MutableMap.MutableEntry<String, String>>
+    override val entries: MutableSet<MutableMap.MutableEntry<String, RosterID>>
         get() = rosterMap.entries
     override val keys: MutableSet<String>
         get() = rosterMap.keys

@@ -11,12 +11,18 @@ import io.usys.report.providers.*
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterType
+import io.usys.report.ui.ludi.roster.config.rosterViewFactory
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.menus.LudiPopupMenu
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.ui.views.showLudiActionBar
 import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
 import io.usys.report.utils.*
+import io.usys.report.utils.views.attachViewsToOnClickListener
+import io.usys.report.utils.views.makeGone
+import io.usys.report.utils.views.makeVisible
 import io.usys.report.utils.views.onItemSelected
 import io.usys.report.utils.views.setupRosterTypeSpinner
 import io.usys.report.utils.views.wiggleOnce
@@ -142,7 +148,7 @@ class RosterBuilderFragment : YsrFragment() {
     }
 
     private fun setupRosterIds() {
-        realmInstance?.rosterPairFactory(teamId)?.let {
+        realmInstance?.rosterViewFactory(teamId)?.let {
             // Roster Holder
             rosterIds = it.first
             // Roster Config

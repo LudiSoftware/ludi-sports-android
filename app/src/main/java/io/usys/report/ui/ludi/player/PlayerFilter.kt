@@ -2,6 +2,9 @@ package io.usys.report.ui.ludi.player
 
 import io.realm.RealmList
 import io.usys.report.realm.model.PlayerRef
+import io.usys.report.utils.ludi.LudiAttribute
+import io.usys.report.utils.ludi.LudiFilters
+import io.usys.report.utils.ludi.LudiValue
 import java.util.*
 
 fun RealmList<PlayerRef>.filterByAttribute(filter: (PlayerRef) -> Boolean): RealmList<PlayerRef> {
@@ -16,15 +19,9 @@ fun RealmList<PlayerRef>.filterByAttribute(filter: (PlayerRef) -> Boolean): Real
     return filteredList
 }
 
-
-fun rosters(vararg pairs: Pair<String, String>): MutableMap<String, String> {
+fun ludiFilters(vararg pairs: Pair<LudiAttribute, LudiValue>): LudiFilters {
     return mutableMapOf(*pairs)
 }
-
-fun ludiFilters(vararg pairs: Pair<String, String>): MutableMap<String, String> {
-    return mutableMapOf(*pairs)
-}
-
 
 fun RealmList<PlayerRef>.ludiFilters(ludiFilters: MutableMap<String, String>?): RealmList<PlayerRef> {
     if (ludiFilters.isNullOrEmpty()) return this

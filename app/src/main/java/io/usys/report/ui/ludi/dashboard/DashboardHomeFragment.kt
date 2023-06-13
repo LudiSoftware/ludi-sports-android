@@ -24,7 +24,7 @@ import io.usys.report.ui.views.ludiActionBarTitle
 import io.usys.report.ui.views.ludiActionBarResetColor
 import io.usys.report.utils.*
 import io.usys.report.utils.androidx.launchActivity
-import org.jetbrains.anko.support.v4.toast
+import io.usys.report.utils.views.makeInVisible
 
 
 /**

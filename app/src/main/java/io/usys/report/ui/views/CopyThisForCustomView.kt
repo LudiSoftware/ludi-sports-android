@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import io.usys.report.R
 import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
 
 /**
  * This is the CustomView Model!

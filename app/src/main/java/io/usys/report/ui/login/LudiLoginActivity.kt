@@ -15,7 +15,9 @@ import io.usys.report.realm.model.users.fromFirebaseToRealmUserLogin
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.utils.*
 import io.usys.report.utils.androidx.launchActivity
+import io.usys.report.utils.views.makeGone
 import io.usys.report.utils.views.makeRed
+import io.usys.report.utils.views.makeVisible
 import io.usys.report.utils.views.onEnterKeyPressed
 
 /**

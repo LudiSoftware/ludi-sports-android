@@ -18,8 +18,8 @@ import io.usys.report.firebase.DatabasePaths
 import io.usys.report.providers.notifications.ludiChatNotify
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
-import io.usys.report.utils.makeGone
-import io.usys.report.utils.makeVisible
+import io.usys.report.utils.views.makeGone
+import io.usys.report.utils.views.makeVisible
 import io.usys.report.utils.newUUID
 import io.usys.report.utils.views.loadUriIntoImgView
 import java.io.Serializable

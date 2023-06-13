@@ -20,6 +20,7 @@ import io.usys.report.realm.model.toCustomAttributesList
 import io.usys.report.ui.views.listAdapters.CustomAttributesListAdapter
 import io.usys.report.utils.*
 import io.usys.report.utils.views.animateOnClickListener
+import io.usys.report.utils.views.bind
 
 /**
  * This is the CustomView Model!

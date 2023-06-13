@@ -14,8 +14,8 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.sortByOrderIndex
-import io.usys.report.ui.ludi.roster.RosterConfig
-import io.usys.report.ui.ludi.roster.RosterType
+import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterType
 import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
 import io.usys.report.ui.views.touchAdapters.RosterLiveDragDropAction
 import io.usys.report.utils.log
@@ -153,9 +153,9 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
     /** Touch Functions */
     private fun addTouchAdapters() {
         if (!touchEnabled) return
-        config.itemLiveTouchListener = RosterLiveDragDropAction(this)
-        config.itemTouchHelper = ItemTouchHelper(config.itemLiveTouchListener!!)
-        config.itemTouchHelper?.attachToRecyclerView(config.recyclerView)
+        config.rosterListeners.itemLiveTouchListener = RosterLiveDragDropAction(this)
+        config.rosterListeners.itemTouchHelper = ItemTouchHelper(config.rosterListeners.itemLiveTouchListener!!)
+        config.rosterListeners.itemTouchHelper?.attachToRecyclerView(config.recyclerView)
     }
 
     private fun attach() {

@@ -7,7 +7,9 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.usys.report.R
-import io.usys.report.utils.*
+import io.usys.report.utils.views.bind
+import io.usys.report.utils.views.makeGone
+import io.usys.report.utils.views.makeVisible
 
 class YsrExpandableCardView(context: Context) : CardView(context) {
 

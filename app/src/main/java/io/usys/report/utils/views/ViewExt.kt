@@ -1,9 +1,7 @@
-package io.usys.report.utils
+package io.usys.report.utils.views
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ScaleGestureDetector

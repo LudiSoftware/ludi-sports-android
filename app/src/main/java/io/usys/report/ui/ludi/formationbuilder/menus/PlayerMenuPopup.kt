@@ -16,7 +16,7 @@ import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.formationbuilder.RosterFormationFragment
 import io.usys.report.ui.ludi.formationbuilder.setPlayerFormationBackgroundColor
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
-import io.usys.report.utils.attachViewsToOnClickListener
+import io.usys.report.utils.views.attachViewsToOnClickListener
 import io.usys.report.utils.log
 
 /** PLAYER MENU: PLAYER POPUP MENU **/

@@ -15,7 +15,7 @@ import io.usys.report.realm.realm
 import io.usys.report.ui.ludi.review.engine.calculateAverageRatingScore
 import io.usys.report.ui.ludi.review.engine.updateOrgRatingCount
 import io.usys.report.ui.ludi.review.engine.updateOrgRatingScore
-import io.usys.report.utils.bind
+import io.usys.report.utils.views.bind
 
 fun createOrgReviewDialog(activity: Activity, org: Organization) : Dialog {
 
