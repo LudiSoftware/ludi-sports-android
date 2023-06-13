@@ -1,4 +1,4 @@
-package io.usys.report.ui
+package io.usys.report.utils.ludi
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.usys.report.utils.MyDragShadowBuilder
 import io.usys.report.utils.log

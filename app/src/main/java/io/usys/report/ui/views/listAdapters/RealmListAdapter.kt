@@ -12,8 +12,8 @@ import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.firebase.FireTypes
 import io.usys.report.realm.*
-import io.usys.report.ui.onClickReturnStringString
-import io.usys.report.ui.onClickReturnViewT
+import io.usys.report.utils.ludi.onClickReturnStringString
+import io.usys.report.utils.ludi.onClickReturnViewT
 
 /**
  * Dynamic Master RecyclerView Adapter

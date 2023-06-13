@@ -10,33 +10,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <io.usys.report.ui.views.LudiConstraintLayout
-        android:id="@+id/profileTeamRosterConstraintLayout"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
-        <include
-            android:id="@+id/includeTeamProfileCard"
-            layout="@layout/team_header_card_large"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-        <!--        <include-->
-        <!--            android:id="@+id/profileTeamRosterToggleCardView"-->
-        <!--            layout="@layout/ludi_toggle_view"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.0"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/includeTeamProfileCard"></include>-->
+            <io.usys.report.ui.views.LudiConstraintLayout
+                android:id="@+id/profileTeamRosterConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </io.usys.report.ui.views.LudiConstraintLayout>
+                <include
+                    android:id="@+id/includeTeamProfileCard"
+                    layout="@layout/team_header_card_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </io.usys.report.ui.views.LudiConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <!-- Dynamic ViewPager2 is passed into this layout position -->
 
 </io.usys.report.ui.views.LudiLinearLayout>

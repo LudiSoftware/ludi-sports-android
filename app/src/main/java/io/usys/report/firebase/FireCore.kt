@@ -12,7 +12,7 @@ import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.users.User
 import io.usys.report.utils.log
-import io.usys.report.utils.toast
+import io.usys.report.utils.ludi.toast
 
 /**
  * Created by ChazzCoin : October 2022.

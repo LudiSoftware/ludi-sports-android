@@ -128,9 +128,9 @@ class RosterConfig(var teamId: String) {
     fun clearFilters() {
         filters.clear()
     }
-    fun toPlayerProfile(id: String?) {
+    fun toPlayerProfile(id: String?, rosterID:String) {
         if (id == null) return
-        this.parentFragment?.toPlayerProfile(playerId = id)
+        this.parentFragment?.toPlayerProfile(playerId = id, rosterId = rosterID)
     }
     fun destroy() {
         itemTouchHelper?.attachToRecyclerView(null)

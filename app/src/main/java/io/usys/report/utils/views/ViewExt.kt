@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -19,7 +21,34 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by ChazzCoin : October 2022.
  */
+fun View.slideUp(duration: Long = 10) {
+    this.animate()
+        .translationY(-this.height.toFloat())
+        .setInterpolator(AccelerateInterpolator())
+        .setDuration(duration)
+        .withEndAction { this.visibility = View.GONE }
+        .start()
+}
 
+fun View.slideDown(duration: Long = 10) {
+    this.visibility = View.VISIBLE
+    this.animate()
+        .translationY(0f)
+        .setInterpolator(DecelerateInterpolator())
+        .setDuration(duration)
+        .start()
+}
+fun View.animateVisible(visible: Boolean, duration: Long = 200) {
+    animate().setDuration(duration).alpha(if (visible) 1f else 0f).start()
+}
+
+fun View.enable() {
+    isEnabled = true
+}
+
+fun View.disable() {
+    isEnabled = false
+}
 // INFLATERS
 fun inflateView(context: Context, @LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, null, attachToRoot)

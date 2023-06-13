@@ -11,14 +11,9 @@ import io.usys.report.realm.model.Session
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.realm.realm
-import io.usys.report.ui.login.ProviderLoginActivity
 import io.usys.report.ui.ludi.MasterUserActivity
 import io.usys.report.utils.isNullOrEmpty
-import io.usys.report.utils.launchActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import io.usys.report.utils.androidx.launchActivity
 
 
 /**

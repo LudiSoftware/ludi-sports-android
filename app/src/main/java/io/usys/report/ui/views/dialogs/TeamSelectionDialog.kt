@@ -11,6 +11,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import io.usys.report.R
 
+inline fun Context.createDialog(dialogBuilder: AlertDialog.Builder.() -> Unit) {
+    val builder = AlertDialog.Builder(this)
+    builder.dialogBuilder()
+    val dialog = builder.create()
+    dialog.show()
+}
+
+
 class TeamSelectionDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {

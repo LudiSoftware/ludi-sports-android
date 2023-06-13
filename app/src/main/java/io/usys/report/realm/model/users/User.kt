@@ -6,12 +6,11 @@ import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.coreFirebaseUserUid
-import io.usys.report.firebase.fireludi.fireSaveUserToFirebaseAsync
 import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.Session
 import io.usys.report.utils.*
-import io.usys.report.utils.AuthTypes.Companion.BASIC_USER
-import io.usys.report.utils.AuthTypes.Companion.UNASSIGNED
+import io.usys.report.utils.ludi.AuthTypes.Companion.BASIC_USER
+import io.usys.report.utils.ludi.AuthTypes.Companion.UNASSIGNED
 import java.io.Serializable
 
 /**

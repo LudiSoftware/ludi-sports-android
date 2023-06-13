@@ -7,7 +7,15 @@ import io.usys.report.realm.findTryOutByTeamId
 
 /**
  * Custom Roster Setups
- *
+ *      Pair<RosterHolder, RosterConfig>
+ *          <RosterId, RosterId Configuration>
+ * 1. The Roster Id that the Configuration Applies to.
+ * 2. The specific configuration for that Roster Id.
+ *      - Layout Configurations
+ *      - Size
+ *      - Name
+ *      - Team
+ *      -
  */
 
 fun Realm.rosterPairFactory(teamId:String) : Pair<RosterHolder, RosterConfig> {

@@ -21,11 +21,11 @@ import io.usys.report.realm.model.users.executeCreateUserObject
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.views.hideLudiActionBar
-import io.usys.report.utils.fairGetPickImageFromGalleryIntent
+import io.usys.report.utils.androidx.fairGetPickImageFromGalleryIntent
 import io.usys.report.utils.isNullOrEmpty
-import io.usys.report.utils.launchActivity
+import io.usys.report.utils.androidx.launchActivity
 import io.usys.report.utils.log
-import io.usys.report.utils.toast
+import io.usys.report.utils.ludi.toast
 import io.usys.report.utils.views.loadUriIntoImgView
 
 /**

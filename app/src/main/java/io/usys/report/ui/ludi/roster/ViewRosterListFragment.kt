@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.ui.fragments.*
+import io.usys.report.ui.views.listAdapters.HideShowScrollListener
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.utils.log
 
@@ -22,8 +23,9 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
         private const val ARG_ROSTER_TITLE = "roster_title"
         private const val ARG_ROSTER_TEAM_ID = "roster_team_id"
 
-        fun newRoster(rosterId: String, title:String, teamId:String): ViewRosterListFragment {
+        fun newRoster(rosterId: String, title:String, teamId:String, headerView:View?=null): ViewRosterListFragment {
             val fragment = ViewRosterListFragment()
+            fragment.headerView = headerView
             val args = Bundle()
             args.putString(ARG_ROSTER_ID, rosterId)
             args.putString(ARG_ROSTER_TITLE, title)
@@ -33,12 +35,13 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
         }
     }
 
+    var headerView: View? = null
     private var _binding: TeamRosterFragmentBinding? = null
     private val binding get() = _binding!!
 
     var rosterType: String = "null"
     var title: String = "No Roster Found!"
-    var rosterId: String? = null
+//    var rosterId: String? = null
 
 
     /**
@@ -78,6 +81,9 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
             config.parentFragment = this
             config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
             val adapter = RosterListLiveAdapter(config)
+            headerView?.let { HideShowScrollListener(it) }?.let {
+                _binding?.includeTeamRosterLudiListViewTeams?.root?.addOnScrollListener(it)
+            }
         }
     }
 

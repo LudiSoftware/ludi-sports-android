@@ -2,6 +2,9 @@ package io.usys.report.providers.liveData
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -10,14 +13,23 @@ import io.realm.Realm
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.firebase.firebaseDatabase
 import io.usys.report.firebase.toLudiObject
+import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.observe
 import io.usys.report.realm.safeReplace
 import io.usys.report.utils.log
+import kotlinx.coroutines.launch
+
+
+class PlayerRefLiveData() : LiveData<List<PlayerRef>>() {
+    private var listOfPlayerIds = mutableListOf<String>()
+}
 
 class RosterLiveData(private val realmIds: List<String>,
                      private val realmInstance: Realm,
                      private val lifecycleOwner: LifecycleOwner) : LiveData<List<Roster>>(), ValueEventListener {
+
+    private var listOfPlayerIds = mutableListOf<String>()
 
     private val fireReferences = mutableMapOf<String, DatabaseReference>()
     private val fireListeners = mutableMapOf<String, ValueEventListener>()

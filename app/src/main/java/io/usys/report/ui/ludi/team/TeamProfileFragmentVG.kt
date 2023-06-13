@@ -1,8 +1,14 @@
 package io.usys.report.ui.ludi.team
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import io.usys.report.databinding.TeamVgFragmentBinding
 import io.usys.report.providers.TeamMode
 import io.usys.report.providers.syncTeamDataFromFirebase
@@ -13,6 +19,8 @@ import io.usys.report.ui.ludi.onBackPressed
 import io.usys.report.ui.views.*
 import io.usys.report.ui.views.viewGroup.ludiTeamVGFragments
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.hideLudiNavView
+import io.usys.report.utils.ludi.addLudiViewGroup
 import io.usys.report.utils.views.loadUriIntoImgView
 
 /**
@@ -21,6 +29,8 @@ import io.usys.report.utils.views.loadUriIntoImgView
 
 class TeamProfileFragmentVG : LudiTeamFragment() {
 
+    var headerView: View? = null
+    var ludiPagerAdapter: LudiPagerAdapter? = null
     private var linearLayout: LudiLinearLayout? = null
     private var _binding: TeamVgFragmentBinding? = null
     private val binding get() = _binding!!
@@ -61,7 +71,8 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
     }
 
     private fun setupTeamViewPager() {
-        linearLayout.addLudiViewGroup(this, ludiTeamVGFragments(), teamId, null)
+//        setupLudiTabs(ludiTeamVGFragments())
+        linearLayout.addLudiViewGroup(this, ludiTeamVGFragments(_binding?.profileTeamRosterConstraintLayout), teamId, null, headerView = _binding?.includeTeamProfileCard?.root)
     }
 
     private fun setupCallBacks() {
@@ -106,3 +117,19 @@ class TeamProfileFragmentVG : LudiTeamFragment() {
 fun String?.safe(default:String="") : String {
     return this ?: default
 }
+
+//fun View.slideUp(duration: Long = 500) {
+//    this.animate()
+//        .translationY(-this.height.toFloat())
+//        .setInterpolator(AccelerateInterpolator())
+//        .setDuration(duration)
+//        .start()
+//}
+//
+//fun View.slideDown(duration: Long = 500) {
+//    this.animate()
+//        .translationY(0f)
+//        .setInterpolator(DecelerateInterpolator())
+//        .setDuration(duration)
+//        .start()
+//}

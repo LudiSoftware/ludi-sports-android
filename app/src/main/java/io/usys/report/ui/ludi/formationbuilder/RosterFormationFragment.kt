@@ -26,6 +26,7 @@ import io.usys.report.ui.ludi.roster.RosterConfig
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.hideLudiNavView
 import io.usys.report.utils.views.*
 
 /**

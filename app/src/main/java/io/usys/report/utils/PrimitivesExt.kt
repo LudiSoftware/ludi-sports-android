@@ -1,7 +1,29 @@
 package io.usys.report.utils
 
+import android.net.Uri
+import android.util.Patterns
 import androidx.core.text.isDigitsOnly
+import com.google.gson.Gson
 import java.util.*
+
+
+fun Int.isEven(): Boolean = this % 2 == 0
+
+fun Int.isOdd(): Boolean = this % 2 != 0
+
+inline fun Boolean.doIfTrue(action: () -> Unit) {
+    if (this) action()
+}
+inline fun Boolean.doIfFalse(action: () -> Unit) {
+    if (!this) action()
+}
+
+fun CharSequence?.isNotBlankOrEmpty(): Boolean {
+    return this != null && this.isNotBlank() && this.isNotEmpty()
+}
+
+
+fun String.isValidEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
 fun String.capitalizeFirstChar(): String {
     if (this.isEmpty()) {

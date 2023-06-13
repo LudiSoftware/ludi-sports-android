@@ -1,6 +1,9 @@
 package io.usys.report.utils.views
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import androidx.annotation.DrawableRes
@@ -19,4 +22,17 @@ fun getDrawable(context: Context?, drawable: Int): Drawable? {
 
 fun getColor(context: Context, colorResource:Int): Int {
     return ContextCompat.getColor(context, colorResource)
+}
+
+fun Drawable.toBitmap(): Bitmap {
+    if (this is BitmapDrawable) {
+        return bitmap
+    }
+
+    val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    setBounds(0, 0, canvas.width, canvas.height)
+    draw(canvas)
+
+    return bitmap
 }

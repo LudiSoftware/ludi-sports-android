@@ -1,5 +1,6 @@
 package io.usys.report.ui.fragments
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
@@ -10,14 +11,20 @@ class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFr
     var teamId: String? = null
     var playerId: String? = null
     var orgId: String? = null
+    var rosterId: String? = null
     var realmIdArg: String? = null
     var fragments: MutableList<Pair<String, Fragment>> = mutableListOf()
-
+    //
+    var headerView: View? = null
     fun addStringIdArgs(teamId: String?=null, playerId: String?=null, orgId: String?=null, type: String?=null) {
         this.teamId = teamId
         this.playerId = playerId
         this.orgId = orgId
         this.type = type
+    }
+
+    fun addHeaderView(headerView: View) {
+        this.headerView = headerView
     }
 
     fun getFragmentAt(position: Int): Fragment {
@@ -37,7 +44,7 @@ class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFr
 
     override fun createFragment(position: Int): Fragment {
         return fragments[position].second.apply {
-            arguments = bundleStringIds(teamId, playerId, orgId, type)
+            arguments = bundleStringIds(teamId, playerId, orgId, rosterId, type)
         }
     }
 

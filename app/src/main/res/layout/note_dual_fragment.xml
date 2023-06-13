@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     app:cardBackgroundColor="@color/ysrWindowBackground"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +20,7 @@
             layout="@layout/ludi_recycler_card_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
             app:layout_constraintBottom_toTopOf="@+id/note_edit_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -31,6 +32,8 @@
             android:id="@+id/note_edit_text"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginBottom="3dp"
             android:background="@drawable/ft_border_rounded_creme"
             android:hint="Type a note..."
             android:inputType="textMultiLine"

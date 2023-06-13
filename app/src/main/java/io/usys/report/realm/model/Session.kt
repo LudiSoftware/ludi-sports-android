@@ -16,6 +16,7 @@ import io.usys.report.realm.session
 import io.usys.report.realm.sessionSports
 import io.usys.report.ui.ludi.sport.containsItem
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.launchActivity
 import kotlin.collections.isNullOrEmpty
 
 /**

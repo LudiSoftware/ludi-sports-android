@@ -76,7 +76,7 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
                     holder.startClipDataDragAndDrop(playerId)
                 }, {
                     println("onSingleTapUp")
-                    config.toPlayerProfile(playerId)
+                    config.toPlayerProfile(playerId, config.currentRosterId!!)
                 })
             }
         }

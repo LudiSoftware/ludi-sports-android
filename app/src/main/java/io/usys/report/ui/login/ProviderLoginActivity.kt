@@ -12,9 +12,9 @@ import io.usys.report.firebase.fireludi.fireSyncUserWithDatabase
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.fromFirebaseToRealmUserLogin
 import io.usys.report.ui.views.hideLudiActionBar
-import io.usys.report.utils.launchActivity
+import io.usys.report.utils.androidx.launchActivity
 import io.usys.report.utils.log
-import io.usys.report.utils.fairRegisterActivityResult
+import io.usys.report.utils.androidx.fairRegisterActivityResult
 
 /**
  * Created by ChazzCoin : October 2022.

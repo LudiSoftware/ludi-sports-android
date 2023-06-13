@@ -1,14 +1,10 @@
 package io.usys.report.realm.model
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,15 +16,12 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.R
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.providers.notifications.ludiChatNotify
-import io.usys.report.realm.model.users.safeUser
-import io.usys.report.realm.writeToRealm
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.utils.makeGone
 import io.usys.report.utils.makeVisible
 import io.usys.report.utils.newUUID
 import io.usys.report.utils.views.loadUriIntoImgView
-import org.jetbrains.anko.image
 import java.io.Serializable
 import java.text.DateFormat
 
@@ -48,7 +41,6 @@ open class Chat: RealmObject(), Serializable {
 fun getFireDBChat(): DatabaseReference {
     return FirebaseDatabase.getInstance().reference.child(DatabasePaths.CHAT.path)
 }
-
 
 class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
@@ -107,8 +99,6 @@ class ChatAdapter(val context: Context?=null) : RecyclerView.Adapter<ChatAdapter
             holder.messageSender.text = chatMessage.senderName
             holder.messageTime.text = DateFormat.getTimeInstance(DateFormat.SHORT).format(chatMessage.timestamp)
         }
-
-
     }
 
 

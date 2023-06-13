@@ -23,6 +23,8 @@ import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
 import io.usys.report.ui.views.ludiActionBarTitle
 import io.usys.report.ui.views.ludiActionBarResetColor
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.launchActivity
+import org.jetbrains.anko.support.v4.toast
 
 
 /**
@@ -55,7 +57,7 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onResume() {
         super.onResume()
         (requireActivity() as AppCompatActivity).ludiStatusBarColorWhite()
-        (requireActivity() as AppCompatActivity).ludiActionBarResetColor()
+        (requireActivity() as AppCompatActivity).ludiActionBarResetColor(R.color.ysrWindowBackground)
         (requireActivity() as AppCompatActivity).ludiActionBarTitle("Please Sign In!")
         realmInstance?.safeUser { itUser ->
             realmInstance?.createIdBundleSession()
@@ -113,7 +115,7 @@ class DashboardHomeFragment : YsrFragment() {
     }
     private fun setupTeamList() {
         _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
-        _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInTeamIds(teamIds, this)
+        val adapter = _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInTeamIds(teamIds, this)
     }
     override fun setupOnClickListeners() {
         itemOnClickSportList = { _, obj ->

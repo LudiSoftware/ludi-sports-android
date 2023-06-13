@@ -9,8 +9,8 @@ import io.usys.report.utils.log
 /** Teams Profiles */
 
 fun Realm.fireGetTeamProfileInBackground(teamId:String) {
-    firebaseDatabase {
-        it.child(FireTypes.TEAMS).child(teamId)
+    firebaseDatabase { ref ->
+        ref.child(FireTypes.TEAMS).child(teamId)
             .singleValueEvent { ds ->
                 ds?.toLudiObject<Team>(this)
                 this.syncTeamDataFromFirebase(teamId)

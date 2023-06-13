@@ -27,9 +27,9 @@ import io.usys.report.utils.log
 //    }
 //}
 
-fun ludiTeamVGFragments(): MutableList<Pair<String, Fragment>> {
+fun ludiTeamVGFragments(headerView:View?=null): MutableList<Pair<String, Fragment>> {
     return mutableListOf<Pair<String, Fragment>>().apply {
-        add(Pair("Roster", RosterListFragmentVG()))
+        add(Pair("Roster", RosterListFragmentVG.newRosterVG(headerView)))
         add(Pair("Notes", DualNotesFragment()))
         add(Pair("Chat", ChatFragment()))
     }
@@ -70,6 +70,8 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LudiLinearLayout) {
     var ludiRosterPagerAdapter: LudiRosterPagerAdapter? = null
     var ludiPagerAdapter: LudiPagerAdapter? = null
     var mview: View? = null
+    //
+    var headerView: View? = null
 
     init {
         inflater = LayoutInflater.from(parentFragment.requireContext())
@@ -77,15 +79,17 @@ class LudiViewGroup(parentFragment: Fragment, rootView: LudiLinearLayout) {
         mview = inflater?.inflate(R.layout.ludi_view_group, rootView, false)
         rootView.addView(mview)
         ludiPagerAdapter = LudiPagerAdapter(parentFragment)
-        ludiRosterPagerAdapter = LudiRosterPagerAdapter(parentFragment)
+//        ludiRosterPagerAdapter = LudiRosterPagerAdapter(parentFragment, headerView)
         log("LudiViewGroup: init")
     }
 
-    constructor(parentFragment: Fragment, rootView: LudiLinearLayout, teamId: String?, playerId:String?=null, orgId:String?=null, type:String?=null) : this(parentFragment, rootView) {
+    constructor(parentFragment: Fragment, rootView: LudiLinearLayout, teamId: String?, playerId:String?=null, orgId:String?=null, type:String?=null, headerView: View?=null) : this(parentFragment, rootView) {
         this.teamId = teamId
         this.playerId = playerId
         this.orgId = orgId
         this.type = type
+        this.headerView = headerView
+        ludiRosterPagerAdapter = LudiRosterPagerAdapter(parentFragment, headerView)
     }
 
     fun setupLudiTabs(fragmentPairs: MutableList<Pair<String, Fragment>>) {

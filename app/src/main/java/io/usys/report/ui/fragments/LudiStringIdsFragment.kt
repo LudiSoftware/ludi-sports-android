@@ -25,6 +25,7 @@ abstract class LudiStringIdsFragment : Fragment() {
     var teamId: String? = "unassigned"
     var playerId: String? = "unassigned"
     var orgId: String? = "unassigned"
+    var rosterId:String? = "unassigned"
 
     var realmInstance: Realm? = null
     var realmStringId: String? = "unassigned"
@@ -37,6 +38,7 @@ abstract class LudiStringIdsFragment : Fragment() {
         teamId = unbundleTeamId()
         playerId = unbundlePlayerId()
         orgId = unbundleOrgId()
+        rosterId = unbundleRosterId()
     }
 
 }

@@ -53,7 +53,7 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             }
 
             itemView.setOnClickListener {
-                adapter.config.toPlayerProfile(itPlayer.id)
+                adapter.config.toPlayerProfile(itPlayer.id, adapter.config.currentRosterId!!)
             }
             constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.white))
         }
@@ -91,7 +91,7 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
                 it?.wiggleOnce()
             }
             itemView.setOnClickListener {
-                adapter.config.toPlayerProfile(itPlayer.id)
+                adapter.config.toPlayerProfile(itPlayer.id, adapter.config.currentRosterId!!)
             }
             if (isSelected) {
                 adapter.config.selectionCounter++
@@ -135,7 +135,7 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
                 it?.wiggleOnce()
             }
             itemView.setOnClickListener {
-                adapter.config.toPlayerProfile(itPlayer.id)
+                adapter.config.toPlayerProfile(itPlayer.id, adapter.config.currentRosterId!!)
             }
 
             if (isSelected) {

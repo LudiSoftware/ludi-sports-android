@@ -14,7 +14,7 @@ import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.toCustomAttributesList
 import io.usys.report.realm.model.toPlayerRef
-import io.usys.report.ui.setOnDoubleClickListener
+import io.usys.report.utils.ludi.setOnDoubleClickListener
 import io.usys.report.ui.views.cardViews.addAttribute
 import io.usys.report.utils.*
 import kotlin.collections.isNullOrEmpty

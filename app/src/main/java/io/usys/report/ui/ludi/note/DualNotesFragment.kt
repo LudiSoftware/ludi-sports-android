@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
@@ -22,11 +19,7 @@ import io.usys.report.providers.liveData.NoteLiveData
 import io.usys.report.realm.model.Note
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
-import io.usys.report.ui.views.spinners.setupSpinner
-import io.usys.report.utils.isKeyboardVisible
 import io.usys.report.utils.log
-import io.usys.report.utils.views.onItemSelected
 
 /**
  * Created by ChazzCoin : October 2022.

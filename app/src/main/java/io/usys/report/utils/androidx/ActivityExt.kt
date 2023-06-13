@@ -1,24 +1,19 @@
-package io.usys.report.utils
+package io.usys.report.utils.androidx
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.usys.report.R
+import io.usys.report.utils.getColorCompat
 
 /** startActivity **/
 inline fun <reified TO> Activity.launchActivity() {

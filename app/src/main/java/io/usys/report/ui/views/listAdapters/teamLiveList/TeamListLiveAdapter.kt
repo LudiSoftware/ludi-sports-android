@@ -42,7 +42,7 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
     /** Firebase/Realm: Team LiveData **/
     private fun setupLiveData() {
         parentFragment?.let { fragment ->
-            teamLiveData = TeamLiveData(realmIds, realmInstance, fragment.viewLifecycleOwner).apply {
+            teamLiveData = TeamLiveData(realmIds, fragment.viewLifecycleOwner, realmInstance).apply {
                 enable()
             }
         }

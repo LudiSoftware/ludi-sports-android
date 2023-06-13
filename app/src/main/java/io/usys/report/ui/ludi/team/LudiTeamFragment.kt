@@ -23,7 +23,7 @@ import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.ui.ludi.TO_FORMATION_BUILDER
 import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
-import io.usys.report.utils.YsrMode
+import io.usys.report.utils.ludi.YsrMode
 import io.usys.report.utils.log
 
 /**

@@ -1,14 +1,12 @@
 package io.usys.report.ui.fragments
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -37,6 +35,9 @@ import io.usys.report.ui.ludi.TO_PLAYER_PROFILE
 import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
 import io.usys.report.ui.ludi.TO_TEAM_PROFILE
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.fairGetPickImageFromGalleryIntent
+import io.usys.report.utils.androidx.fairRequestPermissions
+import io.usys.report.utils.androidx.ludiSystemPermissionList
 import org.jetbrains.anko.support.v4.toast
 
 /**
@@ -83,7 +84,7 @@ abstract class YsrFragment : Fragment() {
         //Create Initial Intent for Uploading Image.
         pickImageIntent = fairGetPickImageFromGalleryIntent { itUri ->
             log(itUri)
-            itUri?.uploadImageToFirebaseStorage(userId!!) {
+            itUri?.uploadImageToFirebaseStorage(userId!!, requireContext()) {
                 toast("Image Uploaded Successfully!")
             }
         }
@@ -159,8 +160,8 @@ fun Fragment.toFragmentWithId(fragId: Int, stringId: String) {
     this.findNavController().navigate(fragId, bundleStringId(stringId))
 }
 
-fun Fragment.toFragmentWithIds(fragId: Int, teamId:String?=null, playerId:String?=null, orgId:String?=null, type:String?=null) {
-    this.findNavController().navigate(fragId, bundleStringIds(teamId, playerId, orgId, type))
+fun Fragment.toFragmentWithIds(fragId: Int, teamId:String?=null, playerId:String?=null, orgId:String?=null, rosterId:String?=null, type:String?=null) {
+    this.findNavController().navigate(fragId, bundleStringIds(teamId, playerId, orgId, rosterId, type))
 }
 
 fun Fragment.toViewRosterFragment(fragId: Int, teamId:String?=null, rosterId:String, type:String?=null) {
@@ -170,8 +171,8 @@ fun Fragment.toViewRosterFragment(fragId: Int, teamId:String?=null, rosterId:Str
 fun Fragment.toTeamProfileVG(teamId: String) {
     toFragmentWithRealmObject(TO_TEAM_PROFILE, bundleStringId(teamId))
 }
-fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null) {
-    toFragmentWithIds(TO_PLAYER_PROFILE, teamId = teamId, playerId = playerId)
+fun Fragment.toPlayerProfile(playerId:String, teamId:String?=null, rosterId: String?=null) {
+    toFragmentWithIds(TO_PLAYER_PROFILE, teamId = teamId, playerId = playerId, rosterId = rosterId)
 }
 
 fun Fragment.toFormationBuilder(teamId:String?=null) {
@@ -207,7 +208,9 @@ fun Fragment.unbundlePlayerId(): String? {
 fun Fragment.unbundleOrgId(): String? {
     return arguments?.getString(ORG_ID)
 }
-
+fun Fragment.unbundleRosterId(): String? {
+    return arguments?.getString(ROSTER_ID)
+}
 fun bundleRealmObject(obj: RealmObject): Bundle {
     return bundleOf(ARG to obj)
 }
@@ -216,9 +219,9 @@ fun bundleStringId(obj: String): Bundle {
     return bundleOf(ARG to obj)
 }
 
-fun bundleStringIds(teamId: String?=null, playerId: String?=null, orgId: String?=null, type: String?=null): Bundle {
+fun bundleStringIds(teamId: String?=null, playerId: String?=null, orgId: String?=null, rosterId: String?=null, type: String?=null): Bundle {
     //teamId, playerId, orgId
-    return bundleOf(TEAM_ID to teamId, PLAYER_ID to playerId, ORG_ID to orgId, TYPE to type)
+    return bundleOf(TEAM_ID to teamId, PLAYER_ID to playerId, ORG_ID to orgId, ROSTER_ID to rosterId, TYPE to type)
 }
 
 fun bundleRosterIds(teamId: String?=null, rosterId: String?=null, type: String?=null): Bundle {

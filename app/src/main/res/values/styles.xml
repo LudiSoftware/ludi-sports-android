@@ -44,7 +44,7 @@
         <item name="tabBackground">@color/tabBackground</item>
         <item name="tabTextColor">@color/tabUnselectedTextColor</item>
         <item name="tabSelectedTextColor">@color/tabSelectedTextColor</item>
-        <item name="tabIndicatorColor">@color/tabIndicatorColor</item>
+        <item name="tabIndicatorColor">@color/ludiBlue</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabTextAppearance">@style/YSR.TabLayout.Text</item>
     </style>
@@ -62,7 +62,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ysrWindowBackground</item>
         <item name="colorPrimaryDark">@color/ludiBlack</item>
-        <item name="colorAccent">@color/ysrRed</item>
+        <item name="colorAccent">@color/ludiBlue</item>
         <item name="android:windowBackground">@color/ysrWindowBackground</item>
         <item name="android:textColor">@color/ludiBlue</item>
         <item name="android:statusBarColor">@color/ysrWindowBackground</item>

@@ -11,7 +11,7 @@ import io.usys.report.firebase.fireGetRosterInBackground
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.views.LudiViewGroupViewModel
+import io.usys.report.utils.ludi.LudiViewGroupViewModel
 import io.usys.report.ui.views.viewGroup.LudiViewGroup
 
 /**
@@ -20,6 +20,14 @@ import io.usys.report.ui.views.viewGroup.LudiViewGroup
 
 class RosterListFragmentVG : LudiStringIdsFragment() {
 
+    companion object {
+        fun newRosterVG(headerView:View?=null): RosterListFragmentVG {
+            val fragment = RosterListFragmentVG()
+            fragment.headerView = headerView
+            return fragment
+        }
+    }
+
     private var _binding: RosterVgFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -27,8 +35,9 @@ class RosterListFragmentVG : LudiStringIdsFragment() {
 
     var rosterType: RosterType? = null
     var rosterIds: MutableList<String> = mutableListOf()
-    var rosterId: String? = null
+//    var rosterId: String? = null
     var roster: Roster? = null
+    var headerView: View? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val teamContainer = requireActivity().findViewById<ViewGroup>(R.id.ludiViewPager)
@@ -66,7 +75,7 @@ class RosterListFragmentVG : LudiStringIdsFragment() {
         }
 
         // ViewPager/Tab Setup
-        val lvg = LudiViewGroup(this, _binding?.ludiRosterVGLinearLayout!!, teamId, playerId, null, type)
+        val lvg = LudiViewGroup(this, _binding?.ludiRosterVGLinearLayout!!, teamId, playerId, null, type, headerView)
         ludiViewGroupViewModel.setLudiViewGroup(lvg)
         ludiViewGroupViewModel.ludiViewGroup.value?.setupRosterTabs()
 

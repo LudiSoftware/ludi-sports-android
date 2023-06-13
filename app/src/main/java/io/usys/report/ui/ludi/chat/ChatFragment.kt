@@ -16,7 +16,7 @@ import io.usys.report.ui.views.listAdapters.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
-import io.usys.report.utils.toast
+import io.usys.report.utils.ludi.toast
 import org.jetbrains.anko.support.v4.toast
 
 /**

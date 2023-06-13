@@ -68,7 +68,7 @@ fun Fragment.popAskUserPickImageGallery(block: () -> Unit) : Dialog {
     return dialog
 }
 
-inline fun Activity.popAskUserGeneric(title:String, body:String, crossinline block: () -> Unit) : Dialog {
+inline fun Activity.popAskUserGeneric(title:String, body:String, crossinline block: (Boolean) -> Unit) : Dialog {
     val dialog = Dialog(this)
     dialog.setContentView(R.layout.dialog_ask_user_generic)
     dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -80,9 +80,10 @@ inline fun Activity.popAskUserGeneric(title:String, body:String, crossinline blo
     val yes = dialog.bind<Button>(R.id.btnYesAskUser)
     val cancel = dialog.bind<Button>(R.id.btnCancelAskUser)
     yes.setOnClickListener {
-        block()
+        block(true)
     }
     cancel.setOnClickListener {
+        block(false)
         dialog.dismiss()
     }
     return dialog

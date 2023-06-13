@@ -1,4 +1,4 @@
-package io.usys.report.utils
+package io.usys.report.utils.androidx
 
 import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
