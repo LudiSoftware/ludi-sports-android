@@ -10,9 +10,8 @@ import io.usys.report.R
 import io.usys.report.providers.liveData.TeamLiveData
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Team
-import io.usys.report.ui.ludi.team.viewholders.TeamSmallViewHolder
 import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
-import io.usys.report.ui.views.listAdapters.linearLayoutManager
+import io.usys.report.ui.views.listAdapters.realmList.linearLayoutManager
 import io.usys.report.utils.log
 
 

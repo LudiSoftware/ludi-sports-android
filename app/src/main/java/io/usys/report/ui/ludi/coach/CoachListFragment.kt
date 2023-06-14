@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import io.usys.report.R
 import io.realm.RealmObject
 import io.usys.report.databinding.CoachesListFragmentBinding
-import io.usys.report.ui.fragments.toFragmentWithRealmObject
-import io.usys.report.ui.fragments.unbundleRealmObject
+import io.usys.report.ui.views.navController.toFragmentWithRealmObject
+import io.usys.report.ui.views.navController.unbundleRealmObject
 
 /**
  * Created by ChazzCoin : October 2022.

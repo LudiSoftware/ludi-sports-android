@@ -9,7 +9,7 @@ import io.usys.report.firebase.DatabasePaths
 import io.usys.report.firebase.fireludi.doubleId
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Note
-import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
+import io.usys.report.ui.views.listAdapters.realmList.loadInCustomAttributes
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.bindTextView
 

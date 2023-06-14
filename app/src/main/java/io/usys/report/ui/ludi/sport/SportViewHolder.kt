@@ -11,7 +11,7 @@ import io.usys.report.realm.model.addToSession
 import io.usys.report.utils.views.bindTextView
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.realm.sessionSports
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmList
 
 /**
  * SPORT LIST VIEW CONTROLS

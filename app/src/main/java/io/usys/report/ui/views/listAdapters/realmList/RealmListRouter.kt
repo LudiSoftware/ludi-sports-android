@@ -1,4 +1,4 @@
-package io.usys.report.ui.views.listAdapters
+package io.usys.report.ui.views.listAdapters.realmList
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

@@ -11,8 +11,8 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetBaseLudiObjects
 import io.usys.report.realm.model.Service
 import io.usys.report.realm.model.addToSession
-import io.usys.report.ui.views.listAdapters.loadInRealmListGrid
-import io.usys.report.ui.views.listAdapters.loadInRealmListHorizontal
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmListGrid
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmListHorizontal
 import io.usys.report.realm.sessionServices
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.bindTextView

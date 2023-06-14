@@ -1,6 +1,5 @@
 package io.usys.report.ui.ludi.player
 
-import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.text.isDigitsOnly

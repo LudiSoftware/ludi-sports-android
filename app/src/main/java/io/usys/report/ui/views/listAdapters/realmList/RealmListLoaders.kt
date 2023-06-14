@@ -1,12 +1,10 @@
-package io.usys.report.ui.views.listAdapters
+package io.usys.report.ui.views.listAdapters.realmList
 
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
-import io.usys.report.ui.views.listAdapters.teamLiveList.TeamListLiveAdapter
 import io.usys.report.utils.getObjectType
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.utils.log
@@ -54,7 +52,7 @@ inline fun <reified T> RecyclerView.loadInRealmList(realmList: RealmList<T>?,
                                                     size:String = "small") : RealmListAdapter<T>? {
     if (realmList.isNullOrEmpty()) return null
     val adapter = RealmListAdapter(realmList, type, itemOnClick, size)
-    this.layoutManager = linearLayoutManager(this.context)
+    this.layoutManager = linearLayoutManager(this.context, isHorizontal = true)
     this.adapter = adapter
     return adapter
 }

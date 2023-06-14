@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.usys.report.R
-import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
+import io.usys.report.ui.views.listAdapters.realmList.loadInCustomAttributes
 import io.usys.report.realm.model.CustomAttribute
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.toCustomAttributesList
@@ -77,12 +77,12 @@ class LudiCustomAttributesList @JvmOverloads constructor(context: Context,
     fun loadInPlayerRef(playerRef: PlayerRef) {
         this.type = "player"
         val temp = playerRef.toCustomAttributesList()
-        adapter = recyclerView?.loadInCustomAttributes(temp)
+//        adapter = recyclerView?.loadInCustomAttributes(temp)
     }
 
-    fun loadInCustomAttributes(realmObjectList: RealmList<CustomAttribute>) {
-        recyclerView?.loadInCustomAttributes(realmObjectList)
-    }
+//    fun loadInCustomAttributes(realmObjectList: RealmList<CustomAttribute>) {
+//        recyclerView?.loadInCustomAttributes(realmObjectList)
+//    }
 
 }
 

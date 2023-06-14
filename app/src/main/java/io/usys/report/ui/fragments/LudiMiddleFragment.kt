@@ -10,6 +10,7 @@ import io.usys.report.R
 import io.usys.report.realm.model.users.User
 import io.usys.report.realm.model.users.userOrLogout
 import io.usys.report.realm.realm
+import io.usys.report.ui.views.navController.unbundleRealmObject
 import io.usys.report.utils.popAskUserPickImageGallery
 
 /**

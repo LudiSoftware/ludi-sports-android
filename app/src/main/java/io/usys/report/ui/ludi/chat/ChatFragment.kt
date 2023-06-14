@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseReference
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.LudiChatBinding
-import io.usys.report.ui.views.listAdapters.linearLayoutManager
+import io.usys.report.ui.views.listAdapters.realmList.linearLayoutManager
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*

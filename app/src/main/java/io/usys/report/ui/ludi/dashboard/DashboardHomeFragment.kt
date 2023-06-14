@@ -1,10 +1,8 @@
 package io.usys.report.ui.ludi.dashboard
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.LudiDashboardFragmentBinding
@@ -15,15 +13,17 @@ import io.usys.report.realm.local.updateIdBundleIds
 import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.login.LudiLoginActivity
-import io.usys.report.ui.ludi.TO_TEAM_PROFILE
-import io.usys.report.ui.ludi.ludiStatusBarColorWhite
 import io.usys.report.ui.ludi.onBackPressed
 import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
 import io.usys.report.ui.views.ludiActionBarTitle
 import io.usys.report.ui.views.ludiActionBarResetColor
+import io.usys.report.ui.views.menus.SignInOutMenuProvider
+import io.usys.report.ui.views.navController.TO_TEAM_PROFILE
+import io.usys.report.ui.views.navController.bundleRealmObject
+import io.usys.report.ui.views.navController.bundleStringId
+import io.usys.report.ui.views.navController.toFragmentWithRealmObject
+import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 import io.usys.report.utils.*
-import io.usys.report.utils.androidx.launchActivity
 import io.usys.report.utils.views.makeInVisible
 
 
@@ -130,27 +130,4 @@ class DashboardHomeFragment : YsrFragment() {
 
 }
 
-class SignInOutMenuProvider(private val activity: Activity, val isSignIn:Boolean=true) : MenuProvider {
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        if (isSignIn) {
-            menuInflater.inflate(R.menu.sign_in_menu, menu)
-        } else {
-            menuInflater.inflate(R.menu.sign_out_menu, menu)
-        }
-    }
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.menuitem_signin -> {
-                activity.launchActivity<LudiLoginActivity>()
-                return true
-            }
-            R.id.menuitem_signout -> {
-            activity.popupYesNo("Sign Out.", "Are you sure you want to sign out?") {
-                Session.logoutAndRestartApplication(activity)
-            }
-            return true
-        }else -> {}
-        }
-        return true
-    }
-}
+

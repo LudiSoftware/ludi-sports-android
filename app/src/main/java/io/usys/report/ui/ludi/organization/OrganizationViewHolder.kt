@@ -17,8 +17,8 @@ import io.usys.report.realm.model.Organization
 import io.usys.report.realm.model.Sport
 import io.usys.report.realm.realm
 import io.usys.report.realm.toRealmList
-import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.realmList.loadInCustomAttributes
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmList
 import io.usys.report.utils.*
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.bindTextView

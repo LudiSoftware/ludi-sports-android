@@ -3,6 +3,7 @@ package io.usys.report.ui.fragments
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import io.usys.report.ui.views.navController.bundleStringIds
 
 
 class LudiPagerAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {

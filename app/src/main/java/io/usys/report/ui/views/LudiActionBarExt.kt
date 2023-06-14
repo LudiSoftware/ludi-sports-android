@@ -8,9 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import io.usys.report.R
 import io.usys.report.providers.TeamMode
-import io.usys.report.ui.ludi.ludiStatusBarColorWhite
-import io.usys.report.ui.ludi.ludiStatusBarTeamInSeasonMode
-import io.usys.report.ui.ludi.ludiStatusBarTeamMode
+import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
+import io.usys.report.ui.views.statusBar.ludiStatusBarTeamInSeasonMode
+import io.usys.report.ui.views.statusBar.ludiStatusBarTeamMode
 
 
 /** Ludi Action Bar **/

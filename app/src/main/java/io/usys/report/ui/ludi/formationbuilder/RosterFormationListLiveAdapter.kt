@@ -143,9 +143,6 @@ class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationLis
         }
     }
 
-
-
-
     /** Reset OnDeck to Original Roster **/
     @SuppressLint("NotifyDataSetChanged")
     fun resetDeckToRoster() {

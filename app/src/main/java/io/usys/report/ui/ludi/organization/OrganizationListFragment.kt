@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import io.usys.report.R
 import io.usys.report.databinding.OrganizationsListFragmentBinding
 import io.usys.report.ui.fragments.LudiMiddleFragment
-import io.usys.report.ui.fragments.bundleRealmObject
-import io.usys.report.ui.fragments.toFragmentWithRealmObject
+import io.usys.report.ui.views.navController.bundleRealmObject
+import io.usys.report.ui.views.navController.toFragmentWithRealmObject
 
 /**
  * Created by ChazzCoin : October 2022.

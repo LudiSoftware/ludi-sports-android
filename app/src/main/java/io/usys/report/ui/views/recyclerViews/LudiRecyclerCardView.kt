@@ -17,9 +17,9 @@ import io.usys.report.ui.ludi.player.setupPlayerListFromTeamSession
 import io.usys.report.ui.ludi.player.setupPlayerListGridFromRosterId
 import io.usys.report.ui.ludi.service.setupServiceList
 import io.usys.report.ui.ludi.sport.setupSportList
-import io.usys.report.ui.ludi.team.viewholders.setupTeamListFromSession
-import io.usys.report.ui.views.listAdapters.RealmListAdapter
-import io.usys.report.ui.views.listAdapters.loadInRealmListArrangable
+import io.usys.report.ui.views.listAdapters.teamLiveList.setupTeamListFromSession
+import io.usys.report.ui.views.listAdapters.realmList.RealmListAdapter
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmListArrangable
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.makeGone
 

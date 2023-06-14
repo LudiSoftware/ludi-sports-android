@@ -11,7 +11,7 @@ import io.usys.report.firebase.FireTypes
 import io.usys.report.firebase.fireGetOrderByEqualToAsync
 import io.usys.report.realm.model.users.Coach
 import io.usys.report.realm.model.Organization
-import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
+import io.usys.report.ui.views.listAdapters.realmList.loadInCustomAttributes
 import io.usys.report.realm.toRealmList
 import io.usys.report.utils.*
 import io.usys.report.utils.views.bind

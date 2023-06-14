@@ -12,10 +12,10 @@ import io.usys.report.realm.findPlayerRefById
 import io.usys.report.realm.model.PLAYER_STATUS_OPEN
 import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.safeWrite
-import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.formationbuilder.RosterFormationFragment
 import io.usys.report.ui.ludi.formationbuilder.setPlayerFormationBackgroundColor
 import io.usys.report.ui.ludi.player.setupPlayerPositionSpinner
+import io.usys.report.ui.views.navController.toPlayerProfile
 import io.usys.report.utils.views.attachViewsToOnClickListener
 import io.usys.report.utils.log
 

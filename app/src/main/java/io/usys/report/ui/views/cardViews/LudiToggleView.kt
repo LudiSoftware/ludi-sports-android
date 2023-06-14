@@ -10,7 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import io.usys.report.R
-import io.usys.report.ui.ludi.TO_ROSTER_BUILDER
+import io.usys.report.ui.views.navController.TO_ROSTER_BUILDER
 import io.usys.report.utils.views.bind
 
 class LudiToggleView(context: Context) : MotionLayout(context) {

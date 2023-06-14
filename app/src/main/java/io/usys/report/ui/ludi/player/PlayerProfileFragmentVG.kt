@@ -26,9 +26,9 @@ import io.usys.report.realm.findRosterById
 import io.usys.report.realm.model.*
 import io.usys.report.realm.safeWrite
 import io.usys.report.ui.fragments.LudiStringIdsFragment
-import io.usys.report.ui.fragments.goBack
 import io.usys.report.ui.ludi.onBackPressed
 import io.usys.report.ui.views.hideLudiActionBar
+import io.usys.report.ui.views.navController.goBack
 import io.usys.report.ui.views.viewGroup.LudiViewGroup
 import io.usys.report.ui.views.viewGroup.ludiPlayerProfileFragments
 import io.usys.report.utils.androidx.fairGetCaptureImageFromCameraIntent

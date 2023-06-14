@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.ui.views.listAdapters.loadInCustomAttributes
+import io.usys.report.ui.views.listAdapters.realmList.loadInCustomAttributes
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.makeGone
 import io.usys.report.utils.views.makeVisible

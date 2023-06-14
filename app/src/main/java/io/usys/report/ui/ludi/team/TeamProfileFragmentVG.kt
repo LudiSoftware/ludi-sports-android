@@ -11,6 +11,8 @@ import io.usys.report.realm.model.Team
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.onBackPressed
 import io.usys.report.ui.views.*
+import io.usys.report.ui.views.menus.TeamMenuPopupProvider
+import io.usys.report.ui.views.navController.goBack
 import io.usys.report.ui.views.viewGroup.ludiTeamVGFragments
 import io.usys.report.utils.*
 import io.usys.report.utils.androidx.hideLudiNavView
@@ -113,18 +115,3 @@ fun String?.safe(default:String="") : String {
     return this ?: default
 }
 
-//fun View.slideUp(duration: Long = 500) {
-//    this.animate()
-//        .translationY(-this.height.toFloat())
-//        .setInterpolator(AccelerateInterpolator())
-//        .setDuration(duration)
-//        .start()
-//}
-//
-//fun View.slideDown(duration: Long = 500) {
-//    this.animate()
-//        .translationY(0f)
-//        .setInterpolator(DecelerateInterpolator())
-//        .setDuration(duration)
-//        .start()
-//}

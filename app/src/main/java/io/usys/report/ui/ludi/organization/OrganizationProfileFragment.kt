@@ -9,9 +9,9 @@ import io.usys.report.R
 import io.usys.report.databinding.ProfileOrganizationBinding
 import io.usys.report.realm.model.Organization
 import io.usys.report.ui.fragments.LudiMiddleFragment
-import io.usys.report.ui.fragments.bundleRealmObject
 import io.usys.report.ui.ludi.review.organization.createOrgReviewDialog
-import io.usys.report.ui.fragments.toFragmentWithRealmObject
+import io.usys.report.ui.views.navController.bundleRealmObject
+import io.usys.report.ui.views.navController.toFragmentWithRealmObject
 import io.usys.report.utils.cast
 import io.usys.report.utils.log
 

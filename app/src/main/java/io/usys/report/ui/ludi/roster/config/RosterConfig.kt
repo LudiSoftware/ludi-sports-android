@@ -9,13 +9,12 @@ import io.realm.Realm
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.teamSessionByTeamId
-import io.usys.report.ui.fragments.toPlayerProfile
 import io.usys.report.ui.ludi.player.*
 import io.usys.report.ui.views.listAdapters.HeaderViewScrollListener
+import io.usys.report.ui.views.navController.toPlayerProfile
 import io.usys.report.ui.views.touchAdapters.*
 import io.usys.report.utils.ludi.PlayerID
 import io.usys.report.utils.ludi.RosterID
-import io.usys.report.utils.ludi.RosterIDs
 import io.usys.report.utils.ludi.RosterTypeName
 
 enum class RosterType(val type: String) {
@@ -23,7 +22,8 @@ enum class RosterType(val type: String) {
     OFFICIAL_ARCHIVE("official_archive"),
     TRYOUT("tryout"),
     SELECTED("selected"),
-    UNSELECTED("unselected")
+    UNSELECTED("unselected"),
+    CUSTOM("custom")
 }
 
 open class RosterListeners {

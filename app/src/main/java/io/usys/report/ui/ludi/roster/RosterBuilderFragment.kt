@@ -17,6 +17,7 @@ import io.usys.report.ui.ludi.roster.config.rosterViewFactory
 import io.usys.report.ui.views.hideLudiActionBar
 import io.usys.report.ui.views.menus.LudiPopupMenu
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
+import io.usys.report.ui.views.navController.toFormationBuilder
 import io.usys.report.ui.views.showLudiActionBar
 import io.usys.report.ui.views.spinners.LudiSpinnerAdapter
 import io.usys.report.utils.*

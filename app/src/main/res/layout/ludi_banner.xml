@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topExpandLayout"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:background="@drawable/home_banner"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"

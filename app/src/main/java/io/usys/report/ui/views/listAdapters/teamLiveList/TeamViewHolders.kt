@@ -1,4 +1,4 @@
-package io.usys.report.ui.ludi.team.viewholders
+package io.usys.report.ui.views.listAdapters.teamLiveList
 
 
 import android.view.View
@@ -12,8 +12,8 @@ import io.usys.report.realm.findTeamById
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.realm
 import io.usys.report.realm.sessionTeams
-import io.usys.report.ui.fragments.toTeamProfileVG
-import io.usys.report.ui.views.listAdapters.loadInRealmList
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmList
+import io.usys.report.ui.views.navController.toTeamProfileVG
 import io.usys.report.utils.*
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.bindTextView

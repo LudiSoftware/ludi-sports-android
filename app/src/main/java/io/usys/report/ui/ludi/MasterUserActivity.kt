@@ -22,6 +22,9 @@ import io.usys.report.firebase.fireludi.fireGetAndLoadSportsIntoSessionAsync
 import io.usys.report.providers.TeamMode
 import io.usys.report.providers.UserProvider
 import io.usys.report.providers.notifications.createNotificationChannel
+import io.usys.report.ui.views.appBar.createBasicAppBarNavigation
+import io.usys.report.ui.views.navController.ludiNavController
+import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 
 
 /**
@@ -82,62 +85,8 @@ inline fun Fragment.onEnterKeyPressed(editText: EditText, crossinline onEnterPre
 }
 
 
-const val TO_DASHBOARD = R.id.navigation_dashboard
-const val TO_MANAGEMENT = R.id.navigation_management
-const val TO_PROFILE = R.id.navigation_profile
-const val TO_TEAM_PROFILE = R.id.navigation_team_profile
-const val TO_PLAYER_PROFILE = R.id.navigation_player_profile
-const val TO_ORG_PROFILE = R.id.navigation_org_profile
-const val TO_ROSTER_BUILDER = R.id.navigation_roster_builder_frag
-const val TO_FORMATION_BUILDER = R.id.navigation_formation_builder
-const val TO_CREATE_NOTE = R.id.navigation_dual_notes
 
 
-/** Ludi Nav Controller **/
-fun AppCompatActivity.ludiNavController() : NavController {
-    return findNavController(R.id.nav_host_fragment)
-}
 
-fun AppCompatActivity.setupAppBarNavigation(navController: NavController, appBarConfiguration: AppBarConfiguration?= null) {
-    if (appBarConfiguration == null) {
-        this.setupActionBarWithNavController(navController, createBasicAppBarNavigation())
-    } else this.setupActionBarWithNavController(navController, appBarConfiguration)
-}
-fun createBasicAppBarNavigation(): AppBarConfiguration {
-    return AppBarConfiguration(topLevelDestinationIds = setOf(TO_MANAGEMENT, TO_DASHBOARD, TO_PROFILE))
-}
 
-/** Ludi Status Bar **/
-fun Fragment.ludiStatusBarColorWhite(@ColorRes color: Int= R.color.ysrWindowBackground) {
-    (requireActivity() as AppCompatActivity).let {
-        it.window.statusBarColor = ContextCompat.getColor(it, color)
-    }
-}
-fun Fragment.ludiStatusBarTeamMode() {
-    (requireActivity() as AppCompatActivity).let {
-        it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedRed)
-    }
-}
-fun Fragment.ludiStatusBarTeamInSeasonMode() {
-    (requireActivity() as AppCompatActivity).let {
-        it.window.statusBarColor = ContextCompat.getColor(it, R.color.ysrFadedBlue)
-    }
-}
-fun AppCompatActivity.ludiStatusBarColorWhite(@ColorRes color: Int= R.color.ysrWindowBackground) {
-    window.statusBarColor = ContextCompat.getColor(this, color)
-}
-fun AppCompatActivity.ludiStatusBarTeamMode(teamMode: String) {
-    val modeColor = when (teamMode) {
-        TeamMode.CREATION.mode -> TeamMode.CREATION.color
-        TeamMode.PRE_SEASON.mode -> TeamMode.PRE_SEASON.color
-        TeamMode.IN_SEASON.mode -> TeamMode.IN_SEASON.color
-        TeamMode.OFF_SEASON.mode -> TeamMode.OFF_SEASON.color
-        TeamMode.TRYOUT.mode -> TeamMode.TRYOUT.color
-        TeamMode.PENDING_ROSTER.mode -> TeamMode.PENDING_ROSTER.color
-        else -> TeamMode.CREATION.color
-    }
-    window.statusBarColor = ContextCompat.getColor(this, modeColor)
-}
-fun AppCompatActivity.ludiStatusBarTeamInSeasonMode() {
-    window.statusBarColor = ContextCompat.getColor(this, R.color.ysrFadedBlue)
-}
+

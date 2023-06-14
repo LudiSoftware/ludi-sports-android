@@ -18,13 +18,13 @@ import io.usys.report.realm.*
 import io.usys.report.realm.local.*
 import io.usys.report.realm.model.*
 import io.usys.report.ui.fragments.LudiStringIdsFragment
-import io.usys.report.ui.fragments.toRosterBuilder
 import io.usys.report.ui.ludi.formationbuilder.menus.createGlobalMenuButton
 import io.usys.report.ui.ludi.formationbuilder.touch.FormationBuilderGestureHandler
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.roster.config.RosterConfig
 import io.usys.report.ui.views.hideLudiActionBar
-import io.usys.report.ui.views.listAdapters.linearLayoutManager
+import io.usys.report.ui.views.listAdapters.realmList.linearLayoutManager
+import io.usys.report.ui.views.navController.toRosterBuilder
 import io.usys.report.utils.*
 import io.usys.report.utils.androidx.hideLudiNavView
 import io.usys.report.utils.views.*

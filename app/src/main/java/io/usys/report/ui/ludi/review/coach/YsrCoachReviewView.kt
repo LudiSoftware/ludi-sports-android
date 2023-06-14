@@ -17,7 +17,7 @@ import io.usys.report.realm.model.users.Coach
 import io.usys.report.utils.ludi.onClickReturnEmpty
 import io.usys.report.utils.ludi.onClickReturnStringString
 import io.usys.report.utils.ludi.onClickReturnViewRealmObject
-import io.usys.report.ui.views.listAdapters.loadInRealmListCallback
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmListCallback
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.realm.realm
 import io.usys.report.realm.toRealmList

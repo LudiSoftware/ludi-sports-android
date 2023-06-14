@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import io.realm.Realm
 import io.usys.report.R
-import io.usys.report.ui.views.listAdapters.linearLayoutManager
+import io.usys.report.ui.views.listAdapters.realmList.linearLayoutManager
 import io.usys.report.realm.model.Chat
 import io.usys.report.realm.model.ChatAdapter
 import io.usys.report.realm.model.ChatFireBaseDatabaseListener
