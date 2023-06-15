@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.usys.report.ui.views.cardViews.YsrExpandableCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<io.usys.report.ui.views.cardViews.YsrExpandableCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardYsrExpander"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/ft_border_rounded_creme"
     android:orientation="vertical"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    app:cardCornerRadius="25dp"
+    app:cardElevation="25dp"
+    app:cardMaxElevation="25dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/masterCLayout"
@@ -22,7 +21,6 @@
             android:id="@+id/topExpandLayout"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/home_banner"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnExpanderMore"
                 app:layout_constraintHorizontal_bias="0.096"

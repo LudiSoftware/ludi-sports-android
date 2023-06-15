@@ -1,8 +1,14 @@
 package io.usys.report.ui.ludi.dashboard
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.LudiDashboardFragmentBinding
@@ -22,15 +28,11 @@ import io.usys.report.ui.views.navController.TO_TEAM_PROFILE
 import io.usys.report.ui.views.navController.bundleRealmObject
 import io.usys.report.ui.views.navController.bundleStringId
 import io.usys.report.ui.views.navController.toFragmentWithRealmObject
+import io.usys.report.ui.views.recyclerViews.LudiRecyclerCardView
 import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 import io.usys.report.utils.*
-import io.usys.report.utils.ludi.DeviceScreenSizes
-import io.usys.report.utils.ludi.getScreenType
-import io.usys.report.utils.ludi.screenDiagonalInches
-import io.usys.report.utils.ludi.screenHeight
-import io.usys.report.utils.ludi.screenHeightDp
-import io.usys.report.utils.ludi.screenWidth
 import io.usys.report.utils.ludi.screenWidthDp
+import io.usys.report.utils.views.getDrawableCompat
 import io.usys.report.utils.views.makeInVisible
 
 
@@ -42,7 +44,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     private var menuIn: SignInOutMenuProvider? = null
     private var menuOut: SignInOutMenuProvider? = null
-    private var _binding: LudiDashboardFragmentBinding? = null
+    var _binding: LudiDashboardFragmentBinding? = null
     private val binding get() = _binding!!
 
     var itemOnClickSportList: ((View, Sport) -> Unit)? = null
@@ -61,6 +63,8 @@ class DashboardHomeFragment : YsrFragment() {
         onBackPressed { log("Ignoring Back Press") }
         setupOnClickListeners()
         ifNull(user) { _binding?.includeYsrListViewTeams?.root?.makeInVisible() }
+
+        _binding?.root?.background = requireContext().getDrawableCompat(R.drawable.test_background)
         return binding.root
     }
 
@@ -89,6 +93,23 @@ class DashboardHomeFragment : YsrFragment() {
         super.onPause()
         requireActivity().removeMenuProvider(menuIn ?: menuOut ?: return)
     }
+
+    inline fun addView(block : (LudiRecyclerCardView) -> Unit) {
+        val newView = LayoutInflater.from(requireContext()).inflate(R.layout.ludi_recycler_card_view, _binding?.linearLayoutTop, false) as LudiRecyclerCardView
+        // For LinearLayout, just need to set the width and height
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        newView.id = View.generateViewId()  // generate a new id for the view
+        newView.layoutParams = layoutParams
+//        newView.txtTitle?.text = "Uh ohhhhhhhhhhh"
+//        newView.recyclerView?.loadInTeamIds(teamIds, this)
+        // add the view to the layout
+        _binding?.linearLayoutTop?.addView(newView)
+        block(newView)
+    }
+
 
     private fun setupCoachDisplay() {
         val coach = realmInstance?.findCoachBySafeId()
@@ -124,8 +145,12 @@ class DashboardHomeFragment : YsrFragment() {
         _binding?.includeYsrListViewSports?.root?.setupSportList(itemOnClickSportList)
     }
     private fun setupTeamList() {
-        _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
-        val adapter = _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInTeamIds(teamIds, this)
+//        _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
+//        val adapter = _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInTeamIds(teamIds, this)
+        addView {
+            it.txtTitle?.text = "My Teams"
+            it.recyclerView?.loadInTeamIds(teamIds, this)
+        }
     }
     override fun setupOnClickListeners() {
         itemOnClickSportList = { _, obj ->
@@ -137,6 +162,12 @@ class DashboardHomeFragment : YsrFragment() {
             toFragmentWithRealmObject(TO_TEAM_PROFILE, bundleStringId(obj.toString()))
         }
     }
+
+
+    // Function to convert dp to pixels
+    val Int.dp: Int
+        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
 
 }
 

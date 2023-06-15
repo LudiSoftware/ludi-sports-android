@@ -22,6 +22,7 @@ import io.usys.report.ui.views.listAdapters.realmList.RealmListAdapter
 import io.usys.report.ui.views.listAdapters.realmList.loadInRealmListArrangable
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.makeGone
+import org.jetbrains.anko.backgroundColor
 
 class LudiRecyclerCardView(context: Context) : CardView(context) {
     constructor(context: Context, attrs: AttributeSet) : this(context)
@@ -33,6 +34,7 @@ class LudiRecyclerCardView(context: Context) : CardView(context) {
     var realmListAdapter: RealmListAdapter<RealmObject>? = null
 
     override fun onViewAdded(child: View?) {
+        this.backgroundColor = context.getColor(R.color.transparent)
         bindChildren()
     }
 

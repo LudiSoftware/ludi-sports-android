@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<io.usys.report.ui.views.recyclerViews.LudiRecyclerCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<io.usys.report.ui.views.recyclerViews.LudiRecyclerCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ysrTitleListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FAFAFA"
+    android:background="@color/ysrWindowBackground"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ysrMainLayoutTitleListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00FAFAFA">
+        android:background="@color/transparent">
 
         <TextView
             android:id="@+id/ysrTxtTitle"
