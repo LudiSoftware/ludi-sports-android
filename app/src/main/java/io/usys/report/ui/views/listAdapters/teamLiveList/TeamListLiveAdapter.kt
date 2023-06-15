@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.*
 import io.usys.report.R
 import io.usys.report.providers.liveData.TeamLiveData
+import io.usys.report.providers.liveData.safeObserve
+import io.usys.report.providers.liveData.start
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
@@ -41,11 +43,7 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
 
     /** Firebase/Realm: Team LiveData **/
     private fun setupLiveData() {
-        parentFragment?.let { fragment ->
-            teamLiveData = TeamLiveData(realmIds, fragment.viewLifecycleOwner, realmInstance).apply {
-                enable()
-            }
-        }
+        teamLiveData = TeamLiveData(realmIds, realmInstance).start()
         observeRealmIds()
     }
 
@@ -53,14 +51,12 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
     @SuppressLint("NotifyDataSetChanged")
     override fun observeRealmIds() {
         log("observeRealmIds")
-        parentFragment?.let { fragment ->
-            teamLiveData?.observe(fragment.viewLifecycleOwner) { teams ->
-                log("Team results updated")
-                teams.forEach {
-                    itemList?.safeAdd(it)
-                }
-                notifyDataSetChanged()
+        teamLiveData?.safeObserve(parentFragment?.viewLifecycleOwner) { teams ->
+            log("Team results updated")
+            teams.forEach {
+                itemList?.safeAdd(it)
             }
+            notifyDataSetChanged()
         }
     }
 

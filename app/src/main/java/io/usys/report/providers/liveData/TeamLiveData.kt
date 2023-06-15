@@ -1,10 +1,7 @@
 package io.usys.report.providers.liveData
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -13,19 +10,18 @@ import io.realm.Realm
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.firebase.firebaseDatabase
 import io.usys.report.firebase.toLudiObject
+import io.usys.report.realm.RealmLiveData
 import io.usys.report.realm.model.Team
-import io.usys.report.realm.observe
+import io.usys.report.realm.observeForever
 import io.usys.report.realm.realm
 import io.usys.report.realm.safeReplace
 import io.usys.report.utils.log
 
 /**
  * Setup:
-    teamLiveData = TeamLiveData(realmIds, realmInstance, fragment.viewLifecycleOwner).apply {
-        enable()
-    }
+    teamLiveData = TeamLiveData(realmIds, realmInstance, fragment.viewLifecycleOwner).start()
  * Usage:
-    teamLiveData?.observe(fragment.viewLifecycleOwner) { teams ->
+    teamLiveData?.safeObserve(fragment.viewLifecycleOwner) { teams ->
         log("Team results updated")
         teams.forEach {
             itemList?.safeAdd(it)
@@ -34,34 +30,30 @@ import io.usys.report.utils.log
     }
  */
 class TeamLiveData(private val realmIds: List<String>,
-                   private val lifecycleOwner: LifecycleOwner,
                    private val realmInstance: Realm = realm()) : LiveData<List<Team>>(), ValueEventListener {
 
-    private val fireReferences = mutableMapOf<String, DatabaseReference>()
-    private val fireListeners = mutableMapOf<String, ValueEventListener>()
-    private lateinit var reference: DatabaseReference
+    private var observer : RealmLiveData<Team>? = null
+    private val firebaseDatabaseReferences = mutableMapOf<String, DatabaseReference>()
+    private val firebaseDatabaseListeners = mutableMapOf<String, ValueEventListener>()
+    private lateinit var teamDbReference: DatabaseReference
     private var enabled = false
 
-    init {
-        firebaseDatabase { reference = it.child(DatabasePaths.TEAMS.path) }
-        createObservers()
-        observeRealmIds()
-    }
+    init { firebaseDatabase { teamDbReference = it.child(DatabasePaths.TEAMS.path) } }
 
     /** Create Observer Pairs **/
-    private fun createObservers() {
+    private fun createFirebaseChangeListeners() {
         realmIds.forEach { realmId ->
-            fireReferences[realmId] = reference.child(realmId)
-            fireListeners[realmId] = this
+            firebaseDatabaseReferences[realmId] = teamDbReference.child(realmId)
+            firebaseDatabaseListeners[realmId] = this
             if (enabled) {
-                fireReferences[realmId]?.addValueEventListener(fireListeners[realmId] ?: return@forEach)
+                firebaseDatabaseReferences[realmId]?.addValueEventListener(firebaseDatabaseListeners[realmId] ?: return@forEach)
             }
         }
     }
 
     /** Realm Observer **/
-    private fun observeRealmIds() {
-        realmInstance.observe<Team>(lifecycleOwner) { results ->
+    private fun observeRealmChangesForever() {
+        observer = realmInstance.observeForever { results ->
             val currentList = value?.toMutableList() ?: mutableListOf()
             val newList = mutableListOf<Team>()
             for (id in realmIds) {
@@ -91,16 +83,28 @@ class TeamLiveData(private val realmIds: List<String>,
     fun enable() {
         if (enabled) return
         enabled = true
-        fireReferences.forEach { (id, reference) ->
-            fireListeners[id]?.let { reference.addValueEventListener(it) }
-        }
+        createFirebaseChangeListeners()
+        observeRealmChangesForever()
     }
 
     fun disable() {
         if (!enabled) return
         enabled = false
-        fireReferences.forEach { (id, reference) ->
-            fireListeners[id]?.let { reference.removeEventListener(it) }
+        firebaseDatabaseReferences.forEach { (id, reference) ->
+            firebaseDatabaseListeners[id]?.let { reference.removeEventListener(it) }
         }
+        observer?.remove()
+    }
+}
+
+fun TeamLiveData?.start() : TeamLiveData? {
+    this?.enable()
+    return this
+}
+
+inline fun TeamLiveData?.safeObserve(owner: LifecycleOwner?, crossinline block: (List<Team>) -> Unit) {
+    if (owner == null) return
+    this?.observe(owner) { teams ->
+        block(teams)
     }
 }

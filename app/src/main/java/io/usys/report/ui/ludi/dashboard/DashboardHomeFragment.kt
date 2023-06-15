@@ -1,14 +1,11 @@
 package io.usys.report.ui.ludi.dashboard
 
+import android.content.ContextWrapper
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.LifecycleOwner
 import io.realm.RealmObject
 import io.usys.report.R
 import io.usys.report.databinding.LudiDashboardFragmentBinding
@@ -28,12 +25,12 @@ import io.usys.report.ui.views.navController.TO_TEAM_PROFILE
 import io.usys.report.ui.views.navController.bundleRealmObject
 import io.usys.report.ui.views.navController.bundleStringId
 import io.usys.report.ui.views.navController.toFragmentWithRealmObject
-import io.usys.report.ui.views.recyclerViews.LudiRecyclerCardView
+import io.usys.report.ui.views.recyclerViews.LudiRCVs
+import io.usys.report.ui.views.recyclerViews.addLudiRecyclerView
+import io.usys.report.ui.views.recyclerViews.emptyLudiRCVs
 import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 import io.usys.report.utils.*
-import io.usys.report.utils.ludi.screenWidthDp
 import io.usys.report.utils.views.getDrawableCompat
-import io.usys.report.utils.views.makeInVisible
 
 
 /**
@@ -47,6 +44,7 @@ class DashboardHomeFragment : YsrFragment() {
     var _binding: LudiDashboardFragmentBinding? = null
     private val binding get() = _binding!!
 
+    var ludis: LudiRCVs = emptyLudiRCVs()
     var itemOnClickSportList: ((View, Sport) -> Unit)? = null
     var itemOnClickTeamList: ((View, RealmObject) -> Unit)? = null
 
@@ -57,12 +55,7 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
 
-        val z = requireContext().screenWidthDp
-        println("Screen Height: $z")
-
-        onBackPressed { log("Ignoring Back Press") }
         setupOnClickListeners()
-        ifNull(user) { _binding?.includeYsrListViewTeams?.root?.makeInVisible() }
 
         _binding?.root?.background = requireContext().getDrawableCompat(R.drawable.test_background)
         return binding.root
@@ -70,6 +63,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     override fun onResume() {
         super.onResume()
+        onBackPressed { log("Ignoring Back Press") }
         (requireActivity() as AppCompatActivity).ludiStatusBarColorWhite()
         (requireActivity() as AppCompatActivity).ludiActionBarResetColor(R.color.ysrWindowBackground)
         (requireActivity() as AppCompatActivity).ludiActionBarTitle("Please Sign In!")
@@ -93,23 +87,6 @@ class DashboardHomeFragment : YsrFragment() {
         super.onPause()
         requireActivity().removeMenuProvider(menuIn ?: menuOut ?: return)
     }
-
-    inline fun addView(block : (LudiRecyclerCardView) -> Unit) {
-        val newView = LayoutInflater.from(requireContext()).inflate(R.layout.ludi_recycler_card_view, _binding?.linearLayoutTop, false) as LudiRecyclerCardView
-        // For LinearLayout, just need to set the width and height
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        newView.id = View.generateViewId()  // generate a new id for the view
-        newView.layoutParams = layoutParams
-//        newView.txtTitle?.text = "Uh ohhhhhhhhhhh"
-//        newView.recyclerView?.loadInTeamIds(teamIds, this)
-        // add the view to the layout
-        _binding?.linearLayoutTop?.addView(newView)
-        block(newView)
-    }
-
 
     private fun setupCoachDisplay() {
         val coach = realmInstance?.findCoachBySafeId()
@@ -142,14 +119,17 @@ class DashboardHomeFragment : YsrFragment() {
         _binding = null
     }
     private fun setupSportsList() {
-        _binding?.includeYsrListViewSports?.root?.setupSportList(itemOnClickSportList)
+        ludis["sports"]?.removeFromParentLayout()
+        ludis["sports"] = _binding?.linearLayoutTop?.addLudiRecyclerView{
+            it?.txtTitle?.text = "Sports"
+            it?.setupSportList(itemOnClickSportList)
+        }
     }
     private fun setupTeamList() {
-//        _binding?.includeYsrListViewTeams?.root?.txtTitle?.text = "My Teams"
-//        val adapter = _binding?.includeYsrListViewTeams?.root?.recyclerView?.loadInTeamIds(teamIds, this)
-        addView {
-            it.txtTitle?.text = "My Teams"
-            it.recyclerView?.loadInTeamIds(teamIds, this)
+        ludis["teams"]?.removeFromParentLayout()
+        ludis["teams"] = _binding?.linearLayoutTop?.addLudiRecyclerView{
+            it?.txtTitle?.text = "My Teams"
+            it?.recyclerView?.loadInTeamIds(teamIds, this)
         }
     }
     override fun setupOnClickListeners() {
@@ -172,3 +152,13 @@ class DashboardHomeFragment : YsrFragment() {
 }
 
 
+fun View.getLifecycleOwner(): LifecycleOwner? {
+    var context = this.context
+    while (context is ContextWrapper) {
+        if (context is LifecycleOwner) {
+            return context
+        }
+        context = context.baseContext
+    }
+    return null
+}
