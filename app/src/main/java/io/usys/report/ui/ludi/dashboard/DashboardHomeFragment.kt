@@ -24,6 +24,13 @@ import io.usys.report.ui.views.navController.bundleStringId
 import io.usys.report.ui.views.navController.toFragmentWithRealmObject
 import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 import io.usys.report.utils.*
+import io.usys.report.utils.ludi.DeviceScreenSizes
+import io.usys.report.utils.ludi.getScreenType
+import io.usys.report.utils.ludi.screenDiagonalInches
+import io.usys.report.utils.ludi.screenHeight
+import io.usys.report.utils.ludi.screenHeightDp
+import io.usys.report.utils.ludi.screenWidth
+import io.usys.report.utils.ludi.screenWidthDp
 import io.usys.report.utils.views.makeInVisible
 
 
@@ -47,6 +54,9 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
         rootView = binding.root
+
+        val z = requireContext().screenWidthDp
+        println("Screen Height: $z")
 
         onBackPressed { log("Ignoring Back Press") }
         setupOnClickListeners()

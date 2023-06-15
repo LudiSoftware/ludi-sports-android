@@ -11,13 +11,14 @@ import io.usys.report.providers.liveData.TeamLiveData
 import io.usys.report.realm.*
 import io.usys.report.realm.model.Team
 import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
+import io.usys.report.ui.views.listAdapters.realmList.gridLayoutManager
 import io.usys.report.ui.views.listAdapters.realmList.linearLayoutManager
 import io.usys.report.utils.log
 
 
 fun RecyclerView.loadInTeamIds(realmIds: MutableList<String>?, fragment: Fragment) : TeamListLiveAdapter? {
     val adapter = realmIds?.let { TeamListLiveAdapter(it, fragment) }
-    this.layoutManager = linearLayoutManager(this.context)
+    this.layoutManager = gridLayoutManager(this.context, 2)
     this.adapter = adapter
     return adapter
 }

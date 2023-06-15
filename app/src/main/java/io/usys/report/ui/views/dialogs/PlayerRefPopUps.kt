@@ -1,4 +1,4 @@
-package io.usys.report.ui.popups
+package io.usys.report.ui.views.dialogs
 
 import android.app.Activity
 import android.app.Dialog

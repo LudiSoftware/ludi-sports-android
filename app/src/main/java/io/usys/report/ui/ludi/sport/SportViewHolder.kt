@@ -12,6 +12,7 @@ import io.usys.report.utils.views.bindTextView
 import io.usys.report.utils.isNullOrEmpty
 import io.usys.report.realm.sessionSports
 import io.usys.report.ui.views.listAdapters.realmList.loadInRealmList
+import io.usys.report.ui.views.listAdapters.realmList.loadInRealmListHorizontal
 
 /**
  * SPORT LIST VIEW CONTROLS
@@ -37,14 +38,14 @@ fun RecyclerView?.setupSportList(onClickReturnViewRealmObject: ((View, Sport) ->
     // Load Organizations by Sport
     val rv = this
     sessionSports {
-        rv?.loadInRealmList(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInRealmListHorizontal(it, FireTypes.SPORTS, onClickReturnViewRealmObject)
         return
     }
     var sportList: RealmList<Sport>? = RealmList()
     fireGetBaseLudiObjects<Sport>(FireTypes.SPORTS) {
         sportList = this ?: RealmList()
         sportList.addToSession()
-        rv?.loadInRealmList(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
+        rv?.loadInRealmListHorizontal(sportList, FireTypes.SPORTS, onClickReturnViewRealmObject)
     }
 }
 

@@ -14,6 +14,7 @@ import io.usys.report.realm.model.PLAYER_STATUS_SELECTED
 import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.updatePlayerStatus
 import io.usys.report.ui.views.dialogs.TeamSelectionDialog
+import io.usys.report.utils.ludi.autoResizeToHalfWidth
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.bindTextView
 import io.usys.report.utils.views.makeGone
@@ -56,6 +57,8 @@ open class RosterPlayerViewHolder(var itemView: View, val adapter: RosterListLiv
             }
             constraintBackground?.setBackgroundColor(getColor(itemView.context, R.color.white))
         }
+
+        itemView.autoResizeToHalfWidth()
     }
 
     @SuppressLint("SetTextI18n")

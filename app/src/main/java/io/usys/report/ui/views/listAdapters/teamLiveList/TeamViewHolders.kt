@@ -15,6 +15,7 @@ import io.usys.report.realm.sessionTeams
 import io.usys.report.ui.views.listAdapters.realmList.loadInRealmList
 import io.usys.report.ui.views.navController.toTeamProfileVG
 import io.usys.report.utils.*
+import io.usys.report.utils.ludi.autoResizeToHalfWidth
 import io.usys.report.utils.views.bind
 import io.usys.report.utils.views.bindTextView
 import io.usys.report.utils.views.loadUriIntoImgView
@@ -44,6 +45,7 @@ fun RecyclerView?.setupTeamListFromIds(teamIds:MutableList<String>, onClickRetur
 
 class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    var cardRootView: View? = itemView.bind(R.id.cardTeamSmallRoot)
     var txtItemTeamName = itemView.bindTextView(R.id.cardTeamSmallTxtName)
     var txtItemTeamOrg = itemView.bindTextView(R.id.cardTeamSmallTxtOrg)
     var txtItemTeamEmail = itemView.bindTextView(R.id.cardTeamSmallTxtEmail)
@@ -64,6 +66,7 @@ class TeamSmallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             log("Team Clicked")
             fragment?.toTeamProfileVG(teamId)
         }
+        cardRootView?.autoResizeToHalfWidth(64)
     }
 }
 

@@ -5,7 +5,7 @@
 <resources>
 <!--    <color name="ysrWindowBackground">#F6F6F5</color>-->
 <!--    <color name="ysrWindowBackground">#effbfa</color>-->
-    <color name="ysrWindowBackground">#FFFCF9</color>
+    <color name="ysrWindowBackground">#FAFAFA</color>
 
     <color name="vintageBlue">#80A1C2</color>
     <color name="vintageRed">#BF4146</color>
