@@ -63,22 +63,16 @@ class ProfileFragment : LudiMiddleFragment() {
         return rootView
     }
 
-    private fun setupDisplay() {
-        //General User Info
-        _binding?.includeUserProfileHeader?.cardUserHeaderTxtProfileName?.text = user?.name
-//        _binding?.editLayoutProfileEmail?.setText(user?.email)
-//        rootView.editPhoneNumber.setText(user?.phone)
-    }
 
     private fun setupProfileImage() {
 
-        realmInstance?.safeUser { itUser ->
-            itUser.photoUrl.toUri()?.let { itUri ->
-                _binding?.includeUserProfileHeader?.cardUserHeaderImgProfile?.let { itImgView ->
-                    this.loadUriIntoImgView(itUri, itImgView)
-                }
-            }
-        }
+//        realmInstance?.safeUser { itUser ->
+//            itUser.photoUrl.toUri()?.let { itUri ->
+//                _binding?.includeHeader?.root?.rcardUserHeaderImgProfile?.let { itImgView ->
+//                    this.loadUriIntoImgView(itUri, itImgView)
+//                }
+//            }
+//        }
 
 //        safeUserId { itId ->
 //            val path = USER_PROFILE_IMAGE_PATH_BY_ID(itId)

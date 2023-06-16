@@ -8,9 +8,9 @@ import io.usys.report.R
 import io.usys.report.databinding.TeamRosterFragmentBinding
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.roster.config.RosterController
-import io.usys.report.ui.views.listAdapters.HeaderViewScrollListener
 import io.usys.report.ui.views.listAdapters.rosterLiveList.RosterListLiveAdapter
 import io.usys.report.utils.log
+import io.usys.report.utils.ludi.HeaderViewScrollListener
 
 /**
  * Created by ChazzCoin : October 2022.

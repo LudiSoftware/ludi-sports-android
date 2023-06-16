@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.usys.report.ui.views.cardViews.LudiCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:elevation="10dp"
+    app:cardCornerRadius="20dp"
+    app:cardMaxElevation="25dp">
+
+    <!-- Background ImageView -->
+    <ImageView
+        android:id="@+id/ludiCardViewBackgroundImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test_background" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/ludiCardViewNestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp">
+
+        <LinearLayout
+            android:id="@+id/ludiCardViewLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</io.usys.report.ui.views.cardViews.LudiCardView>

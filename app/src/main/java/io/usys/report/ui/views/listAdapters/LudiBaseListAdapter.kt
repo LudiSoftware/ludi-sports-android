@@ -1,15 +1,11 @@
 package io.usys.report.ui.views.listAdapters
 
-import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.RealmList
 import io.realm.RealmResults
 import io.usys.report.realm.realm
 import io.usys.report.utils.log
-import io.usys.report.utils.views.slideDown
-import io.usys.report.utils.views.slideUp
 
 /** Live List Model/Base Adapter **/
 abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
@@ -69,20 +65,10 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
 
 }
 
-class HeaderViewScrollListener(private val hideShowView: View) : RecyclerView.OnScrollListener() {
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-        // Check if the first item is visible and user is scrolling up
-        if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0 && dy < 0) {
-            hideShowView.slideDown()
-        }
-        // Check if the first item is visible and user is scrolling down
-        else if (layoutManager.findFirstCompletelyVisibleItemPosition() >= 2 && dy > 0) {
-            hideShowView.slideUp()
-        }
-    }
-}
+
+
+
+
 
 
 

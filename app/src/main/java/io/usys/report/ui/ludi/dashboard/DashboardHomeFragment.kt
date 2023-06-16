@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import io.realm.RealmObject
 import io.usys.report.R
-import io.usys.report.databinding.LudiDashboardFragmentBinding
+import io.usys.report.databinding.LudiDashboardFragmentNewBinding
 import io.usys.report.firebase.models.CoachRealmSingleEventListener
 import io.usys.report.realm.findCoachBySafeId
 import io.usys.report.realm.local.createIdBundleSession
@@ -31,7 +31,9 @@ import io.usys.report.ui.views.recyclerViews.addLudiRecyclerView
 import io.usys.report.ui.views.recyclerViews.emptyLudiRCVs
 import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 import io.usys.report.utils.*
-import io.usys.report.utils.views.getDrawableCompat
+import io.usys.report.utils.ludi.NestedScrollViewScrollListener
+import io.usys.report.utils.views.getColorCompat
+import org.jetbrains.anko.backgroundColor
 
 
 /**
@@ -42,7 +44,7 @@ class DashboardHomeFragment : YsrFragment() {
 
     private var menuIn: SignInOutMenuProvider? = null
     private var menuOut: SignInOutMenuProvider? = null
-    var _binding: LudiDashboardFragmentBinding? = null
+    var _binding: LudiDashboardFragmentNewBinding? = null
     private val binding get() = _binding!!
 
     var ludis: LudiRCVs = emptyLudiRCVs()
@@ -53,12 +55,17 @@ class DashboardHomeFragment : YsrFragment() {
     var teamIds: MutableList<String>? = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = LudiDashboardFragmentBinding.inflate(inflater, container, false)
+        _binding = LudiDashboardFragmentNewBinding.inflate(inflater, container, false)
         rootView = binding.root
 
         setupOnClickListeners()
 
-        _binding?.root?.background = requireContext().getDrawableCompat(R.drawable.test_background)
+        _binding?.includeLudiCardView?.root?.nestedScrollView?.setOnScrollChangeListener(
+            NestedScrollViewScrollListener(_binding?.includeHeader?.root!!)
+        )
+
+//        _binding?.root?.background = requireContext().getDrawableCompat(R.drawable.test_background)
+        _binding?.root?.backgroundColor = requireContext().getColorCompat(R.color.darkWhite)
         return binding.root
     }
 
@@ -125,15 +132,35 @@ class DashboardHomeFragment : YsrFragment() {
     }
     private fun setupSportsList() {
         ludis["sports"]?.removeFromParentLayout()
-        ludis["sports"] = _binding?.linearLayoutTop?.addLudiRecyclerView {
+        ludis["sports"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
             it?.txtTitle?.text = "Sports"
+            it?.recyclerView?.isNestedScrollingEnabled = false
             it?.setupSportList(itemOnClickSportList)
         }
     }
     private fun setupTeamList() {
         ludis["teams"]?.removeFromParentLayout()
-        ludis["teams"] = _binding?.linearLayoutTop?.addLudiRecyclerView {
+        ludis["teams"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
             it?.txtTitle?.text = "My Teams"
+            it?.recyclerView?.isNestedScrollingEnabled = false
+            it?.adapter = it?.recyclerView?.teamLiveAdapter(teamIds, this)
+        }
+        ludis["teams2"]?.removeFromParentLayout()
+        ludis["teams2"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
+            it?.txtTitle?.text = "My Organizations"
+            it?.recyclerView?.isNestedScrollingEnabled = false
+            it?.adapter = it?.recyclerView?.teamLiveAdapter(teamIds, this)
+        }
+        ludis["teams3"]?.removeFromParentLayout()
+        ludis["teams3"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
+            it?.txtTitle?.text = "Upcoming Events"
+            it?.recyclerView?.isNestedScrollingEnabled = false
+            it?.adapter = it?.recyclerView?.teamLiveAdapter(teamIds, this)
+        }
+        ludis["teams4"]?.removeFromParentLayout()
+        ludis["teams4"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
+            it?.txtTitle?.text = "My Services"
+            it?.recyclerView?.isNestedScrollingEnabled = false
             it?.adapter = it?.recyclerView?.teamLiveAdapter(teamIds, this)
         }
     }
