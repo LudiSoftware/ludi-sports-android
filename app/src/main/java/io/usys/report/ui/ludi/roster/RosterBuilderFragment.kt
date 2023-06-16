@@ -11,7 +11,7 @@ import io.usys.report.providers.*
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.ui.fragments.*
-import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterController
 import io.usys.report.ui.ludi.roster.config.RosterType
 import io.usys.report.ui.ludi.roster.config.rosterViewFactory
 import io.usys.report.ui.views.hideLudiActionBar
@@ -39,7 +39,7 @@ class RosterBuilderFragment : YsrFragment() {
     private var _binding: RosterBuilderFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var rosterConfig: RosterConfig
+    private lateinit var rosterController: RosterController
     var adapter: RosterListLiveAdapter? = null
 
     var teamId: String = "unknown"
@@ -60,7 +60,7 @@ class RosterBuilderFragment : YsrFragment() {
 
         arguments?.let {
             teamId = it.getString("teamId") ?: "unknown"
-            rosterConfig = RosterConfig(teamId)
+            rosterController = RosterController(teamId)
         }
 
         ludiPopupMenu = LudiPopupMenu(this, R.layout.menu_roster_builder, action = { view, _ ->
@@ -153,14 +153,14 @@ class RosterBuilderFragment : YsrFragment() {
             // Roster Holder
             rosterIds = it.first
             // Roster Config
-            rosterConfig = it.second
-            rosterConfig.apply {
+            rosterController = it.second
+            rosterController.apply {
                 this.rosterId = rosterIds[RosterType.OFFICIAL.type] ?: "unknown"
                 this.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
                 this.parentFragment = this@RosterBuilderFragment
                 this.textViewOne = _binding?.rosterBuilderLudiSubTxt
             }
-            adapter = RosterListLiveAdapter(rosterConfig)
+            adapter = RosterListLiveAdapter(rosterController)
         }
     }
 
@@ -185,7 +185,7 @@ class RosterBuilderFragment : YsrFragment() {
     }
 
     private fun setupRosterList() {
-        rosterConfig.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
+        rosterController.recyclerView = _binding?.rosterBuilderLudiRosterView?.root!!
         currentRosterId?.let {
             when (rosterType) {
                 RosterType.OFFICIAL.type -> {

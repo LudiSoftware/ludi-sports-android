@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
+import io.realm.RealmObject
 import io.usys.report.firebase.DatabasePaths
 import io.usys.report.firebase.firebaseDatabase
 import io.usys.report.firebase.toLudiObject
@@ -29,8 +30,21 @@ import io.usys.report.utils.log
         notifyDataSetChanged()
     }
  */
+
+typealias LudiLiveList<T> = LiveData<List<T>>
+fun TeamLiveData?.start() : TeamLiveData? {
+    this?.enable()
+    return this
+}
+
+inline fun <R: RealmObject, T: LudiLiveList<R>> T?.safeObserve(owner: LifecycleOwner?, crossinline block: (List<R>) -> Unit) {
+    if (owner == null) return
+    this?.observe(owner) { teams ->
+        block(teams)
+    }
+}
 class TeamLiveData(private val realmIds: List<String>,
-                   private val realmInstance: Realm = realm()) : LiveData<List<Team>>(), ValueEventListener {
+                   private val realmInstance: Realm = realm()) : LudiLiveList<Team>(), ValueEventListener {
 
     private var observer : RealmLiveData<Team>? = null
     private val firebaseDatabaseReferences = mutableMapOf<String, DatabaseReference>()
@@ -94,17 +108,7 @@ class TeamLiveData(private val realmIds: List<String>,
             firebaseDatabaseListeners[id]?.let { reference.removeEventListener(it) }
         }
         observer?.remove()
+        observer = null
     }
 }
 
-fun TeamLiveData?.start() : TeamLiveData? {
-    this?.enable()
-    return this
-}
-
-inline fun TeamLiveData?.safeObserve(owner: LifecycleOwner?, crossinline block: (List<Team>) -> Unit) {
-    if (owner == null) return
-    this?.observe(owner) { teams ->
-        block(teams)
-    }
-}

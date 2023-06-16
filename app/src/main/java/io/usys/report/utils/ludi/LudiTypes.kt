@@ -2,7 +2,7 @@ package io.usys.report.utils.ludi
 
 import androidx.lifecycle.LiveData
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterController
 import io.usys.report.ui.ludi.roster.config.RosterHolder
 
 /** Realm IDs **/
@@ -16,7 +16,7 @@ typealias TryOutRosterID = String
 /** Roster **/
 typealias RosterTypeName = String
 typealias RosterIDs = MutableMap<RosterTypeName, RosterID>
-typealias RosterHolderConfig = Pair<RosterHolder, RosterConfig>
+typealias RosterHolderConfig = Pair<RosterHolder, RosterController>
 
 /** LUDI FILTERS **/
 typealias LudiAttribute = String

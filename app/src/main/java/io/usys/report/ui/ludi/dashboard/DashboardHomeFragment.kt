@@ -17,7 +17,8 @@ import io.usys.report.realm.model.*
 import io.usys.report.realm.model.users.safeUser
 import io.usys.report.ui.fragments.*
 import io.usys.report.ui.ludi.onBackPressed
-import io.usys.report.ui.views.listAdapters.teamLiveList.loadInTeamIds
+import io.usys.report.ui.views.listAdapters.teamLiveList.TeamListLiveAdapter
+import io.usys.report.ui.views.listAdapters.teamLiveList.teamLiveAdapter
 import io.usys.report.ui.views.ludiActionBarTitle
 import io.usys.report.ui.views.ludiActionBarResetColor
 import io.usys.report.ui.views.menus.SignInOutMenuProvider
@@ -112,6 +113,10 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onStop() {
         super.onStop()
         realmInstance?.removeAllChangeListeners()
+        for ((k,v) in ludis) {
+            (v?.adapter as? TeamListLiveAdapter)?.destroy()
+        }
+        ludis.clear()
     }
 
     override fun onDestroyView() {
@@ -120,16 +125,16 @@ class DashboardHomeFragment : YsrFragment() {
     }
     private fun setupSportsList() {
         ludis["sports"]?.removeFromParentLayout()
-        ludis["sports"] = _binding?.linearLayoutTop?.addLudiRecyclerView{
+        ludis["sports"] = _binding?.linearLayoutTop?.addLudiRecyclerView {
             it?.txtTitle?.text = "Sports"
             it?.setupSportList(itemOnClickSportList)
         }
     }
     private fun setupTeamList() {
         ludis["teams"]?.removeFromParentLayout()
-        ludis["teams"] = _binding?.linearLayoutTop?.addLudiRecyclerView{
+        ludis["teams"] = _binding?.linearLayoutTop?.addLudiRecyclerView {
             it?.txtTitle?.text = "My Teams"
-            it?.recyclerView?.loadInTeamIds(teamIds, this)
+            it?.adapter = it?.recyclerView?.teamLiveAdapter(teamIds, this)
         }
     }
     override fun setupOnClickListeners() {

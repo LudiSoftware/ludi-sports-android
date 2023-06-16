@@ -21,7 +21,7 @@ import io.usys.report.utils.ludi.RosterID
  */
 
 fun Realm.rosterViewFactory(teamId:String) : RosterHolderConfig {
-    val rosterConfig = RosterConfig(teamId)
+    val rosterController = RosterController(teamId)
     val rosterHolder = RosterHolder()
     // Official Roster
     this.findRosterIdByTeamId(teamId)?.let { rosterId ->
@@ -43,10 +43,10 @@ fun Realm.rosterViewFactory(teamId:String) : RosterHolderConfig {
         }
     }
 
-    rosterConfig.apply {
+    rosterController.apply {
         this.rosterId = currentRosterId
     }
-    return RosterHolderConfig(rosterHolder, rosterConfig)
+    return RosterHolderConfig(rosterHolder, rosterController)
 }
 
 

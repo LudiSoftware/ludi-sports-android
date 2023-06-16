@@ -68,7 +68,7 @@ fun RosterFormationFragment.showGlobalMenuPopup(anchorView: View) {
 
     layoutSaveData.attachViewsToOnClickListener {
         log("layoutSaveData")
-        rosterConfig.currentRosterId?.let {
+        rosterController.currentRosterId?.let {
             realmInstance?.fireRosterUpdatePlayers(it)
         }
         popupWindow.dismiss()
@@ -98,7 +98,7 @@ fun RosterFormationFragment.showGlobalMenuPopup(anchorView: View) {
 //            }
 //        }
 //    }
-    this.realmInstance?.rosterSessionById(rosterConfig.currentRosterId) { rosterSession ->
+    this.realmInstance?.rosterSessionById(rosterController.currentRosterId) { rosterSession ->
         checkBoxTeamColors.isChecked = rosterSession.teamColorsAreOn
     }
     checkBoxTeamColors.setOnCheckedChangeListener { _, isChecked ->

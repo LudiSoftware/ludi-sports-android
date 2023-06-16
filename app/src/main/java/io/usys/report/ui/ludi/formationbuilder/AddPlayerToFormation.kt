@@ -28,7 +28,7 @@ fun RosterFormationFragment.addPlayerToFormation(playerId: String, x:Float?=null
     safePlayerFromRoster(playerId) { newPlayerRef ->
         if (!loadingFromSession) {
             realmInstance?.safeWrite { itRealm ->
-                itRealm.rosterSessionById(rosterConfig.currentRosterId) { ts ->
+                itRealm.rosterSessionById(rosterController.currentRosterId) { ts ->
                     ts.formationListIds?.let {
                         if (!it.contains(playerId)) {
                             it.add(playerId)
@@ -86,7 +86,7 @@ fun RosterFormationFragment.addPlayerToFormation(playerId: String, x:Float?=null
         }
         // Gestures
         playerRefViewItem.onGestureDetectorRosterFormation(
-            rosterId = rosterConfig.currentRosterId ?: "",
+            rosterId = rosterController.currentRosterId ?: "",
             playerId=playerId,
             onSingleTapUp = onTap,
             onLongPress = onLongPress

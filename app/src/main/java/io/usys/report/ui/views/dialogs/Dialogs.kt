@@ -27,6 +27,7 @@ inline fun Activity.popupYesNo(title: String, body: String, crossinline block: (
     okay.text = "Sign Out"
     cancel.text = "Cancel"
     okay.setOnClickListener {
+        dialog.dismiss()
         block()
     }
     cancel.setOnClickListener {

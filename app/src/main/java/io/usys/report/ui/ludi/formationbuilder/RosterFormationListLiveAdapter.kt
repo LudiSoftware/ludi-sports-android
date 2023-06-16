@@ -14,7 +14,7 @@ import io.usys.report.realm.local.RosterSession
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.setupRosterSession
 import io.usys.report.realm.model.PlayerRef
-import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterController
 import io.usys.report.ui.ludi.roster.config.RosterType
 import io.usys.report.ui.views.gestures.onDownUpListener
 import io.usys.report.utils.views.bind
@@ -34,14 +34,14 @@ import io.usys.report.utils.views.*
 class RosterFormationListLiveAdapter() : RecyclerView.Adapter<RosterFormationListLiveAdapter.RosterFormationViewHolder>(), ItemTouchHelperAdapter {
 
     lateinit var realmInstance: Realm
-    lateinit var config: RosterConfig
+    lateinit var config: RosterController
     // 1. OnDeck Players List (Players Not Saved to the Formation Screen)
     private var onDeckPlayerIdList: RealmList<String> = RealmList()
     // 2. Filtered Players List (Players WHO DO match filters BUT NOT in the Formation Screen)
     private var filteredOutPlayerIds: RealmList<String> = RealmList()
 
 
-    constructor(rosterLayoutConfig: RosterConfig) : this() {
+    constructor(rosterLayoutConfig: RosterController) : this() {
         this.config = rosterLayoutConfig
         this.realmInstance = rosterLayoutConfig.realmInstance
         (config.currentRosterId)?.let { realmInstance.setupRosterSession(it) }

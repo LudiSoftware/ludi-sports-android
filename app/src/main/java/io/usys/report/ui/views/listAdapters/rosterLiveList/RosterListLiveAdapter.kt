@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import io.realm.*
+import io.usys.report.providers.liveData.RosterLiveData
+import io.usys.report.providers.liveData.safeObserve
 import io.usys.report.realm.*
 import io.usys.report.realm.local.rosterSessionById
 import io.usys.report.realm.local.setupRosterSession
@@ -14,7 +16,7 @@ import io.usys.report.realm.model.PlayerRef
 import io.usys.report.realm.model.Roster
 import io.usys.report.ui.ludi.player.ludiFilters
 import io.usys.report.ui.ludi.player.sortByOrderIndex
-import io.usys.report.ui.ludi.roster.config.RosterConfig
+import io.usys.report.ui.ludi.roster.config.RosterController
 import io.usys.report.ui.ludi.roster.config.RosterType
 import io.usys.report.ui.views.listAdapters.LudiBaseListAdapter
 import io.usys.report.ui.views.touchAdapters.RosterLiveDragDropAction
@@ -27,9 +29,10 @@ import io.usys.report.utils.log
  */
 open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, RosterPlayerViewHolder>() {
 
-    lateinit var config: RosterConfig
+    lateinit var config: RosterController
+    var rosterLiveData: RosterLiveData? = null
 
-    constructor(rosterLayoutConfig: RosterConfig) : this() {
+    constructor(rosterLayoutConfig: RosterController) : this() {
         this.config = rosterLayoutConfig
         this.layout = io.usys.report.R.layout.roster_player_card_grid_medium
         (config.currentRosterId)?.let { realmInstance.setupRosterSession(it) }
@@ -38,7 +41,7 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
 
     /** Observe Roster Changes and Update List */
     override fun observeRealmIds() {
-        realmInstance.observe<Roster>(config.parentFragment!!.viewLifecycleOwner) { results ->
+        rosterLiveData?.safeObserve(config.parentFragment?.viewLifecycleOwner) { results ->
             results.find { it.id == config.currentRosterId }?.let {
                 log("Roster Session Live Updates")
                 this.setPlayersSelectedCount()
@@ -66,7 +69,6 @@ open class RosterListLiveAdapter(): LudiBaseListAdapter<Roster, PlayerRef, Roste
             }
         }
     }
-
 
     override fun onBindFinished() {
         super.onBindFinished()

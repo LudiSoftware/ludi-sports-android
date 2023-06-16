@@ -37,7 +37,9 @@ inline fun <reified T : RealmObject> Realm.observeSingleEvent(lifecycleOwner: Li
 
 class RealmLiveData<T : RealmObject>(private val realmResults: RealmResults<T>) : LiveData<RealmResults<T>>() {
 
-    private val listener = RealmChangeListener<RealmResults<T>> { results -> value = results }
+    private val listener = RealmChangeListener<RealmResults<T>> { results ->
+        value = results
+    }
 
     override fun onActive() {
         realmResults.addChangeListener(listener)

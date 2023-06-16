@@ -60,7 +60,7 @@ class RosterTryout() {
     var selectedItemColors = mutableMapOf<String, Int>() // <playerId, color resource>
 }
 
-open class RosterConfig(var teamId: String) : RosterViews() {
+open class RosterController(var teamId: String) : RosterViews() {
 
     var rosterListeners = RosterListeners()
     // Roster ID
