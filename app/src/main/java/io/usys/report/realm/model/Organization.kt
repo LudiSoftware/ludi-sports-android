@@ -3,9 +3,8 @@ package io.usys.report.realm.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.usys.report.firebase.FireTypes
-import io.usys.report.firebase.fireAddUpdateDBAsync
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.getTimeStamp
 import java.io.Serializable
 
 /**

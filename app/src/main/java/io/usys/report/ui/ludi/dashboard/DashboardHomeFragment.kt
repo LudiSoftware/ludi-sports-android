@@ -31,7 +31,6 @@ import io.usys.report.ui.views.recyclerViews.addLudiRecyclerView
 import io.usys.report.ui.views.recyclerViews.emptyLudiRCVs
 import io.usys.report.ui.views.statusBar.ludiStatusBarColorWhite
 import io.usys.report.utils.*
-import io.usys.report.utils.ludi.NestedScrollViewScrollListener
 import io.usys.report.utils.views.getColorCompat
 import org.jetbrains.anko.backgroundColor
 
@@ -59,12 +58,7 @@ class DashboardHomeFragment : YsrFragment() {
         rootView = binding.root
 
         setupOnClickListeners()
-
-        _binding?.includeLudiCardView?.root?.nestedScrollView?.setOnScrollChangeListener(
-            NestedScrollViewScrollListener(_binding?.includeHeader?.root!!)
-        )
-
-//        _binding?.root?.background = requireContext().getDrawableCompat(R.drawable.test_background)
+        _binding?.includeLudiCardView?.root?.attachLudiScrollSlider(_binding?.includeLudiCardView?.ludiCardViewNestedScrollView)
         _binding?.root?.backgroundColor = requireContext().getColorCompat(R.color.darkWhite)
         return binding.root
     }
@@ -72,8 +66,8 @@ class DashboardHomeFragment : YsrFragment() {
     override fun onResume() {
         super.onResume()
         onBackPressed { log("Ignoring Back Press") }
-        (requireActivity() as AppCompatActivity).ludiStatusBarColorWhite()
-        (requireActivity() as AppCompatActivity).ludiActionBarResetColor(R.color.ysrWindowBackground)
+        (requireActivity() as AppCompatActivity).ludiStatusBarColorWhite(color = R.color.darkWhite)
+        (requireActivity() as AppCompatActivity).ludiActionBarResetColor(R.color.darkWhite)
         (requireActivity() as AppCompatActivity).ludiActionBarTitle("Please Sign In!")
         realmInstance?.safeUser { itUser ->
             realmInstance?.createIdBundleSession()

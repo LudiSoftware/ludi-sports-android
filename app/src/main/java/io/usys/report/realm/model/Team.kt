@@ -11,7 +11,7 @@ import io.usys.report.firebase.getString
 import io.usys.report.providers.TeamMode
 import io.usys.report.providers.TeamStatus
 import io.usys.report.realm.safeWrite
-import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.androidx.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 

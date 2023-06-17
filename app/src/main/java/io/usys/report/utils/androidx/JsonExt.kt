@@ -1,4 +1,4 @@
-package io.usys.report.utils
+package io.usys.report.utils.androidx
 
 import com.google.gson.Gson
 

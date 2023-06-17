@@ -1,6 +1,5 @@
 package io.usys.report.realm.model.users
 
-import com.google.firebase.auth.FirebaseUser
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -8,6 +7,7 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.fireludi.fireSaveCoachToFirebaseAsync
 import io.usys.report.realm.safeWrite
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.getTimeStamp
 
 /**
  * Created by ChazzCoin : October 2022.

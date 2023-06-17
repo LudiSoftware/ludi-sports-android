@@ -1,4 +1,4 @@
-package io.usys.report.utils
+package io.usys.report.utils.androidx
 
 import io.usys.report.firebase.FireTypes
 import org.joda.time.DateTime
@@ -197,7 +197,9 @@ class DateUtils {
 
     fun isToday(dateString: String): Boolean {
         getStringDateByScheme(dateString, format_YEAR_MONTH_DAY)
-        return getStringDateByScheme(dateString, format_YEAR_MONTH_DAY) == getCurrentDateForScheme(format_YEAR_MONTH_DAY)
+        return getStringDateByScheme(dateString, format_YEAR_MONTH_DAY) == getCurrentDateForScheme(
+            format_YEAR_MONTH_DAY
+        )
     }
 
     /**

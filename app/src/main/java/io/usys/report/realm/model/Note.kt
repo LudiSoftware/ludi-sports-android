@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.firebase.*
 import io.usys.report.realm.model.users.safeUserId
 import io.usys.report.utils.*
+import io.usys.report.utils.androidx.getTimeStamp
 import java.io.Serializable
 
 open class Note : RealmObject(), Serializable {

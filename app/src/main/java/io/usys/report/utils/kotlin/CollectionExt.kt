@@ -1,4 +1,4 @@
-package io.usys.report.utils
+package io.usys.report.utils.kotlin
 
 inline fun <T> Iterable<T>.checkAllMatch(predicate: (T) -> Boolean): Boolean {
     return all(predicate)

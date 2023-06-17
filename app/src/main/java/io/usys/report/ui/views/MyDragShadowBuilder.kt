@@ -1,4 +1,4 @@
-package io.usys.report.utils
+package io.usys.report.ui.views
 
 import android.graphics.Canvas
 import android.graphics.Color

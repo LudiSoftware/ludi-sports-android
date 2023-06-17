@@ -45,7 +45,7 @@ inline fun LinearLayout.addLudiRecyclerView(block : (LudiRecyclerCardView?) -> U
     val lrcv = LudiRecyclerCardView.inflate(this@addLudiRecyclerView).apply {
         // For LinearLayout, just need to set the width and height
         val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         this@apply?.id = View.generateViewId()  // generate a new id for the view
         this@apply?.layoutParams = layoutParams
         this@apply?.parentLayout = this@addLudiRecyclerView

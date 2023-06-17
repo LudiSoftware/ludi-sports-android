@@ -10,7 +10,7 @@ import io.usys.report.realm.findRosterById
 import io.usys.report.realm.ifObjectDoesNotExist
 import io.usys.report.realm.safeAdd
 import io.usys.report.realm.safeWrite
-import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.androidx.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 

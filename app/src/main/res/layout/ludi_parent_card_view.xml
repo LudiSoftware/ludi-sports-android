@@ -14,8 +14,8 @@
         android:id="@+id/ludiCardViewBackgroundImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/test_background" />
+        android:background="@color/ysrFadedWhite"
+        android:scaleType="centerCrop" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/ludiCardViewNestedScrollView"

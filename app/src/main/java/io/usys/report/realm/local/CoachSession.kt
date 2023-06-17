@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey
 import io.usys.report.realm.model.Roster
 import io.usys.report.realm.model.Team
 import io.usys.report.realm.model.TryOut
-import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.androidx.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 

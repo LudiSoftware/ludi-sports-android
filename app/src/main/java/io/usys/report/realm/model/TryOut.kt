@@ -4,7 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.usys.report.providers.TryoutMode
-import io.usys.report.utils.getTimeStamp
+import io.usys.report.utils.androidx.getTimeStamp
 import io.usys.report.utils.newUUID
 import java.io.Serializable
 
