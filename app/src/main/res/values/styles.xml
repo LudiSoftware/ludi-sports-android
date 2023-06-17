@@ -67,6 +67,7 @@
         <item name="android:textColor">@color/ludiBlue</item>
         <item name="android:statusBarColor">@color/ysrWindowBackground</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:actionBarStyle">@style/YSR.ActionBar</item>
     </style>
 
     <!-- Global PopUp/Dialog/UIAlertView Theme -->
@@ -95,6 +96,7 @@
     </style>
 
     <style name="YSR.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:elevation">0dp</item>
     </style>
 <!--    <style name="YSR.ActionBar" parent="MaterialAlertDialog.Material3">-->
 <!--        <item name="android:background">@color/ysrBlue</item>-->

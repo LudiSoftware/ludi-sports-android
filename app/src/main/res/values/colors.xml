@@ -7,12 +7,15 @@
 <!--    <color name="ysrWindowBackground">#effbfa</color>-->
     <color name="ysrWindowBackground">#FAFAFA</color>
     <color name="darkWhite">#CDCDCD</color>
+<!--    <color name="gptBlue">#336699</color>-->
+    <color name="gptBlue">#225577</color>
 
     <color name="vintageBlue">#80A1C2</color>
     <color name="vintageRed">#BF4146</color>
 
+    <color name="ludiBlue">#336699</color>
 <!--    <color name="ludiBlue">#80A1C2</color>-->
-    <color name="ludiBlue">#003366</color>
+<!--    <color name="ludiBlue">#003366</color>-->
     <color name="ludiBlack">@color/black</color>
     <color name="ludiWhite">#F6F6F5</color>
     <color name="ludiGreen">#effbfa</color>

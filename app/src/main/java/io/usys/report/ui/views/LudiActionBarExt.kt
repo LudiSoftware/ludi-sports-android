@@ -1,7 +1,12 @@
 package io.usys.report.ui.views
 
 import android.app.Activity
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -41,9 +46,13 @@ fun Fragment.ludiActionBar() : ActionBar? {
     return this.requireActivity().ludiActionBar()
 }
 
-fun AppCompatActivity.ludiActionBarResetColor(@ColorRes color: Int= R.color.ludiWhite) {
+fun AppCompatActivity.ludiActionBarResetColor(color: Int= R.color.ludiWhite) {
     supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, color))
 }
+
+//fun AppCompatActivity.ludiActionBarResetColor(drawableRes:Int=R.drawable.blue_gradient_one) {
+//    supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, color))
+//}
 
 fun AppCompatActivity.ludiActionBarTeamMode(teamMode:TeamMode, title: String?=null) {
     supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, teamMode.color))
@@ -62,5 +71,7 @@ fun AppCompatActivity.ludiActionBarHome(title: String="Home") {
     this.ludiStatusBarColorWhite()
 }
 fun AppCompatActivity.ludiActionBarTitle(title: String) {
-    supportActionBar?.title = title
+    val spannableString = SpannableString(title)
+    spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    supportActionBar?.title = spannableString
 }
