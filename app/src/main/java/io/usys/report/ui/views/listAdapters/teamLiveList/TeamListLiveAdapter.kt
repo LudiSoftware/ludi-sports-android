@@ -2,9 +2,11 @@ package io.usys.report.ui.views.listAdapters.teamLiveList
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import io.realm.*
 import io.usys.report.R
 import io.usys.report.providers.liveData.TeamLiveData
@@ -62,7 +64,7 @@ open class TeamListLiveAdapter(): LudiBaseListAdapter<Team, Team, TeamSmallViewH
     /** Setup ViewHolder **/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSmallViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.team_card_list_medium, parent, false)
-        return TeamSmallViewHolder(itemView)
+        return TeamSmallViewHolder(itemView!!)
     }
 
     /** Bind ViewHolder **/

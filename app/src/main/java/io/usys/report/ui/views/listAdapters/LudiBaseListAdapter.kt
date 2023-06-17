@@ -21,23 +21,20 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
     var realmIds = mutableListOf<String>()
     var onClickCallbacks : MutableMap<String, ((Int) -> Unit)> = mutableMapOf()
 
+    //
+    var isFirstBind = true
     init { realmInstance.isAutoRefresh = true }
 
     abstract fun observeRealmIds()
 
     override fun onBindViewHolder(holder: VH, position: Int) {
+        if (isFirstBind) onBindStarted(); isFirstBind = false
         bindCounter++
         onBind(holder, position)
-//        holder.itemView.setOnClickListener {
-//            onClickCallbacks["onClick"]?.invoke(position)
-//        }
-//        holder.itemView.setOnLongClickListener {
-//            onClickCallbacks["onLongClick"]?.invoke(position)
-//            true
-//        }
         if (bindCounter != itemCount) return
         bindCounter = 0
         onBindFinished()
+        isFirstBind = true
     }
     abstract fun onBind(holder: VH, position: Int)
 
@@ -52,6 +49,9 @@ abstract class LudiBaseListAdapter<R,L,VH : RecyclerView.ViewHolder> : RecyclerV
     }
     open fun onBindFinished() {
         log("onBindFinished")
+    }
+    open fun onBindStarted() {
+        log("onBindStarted")
     }
     override fun getItemCount(): Int {
         return itemList?.size ?: 0

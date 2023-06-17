@@ -139,6 +139,12 @@ class DashboardHomeFragment : YsrFragment() {
             it?.recyclerView?.isNestedScrollingEnabled = false
             it?.adapter = it?.recyclerView?.teamLiveAdapter(teamIds, this)
         }
+        ludis["sports2"]?.removeFromParentLayout()
+        ludis["sports2"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
+            it?.txtTitle?.text = "Sports2"
+            it?.recyclerView?.isNestedScrollingEnabled = false
+            it?.setupSportList(itemOnClickSportList)
+        }
         ludis["teams2"]?.removeFromParentLayout()
         ludis["teams2"] = _binding?.includeLudiCardView?.root?.linearLayoutView?.addLudiRecyclerView {
             it?.txtTitle?.text = "My Organizations"

@@ -83,6 +83,9 @@ class ViewRosterListFragment : LudiStringIdsFragment() {
             config.recyclerView = _binding?.includeTeamRosterLudiListViewTeams?.root
             config.switchRosterTo(title)
             val adapter = RosterListLiveAdapter(config)
+
+
+
             headerView?.let { HeaderViewScrollListener(it) }?.let {
                 _binding?.includeTeamRosterLudiListViewTeams?.root?.addOnScrollListener(it)
             }
